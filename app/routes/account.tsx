@@ -54,7 +54,7 @@ export async function action({ request }: ActionArgs) {
 }
 
 async function actionProfile(request: Request, formData: FormData) {
-  const { token, userId } = await requireAuth(request)
+  const { userId } = await requireAuth(request)
 
   const firstName = formData.get("firstName");
   const lastName = formData.get("lastName");
@@ -79,7 +79,7 @@ async function actionProfile(request: Request, formData: FormData) {
     });
   }
 
-  await updateUser(token, userId, {
+  await updateUser(userId, {
     firstName,
     lastName,
     email,

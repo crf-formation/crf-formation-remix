@@ -8,8 +8,8 @@ export interface UserDto {
   email: string;
   firstName: string;
   lastName: string;
-  creationDate: DateTime;
-  modificationDate: DateTime;
+  createdAt: DateTime;
+  updatedAt: DateTime;
 }
 
 export interface UserPostDto {
@@ -32,12 +32,7 @@ export interface UserMeDto {
   state: UserStateDtoEnum;
   firstName: String;
   lastName: String;
-  creationDate: DateTime;
-  modificationDate: DateTime;
+  createdAt: DateTime;
+  updatedAt: DateTime;
 }
 
-
-export interface UserAuthToken {
-  token: string
-  user: UserDto
-}

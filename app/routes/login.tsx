@@ -91,7 +91,7 @@ export const meta: MetaFunction<typeof loader> = () => {
 export default function LoginPage() {
   const [searchParams] = useSearchParams();
   const redirectTo = searchParams.get("redirectTo") || "/dashboard";
-  const defaultEmail = searchParams.get("email") || "test@test.com" || ""; // TODO: fixture - remove
+  const defaultEmail = searchParams.get("email") || "test@crf-formation.fr" || ""; // TODO: fixture - remove
 
   const [email, setEmail] = useState(defaultEmail)
 

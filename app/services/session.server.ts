@@ -5,7 +5,7 @@ import { SESSION_KEY, SESSION_MAX_AGE } from "~/constants/index.server";
 import type { UserDto } from "~/dto/user.dto";
 import { getUserMe } from "~/services/user.server";
 import { ApiErrorException } from './api.error';
-import { getUserById } from "./user.server";
+import { findUserById } from "./user.server";
 
 invariant(process.env.SESSION_SECRET, "SESSION_SECRET must be set");
 
@@ -32,21 +32,15 @@ export async function getUserId(
   return session.get(SESSION_KEY)?.userId;
 }
 
-export async function getToken(
-  request: Request
-): Promise<UserDto["id"] | undefined> {
-  const session = await getSession(request);
-  return session.get(SESSION_KEY)?.token;
-}
+
 
 export async function getMe(request: Request) {
   const userId = await getUserId(request);
   if (userId === undefined) return null;
 
-  const token = await requireToken(request);
   try {
-    const UserDto = await getUserMe(token);
-    return UserDto
+    const userapiObject = await getUserMe(userId);
+    return userapiObject
   } catch (e) {
     if (e instanceof ApiErrorException && e.status === 401) {
       throw await logout(request);
@@ -69,27 +63,15 @@ export async function requireUserId(
 
 export async function requireUser(request: Request) {
   const userId = await requireUserId(request);
-  const token = await requireToken(request)
 
-  const userDto = await getUserById(token, userId);
+  const userDto = await findUserById(userId);
   if (userDto) return userDto;
-
-  throw await logout(request);
-}
-
-export async function requireToken(request: Request) {
-  const token = await getToken(request);
-
-  if (token) {
-    return token
-  }
 
   throw await logout(request);
 }
 
 export async function requireAuth(request: Request) {
   return {
-    token: await requireToken(request),
     userId: await requireUserId(request),
   }
 }
@@ -97,17 +79,15 @@ export async function requireAuth(request: Request) {
 export async function createUserSession({
   session,
   userId,
-  token,
   remember,
   redirectTo,
 }: {
   session: Session;
   userId: string;
-  token: string;
   remember: boolean;
   redirectTo: string;
 }) {
-  session.set(SESSION_KEY,  { token, userId });
+  session.set(SESSION_KEY,  { userId });
   
   return redirect(redirectTo, {
     headers: {

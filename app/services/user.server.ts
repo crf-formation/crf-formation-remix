@@ -1,12 +1,15 @@
-import type { UserAuthToken, UserDto, UserPostDto, UserPutDto } from '~/dto/user.dto';
+import type { UserApiObject, UserAuthTokenApiObject, UserPostApiObject, UserPutApiObject } from '~/apiobject/user.apiobject';
+import { createUserEntity, findUserEntityByEmail, findUserEntityByEmailAndPassword, findUserEntityById } from '~/repository/user.repository';
 import { badRequest } from '~/utils/responses';
+import { userEntityToUserApiObject } from "~/mapper/user.mapper";
 
-export async function updateUser(token: string, userId: string, body: UserPutDto) {
+export async function updateUser(userId: string, body: UserPutApiObject) {
   return null
 }
 
-export async function createUser(token: string, body: UserPostDto) {
-	return null
+export async function createUser(userPostApiObject: UserPostApiObject): Promise<UserApiObject> {
+  const userEntity = await createUserEntity(userPostApiObject);
+  return userEntityToUserApiObject(userEntity)
 }
 
 export async function updatePassword(userId: string, password: string) {
@@ -14,30 +17,32 @@ export async function updatePassword(userId: string, password: string) {
   throw badRequest("not implemented")
 }
 
-export async function verifyLogin(
-  email: UserDto["email"],
-  password: UserDto["password"]
-): Promise<UserAuthToken> {
-  // TODO: fixture - remove me
+export async function findUserById(id: string): Promise<Optional<UserApiObject>> {
+  const userEntity = await findUserEntityById(id);
+  if (!userEntity) {
+    return null
+  }
+  return userEntityToUserApiObject(userEntity)
+}
+
+export async function verifyLogin(email: string, password: string): Promise<UserAuthTokenApiObject> {
+  const userEntity = await findUserEntityByEmailAndPassword(email, password);
+  if (!userEntity) {
+    throw new Error("Invalid user");
+  }
+
 	return {
-    user: await getUserById("", "1"),
-    token: "dewhdewih"
+    user: userEntityToUserApiObject(userEntity)
   }
 }
 
-export async function getUserById(token: string, id: UserDto["id"]): Promise<UserDto> {
-  // TODO: fixture - remove me
-  return { 
-    id,
-    firstName: "Loïc",
-    lastName: "Lefloch",
-    email: "test@test.com",
-    state: "ENABLED",
-    creationDate: "",
-    modificationDate: "",
+export async function findUserByEmail(email: string): Promise<Optional<UserApiObject>> {
+  const userEntity = await findUserEntityByEmail(email);
+  if (!userEntity) {
+    return null
   }
+  return userEntityToUserApiObject(userEntity)
 }
-
 
 export function validateUserEmail(email: unknown): email is string {
   return typeof email === "string" && email.length > 5 && email.includes("@");
@@ -47,7 +52,10 @@ export function validateUserEmail(email: unknown): email is string {
 // user me
 //
 
-export async function getUserMe(token: string) {
-  // TODO: fixture - remove me
-  return await getUserById("", "1")
+export async function getUserMe(userId: string) {
+  const userEntity = await findUserById(userId)
+  if (!userEntity) {
+    throw new Error(`User ${userId} could not be found`)
+  }
+  return userEntityToUserApiObject(userEntity)
 }

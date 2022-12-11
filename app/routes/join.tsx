@@ -4,14 +4,17 @@ import { json, redirect } from "@remix-run/node";
 import { Form, useActionData, useSearchParams } from "@remix-run/react";
 import { isEmpty } from "lodash";
 import { useEffect, useRef, useState } from "react";
-import { validateUserEmail } from "~/services/user.server";
-import { getUserId } from "~/services/session.server";
+import { createUser, findUserByEmail, validateUserEmail } from "~/services/user.server";
+import { createUserSession, getSession, getUserId } from "~/services/session.server";
 import { badRequest } from "~/utils/responses";
 // import { safeRedirect } from "~/utils/routing";
 import FormErrorHelperText from "~/components/form/FormErrorHelperText";
 import PasswordCheckView from "~/components/hibp/PasswordCheckView";
 import PageFullContentWithLogo from "~/components/layout/PageFullContentWithLogo";
 import { USER_PASSWORD_MIN_LENGTH } from "~/constants";
+import { UserPostDto } from "~/dto/user.dto";
+import { safeRedirect } from "~/utils/routing";
+import type { UserPostApiObject } from "~/apiobject/user.apiobject";
 
 export async function loader({ request }: LoaderArgs) {
   const userId = await getUserId(request);
@@ -21,11 +24,13 @@ export async function loader({ request }: LoaderArgs) {
 
 export async function action({ request }: ActionArgs) {
   const formData = await request.formData();
+  const session = await getSession(request);
+
   const firstName = formData.get("firstName");
   const lastName = formData.get("lastName");
   const email = formData.get("email");
   const password = formData.get("password");
-  // const redirectTo = safeRedirect(formData.get("redirectTo"), "/");
+  const redirectTo = safeRedirect(formData.get("redirectTo"), "/");
 
   if (isEmpty(firstName)) {
     return badRequest({
@@ -57,32 +62,40 @@ export async function action({ request }: ActionArgs) {
     });
   }
 
-  // const existingUser = await getUserByEmail(email);
-  // if (existingUser) {
-  //   return json(
-  //     {
-  //       errors: {
-  //         email: "A user already exists with this email",
-  //         password: null,
-  //       },
-  //     },
-  //     { status: 400 }
-  //   );
-  // }
+  const existingUser = await findUserByEmail(email);
+  if (existingUser) {
+    return json(
+      {
+        errors: {
+          email: "A user already exists with this email",
+          password: null,
+        },
+      },
+      { status: 400 }
+    );
+  }
 
-  // const user = await createUser(firstName, lastName, email, password);
+  const userPostApiObject: UserPostApiObject = {
+    firstName: firstName as string,
+    lastName: lastName as string,
+    state: 'DISABLED',
+    email,
+    password
+  }
 
-  // return createUserSession({
-  //   request,
-  //   userId: user.id,
-  //   remember: false,
-  //   redirectTo,
-  // });
+  const user = await createUser(userPostApiObject);
+
+  return createUserSession({
+    session,
+    userId: user.id,
+    remember: false,
+    redirectTo,
+  });
 }
 
 export const meta: MetaFunction<typeof loader> = () => {
   return {
-    title: "Sign Up",
+    title: "Inscription",
   };
 };
 

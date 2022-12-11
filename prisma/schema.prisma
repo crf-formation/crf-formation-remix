@@ -6,3 +6,44 @@ datasource db {
   provider = "sqlite"
   url      = env("DATABASE_URL")
 }
+
+model User {
+  id              String           @id @default(cuid())
+  email           String           @unique
+  createdAt       DateTime         @default(now())
+  updatedAt       DateTime         @default(now()) @updatedAt
+  state           String           @default("CREATED")
+  firstName       String           @default("")
+  lastName        String           @default("")
+  password        Password?
+  RecoverPassword RecoverPassword?
+}
+
+model Password {
+  hash   String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  userId String @unique
+}
+
+model RecoverPassword {
+  id String @id @default(cuid())
+
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  userId String @unique
+
+  token     String
+  createdAt DateTime @default(now())
+}
+
+model Formation {
+  id String @id @default(cuid())
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
+
+  title String
+  type  String
+
+  from DateTime
+  to   DateTime
+}

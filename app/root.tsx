@@ -27,7 +27,7 @@ import ClientStyleContext from "~/contexts/ClientStyleContext";
 import type { ThemeNames } from "./constants";
 import { DEFAULT_THEME } from "./constants";
 import useEnhancedEffect from "./hooks/useEnhancedEffect";
-import { commitSession, getMe, getSession, getToken } from "./services/session.server";
+import { commitSession, getMe, getSession } from "./services/session.server";
 import { getTheme } from "./themes";
 import { getUserTheme, themeCookie } from "./utils/theme.server";
 // import { getClientIPAddress } from "~/services/clientip.server"
@@ -73,8 +73,6 @@ export async function loader({ request }: LoaderArgs) {
 
   const user = await getMe(request)
 
-  const token = await getToken(request);
-
   return json<RootLoaderData>(
     {
       // https://github.com/sergiodxa/remix-utils
@@ -86,7 +84,7 @@ export async function loader({ request }: LoaderArgs) {
       env: getBrowserEnv(),
       isDesktop: isDesktop(request),
 
-      publicProperties: token ? await getPublicProperties(token) : null,
+      publicProperties: await getPublicProperties(),
 
       flashMessages,
     },
