@@ -1,85 +1,109 @@
-import * as React from "react";
-import type { ActionFunction, LoaderFunction, MetaFunction } from "remix";
-import {
-  Form,
-  Link,
-  redirect,
-  useSearchParams,
-  json,
-  useActionData,
-} from "remix";
-import Alert from "@reach/alert";
+import { Box, Button, Link, TextField } from "@mui/material";
+import type { ActionArgs, LoaderArgs, MetaFunction } from "@remix-run/node";
+import { json, redirect } from "@remix-run/node";
+import { Form, useActionData, useSearchParams } from "@remix-run/react";
+import { isEmpty } from "lodash";
+import { useEffect, useRef, useState } from "react";
+import { validateUserEmail } from "~/services/user.server";
+import { getUserId } from "~/services/session.server";
+import { badRequest } from "~/utils/responses";
+// import { safeRedirect } from "~/utils/routing";
+import FormErrorHelperText from "~/components/form/FormErrorHelperText";
+import PasswordCheckView from "~/components/hibp/PasswordCheckView";
+import PageFullContentWithLogo from "~/components/layout/PageFullContentWithLogo";
+import { USER_PASSWORD_MIN_LENGTH } from "~/constants";
 
-import { getUserId, createUserSession } from "~/session.server";
-
-import { createUser, getUserByEmail } from "~/models/user.server";
-import { validateEmail } from "~/utils";
-
-export const loader: LoaderFunction = async ({ request }) => {
+export async function loader({ request }: LoaderArgs) {
   const userId = await getUserId(request);
   if (userId) return redirect("/");
-  return {};
-};
-
-interface ActionData {
-  errors: {
-    email?: string;
-    password?: string;
-  };
+  return json({});
 }
 
-export const action: ActionFunction = async ({ request }) => {
+export async function action({ request }: ActionArgs) {
   const formData = await request.formData();
+  const firstName = formData.get("firstName");
+  const lastName = formData.get("lastName");
   const email = formData.get("email");
   const password = formData.get("password");
-  const redirectTo = formData.get("redirectTo");
+  // const redirectTo = safeRedirect(formData.get("redirectTo"), "/");
 
-  if (!validateEmail(email)) {
-    return json<ActionData>(
-      { errors: { email: "Email is invalid" } },
-      { status: 400 }
-    );
+  if (isEmpty(firstName)) {
+    return badRequest({
+      errors: { email: "First name required", password: null },
+    });
+  }
+
+  if (isEmpty(lastName)) {
+    return badRequest({
+      errors: { email: "Last name required", password: null },
+    });
+  }
+
+  if (!validateUserEmail(email)) {
+    return badRequest({
+      errors: { email: "Email is invalid", password: null },
+    });
   }
 
   if (typeof password !== "string" || password.length === 0) {
-    return json<ActionData>(
-      { errors: { password: "Password is required" } },
-      { status: 400 }
-    );
+    return badRequest({
+      errors: { email: null, password: "Password is required" },
+    });
   }
 
-  const existingUser = await getUserByEmail(email);
-  if (existingUser) {
-    return json<ActionData>(
-      { errors: { email: "A user already exists with this email" } },
-      { status: 400 }
-    );
+  if (password.length < USER_PASSWORD_MIN_LENGTH) {
+    return badRequest({
+      errors: { email: null, password: "Password is too short" },
+    });
   }
 
-  const user = await createUser(email, password);
+  // const existingUser = await getUserByEmail(email);
+  // if (existingUser) {
+  //   return json(
+  //     {
+  //       errors: {
+  //         email: "A user already exists with this email",
+  //         password: null,
+  //       },
+  //     },
+  //     { status: 400 }
+  //   );
+  // }
 
-  return createUserSession(
-    request,
-    user.id,
-    typeof redirectTo === "string" ? redirectTo : "/"
-  );
-};
+  // const user = await createUser(firstName, lastName, email, password);
 
-export const meta: MetaFunction = () => {
+  // return createUserSession({
+  //   request,
+  //   userId: user.id,
+  //   remember: false,
+  //   redirectTo,
+  // });
+}
+
+export const meta: MetaFunction<typeof loader> = () => {
   return {
-    title: "Join",
+    title: "Sign Up",
   };
 };
 
-export default function JoinPage() {
+export default function Join() {
   const [searchParams] = useSearchParams();
   const redirectTo = searchParams.get("redirectTo") ?? undefined;
-  const actionData = useActionData<ActionData>();
-  const emailRef = React.useRef<HTMLInputElement>(null);
-  const passwordRef = React.useRef<HTMLInputElement>(null);
+  const actionData = useActionData<typeof action>();
 
-  React.useEffect(() => {
-    if (actionData?.errors?.email) {
+  const firstNameRef = useRef<HTMLInputElement>(null);
+  const lastNameRef = useRef<HTMLInputElement>(null);
+  const emailRef = useRef<HTMLInputElement>(null);
+  const passwordRef = useRef<HTMLInputElement>(null);
+
+  const [password, setPassword] = useState('')
+
+  useEffect(() => {
+    if (actionData?.errors?.firstName) {
+      firstNameRef.current?.focus();
+    } else if (actionData?.errors?.lastName) {
+      lastNameRef.current?.focus();
+    } else if (actionData?.errors?.email) {
       emailRef.current?.focus();
     } else if (actionData?.errors?.password) {
       passwordRef.current?.focus();
@@ -87,99 +111,80 @@ export default function JoinPage() {
   }, [actionData]);
 
   return (
-    <div
-      style={{
-        maxWidth: 500,
-        margin: "30vh auto 0 auto",
-      }}
-    >
-      <h1 style={{ textAlign: "center" }}>Join Remix Notes</h1>
-      <Form
-        method="post"
-        style={{
-          display: "flex",
-          flexDirection: "column",
-          gap: 12,
-          width: 300,
-          margin: "auto",
-        }}
-      >
+    <PageFullContentWithLogo>
+      <Form method="post">
         <input type="hidden" name="redirectTo" value={redirectTo} />
-        <div>
-          <label
-            style={{
-              display: "flex",
-              flexDirection: "column",
-              gap: 4,
-              width: "100%",
-            }}
-          >
-            <span>Email address</span>
-            <input
-              ref={emailRef}
-              autoFocus={true}
-              style={{ flex: 1, lineHeight: 2, fontSize: "1.1rem" }}
-              name="email"
-              type="email"
-              autoComplete="email"
-              aria-invalid={actionData?.errors?.email ? true : undefined}
-              aria-errormessage={
-                actionData?.errors.email ? "email-error" : undefined
-              }
-            />
-          </label>
-          {actionData?.errors?.email && (
-            <Alert style={{ color: "red", paddingTop: 4 }} id="email-error">
-              {actionData.errors.email}
-            </Alert>
-          )}
-        </div>
 
-        <div>
-          <label
-            style={{
-              display: "flex",
-              flexDirection: "column",
-              gap: 4,
-              width: "100%",
-            }}
-          >
-            <span>Password</span>
-            <input
-              ref={passwordRef}
-              style={{ flex: 1, lineHeight: 2, fontSize: "1.1rem" }}
-              name="password"
-              type="password"
-              autoComplete="new-password"
-              aria-invalid={actionData?.errors?.password ? true : undefined}
-              aria-errormessage={
-                actionData?.errors.password ? "password-error" : undefined
-              }
-            />
-          </label>
-          {actionData?.errors?.password && (
-            <Alert style={{ color: "red", paddingTop: 4 }} id="password-error">
-              {actionData.errors.password}
-            </Alert>
-          )}
-        </div>
+        <Box sx={{ display: "flex", flexDirection: "column" }}>
+          <TextField
+            name="firstName"
+            ref={firstNameRef}
+            label="First name"
+            variant="standard"
+            margin="normal"
+            type="string"
+            autoComplete="firstName"
+            autoFocus
+            aria-invalid={actionData?.errors?.firstName ? true : undefined}
+            aria-describedby="firstName-form-error"
+          />
+          <FormErrorHelperText name="firstName" actionData={actionData} />
 
-        <div style={{ textAlign: "right" }}>
-          <button type="submit">Join</button>
-        </div>
+          <TextField
+            name="lastName"
+            ref={lastNameRef}
+            label="Last name"
+            variant="standard"
+            margin="normal"
+            type="string"
+            autoComplete="lastName"
+            aria-invalid={actionData?.errors?.lastName ? true : undefined}
+            aria-describedby="lastName-form-error"
+          />
+          <FormErrorHelperText name="lastName" actionData={actionData} />
+
+          <TextField
+            name="email"
+            ref={emailRef}
+            label="Email"
+            variant="standard"
+            margin="normal"
+            type="email"
+            autoComplete="email"
+            aria-invalid={actionData?.errors?.email ? true : undefined}
+            aria-describedby="email-form-error"
+          />
+          <FormErrorHelperText name="email" actionData={actionData} />
+
+          <TextField
+            name="password"
+            ref={passwordRef}
+            label="Password"
+            variant="standard"
+            margin="normal"
+            type="password"
+            autoComplete="new-password"
+            aria-invalid={actionData?.errors?.password ? true : undefined}
+            aria-describedby="password-form-error"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+          />
+          <FormErrorHelperText name="password" actionData={actionData} />
+
+          <PasswordCheckView password={password} />
+        </Box>
+
+        <Box sx={{ marginTop: 2, display: "flex", justifyContent: "end" }}>
+          <Button type="submit" variant="contained" color="primary" fullWidth>
+            Create account
+          </Button>
+        </Box>
+
+        <Box mt={3} textAlign="center">
+          Already have an account?{" "}
+          <Link href={`/login?${searchParams.toString()}`}>Log in</Link>
+        </Box>
       </Form>
-
-      <div style={{ paddingTop: 24, textAlign: "right" }}>
-        Already have an account?{" "}
-        <Link
-          to={{
-            pathname: "/login",
-            search: redirectTo ? `?redirectTo=${redirectTo}` : undefined,
-          }}
-        >
-          Log in
-        </Link>
-      </div>
-    </div>
+    </PageFullContentWithLogo>
   );
 }

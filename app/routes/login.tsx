@@ -1,69 +1,88 @@
-import * as React from "react";
-import type { ActionFunction, LoaderFunction, MetaFunction } from "remix";
-import {
-  Form,
-  json,
-  Link,
-  useActionData,
-  redirect,
-  useSearchParams,
-} from "remix";
-import Alert from "@reach/alert";
+import { Box, Button, Link, TextField } from "@mui/material";
+import type { ActionArgs, LoaderArgs, MetaFunction } from "@remix-run/node";
+import { json, redirect } from "@remix-run/node";
+import { Form, useActionData, useSearchParams } from "@remix-run/react";
+import { useEffect, useRef, useState } from "react";
+import FormErrorHelperText from "~/components/form/FormErrorHelperText";
+import PasswordCheckView from "~/components/hibp/PasswordCheckView";
+import PageFullContentWithLogo from "~/components/layout/PageFullContentWithLogo";
+import { USER_PASSWORD_MIN_LENGTH } from "~/constants";
+import { validateUserEmail, verifyLogin } from "~/services/user.server";
+import { createUserSession, getSession, getUserId } from "~/services/session.server";
+import { createAuthenticityToken } from "~/utils/csrf.server";
+import { safeRedirect } from "~/utils/routing";
+// import { logger } from '~/services/logger';
 
-import { createUserSession, getUserId } from "~/session.server";
-import { verifyLogin } from "~/models/user.server";
-import { validateEmail } from "~/utils";
-
-export const loader: LoaderFunction = async ({ request }) => {
+export async function loader({ request }: LoaderArgs) {
+  
   const userId = await getUserId(request);
   if (userId) return redirect("/");
-  return {};
-};
-
-interface ActionData {
-  errors?: {
-    email?: string;
-    password?: string;
-  };
+  return json({});
 }
 
-export const action: ActionFunction = async ({ request }) => {
+export async function action({ request }: ActionArgs) {
+  const session = await getSession(request);
   const formData = await request.formData();
+
+  // logger.info('onAction: ' + session.get('csrf'))
+
+  // https://security.stackexchange.com/questions/22903/why-refresh-csrf-token-per-form-request
+  // it is not necessary to generate a new token per request. It brings almost zero security advantage,
+  // and it costs you in terms of usability: with only one token valid at once, the user will not be able to navigate the webapp normally.
+  // For example if they hit the 'back' button and submit the form with new values, the submission will fail, and likely greet them with some
+  // hostile error message. If they try to open a resource in a second tab, they'll find the session randomly breaks in one or both tabs.
+  // It is usually not worth maiming your application's usability to satisfy this pointless requirement.
+  // There is one place where it is worth issuing a new CSRF token, though: on principal-change inside a session.
+  // That is, primarily, at login. This is to prevent a session fixation attack leading to a CSRF attack possibility.
+  // TODO: make it on join too?
+  createAuthenticityToken(session); // csrf: generate token
+
   const email = formData.get("email");
   const password = formData.get("password");
-  const redirectTo = formData.get("redirectTo");
+  const redirectTo = safeRedirect(formData.get("redirectTo"), "/dashboard");
+  const remember = formData.get("remember");
 
-  if (!validateEmail(email)) {
-    return json<ActionData>(
-      { errors: { email: "Email is invalid" } },
+  if (!validateUserEmail(email)) {
+    return json(
+      { errors: { email: "Email is invalid", password: null } },
       { status: 400 }
     );
   }
 
   if (typeof password !== "string" || password.length === 0) {
-    return json<ActionData>(
-      { errors: { password: "Password is required" } },
+    return json(
+      { errors: { email: null, password: "Password is required" } },
       { status: 400 }
     );
   }
 
-  const user = await verifyLogin(email, password);
-
-  if (!user) {
-    return json<ActionData>(
-      { errors: { email: "Invalid email or password" } },
+  if (password.length < USER_PASSWORD_MIN_LENGTH) {
+    return json(
+      { errors: { email: null, password: "Password is too short" } },
       { status: 400 }
     );
   }
 
-  return createUserSession(
-    request,
-    user.id,
-    typeof redirectTo === "string" ? redirectTo : "/"
-  );
-};
+  const proUserAuthToken = await verifyLogin(email, password);
 
-export const meta: MetaFunction = () => {
+  if (!proUserAuthToken) {
+    return json(
+      { errors: { email: "Invalid email or password", password: null } },
+      { status: 400 }
+    );
+  }
+
+  return createUserSession({
+    session,
+    userId: proUserAuthToken.user.id,
+    token: proUserAuthToken.token,
+    remember: remember === "on" ? true : false,
+    redirectTo,
+  });
+
+}
+
+export const meta: MetaFunction<typeof loader> = () => {
   return {
     title: "Login",
   };
@@ -71,12 +90,18 @@ export const meta: MetaFunction = () => {
 
 export default function LoginPage() {
   const [searchParams] = useSearchParams();
-  const redirectTo = searchParams.get("redirectTo") ?? undefined;
-  const actionData = useActionData<ActionData>();
-  const emailRef = React.useRef<HTMLInputElement>(null);
-  const passwordRef = React.useRef<HTMLInputElement>(null);
+  const redirectTo = searchParams.get("redirectTo") || "/dashboard";
+  const defaultEmail = searchParams.get("email") || "";
 
-  React.useEffect(() => {
+  const [email, setEmail] = useState(defaultEmail)
+
+  const actionData = useActionData<typeof action>();
+  const emailRef = useRef<HTMLInputElement>(null);
+  const passwordRef = useRef<HTMLInputElement>(null);
+
+  const [password, setPassword] = useState("bonjour1"); // TODO: remove test password
+
+  useEffect(() => {
     if (actionData?.errors?.email) {
       emailRef.current?.focus();
     } else if (actionData?.errors?.password) {
@@ -85,98 +110,56 @@ export default function LoginPage() {
   }, [actionData]);
 
   return (
-    <div
-      style={{
-        maxWidth: 500,
-        margin: "30vh auto 0 auto",
-      }}
-    >
-      <h1 style={{ textAlign: "center" }}>Sign in to Remix Notes</h1>
-      <Form
-        method="post"
-        style={{
-          display: "flex",
-          flexDirection: "column",
-          gap: 12,
-          width: 300,
-          margin: "auto",
-        }}
-      >
+    <PageFullContentWithLogo>
+      <Form method="post">
         <input type="hidden" name="redirectTo" value={redirectTo} />
-        <div>
-          <label
-            style={{
-              display: "flex",
-              flexDirection: "column",
-              gap: 4,
-              width: "100%",
-            }}
-          >
-            <span>Email address</span>
-            <input
-              ref={emailRef}
-              autoFocus={true}
-              style={{ flex: 1, lineHeight: 2, fontSize: "1.1rem" }}
-              name="email"
-              type="email"
-              autoComplete="email"
-              aria-invalid={actionData?.errors?.email ? true : undefined}
-              aria-errormessage={
-                actionData?.errors?.email ? "email-error" : undefined
-              }
-            />
-          </label>
-          {actionData?.errors?.email && (
-            <Alert style={{ color: "red", paddingTop: 4 }} id="email-error">
-              {actionData.errors.email}
-            </Alert>
-          )}
-        </div>
 
-        <div>
-          <label
-            style={{
-              display: "flex",
-              flexDirection: "column",
-              gap: 4,
-              width: "100%",
-            }}
-          >
-            <span>Password</span>
-            <input
-              ref={passwordRef}
-              style={{ flex: 1, lineHeight: 2, fontSize: "1.1rem" }}
-              name="password"
-              type="password"
-              autoComplete="current-password"
-              aria-invalid={actionData?.errors?.password ? true : undefined}
-              aria-errormessage={
-                actionData?.errors?.password ? "password-error" : undefined
-              }
-            />
-          </label>
-          {actionData?.errors?.password && (
-            <Alert style={{ color: "red", paddingTop: 4 }} id="password-error">
-              {actionData.errors.password}
-            </Alert>
-          )}
-        </div>
-        <div style={{ textAlign: "right" }}>
-          <button type="submit">Sign in</button>
-        </div>
+        <Box sx={{ display: "flex", flexDirection: "column" }}>
+          <TextField
+            name="email"
+            label="Email"
+            variant="standard"
+            margin="normal"
+            type="email"
+            autoComplete="email"
+            autoFocus
+            aria-invalid={actionData?.errors?.email ? true : undefined}
+            aria-describedby="email-form-error"
+            value={email}
+            onChange={e => setEmail(e.target.value)}
+          />
+          <FormErrorHelperText name="email" actionData={actionData} />
+
+          <TextField
+            name="password"
+            label="Password"
+            variant="standard"
+            margin="normal"
+            type="password"
+            autoComplete="password"
+            aria-invalid={actionData?.errors?.password ? true : undefined}
+            aria-describedby="password-form-error"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+          />
+          <FormErrorHelperText name="password" actionData={actionData} />
+          <PasswordCheckView password={password} />
+        </Box>
+
+        <Box sx={{ marginTop: 2, display: "flex", justifyContent: "end" }}>
+          <Button type="submit" variant="contained" color="primary" fullWidth>
+            Log in
+          </Button>
+        </Box>
+
+        <Box mt={3} textAlign="center">
+          Forgot your password?{" "}
+          <Link href={`/reset-password?${searchParams.toString()}&email=${email}`}>
+            Reset it
+          </Link>
+        </Box>
+
       </Form>
-
-      <div style={{ paddingTop: 24, textAlign: "right" }}>
-        Don't have an account?{" "}
-        <Link
-          to={{
-            pathname: "/join",
-            search: redirectTo ? `?redirectTo=${redirectTo}` : undefined,
-          }}
-        >
-          Sign up
-        </Link>
-      </div>
-    </div>
+    </PageFullContentWithLogo>
   );
 }
