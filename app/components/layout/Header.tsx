@@ -110,16 +110,6 @@ export default function Header(props: HeaderProps) {
 
             {isLoggedIn && (
               <Box sx={{ display: "flex", alignItems: "center" }}>
-                <Typography
-                  sx={{
-                    mt: 0.5,
-                    mr: 1,
-                    // fontWeight: 500,
-                  }}
-                >
-                  {user.storesGroup.displayName}
-                </Typography>
-
                 <Grid item sx={{ "& .MuiSvgIcon-root": { color: "white" } }}>
                   <Tooltip title="Account settings">
                     <IconButton

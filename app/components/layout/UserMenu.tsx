@@ -71,14 +71,7 @@ export default function UserMenu({ open, user, anchorRef, handleClose }: Props) 
             >
               {user.email}
             </Typography>
-            <Typography
-              sx={{
-                fontWeight: 600,
-                mt: 2,
-              }}
-            >
-              {user.storesGroup.displayName}
-            </Typography>
+           
             <Box mt={2}>
               <Button
                 variant="outlined"

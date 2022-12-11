@@ -27,14 +27,14 @@ export async function getSession(request: Request) {
 
 export async function getUserId(
   request: Request
-): Promise<ProUserDto["id"] | undefined> {
+): Promise<UserDto["id"] | undefined> {
   const session = await getSession(request);
   return session.get(SESSION_KEY)?.userId;
 }
 
 export async function getToken(
   request: Request
-): Promise<ProUserDto["id"] | undefined> {
+): Promise<UserDto["id"] | undefined> {
   const session = await getSession(request);
   return session.get(SESSION_KEY)?.token;
 }
@@ -45,8 +45,8 @@ export async function getMe(request: Request) {
 
   const token = await requireToken(request);
   try {
-    const ProUserDto = await getUserMe(token);
-    return ProUserDto
+    const UserDto = await getUserMe(token);
+    return UserDto
   } catch (e) {
     if (e instanceof ApiErrorException && e.status === 401) {
       throw await logout(request);
@@ -71,8 +71,8 @@ export async function requireUser(request: Request) {
   const userId = await requireUserId(request);
   const token = await requireToken(request)
 
-  const ProUserDto = await getUserById(token, userId);
-  if (ProUserDto) return ProUserDto;
+  const userDto = await getUserById(token, userId);
+  if (userDto) return userDto;
 
   throw await logout(request);
 }

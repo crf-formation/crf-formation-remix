@@ -1,9 +1,8 @@
 import type { LoaderArgs, MetaFunction } from "@remix-run/node";
 
-import { Box, Paper, Typography } from '@mui/material';
+import { Paper, Typography } from '@mui/material';
 import { json } from "@remix-run/node";
 import PageContainer from "~/components/layout/PageContainer";
-import Callout from "~/components/typography/Callout";
 import useUser from "~/hooks/useUser";
 import { requireUser } from "~/services/session.server";
 
@@ -16,7 +15,7 @@ export async function loader({ request }: LoaderArgs) {
 
 export const meta: MetaFunction<typeof loader> = () => {
   return {
-    title: "Welcome",
+    title: "Bienvenue !",
   };
 };
 
@@ -26,30 +25,19 @@ export default function WelcomePage() {
     <PageContainer>
       <Paper sx={{ textAlign: "center", py: 4 }}>
         <Typography variant="h2" sx={{ mt: 2 }}>
-          Welcome !
+        Bienvenue !
         </Typography>
 
         <Typography variant="h5" sx={{ mt: 2 }}>
-          Your account has been configured
+          Votre compte a bien été configuré
         </Typography>
 
         <Typography sx={{ mt: 2 }}>
-          You now have access to the backoffice.
+          Vous avez désormais accès à CRF Formation.
         </Typography>
 
-        {/* margin on mobile */}
-        <Box mx={2}>
-          <Callout
-            severity="info"
-            withIcon
-            sx={{ maxWidth: 480, mx: "auto", mt: 4 }}
-          >
-            You are linked to the group: {user.storesGroup.displayName}
-          </Callout>
-        </Box>
       </Paper>
 
-      {/* TODO: display tutorial from notion? */}
     </PageContainer>
   );
 }

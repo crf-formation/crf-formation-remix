@@ -1,4 +1,4 @@
-import type { UserDto, UserPostDto, UserPutDto } from '~/dto/user.dto';
+import type { UserAuthToken, UserDto, UserPostDto, UserPutDto } from '~/dto/user.dto';
 import { badRequest } from '~/utils/responses';
 
 export async function updateUser(token: string, userId: string, body: UserPutDto) {
@@ -17,12 +17,25 @@ export async function updatePassword(userId: string, password: string) {
 export async function verifyLogin(
   email: UserDto["email"],
   password: UserDto["password"]
-): Promise<null> {
-	return null
+): Promise<UserAuthToken> {
+  // TODO: fixture - remove me
+	return {
+    user: await getUserById("", "1"),
+    token: "dewhdewih"
+  }
 }
 
-export async function getUserById(token: string, id: UserDto["id"]) {
-  return null
+export async function getUserById(token: string, id: UserDto["id"]): Promise<UserDto> {
+  // TODO: fixture - remove me
+  return { 
+    id,
+    firstName: "Loïc",
+    lastName: "Lefloch",
+    email: "test@test.com",
+    state: "ENABLED",
+    creationDate: "",
+    modificationDate: "",
+  }
 }
 
 
@@ -35,5 +48,6 @@ export function validateUserEmail(email: unknown): email is string {
 //
 
 export async function getUserMe(token: string) {
-  return null
+  // TODO: fixture - remove me
+  return await getUserById("", "1")
 }

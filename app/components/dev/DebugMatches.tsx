@@ -80,7 +80,7 @@ function DebugContent({ show, onClose }) {
       </DialogTitle>
       <DialogContent sx={{ p: 4, mt: 2 }}>
         <div>
-          {debug.map((routeData) => (
+          {debug?.map((routeData) => (
             <Box key={routeData.id} mb={2}>
               <span>{routeData.pathname}</span>{" "}
               <Typography variant="caption">({routeData.id})</Typography>

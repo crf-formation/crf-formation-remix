@@ -4,7 +4,7 @@ import Main from './Main';
 
 interface Props {
 	children: ReactNode,
-  sx: SxProps,
+  sx?: SxProps,
 }
 
 /**

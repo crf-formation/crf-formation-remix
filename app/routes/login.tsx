@@ -63,9 +63,9 @@ export async function action({ request }: ActionArgs) {
     );
   }
 
-  const proUserAuthToken = await verifyLogin(email, password);
+  const userAuthToken = await verifyLogin(email, password);
 
-  if (!proUserAuthToken) {
+  if (!userAuthToken) {
     return json(
       { errors: { email: "Invalid email or password", password: null } },
       { status: 400 }
@@ -74,8 +74,8 @@ export async function action({ request }: ActionArgs) {
 
   return createUserSession({
     session,
-    userId: proUserAuthToken.user.id,
-    token: proUserAuthToken.token,
+    userId: userAuthToken.user.id,
+    token: userAuthToken.token,
     remember: remember === "on" ? true : false,
     redirectTo,
   });
@@ -91,7 +91,7 @@ export const meta: MetaFunction<typeof loader> = () => {
 export default function LoginPage() {
   const [searchParams] = useSearchParams();
   const redirectTo = searchParams.get("redirectTo") || "/dashboard";
-  const defaultEmail = searchParams.get("email") || "";
+  const defaultEmail = searchParams.get("email") || "test@test.com" || ""; // TODO: fixture - remove
 
   const [email, setEmail] = useState(defaultEmail)
 

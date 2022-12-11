@@ -20,7 +20,7 @@ export default function PageFullContentWithLogo({ children }: Props) {
             <Paper sx={{ px: 3, minWidth: 360, py: 4 }}>
               <Box sx={{ display: "flex", flexDirection: "column" }}>
                 <LogoVerticalImage
-                  width={120}
+                  width={220}
                   height="auto"
                   style={{ margin: "auto" }}
                   loading="lazy"
