@@ -1,12 +1,12 @@
 import { createTheme } from '@mui/material/styles';
 import { CLOSED_DRAWER_WIDTH, DRAWER_WIDTH } from '~/constants';
-import { teal, orange } from "@mui/material/colors";
+import { red, teal } from "@mui/material/colors";
 
 const theme = createTheme({
   palette: {
     mode: "light",
-    primary: teal,
-    secondary: orange,
+    primary: red,
+    secondary: teal,
     
     // https://github.com/mui/material-ui/blob/b8e5f932eb7dff7f9bc19bde8887e9d59c5efc87/docs/src/modules/brandingTheme.ts
     error: {

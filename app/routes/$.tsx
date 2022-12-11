@@ -11,7 +11,7 @@ export async function loader({ request }: LoaderArgs) {
 
 export const meta: MetaFunction<typeof loader> = () => {
   return {
-    title: "404 - not found",
+    title: "404 - Page inconnue",
   };
 };
 
@@ -19,9 +19,9 @@ export const meta: MetaFunction<typeof loader> = () => {
 export default function Dashboard() {
   return (
     <ErrorPageContainer
-      title={`404 - not found`}
+      title={`404 - Page inconnue`}
       message={
-        <p>Oops! Looks like you tried to visit a page that does not exist.</p>
+        <p>Oops! La page demandée n'a pas été trouvée.</p>
       }
     />
   );

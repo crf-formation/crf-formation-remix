@@ -1,12 +1,12 @@
 import { createTheme } from '@mui/material/styles';
 import { CLOSED_DRAWER_WIDTH, DRAWER_WIDTH } from '~/constants';
-import { teal, orange } from "@mui/material/colors";
+import { teal, red } from "@mui/material/colors";
 
 const theme = createTheme({
   palette: {
     mode: "dark",
-    primary: teal,
-    secondary: orange
+    primary: red,
+    secondary: teal,
   },
   sidebar: {
     width: DRAWER_WIDTH, 

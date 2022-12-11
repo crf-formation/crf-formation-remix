@@ -197,7 +197,7 @@ export default function SidebarMenu({ open, isDesktop, toggleDrawer }: Props) {
         >
           <Box sx={{ display: "flex", alignItems: "center" }}>
             <LogoIcon
-              sx={{ height: 24, width: "auto", marginLeft: 2 }}
+              sx={{ height: 34, width: "auto", marginLeft: 2 }}
               // onClick={() => toggleDrawer()}
             />
           </Box>
