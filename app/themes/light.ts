@@ -40,19 +40,19 @@ const theme = createTheme({
       800: '#178D46',
       900: '#0F5C2E',
     },
-    warning: {
-      50: '#FFF9EB',
-      100: '#FFF3C1',
-      200: '#FFECA1',
-      300: '#FFDC48', // vs blueDark900: WCAG 10.4 AAA, APCA 72 Ok for text
-      400: '#F4C000', // vs blueDark900: WCAG 6.4 AA normal, APCA 48 Only large text
-      500: '#DEA500', // vs blueDark900: WCAG 8 AAA normal, APCA 58 Only large text
-      main: '#DEA500',
-      600: '#D18E00', // vs blueDark900: WCAG 6.4 AA normal, APCA 48 Only large text
-      700: '#AB6800', // vs white bg: WCAG 4.4 AA large, APCA 71 Ok for text
-      800: '#8C5800', // vs white bg: WCAG 5.9 AAA large, APCA 80 Best for text
-      900: '#5A3600', // vs white bg: WCAG 10.7 AAA, APCA 95 Best for text
-    },
+    // warning: {
+    //   50: '#FFF9EB',
+    //   100: '#FFF3C1',
+    //   200: '#FFECA1',
+    //   300: '#FFDC48', // vs blueDark900: WCAG 10.4 AAA, APCA 72 Ok for text
+    //   400: '#F4C000', // vs blueDark900: WCAG 6.4 AA normal, APCA 48 Only large text
+    //   500: '#DEA500', // vs blueDark900: WCAG 8 AAA normal, APCA 58 Only large text
+    //   main: '#DEA500',
+    //   600: '#D18E00', // vs blueDark900: WCAG 6.4 AA normal, APCA 48 Only large text
+    //   700: '#AB6800', // vs white bg: WCAG 4.4 AA large, APCA 71 Ok for text
+    //   800: '#8C5800', // vs white bg: WCAG 5.9 AAA large, APCA 80 Best for text
+    //   900: '#5A3600', // vs white bg: WCAG 10.7 AAA, APCA 95 Best for text
+    // },
   },
   sidebar: {
     width: DRAWER_WIDTH, 
