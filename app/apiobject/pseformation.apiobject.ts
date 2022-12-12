@@ -1,4 +1,5 @@
 import type { PlaceApiObject } from "./place.apiobject";
+import type { UserOnPseFormationApiObject } from "./useronpseformation.apiobject";
 
 export type PseFormationStateApiEnum = 'CREATED' | 'DISABLED' | 'ENABLED' | 'ARCHIVED'
 
@@ -11,6 +12,7 @@ export interface PseFormationApiObject {
 	from: Date;
 	to: Date;
 	place: PlaceApiObject;
+	users: Array<UserOnPseFormationApiObject>;
 }
 
 export interface PseFormationPostApiObject {

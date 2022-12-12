@@ -1,4 +1,5 @@
 import type { PlaceDto } from "./place.dto";
+import type { UserOnPseFormationDto } from "./useronpseformation.dto";
 
 export type FormationStateDtoEnum = 'CREATED' | 'DISABLED' | 'ENABLED' | 'ARCHIVED'
 
@@ -12,6 +13,7 @@ export interface PseFormationDto {
 	to: Date;
 	place: PlaceDto;
 	placeId: string;
+	users: Array<UserOnPseFormationDto>;
 }
 
 export interface PseFormationPostDto {

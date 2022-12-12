@@ -10,7 +10,8 @@ export async function createPseFormationEntity(pseFormationPostApiObject: PseFor
       ...pseFormationPostApiObject,
     },
 		include: {
-			place: true
+			place: true,
+      UserOnPseFormation: true,
 		},
   });
 }
@@ -23,6 +24,7 @@ export async function updatePseFormationEntity(id: string, pseFormationPutApiObj
     },
     include: {
       place: true,
+      UserOnPseFormation: true,
     },
   });
 }
@@ -32,6 +34,7 @@ export async function findPseFormationEntityById(id: string): Promise<Optional<P
     where: { id },
     include: {
       place: true,
+      UserOnPseFormation: true,
     },
   });
   if (!pseFormationEntity) {

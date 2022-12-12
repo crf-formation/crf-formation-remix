@@ -44,7 +44,7 @@ export default function AdminRoute() {
         layout={Layout}
       >
         <Resource
-          name="users"
+          name="user"
           list={UserList}
           show={UserShow}
           edit={UserEdit}
@@ -58,7 +58,10 @@ export default function AdminRoute() {
           create={PseFormationCreate}
         />
 
+        {/* Resources with no form, referenced on other forms */}
+        <Resource name="pse-user" />
         <Resource name="place" />
+        
       </Admin>
     </Main>
   );

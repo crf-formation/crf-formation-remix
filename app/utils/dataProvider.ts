@@ -31,8 +31,7 @@ function getList(apiUrl: string, httpClient = fetchUtils.fetchJson, resource: st
     orderBy: field,
     pageSize: `${perPage}`,
     page: `${page - 1}`, // index based 1 on react-admin, 0 on api
-    // 
-    filter: isEmpty(filter) ? undefined : filter
+    ...filter
   });
 
   const url = `${apiUrl}/${resource}?${urlSearchParams}`;

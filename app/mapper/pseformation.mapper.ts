@@ -2,7 +2,8 @@ import { parse, parseISO } from "date-fns";
 import type { PseFormationEntity } from "~/apiobject/entity";
 import type { PseFormationApiObject, PseFormationPostApiObject, PseFormationPutApiObject, PseFormationStateApiEnum } from "~/apiobject/pseformation.apiobject";
 import type { PseFormationDto, PseFormationPostDto, PseFormationPutDto } from "~/dto/pseformation.dto";
-import { placeApiObjectToDto } from "./place.mapper";
+import { placeApiObjectToDto, placeEntityToApiObject } from "./place.mapper";
+import { userOnPseformationApiObjectToDto, userOnPseformationEntityToApiObject } from "./useronpseformation.mapper";
 
 export function dataToPseFormationPostDto(data: any): PseFormationPostDto {
 	return {
@@ -36,6 +37,7 @@ export function pseFormationApiObjectToDto(apiObject: PseFormationApiObject): Ps
 		to: apiObject.to,
 		place: placeApiObjectToDto(apiObject.place),
 		placeId: apiObject.place?.id,
+		users: apiObject.users?.map(userOnPseformationApiObjectToDto)
 	}
 }
 
@@ -60,6 +62,7 @@ export function pseFormationPostDtoToApiObject(postDto: PseFormationPostDto): Ps
 }
 
 export function pseFormationEntityToApiObject(entity: PseFormationEntity): PseFormationApiObject {
+	console.log({ pseFormationEntityToApiObject: entity })
 	return {
 		id: entity.id,
 		createdAt: entity.createdAt,
@@ -68,7 +71,10 @@ export function pseFormationEntityToApiObject(entity: PseFormationEntity): PseFo
 		title: entity.title,
 		from: entity.from,
 		to: entity.to,
-		place: entity.place,
+		// TODO: how to make typescript PseFormationEntity with place / UserOnPseFormation etc?
+		place: placeEntityToApiObject(entity.place),
+		// can be null when loading list
+		users: (entity.UserOnPseFormation || []).map(userOnPseformationEntityToApiObject)
 	}
 }
 
