@@ -6,6 +6,9 @@ import type { OrderByDirection } from "~/constants/types";
 import { getUserPseFormations } from "~/services/pseformation.server";
 import { getSearchParamNumber, getSearchParam } from "~/services/request.server";
 import { requireUser } from '~/services/session.server';
+import { useLoaderData } from '@remix-run/react';
+import { paginateEntityToApiObject } from "~/mapper/abstract.mapper";
+import { pseFormationApiObjectToDto } from "~/mapper/pseformation.mapper";
 
 export async function loader({ request }: LoaderArgs) {
   const user = await requireUser(request);
@@ -19,10 +22,10 @@ export async function loader({ request }: LoaderArgs) {
 	invariant(orderBy, `Missing orderBy`)
 	invariant(orderByDirection, `Missing orderByDirection`)
 
-  const formations = await getUserPseFormations(user.id, page, pageSize, orderBy, orderByDirection)
+  const formationsPaginatedObjectApiObject = await getUserPseFormations(user.id, page, pageSize, orderBy, orderByDirection)
 
   return json({
-    formations
+    formations: paginateEntityToApiObject(formationsPaginatedObjectApiObject, pseFormationApiObjectToDto)
   });
 }
 
@@ -33,9 +36,15 @@ export const meta: MetaFunction<typeof loader> = () => {
 };
 
 export default function FromationPseRoute() {
+  const { formations } = useLoaderData<typeof loader>();
 
   return (
     <PageContainer>
+
+      {formations.data.map(formation => (
+        <div key={formation.id}>{formation.title} {formation.place.title}</div>
+      ))}
+
     </PageContainer>
   );
 }

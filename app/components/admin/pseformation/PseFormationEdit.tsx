@@ -4,7 +4,7 @@ import CrudActionsTabs from '~/components/reactadmin/layout/CrudActionsTabs';
 import EditLayout from '~/components/reactadmin/layout/EditLayout';
 import SimpleFormLayout from '~/components/reactadmin/layout/SimpleFormLayout';
 import { PlaceReferenceInput } from '../PlaceReference';
-import { PseFormationUserReferenceInput } from '../PseFormationUserReference';
+import { PseFormationUserReferenceInput } from './PseFormationUserReference';
 import { FormationStateInput } from './PseFormationState';
 
 

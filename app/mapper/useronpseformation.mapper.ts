@@ -5,7 +5,7 @@ import { userApiObjectToUserDto, userEntityToUserApiObject } from "./user.mapper
 
 export function userOnPseformationDataToPutDto(data: any): UserOnPseFormationPutDto {
   return {
-    userId: data.UserId,
+    userId: data.userId,
     role: data.role,
     assignedAt: new Date(),
   }

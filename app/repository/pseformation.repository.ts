@@ -34,13 +34,9 @@ export async function updatePseFormationEntity(id: string, pseFormationPutApiObj
     await prisma.userOnPseFormation.deleteMany({ where: { formationId: id } });
 
     // create new
-    // await Promise.all(users.map(async (user) => {
-    //   // remove null id from the create
-    //   const { id, ...data } = user
-    //   return prisma.userOnPseFormation.create({ data: { ...data, } }) 
-    // }));
-
-    await prisma.userOnPseFormation.create({ data: users[0] }) 
+    await Promise.all(users.map(async (user) => {
+      return prisma.userOnPseFormation.create({ data: user }) 
+    }));
 
     // update
     return await prisma.pseFormation.update({
