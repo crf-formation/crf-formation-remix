@@ -29,7 +29,7 @@ export default function UserList() {
       aside={<Sidebar />}
       actions={<CrudActionsTabs variant="list" disableCreate />}
     >
-      <Datagrid rowClick="edit">
+      <Datagrid rowClick="edit" bulkActionButtons={false}>
         {/* <TextField source="id" /> */}
         <EmailField source="email" />
         <TextField source="firstName" />
