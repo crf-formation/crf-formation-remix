@@ -8,16 +8,18 @@ datasource db {
 }
 
 model User {
-  id                String             @id @default(cuid())
-  email             String             @unique
-  createdAt         DateTime           @default(now())
-  updatedAt         DateTime           @default(now()) @updatedAt
-  state             String             @default("CREATED")
-  role              String             @default("USER")
-  firstName         String             @default("")
-  lastName          String             @default("")
-  password          Password?
-  UserPasswordToken UserPasswordToken?
+  id                           String                         @id @default(cuid())
+  email                        String                         @unique
+  createdAt                    DateTime                       @default(now())
+  updatedAt                    DateTime                       @default(now()) @updatedAt
+  state                        String                         @default("CREATED")
+  role                         String                         @default("USER")
+  firstName                    String
+  lastName                     String
+  password                     Password?
+  UserPasswordToken            UserPasswordToken?
+  PseGlobalUserPreparatoryWork PseGlobalUserPreparatoryWork[]
+  UserOnPseGlobalFormation     UserOnPseGlobalFormation[]
 }
 
 model Password {
@@ -32,13 +34,24 @@ model UserPasswordToken {
   user   User   @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   userId String @unique
 
-  token               String @unique 
+  token               String   @unique
   tokenExpirationDate DateTime
 
   createdAt DateTime @default(now())
 }
 
-model Formation {
+model Place {
+  id String @id @default(cuid())
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
+
+  title String
+
+  PseGlobalFormation PseGlobalFormation[]
+}
+
+model PseGlobalFormation {
   id String @id @default(cuid())
 
   createdAt DateTime @default(now())
@@ -49,4 +62,56 @@ model Formation {
 
   from DateTime
   to   DateTime
+
+  place   Place  @relation(fields: [placeId], references: [id])
+  placeId String
+
+  PseGlobalUserPreparatoryWork PseGlobalUserPreparatoryWork[]
+  UserOnPseGlobalFormation     UserOnPseGlobalFormation[]
+}
+
+model PseGlobalModule {
+  id String @id @default(cuid())
+
+  name     String
+  moduleId String @unique
+
+  PseGlobalUserPreparatoryWork PseGlobalUserPreparatoryWork[]
+}
+
+model UserOnPseGlobalFormation {
+  formation   PseGlobalFormation @relation(fields: [formationId], references: [id])
+  formationId String
+
+  user   User   @relation(fields: [userId], references: [id])
+  userId String
+
+  role String @default("STUDENT")
+
+  assignedAt DateTime @default(now())
+
+  @@id([formationId, userId])
+}
+
+model PseGlobalUserPreparatoryWork {
+  id String @id @default(cuid())
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
+
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  userId String
+
+  formation   PseGlobalFormation @relation(fields: [formationId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  formationId String
+
+  pseGlobalModule   PseGlobalModule @relation(fields: [pseGlobalModuleId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  pseGlobalModuleId String
+
+  openingDate  DateTime
+  realisedDate DateTime
+
+  realised Boolean @default(false)
+
+  @@unique([userId, formationId, pseGlobalModuleId])
 }
