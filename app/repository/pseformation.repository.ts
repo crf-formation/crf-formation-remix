@@ -40,7 +40,7 @@ export async function findPseFormationEntityById(id: string): Promise<Optional<P
   return pseFormationEntity;
 }
 
-export async function findPseFormations(
+export async function findPseFormationEntities(
 	page: number,
   pageSize: number,
   orderBy: string,
@@ -58,3 +58,26 @@ export async function findPseFormations(
     },
   });
 }
+
+export async function findPseFormationForUserEntities(
+  userId: string,
+	page: number,
+  pageSize: number,
+  orderBy: string,
+  orderByDirection: OrderByDirection,
+): Promise<PaginateObject<PseFormationEntity>> {
+	return await createPaginateObject<PseFormationEntity>({
+    model: prisma.pseFormation,
+    page,
+    pageSize,
+    orderBy,
+    orderByDirection,
+    where: {
+      UserOnPseFormation: { some: { userId } }
+    },
+		include: {
+      place: true,
+    },
+  });
+}
+

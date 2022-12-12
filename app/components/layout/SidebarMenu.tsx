@@ -58,6 +58,12 @@ const MainListItems = ({ openedMenu, handleToggle, dense }: MenuProps) => (
       dense={dense}
     />
 
+    <MenuItem
+      name="PSE"
+      href="/formation/pse"
+      icon={<DashboardIcon />}
+      dense={dense}
+    />
   </>
 );
 

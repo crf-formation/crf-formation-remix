@@ -6,8 +6,9 @@ import type {
 import {
   createPseFormationEntity,
   findPseFormationEntityById,
-  findPseFormations,
+  findPseFormationEntities,
   updatePseFormationEntity,
+  findPseFormationForUserEntities,
 } from "~/repository/pseformation.repository";
 import { pseFormationEntityToApiObject } from "~/mapper/pseformation.mapper";
 import { paginateEntityToApiObject } from "~/mapper/abstract.mapper";
@@ -44,7 +45,17 @@ export async function getPseFormations(
   orderBy: string,
   orderByDirection: OrderByDirection
 ): Promise<PaginateObject<PseFormationApiObject>> {
-  const pseFormationEntities = await findPseFormations(page, pageSize, orderBy, orderByDirection);
+  const pseFormationEntities = await findPseFormationEntities(page, pageSize, orderBy, orderByDirection);
   return paginateEntityToApiObject(pseFormationEntities, pseFormationEntityToApiObject);
 }
 
+export async function getUserPseFormations(
+  userId: string,
+  page: number,
+  pageSize: number,
+  orderBy: string,
+  orderByDirection: OrderByDirection
+): Promise<PaginateObject<PseFormationApiObject>> {
+  const pseFormationEntities = await findPseFormationForUserEntities(userId, page, pageSize, orderBy, orderByDirection);
+  return paginateEntityToApiObject(pseFormationEntities, pseFormationEntityToApiObject);
+}

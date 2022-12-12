@@ -9,9 +9,10 @@ interface Props<T> {
   orderByDirection?: OrderByDirection;
   include?: any;
   where?: any;
+  select?: any;
 }
 
-export async function createPaginateObject<T>({ model, page, pageSize, orderBy = 'createdAt', orderByDirection = 'asc', include, where }: Props<typeof model>): Promise<PaginateObject<T>> {
+export async function createPaginateObject<T>({ model, page, pageSize, orderBy = 'createdAt', orderByDirection = 'asc', include, select, where }: Props<typeof model>): Promise<PaginateObject<T>> {
   invariant(model, `Missing model`)
   invariant(page >= 0, `Invalid page ${page}`)
   invariant(pageSize > 0, `Invalid pageSize ${pageSize}`)
@@ -20,9 +21,8 @@ export async function createPaginateObject<T>({ model, page, pageSize, orderBy =
 
 	// totalCount
   const totalCount = await model.count({
-    where: {
-      ...where,
-    },
+    where,
+    select,
   });
 
 	if (!totalCount) {
@@ -46,6 +46,7 @@ export async function createPaginateObject<T>({ model, page, pageSize, orderBy =
     take: pageSize,
 		where,
 		include,
+    select,
     orderBy: { [orderBy]: orderByDirection }
   });
 
