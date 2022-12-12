@@ -1,11 +1,12 @@
 import { prisma } from "~/db.server";
 import type {
   UserPostApiObject,
+  UserPutApiObject,
 } from "~/apiobject/user.apiobject";
 import bcrypt from "bcryptjs";
 import type { UserEntity, PasswordEntity } from "~/apiobject/entity";
 import { v4 as uuid } from "uuid";
-import { PaginateObject } from "~/constants/types";
+import type { PaginateObject } from "~/constants/types";
 import { createPaginateObject } from "./abstract.repository";
 
 export async function createUserEntity(
@@ -28,12 +29,31 @@ export async function createUserEntity(
     },
   });
 
-  return userEntity
+  return userEntity;
+}
+
+export async function updateUserEntity(
+  id: string,
+  userPutApiObject: UserPutApiObject
+): Promise<UserEntity> {
+  const userEntity = await prisma.user.update({
+    data: {
+      email: userPutApiObject.email,
+      firstName: userPutApiObject.firstName,
+      lastName: userPutApiObject.lastName,
+      state: userPutApiObject.state,
+    },
+    where: {
+      id
+    }
+  });
+
+  return userEntity;
 }
 
 export async function updateUserEntityPassword(
   userId: string,
-  password: string,
+  password: string
 ): Promise<PasswordEntity> {
   const hashedPassword = await bcrypt.hash(password, 10);
 
@@ -46,9 +66,8 @@ export async function updateUserEntityPassword(
     },
   });
 
-  return passwordEntity
+  return passwordEntity;
 }
-
 
 export async function findUserEntityByEmail(
   email: string
@@ -57,7 +76,7 @@ export async function findUserEntityByEmail(
   if (!userEntity) {
     return null;
   }
-  return userEntity
+  return userEntity;
 }
 
 export async function findUserEntityById(
@@ -67,7 +86,7 @@ export async function findUserEntityById(
   if (!userEntity) {
     return null;
   }
-  return userEntity
+  return userEntity;
 }
 
 export async function findUserEntityByEmailAndPassword(
@@ -96,9 +115,17 @@ export async function findUserEntityByEmailAndPassword(
 
   const { password: _password, ...userWithoutPassword } = userWithPassword;
 
-	return userWithoutPassword;
+  return userWithoutPassword;
 }
 
-export async function findUsers(page: number = 0, pageSize: number = 25): Promise<PaginateObject<UserEntity>> {
-  return await createPaginateObject<UserEntity>({ model: prisma.user, page, pageSize, where: {} });
+export async function findUsers(
+  page: number = 0,
+  pageSize: number = 25
+): Promise<PaginateObject<UserEntity>> {
+  return await createPaginateObject<UserEntity>({
+    model: prisma.user,
+    page,
+    pageSize,
+    where: {},
+  });
 }

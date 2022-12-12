@@ -1,6 +1,6 @@
 import type { User as UserEntity } from "@prisma/client";
-import type { UserApiObject, UserPostApiObject, UserStateApiEnum } from "~/apiobject/user.apiobject";
-import type { UserDto, UserPostDto } from "~/dto/user.dto";
+import type { UserApiObject, UserPostApiObject, UserPutApiObject, UserStateApiEnum } from "~/apiobject/user.apiobject";
+import type { UserDto, UserPostDto, UserPutDto } from "~/dto/user.dto";
 
 export function userPostDtoToUserPostApiObject(dto: UserPostDto): UserPostApiObject {
 	return {
@@ -8,6 +8,15 @@ export function userPostDtoToUserPostApiObject(dto: UserPostDto): UserPostApiObj
 		lastName: dto.lastName,
 		email: dto.email,
 		state: 'CREATED'
+	}
+}
+
+export function userPutDtoToUserPutApiObject(dto: UserPutDto): UserPutApiObject {
+	return {
+		state: dto.state,
+		email: dto.email,
+		firstName: dto.firstName,
+		lastName: dto.lastName,
 	}
 }
 
@@ -33,4 +42,13 @@ export function userApiObjectToUserDto(userApiObject: UserApiObject): UserDto {
 		createdAt: userApiObject.createdAt.toISOString(),
 		updatedAt: userApiObject.updatedAt.toISOString(),
 	}
+}
+
+export function dataToUserPutDto(data: any): UserPutDto {
+	return {
+		firstName: data.firstName,
+		lastName: data.lastName,
+		email: data.email,
+		state: data.state,
+	};
 }

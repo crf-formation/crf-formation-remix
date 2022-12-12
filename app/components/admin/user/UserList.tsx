@@ -35,8 +35,8 @@ export default function UserList() {
 
         <TextField source="state" />
 
-        <DateField source="createdAt" />
-        <DateField source="updatedAt" />
+        <DateField source="createdAt" showTime />
+        <DateField source="updatedAt" showTime />
       </Datagrid>
     </ListLayout>
   );

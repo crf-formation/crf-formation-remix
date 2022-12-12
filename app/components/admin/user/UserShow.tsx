@@ -1,5 +1,5 @@
 // see https://marmelab.com/react-admin/Show.html
-import { DateTimeField, EmailField, SimpleShowLayout, TextField } from 'react-admin';
+import { DateField, EmailField, SimpleShowLayout, TextField } from 'react-admin';
 import CrudActionsTabs from '~/components/reactadmin/layout/CrudActionsTabs';
 import ShowLayout from '~/components/reactadmin/layout/ShowLayout';
 
@@ -14,8 +14,8 @@ export default function UserShow() {
         <TextField source="firstName" />
         <TextField source="lastName" />
 
-        <DateTimeField source="createdAt" showTime />
-        <DateTimeField source="updatedAt" showTime />
+        <DateField source="createdAt" showTime />
+        <DateField source="updatedAt" showTime />
       </SimpleShowLayout>
     </ShowLayout>
   );
