@@ -6,18 +6,20 @@ interface Props<T> {
 	page: number;
 	pageSize: number;
   orderBy?: string;
-  orderDirection?: 'asc' | 'desc';
+  orderByDirection?: 'asc' | 'desc' | undefined;
   include?: any;
   where?: any;
 }
 
-export async function createPaginateObject<T>({ model, page, pageSize, orderBy = 'createdAt', orderDirection = 'asc', include, where }: Props<typeof model>): Promise<PaginateObject<T>> {
+export async function createPaginateObject<T>({ model, page, pageSize, orderBy = 'createdAt', orderByDirection = 'asc', include, where }: Props<typeof model>): Promise<PaginateObject<T>> {
 	// totalCount
   const totalCount = await model.count({
     where: {
       ...where,
     },
   });
+
+  console.log({ toto: 'toto', orderBy, orderByDirection, page, pageSize })
 
 	if (!totalCount) {
 		return {
@@ -29,7 +31,7 @@ export async function createPaginateObject<T>({ model, page, pageSize, orderBy =
 				totalPages: 0,
 			},
 			sort: {
-				direction: orderDirection,
+				direction: orderByDirection,
 				orderBy,
 			},
 		}; 
@@ -39,7 +41,8 @@ export async function createPaginateObject<T>({ model, page, pageSize, orderBy =
     skip: page * pageSize,
     take: pageSize,
 		where,
-		include
+		include,
+    orderBy: { [orderBy]: orderByDirection }
   });
 
 	return {
@@ -51,7 +54,7 @@ export async function createPaginateObject<T>({ model, page, pageSize, orderBy =
       totalPages: Math.ceil(totalCount / pageSize),
     },
     sort: {
-      direction: orderDirection,
+      direction: orderByDirection,
       orderBy,
     },
   }; 

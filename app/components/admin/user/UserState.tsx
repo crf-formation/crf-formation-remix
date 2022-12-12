@@ -8,6 +8,7 @@ export function UserStateField(props: SelectFieldProps) {
       {...props}
 			defaultValue="DISABLED"
       choices={[
+        { id: "CREATED", name: "Created" },
         { id: "ENABLED", name: "Enabled" },
         { id: "DISABLED", name: "Disabled" },
         { id: "ARCHIVED", name: "Archived" },
@@ -22,6 +23,7 @@ export function UserStateInput(props: SelectInputProps) {
       {...props}
 			defaultValue="DISABLED"
       choices={[
+        { id: "CREATED", name: "Created" },
         { id: "ENABLED", name: "Enabled" },
         { id: "DISABLED", name: "Disabled" },
         { id: "ARCHIVED", name: "Archived" },

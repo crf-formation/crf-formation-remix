@@ -113,12 +113,16 @@ export async function findUserEntityByEmailAndPassword(
 
 export async function findUsers(
   page: number,
-  pageSize: number
+  pageSize: number,
+  orderBy: string,
+  orderByDirection: string
 ): Promise<PaginateObject<UserEntity>> {
   return await createPaginateObject<UserEntity>({
     model: prisma.user,
     page,
     pageSize,
+    orderBy,
+    orderByDirection,
     where: {},
   });
 }

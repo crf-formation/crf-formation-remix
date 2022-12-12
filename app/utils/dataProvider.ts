@@ -4,12 +4,6 @@ import { fetchUtils } from 'ra-core';
 import type { GetManyReferenceParams, GetOneParams, UpdateManyParams } from 'react-admin';
 
 function getPath(apiUrl: string, resource: string, params: GetOneParams<any> | UpdateManyParams<any>) {
-    if (resource === "app-instance-configuration") {
-      return `${apiUrl}/app-instance/${params.id}/configuration`;
-    } else if (resource === "app-configuration-template") {
-      return `${apiUrl}/app/${params.id}/configuration-template`;
-    }
-
   return `${apiUrl}/${resource}/${params.id}`
 }
 
@@ -36,7 +30,7 @@ function getList(apiUrl: string, httpClient = fetchUtils.fetchJson, resource: st
   }
   
   const urlSearchParams = new URLSearchParams({
-    direction: order,
+    orderByDirection: order.toLowerCase(),
     orderBy: field,
     pageSize: `${perPage}`,
     page: `${page - 1}`,
