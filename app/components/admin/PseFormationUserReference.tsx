@@ -61,6 +61,8 @@ export function PseFormationUserReferenceInput({ source }: Props) {
         >
           <UserReferenceInput source="UserId" validate={required()} />
           {/* TODO: type */}
+          <TextInput source="type" defaultValue="STUDENT" fullWidth validate={required()} />
+
         </SimpleFormIterator>
       </ArrayInput>
     </Box>

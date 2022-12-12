@@ -9,8 +9,9 @@ import { FormationStateInput } from './PseFormationState';
 
 
 export default function PseFormationEdit() {
+  // TODO: remove redirect after tests?
   return (
-    <EditLayout actions={<CrudActionsTabs variant="edit" />}>
+    <EditLayout actions={<CrudActionsTabs variant="edit" />} redirect="false">
       <SimpleFormLayout variant="edit">
         <TextInput source="id" disabled validate={required()} fullWidth />
 

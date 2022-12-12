@@ -81,6 +81,8 @@ model PseModule {
 }
 
 model UserOnPseFormation {
+  id String @id @default(cuid())
+
   formation   PseFormation @relation(fields: [formationId], references: [id])
   formationId String
 
@@ -91,7 +93,7 @@ model UserOnPseFormation {
 
   assignedAt DateTime @default(now())
 
-  @@id([formationId, userId])
+  @@unique([formationId, userId])
 }
 
 model PseUserPreparatoryWork {

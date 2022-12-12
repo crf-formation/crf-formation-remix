@@ -18,7 +18,7 @@ export function UserReferenceInput({ source }: Props) {
     <ReferenceInput reference="user" source={source} fullWidth>
       <AutocompleteInput
 				fullWidth
-        optionText={(user) =>
+        optionText={(user:  UserDto) =>
           user == null ? "not defined" : `${user.firstName} ${user.lastName}`
         }
       />

@@ -3,7 +3,7 @@ import type { PseFormationEntity } from "~/apiobject/entity";
 import type { PseFormationApiObject, PseFormationPostApiObject, PseFormationPutApiObject, PseFormationStateApiEnum } from "~/apiobject/pseformation.apiobject";
 import type { PseFormationDto, PseFormationPostDto, PseFormationPutDto } from "~/dto/pseformation.dto";
 import { placeApiObjectToDto, placeEntityToApiObject } from "./place.mapper";
-import { userOnPseformationApiObjectToDto, userOnPseformationEntityToApiObject } from "./useronpseformation.mapper";
+import { userOnPseformationApiObjectToDto, userOnPseformationDataPutDtoToApiObject, userOnPseformationDataToPutDto, userOnPseformationEntityToApiObject } from "./useronpseformation.mapper";
 
 export function dataToPseFormationPostDto(data: any): PseFormationPostDto {
 	return {
@@ -22,7 +22,8 @@ export function dataToPseFormationPutDto(data: any): PseFormationPutDto {
     title: data.title.trim(),
     from: parseISO(data.from),
     to: parseISO(data.to),
-    placeId: data.placeId
+    placeId: data.placeId,
+		users: (data.users || []).map(userOnPseformationDataToPutDto)
   };
 }
 
@@ -41,13 +42,14 @@ export function pseFormationApiObjectToDto(apiObject: PseFormationApiObject): Ps
 	}
 }
 
-export function pseFormationPutDtoToApiObject(putDto: PseFormationPutDto): PseFormationPutApiObject {
+export function pseFormationPutDtoToApiObject(putDto: PseFormationPutDto, current: PseFormationApiObject): PseFormationPutApiObject {
 	return {
 		state: putDto.state,
 		title: putDto.title,
 		from: putDto.from,
 		to: putDto.to,
-		placeId: putDto.placeId
+		placeId: putDto.placeId,
+		users: putDto.users.map(user => userOnPseformationDataPutDtoToApiObject(user, current.users.find(u => user.userId === u.userId), current.id))
 	}
 }
 

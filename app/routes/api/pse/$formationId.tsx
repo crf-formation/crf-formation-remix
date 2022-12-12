@@ -16,13 +16,13 @@ export const loader: LoaderFunction = async ({
 
 	await requireAdmin(request)
 
-	const formationApiObject = await findPseFormationById(params.formationId)
+	const pseFormationApiObject = await findPseFormationById(params.formationId)
 	
-	if (!formationApiObject) {
+	if (!pseFormationApiObject) {
 		throw new Error(`Formation not found: ${params.formationId}`);
 	}
 
-  return json(pseFormationApiObjectToDto(formationApiObject));
+  return json(pseFormationApiObjectToDto(pseFormationApiObject));
 };
 
 // PUT, PATCH, or DELETE
@@ -43,9 +43,18 @@ async function putAction(request: Request, params: Params<string>) {
 
 	const data = await request.json();
 
-	const formationPutDto: PseFormationPutDto = dataToPseFormationPutDto(data);
+	const pseFormationApiObject = await findPseFormationById(params.formationId)
+	
+	if (!pseFormationApiObject) {
+		throw new Error(`Formation not found: ${params.formationId}`);
+	}
 
-	const updatedApiObject = await updatePseFormation(params.formationId, pseFormationPutDtoToApiObject(formationPutDto));
+	const pseFormationPutDto: PseFormationPutDto = dataToPseFormationPutDto(data);
+
+// 	console.log({ pseFormationPutDto: JSON.stringify(pseFormationPutDto, null, 2) })
+// 	die();
+
+	const updatedApiObject = await updatePseFormation(params.formationId, pseFormationPutDtoToApiObject(pseFormationPutDto, pseFormationApiObject));
 
   return json(pseFormationApiObjectToDto(updatedApiObject));
 }

@@ -57,12 +57,11 @@ CREATE TABLE "PseModule" (
 
 -- CreateTable
 CREATE TABLE "UserOnPseFormation" (
+    "id" TEXT NOT NULL PRIMARY KEY,
     "formationId" TEXT NOT NULL,
     "userId" TEXT NOT NULL,
     "role" TEXT NOT NULL DEFAULT 'STUDENT',
     "assignedAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-
-    PRIMARY KEY ("formationId", "userId"),
     CONSTRAINT "UserOnPseFormation_formationId_fkey" FOREIGN KEY ("formationId") REFERENCES "PseFormation" ("id") ON DELETE RESTRICT ON UPDATE CASCADE,
     CONSTRAINT "UserOnPseFormation_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User" ("id") ON DELETE RESTRICT ON UPDATE CASCADE
 );
@@ -97,6 +96,9 @@ CREATE UNIQUE INDEX "UserPasswordToken_token_key" ON "UserPasswordToken"("token"
 
 -- CreateIndex
 CREATE UNIQUE INDEX "PseModule_moduleId_key" ON "PseModule"("moduleId");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "UserOnPseFormation_formationId_userId_key" ON "UserOnPseFormation"("formationId", "userId");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "PseUserPreparatoryWork_userId_formationId_pseModuleId_key" ON "PseUserPreparatoryWork"("userId", "formationId", "pseModuleId");

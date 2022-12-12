@@ -64,3 +64,28 @@ export async function createPaginateObject<T>({ model, page, pageSize, orderBy =
     },
   }; 
 }
+
+
+
+//
+//
+// 
+
+/**
+ * Prepare which items to update / create for an array of objects, based on the id existing or not.
+ */
+export function prepareChildrenRequest<T extends { id: Optional<String> }>(data: Array<T>): any {
+  const create: Array<T> = []
+  const update: Array<T> = []
+
+  data.forEach(item => {
+    if (item.id) { // has an id, already exsits, we update
+      update.push(item)
+    } else {
+      create.push(item)    
+    }
+  })
+
+  return { create, update }
+}
+
