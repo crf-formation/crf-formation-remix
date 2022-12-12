@@ -45,8 +45,10 @@ export interface Page {
   totalElements: number;
 }
 
+export type OrderByDirection = 'asc' | 'desc'
+
 export interface Sort {
-  direction: "desc" | "asc"
+  direction: OrderByDirection
   orderBy: string;
 }
 

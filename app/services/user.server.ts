@@ -17,7 +17,7 @@ import {
 import { userEntityToUserApiObject } from "~/mapper/user.mapper";
 import { USER_PASSWORD_MIN_LENGTH } from "~/constants";
 import { paginateEntityToApiObject } from "~/mapper/abstract.mapper";
-import type { PaginateObject } from "~/constants/types";
+import type { OrderByDirection, PaginateObject } from "~/constants/types";
 
 export async function updateUser(
   userId: string,
@@ -85,7 +85,7 @@ export async function getUsers(
   page: number,
   pageSize: number,
   orderBy: string,
-  orderByDirection: string
+  orderByDirection: OrderByDirection
 ): Promise<PaginateObject<UserApiObject>> {
   const userEntities = await findUsers(page, pageSize, orderBy, orderByDirection);
   return paginateEntityToApiObject(userEntities, userEntityToUserApiObject);

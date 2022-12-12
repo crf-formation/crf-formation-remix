@@ -18,8 +18,8 @@ model User {
   lastName                     String
   password                     Password?
   UserPasswordToken            UserPasswordToken?
-  PseGlobalUserPreparatoryWork PseGlobalUserPreparatoryWork[]
-  UserOnPseGlobalFormation     UserOnPseGlobalFormation[]
+  PseUserPreparatoryWork PseUserPreparatoryWork[]
+  UserOnPseFormation     UserOnPseFormation[]
 }
 
 model Password {
@@ -48,17 +48,18 @@ model Place {
 
   title String
 
-  PseGlobalFormation PseGlobalFormation[]
+  PseFormation PseFormation[]
 }
 
-model PseGlobalFormation {
+model PseFormation {
   id String @id @default(cuid())
 
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now()) @updatedAt
 
   title String
-  type  String
+
+  state String
 
   from DateTime
   to   DateTime
@@ -66,21 +67,21 @@ model PseGlobalFormation {
   place   Place  @relation(fields: [placeId], references: [id])
   placeId String
 
-  PseGlobalUserPreparatoryWork PseGlobalUserPreparatoryWork[]
-  UserOnPseGlobalFormation     UserOnPseGlobalFormation[]
+  PseUserPreparatoryWork PseUserPreparatoryWork[]
+  UserOnPseFormation     UserOnPseFormation[]
 }
 
-model PseGlobalModule {
+model PseModule {
   id String @id @default(cuid())
 
   name     String
   moduleId String @unique
 
-  PseGlobalUserPreparatoryWork PseGlobalUserPreparatoryWork[]
+  PseUserPreparatoryWork PseUserPreparatoryWork[]
 }
 
-model UserOnPseGlobalFormation {
-  formation   PseGlobalFormation @relation(fields: [formationId], references: [id])
+model UserOnPseFormation {
+  formation   PseFormation @relation(fields: [formationId], references: [id])
   formationId String
 
   user   User   @relation(fields: [userId], references: [id])
@@ -93,7 +94,7 @@ model UserOnPseGlobalFormation {
   @@id([formationId, userId])
 }
 
-model PseGlobalUserPreparatoryWork {
+model PseUserPreparatoryWork {
   id String @id @default(cuid())
 
   createdAt DateTime @default(now())
@@ -102,16 +103,16 @@ model PseGlobalUserPreparatoryWork {
   user   User   @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   userId String
 
-  formation   PseGlobalFormation @relation(fields: [formationId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  formation   PseFormation @relation(fields: [formationId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   formationId String
 
-  pseGlobalModule   PseGlobalModule @relation(fields: [pseGlobalModuleId], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  pseGlobalModuleId String
+  pseModule   PseModule @relation(fields: [pseModuleId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  pseModuleId String
 
   openingDate  DateTime
   realisedDate DateTime
 
   realised Boolean @default(false)
 
-  @@unique([userId, formationId, pseGlobalModuleId])
+  @@unique([userId, formationId, pseModuleId])
 }

@@ -1,13 +1,12 @@
-import { prisma } from "@prisma/client";
 import invariant from "tiny-invariant";
-import type { PaginateObject } from "~/constants/types";
+import type { OrderByDirection, PaginateObject } from "~/constants/types";
 
 interface Props<T> {
   model: T;
 	page: number;
 	pageSize: number;
   orderBy?: string;
-  orderByDirection?: 'asc' | 'desc' | undefined;
+  orderByDirection?: OrderByDirection;
   include?: any;
   where?: any;
 }

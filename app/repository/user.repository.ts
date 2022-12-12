@@ -6,7 +6,7 @@ import type {
 import bcrypt from "bcryptjs";
 import type { UserEntity, PasswordEntity } from "~/apiobject/entity";
 import { v4 as uuid } from "uuid";
-import type { PaginateObject } from "~/constants/types";
+import type { OrderByDirection, PaginateObject } from "~/constants/types";
 import { createPaginateObject } from "./abstract.repository";
 
 export async function createUserEntity(
@@ -14,7 +14,6 @@ export async function createUserEntity(
 ): Promise<UserEntity> {
   // default random password
   const hashedPassword = await bcrypt.hash(uuid(), 10);
-
 
   const userEntity = await prisma.user.create({
     data: {
@@ -115,7 +114,7 @@ export async function findUsers(
   page: number,
   pageSize: number,
   orderBy: string,
-  orderByDirection: string
+  orderByDirection: OrderByDirection
 ): Promise<PaginateObject<UserEntity>> {
   return await createPaginateObject<UserEntity>({
     model: prisma.user,

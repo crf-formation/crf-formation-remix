@@ -6,8 +6,8 @@ export type {
 	Password as PasswordEntity,
   UserPasswordToken as UserPasswordTokenEntity,
   Place as PlaceEntity,
-  PseGlobalFormation as PseGlobalFormationEntity,
-  PseGlobalModule as PseGlobalModuleEntity,
-  UserOnPseGlobalFormation as UserOnPseGlobalFormationEntity,
-  PseGlobalUserPreparatoryWork as PseGlobalUserPreparatoryWorkEntity,
+  PseFormation as PseFormationEntity,
+  PseModule as PseModuleEntity,
+  UserOnPseFormation as UserOnPseFormationEntity,
+  PseUserPreparatoryWork as PseUserPreparatoryWorkEntity,
 } from "@prisma/client";

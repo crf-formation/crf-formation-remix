@@ -36,51 +36,51 @@ CREATE TABLE "Place" (
 );
 
 -- CreateTable
-CREATE TABLE "PseGlobalFormation" (
+CREATE TABLE "PseFormation" (
     "id" TEXT NOT NULL PRIMARY KEY,
     "createdAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "title" TEXT NOT NULL,
-    "type" TEXT NOT NULL,
+    "state" TEXT NOT NULL,
     "from" DATETIME NOT NULL,
     "to" DATETIME NOT NULL,
     "placeId" TEXT NOT NULL,
-    CONSTRAINT "PseGlobalFormation_placeId_fkey" FOREIGN KEY ("placeId") REFERENCES "Place" ("id") ON DELETE RESTRICT ON UPDATE CASCADE
+    CONSTRAINT "PseFormation_placeId_fkey" FOREIGN KEY ("placeId") REFERENCES "Place" ("id") ON DELETE RESTRICT ON UPDATE CASCADE
 );
 
 -- CreateTable
-CREATE TABLE "PseGlobalModule" (
+CREATE TABLE "PseModule" (
     "id" TEXT NOT NULL PRIMARY KEY,
     "name" TEXT NOT NULL,
     "moduleId" TEXT NOT NULL
 );
 
 -- CreateTable
-CREATE TABLE "UserOnPseGlobalFormation" (
+CREATE TABLE "UserOnPseFormation" (
     "formationId" TEXT NOT NULL,
     "userId" TEXT NOT NULL,
     "role" TEXT NOT NULL DEFAULT 'STUDENT',
     "assignedAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
     PRIMARY KEY ("formationId", "userId"),
-    CONSTRAINT "UserOnPseGlobalFormation_formationId_fkey" FOREIGN KEY ("formationId") REFERENCES "PseGlobalFormation" ("id") ON DELETE RESTRICT ON UPDATE CASCADE,
-    CONSTRAINT "UserOnPseGlobalFormation_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User" ("id") ON DELETE RESTRICT ON UPDATE CASCADE
+    CONSTRAINT "UserOnPseFormation_formationId_fkey" FOREIGN KEY ("formationId") REFERENCES "PseFormation" ("id") ON DELETE RESTRICT ON UPDATE CASCADE,
+    CONSTRAINT "UserOnPseFormation_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User" ("id") ON DELETE RESTRICT ON UPDATE CASCADE
 );
 
 -- CreateTable
-CREATE TABLE "PseGlobalUserPreparatoryWork" (
+CREATE TABLE "PseUserPreparatoryWork" (
     "id" TEXT NOT NULL PRIMARY KEY,
     "createdAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "userId" TEXT NOT NULL,
     "formationId" TEXT NOT NULL,
-    "pseGlobalModuleId" TEXT NOT NULL,
+    "pseModuleId" TEXT NOT NULL,
     "openingDate" DATETIME NOT NULL,
     "realisedDate" DATETIME NOT NULL,
     "realised" BOOLEAN NOT NULL DEFAULT false,
-    CONSTRAINT "PseGlobalUserPreparatoryWork_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User" ("id") ON DELETE CASCADE ON UPDATE CASCADE,
-    CONSTRAINT "PseGlobalUserPreparatoryWork_formationId_fkey" FOREIGN KEY ("formationId") REFERENCES "PseGlobalFormation" ("id") ON DELETE CASCADE ON UPDATE CASCADE,
-    CONSTRAINT "PseGlobalUserPreparatoryWork_pseGlobalModuleId_fkey" FOREIGN KEY ("pseGlobalModuleId") REFERENCES "PseGlobalModule" ("id") ON DELETE CASCADE ON UPDATE CASCADE
+    CONSTRAINT "PseUserPreparatoryWork_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User" ("id") ON DELETE CASCADE ON UPDATE CASCADE,
+    CONSTRAINT "PseUserPreparatoryWork_formationId_fkey" FOREIGN KEY ("formationId") REFERENCES "PseFormation" ("id") ON DELETE CASCADE ON UPDATE CASCADE,
+    CONSTRAINT "PseUserPreparatoryWork_pseModuleId_fkey" FOREIGN KEY ("pseModuleId") REFERENCES "PseModule" ("id") ON DELETE CASCADE ON UPDATE CASCADE
 );
 
 -- CreateIndex
@@ -96,7 +96,7 @@ CREATE UNIQUE INDEX "UserPasswordToken_userId_key" ON "UserPasswordToken"("userI
 CREATE UNIQUE INDEX "UserPasswordToken_token_key" ON "UserPasswordToken"("token");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "PseGlobalModule_moduleId_key" ON "PseGlobalModule"("moduleId");
+CREATE UNIQUE INDEX "PseModule_moduleId_key" ON "PseModule"("moduleId");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "PseGlobalUserPreparatoryWork_userId_formationId_pseGlobalModuleId_key" ON "PseGlobalUserPreparatoryWork"("userId", "formationId", "pseGlobalModuleId");
+CREATE UNIQUE INDEX "PseUserPreparatoryWork_userId_formationId_pseModuleId_key" ON "PseUserPreparatoryWork"("userId", "formationId", "pseModuleId");

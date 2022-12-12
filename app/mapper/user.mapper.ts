@@ -25,8 +25,8 @@ export function userPutDtoToUserPutApiObject(dto: UserPutDto): UserPutApiObject 
 export function userEntityToUserApiObject(userEntity: UserEntity): UserApiObject {
 	return {
 		id: userEntity.id,
-		state: userEntity.state as UserStateApiEnum,
-		role: userEntity.role as UserRoleApiEnum,
+		state: stringToUserStateApiEnum(userEntity.state),
+		role: stringToUserRoleApiEnum(userEntity.role),
 		email: userEntity.email,
 		firstName: userEntity.firstName,
 		lastName: userEntity.lastName,
@@ -38,8 +38,8 @@ export function userEntityToUserApiObject(userEntity: UserEntity): UserApiObject
 export function userApiObjectToUserMeDto(userEntity: UserEntity): UserMeDto {
 	return {
 		id: userEntity.id,
-		state: userEntity.state as UserStateApiEnum,
-		role: userEntity.role as UserRoleApiEnum,
+		state: stringToUserStateApiEnum(userEntity.state),
+		role: stringToUserRoleApiEnum(userEntity.role),
 		email: userEntity.email,
 		firstName: userEntity.firstName,
 		lastName: userEntity.lastName,
@@ -69,4 +69,14 @@ export function dataToUserPutDto(data: any): UserPutDto {
 		state: data.state,
 		role: data.role,
 	};
+}
+
+function stringToUserRoleApiEnum(role: string): UserRoleApiEnum {
+	// TODO: enforce validity
+	return role as UserRoleApiEnum
+}
+
+function stringToUserStateApiEnum(state: string): UserStateApiEnum {
+	// TODO: enforce validity
+	return state as UserStateApiEnum
 }

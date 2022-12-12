@@ -48,8 +48,8 @@ async function seedPlaces() {
   })
 }
 
-async function seedPseGlobalModule() {
-  const pseGlobalModules = [
+async function seedPseModule() {
+  const pseModules = [
     { id: 'M1', moduleId: 'M1', name: 'Organisation des secours', },
     { id: 'M2', moduleId: 'M2', name: 'Anatomie et physiologie', },
     { id: 'M3', moduleId: 'M3', name: 'Bilan secouriste et transmission', },
@@ -59,9 +59,9 @@ async function seedPseGlobalModule() {
     // TODO: complete
   ]
 
-  pseGlobalModules.forEach(async pseGlobalModule => {
-    await prisma.pseGlobalModule.create({
-      data: pseGlobalModule
+  pseModules.forEach(async pseModule => {
+    await prisma.pseModule.create({
+      data: pseModule
     })
   })
 }
@@ -100,7 +100,7 @@ async function seed() {
   })
 
   await seedPlaces()
-  await seedPseGlobalModule()
+  await seedPseModule()
 
   // nothing to seed yet
   console.log(`Database has been seeded. 🌱`);
