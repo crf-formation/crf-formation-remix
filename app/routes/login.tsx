@@ -88,7 +88,7 @@ export const meta: MetaFunction<typeof loader> = () => {
   };
 };
 
-export default function LoginPage() {
+export default function LoginRoute() {
   const [searchParams] = useSearchParams();
   const redirectTo = searchParams.get("redirectTo") || "/dashboard";
   const defaultEmail = searchParams.get("email") || "test@crf-formation.fr" || ""; // TODO: fixture - remove

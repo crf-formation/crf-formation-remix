@@ -18,6 +18,6 @@ export const meta: MetaFunction<typeof loader> = () => {
   };
 };
 
-export default function Index() {
+export default function IndexRoute() {
   return <main></main>;
 }

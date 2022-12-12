@@ -39,7 +39,7 @@ export const meta: MetaFunction<typeof loader> = () => {
   };
 };
 
-export default function PasswordResetPage() {
+export default function PasswordResetRoute() {
   const [searchParams] = useSearchParams();
 
   const redirectTo = searchParams.get("redirectTo") || "/dashboard";

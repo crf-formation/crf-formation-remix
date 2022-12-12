@@ -30,7 +30,7 @@ export const meta: MetaFunction<typeof loader> = () => {
   };
 };
 
-export default function AdminPage() {
+export default function AdminRoute() {
   const theme = useTheme();
 
   return (

@@ -16,7 +16,7 @@ export const meta: MetaFunction<typeof loader> = () => {
 };
 
 
-export default function Dashboard() {
+export default function NotFoundRoute() {
   return (
     <ErrorPageContainer
       title={`404 - Page inconnue`}

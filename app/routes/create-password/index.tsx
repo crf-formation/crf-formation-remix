@@ -15,7 +15,7 @@ export const meta: MetaFunction<typeof loader> = () => {
   };
 };
 
-export default function WelcomePage() {
+export default function WelcomeRoute() {
   return (
     <PageContainer>
       <Paper sx={{ textAlign: "center", py: 4 }}>

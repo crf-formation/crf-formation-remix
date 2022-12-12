@@ -244,7 +244,7 @@ function EditPassword() {
 	)
 }
 
-export default function Index() {
+export default function AccountRoute() {
 	return (
     <PageContainer>
       <Grid container spacing={2}>

@@ -19,7 +19,7 @@ export const meta: MetaFunction<typeof loader> = () => {
   };
 };
 
-export default function WelcomePage() {
+export default function WelcomeRoute() {
 	const user = useUser()
   return (
     <PageContainer>

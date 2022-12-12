@@ -16,7 +16,7 @@ export const meta: MetaFunction<typeof loader> = () => {
   };
 };
 
-export default function PasswordResetPage() {
+export default function PasswordResetRoute() {
   return (
     <PageFullContentWithLogo>
       <Box sx={{ textAlign: "center", mt: 2 }}>

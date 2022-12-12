@@ -19,7 +19,7 @@ export const meta: MetaFunction<typeof loader> = () => {
   };
 };
 
-export default function WipPage() {
+export default function WipRoute() {
   return (
     <PageContainer>
       <Paper sx={{ textAlign: "center", py: 4 }}>
