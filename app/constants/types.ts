@@ -46,7 +46,7 @@ export interface Page {
 }
 
 export interface Sort {
-  direction: "DESC" | "ASC"
+  direction: "desc" | "asc"
   orderBy: string;
 }
 

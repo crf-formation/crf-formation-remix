@@ -5,6 +5,8 @@ import type {
 import bcrypt from "bcryptjs";
 import type { UserEntity, PasswordEntity } from "~/apiobject/entity";
 import { v4 as uuid } from "uuid";
+import { PaginateObject } from "~/constants/types";
+import { createPaginateObject } from "./abstract.repository";
 
 export async function createUserEntity(
   userPostApiObject: UserPostApiObject
@@ -95,4 +97,8 @@ export async function findUserEntityByEmailAndPassword(
   const { password: _password, ...userWithoutPassword } = userWithPassword;
 
 	return userWithoutPassword;
+}
+
+export async function findUsers(page: number = 0, pageSize: number = 25): Promise<PaginateObject<UserEntity>> {
+  return await createPaginateObject<UserEntity>({ model: prisma.user, page, pageSize, where: {} });
 }

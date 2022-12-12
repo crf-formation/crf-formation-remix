@@ -70,6 +70,15 @@ export async function requireUser(request: Request) {
   throw await logout(request);
 }
 
+export async function requireAdmin(request: Request) {
+	const user = await requireUser(request);
+
+  // TODO: security is admin
+  // if (user.)
+
+  // throw await redirect("/")
+}
+
 export async function requireAuth(request: Request) {
   return {
     userId: await requireUserId(request),

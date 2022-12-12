@@ -3,17 +3,13 @@ import type { ActionArgs, LoaderArgs, MetaFunction } from "@remix-run/node";
 import { json, redirect } from "@remix-run/node";
 import { Form, useActionData, useSearchParams } from "@remix-run/react";
 import { isEmpty } from "lodash";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import { createUser, findUserByEmail, validateUserEmail } from "~/services/user.server";
-import { createUserSession, getSession, getUserId } from "~/services/session.server";
+import { getUserId } from "~/services/session.server";
 import { badRequest } from "~/utils/responses";
-// import { safeRedirect } from "~/utils/routing";
 import FormErrorHelperText from "~/components/form/FormErrorHelperText";
-import PasswordCheckView from "~/components/hibp/PasswordCheckView";
 import PageFullContentWithLogo from "~/components/layout/PageFullContentWithLogo";
-import { USER_PASSWORD_MIN_LENGTH } from "~/constants";
-import { UserPostDto } from "~/dto/user.dto";
-import { safeRedirect } from "~/utils/routing";
+import type { UserPostDto } from "~/dto/user.dto";
 import type { UserPostApiObject } from "~/apiobject/user.apiobject";
 import { userPostDtoToUserPostApiObject } from "~/mapper/user.mapper";
 import { askForPasswordCreation } from "~/services/passwordrecovery.server";
@@ -32,7 +28,7 @@ export async function action({ request }: ActionArgs) {
   const firstName = formData.get("firstName");
   const lastName = formData.get("lastName");
   const email = formData.get("email");
-  const redirectTo = safeRedirect(formData.get("redirectTo"), "/");
+  // const redirectTo = safeRedirect(formData.get("redirectTo"), "/");
 
   // -- data validation
   if (isEmpty(firstName)) {
@@ -82,15 +78,7 @@ export async function action({ request }: ActionArgs) {
 
   // -- create password token
   await askForPasswordCreation(user.id)
-
-  // -- create session to auto-login
-  // return createUserSession({
-  //   session,
-  //   userId: user.id,
-  //   remember: false,
-  //   redirectTo,
-  // });
-
+  
   return redirect("/create-password");
 }
 
@@ -119,6 +107,15 @@ export default function Join() {
     }
   }, [actionData]);
 
+  const fakeFirstName = faker.name.firstName();
+  const fakeLastName = faker.name.lastName();
+  // TODO: only in development
+  const fakeData = {
+    firstName: fakeFirstName,
+    lastName: fakeLastName,
+    email: faker.internet.email(fakeFirstName, fakeLastName, "crf-formation.fr").toLocaleLowerCase()
+  }
+
   return (
     <PageFullContentWithLogo>
       <Form method="post">
@@ -136,7 +133,7 @@ export default function Join() {
             autoFocus
             aria-invalid={actionData?.errors?.firstName ? true : undefined}
             aria-describedby="firstName-form-error"
-            defaultValue={faker.name.firstName()}
+            defaultValue={fakeData?.firstName}
           />
           <FormErrorHelperText name="firstName" actionData={actionData} />
 
@@ -150,7 +147,7 @@ export default function Join() {
             autoComplete="lastName"
             aria-invalid={actionData?.errors?.lastName ? true : undefined}
             aria-describedby="lastName-form-error"
-            defaultValue={faker.name.lastName()}
+            defaultValue={fakeData?.lastName}
           />
           <FormErrorHelperText name="lastName" actionData={actionData} />
 
@@ -164,7 +161,7 @@ export default function Join() {
             autoComplete="email"
             aria-invalid={actionData?.errors?.email ? true : undefined}
             aria-describedby="email-form-error"
-            defaultValue={`${faker.internet.userName()}@crf-formation.fr`}
+            defaultValue={fakeData?.email}
           />
           <FormErrorHelperText name="email" actionData={actionData} />
 

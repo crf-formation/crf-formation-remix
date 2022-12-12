@@ -1,6 +1,6 @@
 import type { UserPasswordTokenApiObject } from "~/apiobject/passwordrecovery.apiobject";
 import { v4 as uuid } from "uuid";
-import { addDays } from 'date-fns'
+import { addDays, isAfter } from 'date-fns'
 import { PASSWORD_CREATION_EXPIRATION_IN_DAYS } from "~/constants/index.server";
 import { createUserPasswordTokenEntity, getUserPasswordTokenEntity, removeUserPasswordTokenEntity } from "~/repository/password.repository";
 import { UserPasswordTokenEntity } from "~/apiobject/entity";
@@ -24,6 +24,11 @@ export async function recoverPassword(
 export async function askForPasswordCreation(
   userId: string
 ) {
+  const userEntity = await findUserEntityById(userId);
+  if (!userEntity) {
+    throw new Error(`User not found: ${userId}`)
+  }
+
   const userPasswordTokenApiObject: UserPasswordTokenApiObject = {
     userId,
     token: uuid(),
@@ -34,7 +39,7 @@ export async function askForPasswordCreation(
 
   // TODO: send email
   console.info("Created token: " + userPasswordTokenEntity.token)
-  console.info(`http://localhost:4242/create-password/${userPasswordTokenEntity.token}`)
+  console.info(`http://localhost:4242/create-password/${userPasswordTokenEntity.token}?email=` + userEntity.email)
 }
 
 export async function verifyTokenIsValid(
@@ -46,10 +51,13 @@ export async function verifyTokenIsValid(
     throw new Error("Token not found")
   }
 
-  // TODO:
-  // 
-  // throw new Error("Le token a expiré. Vous pouvez demander une réinitialisation de mot de passe")
-  // -> TODO: redirect to password-recovery
+  const now = Date.now();
+  if (isAfter(now, userPasswordTokenEntity.tokenExpirationDate)) {
+    // -> TODO: redirect to password-recovery
+    throw new Error(
+      "Le token a expiré. Vous pouvez demander une réinitialisation de mot de passe"
+    );
+  }
 }
 
 export async function createPassword(
@@ -63,12 +71,15 @@ export async function createPassword(
     throw new Error("Token not found")
   }
 
-  // TODO:
-  // 
-  // throw new Error("Le token a expiré. Vous pouvez demander une réinitialisation de mot de passe")
-  // -> TODO: redirect to password-recovery
+  const now = Date.now();
+  if (isAfter(now, userPasswordTokenEntity.tokenExpirationDate)) {
+    // -> TODO: redirect to password-recovery
+    throw new Error(
+      "Le token a expiré. Vous pouvez demander une réinitialisation de mot de passe"
+    );
+  }
 
-  // security verify email
+  // security: verify email from the create form
   const userEntity = await findUserEntityById(userPasswordTokenEntity.userId);
   if (!userEntity) {
     throw new Error("User not found");
@@ -79,7 +90,6 @@ export async function createPassword(
 
   // 2- create password
   await updateUserEntityPassword(userPasswordTokenEntity.userId, password)
-
 
   // 3- remove token
   await removeUserPasswordTokenEntity(userPasswordTokenEntity.id)

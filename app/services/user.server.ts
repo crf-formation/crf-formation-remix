@@ -1,8 +1,10 @@
 import type { UserApiObject, UserAuthTokenApiObject, UserPostApiObject, UserPutApiObject } from '~/apiobject/user.apiobject';
-import { createUserEntity, findUserEntityByEmail, findUserEntityByEmailAndPassword, findUserEntityById } from '~/repository/user.repository';
+import { createUserEntity, findUserEntityByEmail, findUserEntityByEmailAndPassword, findUserEntityById, findUsers } from '~/repository/user.repository';
 import { badRequest } from '~/utils/responses';
 import { userEntityToUserApiObject } from "~/mapper/user.mapper";
 import { USER_PASSWORD_MIN_LENGTH } from '~/constants';
+import { paginateEntityToApiObject } from '~/mapper/abstract.mapper';
+import { PaginateObject } from '~/constants/types';
 
 export async function updateUser(userId: string, body: UserPutApiObject) {
   return null
@@ -47,6 +49,11 @@ export async function findUserByEmail(email: string): Promise<Optional<UserApiOb
 
 export function validateUserEmail(email: unknown): email is string {
   return typeof email === "string" && email.length >= USER_PASSWORD_MIN_LENGTH && email.includes("@");
+}
+
+export async function getUsers(page?: number, limit?: number): Promise<PaginateObject<UserApiObject>> {
+  const userEntities = await findUsers(page, limit)
+  return paginateEntityToApiObject(userEntities, userEntityToUserApiObject) 
 }
 
 //
