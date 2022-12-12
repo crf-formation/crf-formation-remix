@@ -1,3 +1,5 @@
-export async function getPublicProperties(token: string): Promise<PublicPropertiesDto> {
+import type { PublicPropertiesDto } from "~/dto/publicproperties.dto";
+
+export async function getPublicProperties(): Promise<PublicPropertiesDto> {
   return {}
 }

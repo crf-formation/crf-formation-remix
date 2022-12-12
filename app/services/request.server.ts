@@ -25,6 +25,12 @@ export function getSearchParam(request: Request, name: string): string | null {
   return value
 }
 
+export function getSearchParamNumber(request: Request, name: string): Optional<number> {
+  const searchParams = getSearchParams(request)
+  const value = searchParams.get(name);
+  return value ? parseInt(value) : null
+}
+
 export type Locales = string | string[] | undefined;
 
 /**

@@ -81,10 +81,10 @@ export function validateUserEmail(email: unknown): email is string {
 }
 
 export async function getUsers(
-  page?: number,
-  limit?: number
+  page: Optional<number>,
+  limit: Optional<number>
 ): Promise<PaginateObject<UserApiObject>> {
-  const userEntities = await findUsers(page, limit);
+  const userEntities = await findUsers(page || 0, limit || 25);
   return paginateEntityToApiObject(userEntities, userEntityToUserApiObject);
 }
 
@@ -92,7 +92,7 @@ export async function getUsers(
 // user me
 //
 
-export async function getUserMe(userId: string) {
+export async function getUserMe(userId: string): Promise<UserApiObject> {
   const userEntity = await findUserById(userId);
   if (!userEntity) {
     throw new Error(`User ${userId} could not be found`);

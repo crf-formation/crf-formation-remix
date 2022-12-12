@@ -44,8 +44,8 @@ export async function updateUserEntity(
       state: userPutApiObject.state,
     },
     where: {
-      id
-    }
+      id,
+    },
   });
 
   return userEntity;
@@ -119,8 +119,8 @@ export async function findUserEntityByEmailAndPassword(
 }
 
 export async function findUsers(
-  page: number = 0,
-  pageSize: number = 25
+  page: number,
+  pageSize: number
 ): Promise<PaginateObject<UserEntity>> {
   return await createPaginateObject<UserEntity>({
     model: prisma.user,

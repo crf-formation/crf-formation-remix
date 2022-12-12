@@ -4,7 +4,7 @@ import type { EditProps } from 'react-admin';
 import { Edit } from 'react-admin';
 import Main from "~/components/layout/Main";
 
-interface EditLayoutProps<DataDto> extends EditProps {
+interface EditLayoutProps extends EditProps {
   children: ReactNode;
   /**
    * to have a reduced form width. Usefull for simple forms, avoiding input that takes the whole screen length.
@@ -12,7 +12,7 @@ interface EditLayoutProps<DataDto> extends EditProps {
   small?: boolean;
 }
 
-export default function EditLayout<DataDto>({ children, small, mapper, ...props }: EditLayoutProps<DataDto>) {
+export default function EditLayout({ children, small, ...props }: EditLayoutProps) {
   return (
     <Main>
       <Box
@@ -24,7 +24,7 @@ export default function EditLayout<DataDto>({ children, small, mapper, ...props 
           },
         }}
       >
-        <Edit {...props} transform={mapper}>
+        <Edit {...props}>
           {children}
         </Edit>
       </Box>

@@ -51,14 +51,14 @@ import DebugMatches from "./components/dev/DebugMatches";
 import type { PublicPropertiesDto } from "./dto/publicproperties.dto";
 
 export interface RootLoaderData {
-  user: UserMeDto | null;
+  user: Optional<UserMeDto>;
   themeName: ThemeNames;
   csrf: string;
   locales: Locales;
   env: Env;
   isDesktop: boolean;
   flashMessages: FlashMessage[];
-  publicProperties: PublicPropertiesDto | null;
+  publicProperties: Optional<PublicPropertiesDto>;
 }
 
 export async function loader({ request }: LoaderArgs) {
