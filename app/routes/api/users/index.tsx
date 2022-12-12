@@ -1,6 +1,7 @@
 import type { LoaderFunction } from "@remix-run/node";
 import { json } from "@remix-run/node";
 import invariant from "tiny-invariant";
+import type { OrderByDirection } from "~/constants/types";
 import { paginateEntityToApiObject } from "~/mapper/abstract.mapper";
 import { userApiObjectToUserDto } from "~/mapper/user.mapper";
 import { getSearchParam, getSearchParamNumber } from "~/services/request.server";
@@ -18,7 +19,7 @@ export const loader: LoaderFunction = async ({
 	const pageSize = getSearchParamNumber(request, 'pageSize') || 25
 
 	const orderBy = getSearchParam(request, 'orderBy')
-	const orderByDirection = getSearchParam(request, 'orderByDirection')
+	const orderByDirection = getSearchParam(request, 'orderByDirection') as OrderByDirection;
 
 	invariant(orderBy, `Missing orderBy`)
 	invariant(orderByDirection, `Missing orderByDirection`)

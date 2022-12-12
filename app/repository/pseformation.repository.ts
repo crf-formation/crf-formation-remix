@@ -21,6 +21,9 @@ export async function updatePseFormationEntity(id: string, pseFormationPutApiObj
     where: {
       id,
     },
+    include: {
+      place: true,
+    },
   });
 }
 

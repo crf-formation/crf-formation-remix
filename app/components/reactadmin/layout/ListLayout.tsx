@@ -17,7 +17,7 @@ function MyList({ children, actions, filters, aside, title, ...props }: MyListPr
       <Title title={title} />
       <ListToolbar filters={filters} actions={actions} />
 
-      <Box sx={{ display: "flex" }}>
+      <Box sx={{ display: "flex", justifyContent: "center" }}>
         <Box sx={{ ml: 2, order: -1 }}>{aside}</Box>
 
         <Box sx={{ maxWidth: 1200, flex: 1 }}>

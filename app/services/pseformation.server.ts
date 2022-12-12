@@ -9,7 +9,7 @@ import {
   findPseFormations,
   updatePseFormationEntity,
 } from "~/repository/pseformation.repository";
-import { pseFormationEntityToApiObject } from "~/mapper/psepseformation.mapper";
+import { pseFormationEntityToApiObject } from "~/mapper/pseformation.mapper";
 import { paginateEntityToApiObject } from "~/mapper/abstract.mapper";
 import type { OrderByDirection, PaginateObject } from "~/constants/types";
 

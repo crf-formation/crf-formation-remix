@@ -11,6 +11,7 @@ export interface PseFormationDto {
 	from: Date;
 	to: Date;
 	place: PlaceDto;
+	placeId: string;
 }
 
 export interface PseFormationPostDto {

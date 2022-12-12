@@ -28,6 +28,10 @@ const menuItems = {
     {
       name: "Users",
       href: "/admin/users"
+    },
+    {
+      name: "Formations - PSE",
+      href: "/admin/pse"
     }
   ],
 

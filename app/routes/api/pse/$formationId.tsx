@@ -25,7 +25,7 @@ export const loader: LoaderFunction = async ({
   return json(pseFormationApiObjectToDto(formationApiObject));
 };
 
-// POST, PUT, PATCH, or DELETE
+// PUT, PATCH, or DELETE
 export const action: ActionFunction = async ({ request, params }) => {
 	if (request.method === 'PUT') {
 		return putAction(request, params)
