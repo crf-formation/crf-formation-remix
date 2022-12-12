@@ -46,7 +46,7 @@ function getList(apiUrl: string, httpClient = fetchUtils.fetchJson, resource: st
     }
     return {
       data: json.data,
-      total: json.length,
+      total: json.page.totalElements,
     };
   });
 }
