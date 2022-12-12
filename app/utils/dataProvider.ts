@@ -15,10 +15,6 @@ function getList(apiUrl: string, httpClient = fetchUtils.fetchJson, resource: st
   const { page, perPage } = params.pagination;
   const { field, order } = params.sort;
 
-  // const rangeStart = (page - 1) * perPage;
-  // const rangeEnd = page * perPage - 1;
-  // range: JSON.stringify([rangeStart, rangeEnd]),
-
   const filter = {
     ...params.filter,
   }
@@ -33,7 +29,7 @@ function getList(apiUrl: string, httpClient = fetchUtils.fetchJson, resource: st
     orderByDirection: order.toLowerCase(),
     orderBy: field,
     pageSize: `${perPage}`,
-    page: `${page - 1}`,
+    page: `${page - 1}`, // index based 1 on react-admin, 0 on api
     // 
     ...filter
   });

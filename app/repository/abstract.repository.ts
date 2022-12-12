@@ -1,4 +1,5 @@
 import { prisma } from "@prisma/client";
+import invariant from "tiny-invariant";
 import type { PaginateObject } from "~/constants/types";
 
 interface Props<T> {
@@ -12,6 +13,12 @@ interface Props<T> {
 }
 
 export async function createPaginateObject<T>({ model, page, pageSize, orderBy = 'createdAt', orderByDirection = 'asc', include, where }: Props<typeof model>): Promise<PaginateObject<T>> {
+  invariant(model, `Missing model`)
+  invariant(page >= 0, `Invalid page ${page}`)
+  invariant(pageSize > 0, `Invalid pageSize ${pageSize}`)
+  invariant(orderBy, `Missing orderBy ${orderBy}`)
+  invariant(orderByDirection, `Missing orderByDirection ${orderByDirection}`)
+
 	// totalCount
   const totalCount = await model.count({
     where: {
