@@ -19,6 +19,7 @@ async function seed() {
       firstName: "Jon",
       lastName: "Doe",
       state: "ENABLED",
+      role: "SUPER_ADMIN",
       password: {
         create: {
           hash: hashedPassword,

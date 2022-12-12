@@ -12,6 +12,7 @@ import useMenuMatches from "~/hooks/useMenuMatches";
 import MenuItem from "./MenuItem";
 import SidebarDivider from "./SidebarDivider";
 import SubMenu from "./SubMenu";
+import useUser from '~/hooks/useUser';
 
 type MenuProps = {
   openedMenu: MenuName;
@@ -53,26 +54,30 @@ const MainListItems = ({ openedMenu, handleToggle, dense }: MenuProps) => (
       dense={dense}
     />
 
-    <MenuItem name="Users" href="/users" icon={<PeopleIcon />} dense={dense} />
-
   </>
 );
 
-const SecondaryListItems = ({ openedMenu, handleToggle, dense }: MenuProps) => (
-  <>
-    <Category name="Admin" />
+const SecondaryListItems = ({ openedMenu, handleToggle, dense }: MenuProps) => {
+  const user = useUser()
+  return (
+    <>
+      {(user.role === "ADMIN" || user.role == "SUPER_ADMIN") && (
+        <>
+          <Category name="Admin" />
 
-    <SubMenu
-      handleToggle={() => handleToggle("menuAdmin")}
-      open={openedMenu === "menuAdmin"}
-      name="Admin"
-      icon={<ShieldIcon />}
-      dense={dense}
-      items={menuItems.menuAdmin}
-    />
-
-  </>
-);
+          <SubMenu
+            handleToggle={() => handleToggle("menuAdmin")}
+            open={openedMenu === "menuAdmin"}
+            name="Admin"
+            icon={<ShieldIcon />}
+            dense={dense}
+            items={menuItems.menuAdmin}
+          />
+        </>
+      )}
+    </>
+  );
+};
 
 const BottomListItems = ({ openedMenu, handleToggle, dense }: MenuProps) => (
   <>

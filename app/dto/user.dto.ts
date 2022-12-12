@@ -1,10 +1,12 @@
 import type { DateTime } from "~/constants/types";
 
-type UserStateDtoEnum = 'CREATED' | 'DISABLED' | 'ENABLED' | 'ARCHIVED'
+export type UserStateDtoEnum = 'CREATED' | 'DISABLED' | 'ENABLED' | 'ARCHIVED'
+export type UserRoleDtoEnum = 'USER' | 'ADMIN' | 'SUPER_ADMIN'
 
 export interface UserDto {
   id: string;
   state: UserStateDtoEnum;
+  role: UserRoleDtoEnum;
   email: string;
   firstName: string;
   lastName: string;
@@ -20,6 +22,7 @@ export interface UserPostDto {
 
 export interface UserPutDto {
   state: UserStateDtoEnum;
+  role: UserRoleDtoEnum;
   email: string;
   firstName: string;
   lastName: string;
@@ -29,6 +32,7 @@ export interface UserMeDto {
   id: String;
   email: String;
   state: UserStateDtoEnum;
+  role: UserRoleDtoEnum;
   firstName: String;
   lastName: String;
   createdAt: DateTime;

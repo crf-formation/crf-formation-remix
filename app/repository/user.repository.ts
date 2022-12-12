@@ -15,12 +15,10 @@ export async function createUserEntity(
   // default random password
   const hashedPassword = await bcrypt.hash(uuid(), 10);
 
+
   const userEntity = await prisma.user.create({
     data: {
-      email: userPostApiObject.email,
-      firstName: userPostApiObject.firstName,
-      lastName: userPostApiObject.lastName,
-      state: userPostApiObject.state,
+      ...userPostApiObject,
       password: {
         create: {
           hash: hashedPassword,
@@ -37,12 +35,7 @@ export async function updateUserEntity(
   userPutApiObject: UserPutApiObject
 ): Promise<UserEntity> {
   const userEntity = await prisma.user.update({
-    data: {
-      email: userPutApiObject.email,
-      firstName: userPutApiObject.firstName,
-      lastName: userPutApiObject.lastName,
-      state: userPutApiObject.state,
-    },
+    data: userPutApiObject,
     where: {
       id,
     },

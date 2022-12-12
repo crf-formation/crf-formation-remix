@@ -10,11 +10,11 @@ import UserList from "~/components/admin/user/UserList";
 import UserShow from "~/components/admin/user/UserShow";
 import AdminMenu from "~/components/admin/AdminMenu";
 import useTheme from "~/hooks/useTheme";
-import { requireUser } from "~/services/session.server";
+import { requireAdmin } from "~/services/session.server";
 import dataProvider from "~/utils/dataProvider";
 
 export async function loader({ request }: LoaderArgs) {
-  await requireUser(request);
+  await requireAdmin(request);
 
   return json({
   });

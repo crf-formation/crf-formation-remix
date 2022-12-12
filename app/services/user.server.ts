@@ -3,6 +3,7 @@ import type {
   UserAuthTokenApiObject,
   UserPostApiObject,
   UserPutApiObject,
+  UserRoleApiEnum,
 } from "~/apiobject/user.apiobject";
 import {
   createUserEntity,
@@ -11,8 +12,8 @@ import {
   findUserEntityById,
   findUsers,
   updateUserEntity,
+  updateUserEntityPassword,
 } from "~/repository/user.repository";
-import { badRequest } from "~/utils/responses";
 import { userEntityToUserApiObject } from "~/mapper/user.mapper";
 import { USER_PASSWORD_MIN_LENGTH } from "~/constants";
 import { paginateEntityToApiObject } from "~/mapper/abstract.mapper";
@@ -34,8 +35,8 @@ export async function createUser(
 }
 
 export async function updatePassword(userId: string, password: string) {
-  // TODO:
-  throw badRequest("not implemented");
+  // 2- update password
+  await updateUserEntityPassword(userId, password)
 }
 
 export async function findUserById(

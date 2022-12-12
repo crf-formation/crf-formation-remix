@@ -1,10 +1,11 @@
 import { createCookieSessionStorage, redirect } from "@remix-run/node";
 import type { CookieSerializeOptions, Session } from '@remix-run/server-runtime';
 import invariant from "tiny-invariant";
+import { UserApiObject } from "~/apiobject/user.apiobject";
 import { SESSION_KEY, SESSION_MAX_AGE } from "~/constants/index.server";
 import type { UserDto, UserMeDto } from "~/dto/user.dto";
 import { userApiObjectToUserMeDto } from "~/mapper/user.mapper";
-import { getUserMe } from "~/services/user.server";
+import { getUserMe, } from "~/services/user.server";
 import { ApiErrorException } from './api.error';
 import { findUserById } from "./user.server";
 
@@ -62,7 +63,7 @@ export async function requireUserId(
   return userId;
 }
 
-export async function requireUser(request: Request) {
+export async function requireUser(request: Request): Promise<UserApiObject> {
   const userId = await requireUserId(request);
 
   const userDto = await findUserById(userId);
@@ -71,13 +72,12 @@ export async function requireUser(request: Request) {
   throw await logout(request);
 }
 
-export async function requireAdmin(request: Request) {
+export async function requireAdmin(request: Request): Promise<UserApiObject> {
 	const user = await requireUser(request);
 
-  // TODO: security is admin
-  // if (user.)
+  if (user.role === 'ADMIN' || user.role == 'SUPER_ADMIN') return user;
 
-  // throw await redirect("/")
+  throw await redirect("/")
 }
 
 export async function requireAuth(request: Request) {

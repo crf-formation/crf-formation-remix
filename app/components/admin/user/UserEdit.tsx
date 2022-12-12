@@ -3,8 +3,8 @@ import { DateTimeInput, required, TextInput } from 'react-admin';
 import CrudActionsTabs from '~/components/reactadmin/layout/CrudActionsTabs';
 import EditLayout from '~/components/reactadmin/layout/EditLayout';
 import SimpleFormLayout from '~/components/reactadmin/layout/SimpleFormLayout';
-import UserStateInput from './UserStateInput';
-
+import UserRoleInput from './UserRole';
+import { UserStateInput } from './UserState';
 
 
 export default function UserEdit() {
@@ -18,9 +18,8 @@ export default function UserEdit() {
           validate={required()}
           fullWidth
         />
-        <UserStateInput 
-          source="state"
-        />
+        <UserStateInput source="state" />
+        <UserRoleInput source="role" />
         <TextInput
           source="firstName"
           type="text"
@@ -48,7 +47,6 @@ export default function UserEdit() {
           validate={required()}
           fullWidth
         />
-        
       </SimpleFormLayout>
     </EditLayout>
   );

@@ -1,5 +1,5 @@
 import type { User as UserEntity } from "@prisma/client";
-import type { UserApiObject, UserPostApiObject, UserPutApiObject, UserStateApiEnum } from "~/apiobject/user.apiobject";
+import type { UserApiObject, UserPostApiObject, UserPutApiObject, UserRoleApiEnum, UserStateApiEnum } from "~/apiobject/user.apiobject";
 import type { UserDto, UserMeDto, UserPostDto, UserPutDto } from "~/dto/user.dto";
 
 export function userPostDtoToUserPostApiObject(dto: UserPostDto): UserPostApiObject {
@@ -7,13 +7,15 @@ export function userPostDtoToUserPostApiObject(dto: UserPostDto): UserPostApiObj
 		firstName: dto.firstName,
 		lastName: dto.lastName,
 		email: dto.email,
-		state: 'CREATED'
+		state: 'CREATED',
+		role: 'USER',
 	}
 }
 
 export function userPutDtoToUserPutApiObject(dto: UserPutDto): UserPutApiObject {
 	return {
 		state: dto.state,
+		role: dto.role,
 		email: dto.email,
 		firstName: dto.firstName,
 		lastName: dto.lastName,
@@ -24,6 +26,7 @@ export function userEntityToUserApiObject(userEntity: UserEntity): UserApiObject
 	return {
 		id: userEntity.id,
 		state: userEntity.state as UserStateApiEnum,
+		role: userEntity.role as UserRoleApiEnum,
 		email: userEntity.email,
 		firstName: userEntity.firstName,
 		lastName: userEntity.lastName,
@@ -36,6 +39,7 @@ export function userApiObjectToUserMeDto(userEntity: UserEntity): UserMeDto {
 	return {
 		id: userEntity.id,
 		state: userEntity.state as UserStateApiEnum,
+		role: userEntity.role as UserRoleApiEnum,
 		email: userEntity.email,
 		firstName: userEntity.firstName,
 		lastName: userEntity.lastName,
@@ -48,6 +52,7 @@ export function userApiObjectToUserDto(userApiObject: UserApiObject): UserDto {
 	return {
 		id: userApiObject.id,
 		state: userApiObject.state,
+		role: userApiObject.role,
 		email: userApiObject.email,
 		firstName: userApiObject.firstName,
 		lastName: userApiObject.lastName,
@@ -62,5 +67,6 @@ export function dataToUserPutDto(data: any): UserPutDto {
 		lastName: data.lastName,
 		email: data.email,
 		state: data.state,
+		role: data.role,
 	};
 }

@@ -13,6 +13,7 @@ model User {
   createdAt         DateTime           @default(now())
   updatedAt         DateTime           @default(now()) @updatedAt
   state             String             @default("CREATED")
+  role              String             @default("USER")
   firstName         String             @default("")
   lastName          String             @default("")
   password          Password?

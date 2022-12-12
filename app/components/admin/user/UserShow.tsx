@@ -2,6 +2,8 @@
 import { DateField, EmailField, SimpleShowLayout, TextField } from 'react-admin';
 import CrudActionsTabs from '~/components/reactadmin/layout/CrudActionsTabs';
 import ShowLayout from '~/components/reactadmin/layout/ShowLayout';
+import { UserRoleField } from './UserRole';
+import { UserStateField } from './UserState';
 
 export default function UserShow() {
   return (
@@ -9,7 +11,9 @@ export default function UserShow() {
       <SimpleShowLayout>
         <TextField source="id" />
         <EmailField source="email" />
-        <TextField source="state" />
+
+        <UserStateField source="state" />
+        <UserRoleField source="role" />
 
         <TextField source="firstName" />
         <TextField source="lastName" />
