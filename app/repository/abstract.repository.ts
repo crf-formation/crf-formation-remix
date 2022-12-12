@@ -26,8 +26,6 @@ export async function createPaginateObject<T>({ model, page, pageSize, orderBy =
     },
   });
 
-  console.log({ toto: 'toto', orderBy, orderByDirection, page, pageSize })
-
 	if (!totalCount) {
 		return {
 			data: [],

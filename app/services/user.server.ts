@@ -82,12 +82,12 @@ export function validateUserEmail(email: unknown): email is string {
 }
 
 export async function getUsers(
-  page: Optional<number>,
-  pageSize: Optional<number>,
+  page: number,
+  pageSize: number,
   orderBy: string,
   orderByDirection: string
 ): Promise<PaginateObject<UserApiObject>> {
-  const userEntities = await findUsers(page || 0, pageSize || 25, orderBy, orderByDirection);
+  const userEntities = await findUsers(page, pageSize, orderBy, orderByDirection);
   return paginateEntityToApiObject(userEntities, userEntityToUserApiObject);
 }
 

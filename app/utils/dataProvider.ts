@@ -1,4 +1,5 @@
 // from https://github.com/marmelab/react-admin/blob/master/packages/ra-data-simple-rest/src/index.ts
+import isEmpty from 'lodash/isEmpty';
 import type { DataProvider, GetListParams } from 'ra-core';
 import { fetchUtils } from 'ra-core';
 import type { GetManyReferenceParams, GetOneParams, UpdateManyParams } from 'react-admin';
@@ -31,7 +32,7 @@ function getList(apiUrl: string, httpClient = fetchUtils.fetchJson, resource: st
     pageSize: `${perPage}`,
     page: `${page - 1}`, // index based 1 on react-admin, 0 on api
     // 
-    ...filter
+    filter: isEmpty(filter) ? undefined : filter
   });
 
   const url = `${apiUrl}/${resource}?${urlSearchParams}`;
