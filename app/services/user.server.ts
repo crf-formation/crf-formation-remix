@@ -2,6 +2,7 @@ import type { UserApiObject, UserAuthTokenApiObject, UserPostApiObject, UserPutA
 import { createUserEntity, findUserEntityByEmail, findUserEntityByEmailAndPassword, findUserEntityById } from '~/repository/user.repository';
 import { badRequest } from '~/utils/responses';
 import { userEntityToUserApiObject } from "~/mapper/user.mapper";
+import { USER_PASSWORD_MIN_LENGTH } from '~/constants';
 
 export async function updateUser(userId: string, body: UserPutApiObject) {
   return null
@@ -45,7 +46,7 @@ export async function findUserByEmail(email: string): Promise<Optional<UserApiOb
 }
 
 export function validateUserEmail(email: unknown): email is string {
-  return typeof email === "string" && email.length > 5 && email.includes("@");
+  return typeof email === "string" && email.length >= USER_PASSWORD_MIN_LENGTH && email.includes("@");
 }
 
 //

@@ -15,6 +15,9 @@ import { USER_PASSWORD_MIN_LENGTH } from "~/constants";
 import { UserPostDto } from "~/dto/user.dto";
 import { safeRedirect } from "~/utils/routing";
 import type { UserPostApiObject } from "~/apiobject/user.apiobject";
+import { userPostDtoToUserPostApiObject } from "~/mapper/user.mapper";
+import { askForPasswordCreation } from "~/services/passwordrecovery.server";
+import { faker } from "@faker-js/faker";
 
 export async function loader({ request }: LoaderArgs) {
   const userId = await getUserId(request);
@@ -24,44 +27,40 @@ export async function loader({ request }: LoaderArgs) {
 
 export async function action({ request }: ActionArgs) {
   const formData = await request.formData();
-  const session = await getSession(request);
 
+  // -- extract form data
   const firstName = formData.get("firstName");
   const lastName = formData.get("lastName");
   const email = formData.get("email");
-  const password = formData.get("password");
   const redirectTo = safeRedirect(formData.get("redirectTo"), "/");
 
+  // -- data validation
   if (isEmpty(firstName)) {
     return badRequest({
-      errors: { email: "First name required", password: null },
+      errors: { email: "Prénom requis" },
     });
   }
 
   if (isEmpty(lastName)) {
     return badRequest({
-      errors: { email: "Last name required", password: null },
+      errors: { email: "Nom requis"},
     });
   }
 
   if (!validateUserEmail(email)) {
     return badRequest({
-      errors: { email: "Email is invalid", password: null },
+      errors: { email: "Email invalide" },
     });
   }
 
-  if (typeof password !== "string" || password.length === 0) {
-    return badRequest({
-      errors: { email: null, password: "Password is required" },
-    });
+  // -- create dto
+  const userPostDto: UserPostDto = {
+    firstName: firstName as string,
+    lastName: lastName as string,
+    email
   }
 
-  if (password.length < USER_PASSWORD_MIN_LENGTH) {
-    return badRequest({
-      errors: { email: null, password: "Password is too short" },
-    });
-  }
-
+  // -- check existing account with email
   const existingUser = await findUserByEmail(email);
   if (existingUser) {
     return json(
@@ -75,22 +74,24 @@ export async function action({ request }: ActionArgs) {
     );
   }
 
-  const userPostApiObject: UserPostApiObject = {
-    firstName: firstName as string,
-    lastName: lastName as string,
-    state: 'DISABLED',
-    email,
-    password
-  }
+  // -- map to api object
+  const userPostApiObject: UserPostApiObject = userPostDtoToUserPostApiObject(userPostDto);
 
+  // -- create user
   const user = await createUser(userPostApiObject);
 
-  return createUserSession({
-    session,
-    userId: user.id,
-    remember: false,
-    redirectTo,
-  });
+  // -- create password token
+  await askForPasswordCreation(user.id)
+
+  // -- create session to auto-login
+  // return createUserSession({
+  //   session,
+  //   userId: user.id,
+  //   remember: false,
+  //   redirectTo,
+  // });
+
+  return redirect("/create-password");
 }
 
 export const meta: MetaFunction<typeof loader> = () => {
@@ -107,9 +108,6 @@ export default function Join() {
   const firstNameRef = useRef<HTMLInputElement>(null);
   const lastNameRef = useRef<HTMLInputElement>(null);
   const emailRef = useRef<HTMLInputElement>(null);
-  const passwordRef = useRef<HTMLInputElement>(null);
-
-  const [password, setPassword] = useState('')
 
   useEffect(() => {
     if (actionData?.errors?.firstName) {
@@ -118,8 +116,6 @@ export default function Join() {
       lastNameRef.current?.focus();
     } else if (actionData?.errors?.email) {
       emailRef.current?.focus();
-    } else if (actionData?.errors?.password) {
-      passwordRef.current?.focus();
     }
   }, [actionData]);
 
@@ -140,6 +136,7 @@ export default function Join() {
             autoFocus
             aria-invalid={actionData?.errors?.firstName ? true : undefined}
             aria-describedby="firstName-form-error"
+            defaultValue={faker.name.firstName()}
           />
           <FormErrorHelperText name="firstName" actionData={actionData} />
 
@@ -153,6 +150,7 @@ export default function Join() {
             autoComplete="lastName"
             aria-invalid={actionData?.errors?.lastName ? true : undefined}
             aria-describedby="lastName-form-error"
+            defaultValue={faker.name.lastName()}
           />
           <FormErrorHelperText name="lastName" actionData={actionData} />
 
@@ -166,25 +164,10 @@ export default function Join() {
             autoComplete="email"
             aria-invalid={actionData?.errors?.email ? true : undefined}
             aria-describedby="email-form-error"
+            defaultValue={`${faker.internet.userName()}@crf-formation.fr`}
           />
           <FormErrorHelperText name="email" actionData={actionData} />
 
-          <TextField
-            name="password"
-            ref={passwordRef}
-            label="Password"
-            variant="standard"
-            margin="normal"
-            type="password"
-            autoComplete="new-password"
-            aria-invalid={actionData?.errors?.password ? true : undefined}
-            aria-describedby="password-form-error"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-          />
-          <FormErrorHelperText name="password" actionData={actionData} />
-
-          <PasswordCheckView password={password} />
         </Box>
 
         <Box sx={{ marginTop: 2, display: "flex", justifyContent: "end" }}>

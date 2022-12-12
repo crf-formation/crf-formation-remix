@@ -8,15 +8,15 @@ datasource db {
 }
 
 model User {
-  id              String           @id @default(cuid())
-  email           String           @unique
-  createdAt       DateTime         @default(now())
-  updatedAt       DateTime         @default(now()) @updatedAt
-  state           String           @default("CREATED")
-  firstName       String           @default("")
-  lastName        String           @default("")
-  password        Password?
-  RecoverPassword RecoverPassword?
+  id                String             @id @default(cuid())
+  email             String             @unique
+  createdAt         DateTime           @default(now())
+  updatedAt         DateTime           @default(now()) @updatedAt
+  state             String             @default("CREATED")
+  firstName         String             @default("")
+  lastName          String             @default("")
+  password          Password?
+  UserPasswordToken UserPasswordToken?
 }
 
 model Password {
@@ -25,13 +25,15 @@ model Password {
   userId String @unique
 }
 
-model RecoverPassword {
+model UserPasswordToken {
   id String @id @default(cuid())
 
   user   User   @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   userId String @unique
 
-  token     String
+  token               String @unique 
+  tokenExpirationDate DateTime
+
   createdAt DateTime @default(now())
 }
 

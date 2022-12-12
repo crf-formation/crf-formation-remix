@@ -6,15 +6,20 @@ import { useEffect, useRef, useState } from "react";
 import FormErrorHelperText from "~/components/form/FormErrorHelperText";
 import PasswordCheckView from "~/components/hibp/PasswordCheckView";
 import PageFullContentWithLogo from "~/components/layout/PageFullContentWithLogo";
-import { createPassword } from "~/services/passwordrecovery.server";
+import { createPassword, verifyTokenIsValid } from "~/services/passwordrecovery.server";
 import { verifyLogin } from "~/services/user.server";
 import { createUserSession, getSession, getUserId } from "~/services/session.server";
 import { badRequest } from "~/utils/responses";
 import { badRequestWithFlash } from "~/utils/responsesError";
+import invariant from "tiny-invariant";
 
-export async function loader({ request }: LoaderArgs) {
+export async function loader({ request, params }: LoaderArgs) {
   const userId = await getUserId(request);
   if (userId) return redirect("/");
+
+  invariant(params.token, "Missing token param")
+
+  await verifyTokenIsValid(params.token as string)
 
   return json({
   });
@@ -77,7 +82,6 @@ export async function action({ request, params  }: ActionArgs) {
   return createUserSession({
     session,
     userId: proUserAuthToken.user.id,
-    token: proUserAuthToken.token,
     remember: true,
     redirectTo: "/welcome",
   });
@@ -98,7 +102,7 @@ export default function PasswordResetPage() {
   const passwordRef = useRef<HTMLInputElement>(null);
   const passwordVerificationRef = useRef<HTMLInputElement>(null);
 
-  const [password, setPassword] = useState('')
+  const [password, setPassword] = useState('bonjour1') // TODO: remove default value
 
   useEffect(() => {
     if (actionData?.errors?.password) {
@@ -147,6 +151,7 @@ export default function PasswordResetPage() {
             autoComplete="new-password"
             aria-invalid={actionData?.errors?.passwordVerification ? true : undefined}
             aria-describedby="password-form-error"
+            defaultValue="bonjour1"
           />
           <FormErrorHelperText
             name="passwordVerification"

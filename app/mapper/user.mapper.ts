@@ -7,8 +7,7 @@ export function userPostDtoToUserPostApiObject(dto: UserPostDto): UserPostApiObj
 		firstName: dto.firstName,
 		lastName: dto.lastName,
 		email: dto.email,
-		state: 'CREATED',
-		password: dto.password,
+		state: 'CREATED'
 	}
 }
 

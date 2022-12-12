@@ -3,12 +3,14 @@ import type {
   UserPostApiObject,
 } from "~/apiobject/user.apiobject";
 import bcrypt from "bcryptjs";
-import type { User } from "@prisma/client";
+import type { UserEntity, PasswordEntity } from "~/apiobject/entity";
+import { v4 as uuid } from "uuid";
 
 export async function createUserEntity(
   userPostApiObject: UserPostApiObject
-): Promise<User> {
-  const hashedPassword = await bcrypt.hash(userPostApiObject.password, 10);
+): Promise<UserEntity> {
+  // default random password
+  const hashedPassword = await bcrypt.hash(uuid(), 10);
 
   const userEntity = await prisma.user.create({
     data: {
@@ -27,9 +29,28 @@ export async function createUserEntity(
   return userEntity
 }
 
+export async function updateUserEntityPassword(
+  userId: string,
+  password: string,
+): Promise<PasswordEntity> {
+  const hashedPassword = await bcrypt.hash(password, 10);
+
+  const passwordEntity = await prisma.password.update({
+    where: {
+      userId,
+    },
+    data: {
+      hash: hashedPassword,
+    },
+  });
+
+  return passwordEntity
+}
+
+
 export async function findUserEntityByEmail(
   email: string
-): Promise<Optional<User>> {
+): Promise<Optional<UserEntity>> {
   const userEntity = await prisma.user.findUnique({ where: { email } });
   if (!userEntity) {
     return null;
@@ -39,7 +60,7 @@ export async function findUserEntityByEmail(
 
 export async function findUserEntityById(
   id: string
-): Promise<Optional<User>> {
+): Promise<Optional<UserEntity>> {
   const userEntity = await prisma.user.findUnique({ where: { id } });
   if (!userEntity) {
     return null;
@@ -50,7 +71,7 @@ export async function findUserEntityById(
 export async function findUserEntityByEmailAndPassword(
   email: string,
   password: string
-): Promise<Optional<User>> {
+): Promise<Optional<UserEntity>> {
   const userWithPassword = await prisma.user.findUnique({
     where: { email },
     include: {

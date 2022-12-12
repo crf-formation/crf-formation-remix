@@ -15,7 +15,6 @@ export interface UserPostApiObject {
   lastName: string;
   email: string;
 	state: UserStateApiEnum;
-  password: string;
 }
 
 export interface UserPutApiObject {

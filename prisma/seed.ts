@@ -11,7 +11,7 @@ async function seed() {
     // no worries if it doesn't exist yet
   });
 
-  const hashedPassword = await bcrypt.hash("racheliscool", 10);
+  const hashedPassword = await bcrypt.hash("bonjour1", 10);
 
   const user = await prisma.user.create({
     data: {
@@ -26,6 +26,14 @@ async function seed() {
       },
     },
   });
+
+  await prisma.userPasswordToken.create({
+    data: {
+      token: "1234",
+      userId: user.id,
+      tokenExpirationDate: new Date(Date.now())
+    }
+  })
 
   // nothing to seed yet
   console.log(`Database has been seeded. 🌱`);

@@ -16,8 +16,17 @@ CREATE TABLE "Password" (
     CONSTRAINT "Password_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User" ("id") ON DELETE CASCADE ON UPDATE CASCADE
 );
 
--- CreateIndex
-CREATE UNIQUE INDEX "User_email_key" ON "User"("email");
+CREATE TABLE "UserPasswordToken" (
+  "id" TEXT NOT NULL PRIMARY KEY,
+  "token"               TEXT NOT NULL,
+  "tokenExpirationDate" DATETIME NOT NULL,
+  "userId"              TEXT NOT NULL,
+  "createdAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
--- CreateIndex
+   CONSTRAINT "UserPasswordToken_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User" ("id") ON DELETE CASCADE ON UPDATE CASCADE
+
+);
+
+CREATE UNIQUE INDEX "User_email_key" ON "User"("email");
 CREATE UNIQUE INDEX "Password_userId_key" ON "Password"("userId");
+CREATE UNIQUE INDEX "UserPasswordToken_token_key" ON "UserPasswordToken"("token");
