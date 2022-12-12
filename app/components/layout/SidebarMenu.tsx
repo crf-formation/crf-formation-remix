@@ -24,7 +24,10 @@ export type MenuName = 'menuDevTools' | 'menuAdmin' | undefined
 const menuItems = {
 
   menuAdmin: [
-
+    {
+      name: "Users",
+      href: "/admin/users"
+    }
   ],
 
   menuDevTools: [
