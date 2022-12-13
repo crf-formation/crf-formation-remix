@@ -24,8 +24,6 @@ export async function createPseFormationEntity(pseFormationPostApiObject: PseFor
 export async function updatePseFormationEntity(id: string, pseFormationPutApiObject: PseFormationPutApiObject): Promise<PseFormationEntity> {
   const { users, ...data } = pseFormationPutApiObject
 
-  console.log({ users, id, data })
-
   // TODO: transaction
   // await prisma.$transaction(async (tx) => {
 

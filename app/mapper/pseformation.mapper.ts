@@ -74,7 +74,6 @@ export function pseFormationPostDtoToApiObject(postDto: PseFormationPostDto): Ps
 }
 
 export function pseFormationEntityToApiObject(entity: PseFormationEntity): PseFormationApiObject {
-	console.log({ pseFormationEntityToApiObject: entity })
 	return {
 		id: entity.id,
 		createdAt: entity.createdAt,

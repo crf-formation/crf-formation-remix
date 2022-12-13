@@ -22,7 +22,6 @@ export async function getPlaces(
   orderByDirection: OrderByDirection
 ): Promise<PaginateObject<PlaceApiObject>> {
   const placeEntities = await findPlaces(page, pageSize, orderBy, orderByDirection);
-	console.log({ placeEntities })
   return paginateEntityToApiObject(placeEntities, placeEntityToApiObject);
 }
 

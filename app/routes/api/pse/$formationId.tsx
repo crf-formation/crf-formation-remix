@@ -53,9 +53,6 @@ async function putAction(request: Request, params: Params<string>) {
 
 	const pseFormationPutDto: PseFormationPutDto = dataToPseFormationPutDto(data);
 
-// 	console.log({ pseFormationPutDto: JSON.stringify(pseFormationPutDto, null, 2) })
-// 	die();
-
 	const updatedApiObject = await updatePseFormation(formationId, pseFormationPutDtoToApiObject(pseFormationPutDto, pseFormationApiObject));
 
   return json(pseFormationApiObjectToDto(updatedApiObject));
