@@ -1,20 +1,20 @@
-import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
-import DashboardIcon from '@mui/icons-material/Dashboard';
 import AssignmentIcon from '@mui/icons-material/Assignment';
 import BubbleChartIcon from '@mui/icons-material/BubbleChart';
+import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
+import ConstructionIcon from '@mui/icons-material/Construction';
+import DashboardIcon from '@mui/icons-material/Dashboard';
+import ShieldIcon from '@mui/icons-material/Shield';
 import { Box, Drawer as MuiDrawer, GlobalStyles, IconButton, List, ListItem, ListItemText, Toolbar } from "@mui/material";
 import { styled } from '@mui/material/styles';
 import type { MouseEventHandler } from "react";
 import { useState } from "react";
-import ConstructionIcon from '@mui/icons-material/Construction';
-import ShieldIcon from '@mui/icons-material/Shield';
 import LogoIcon from "~/components/icons/LogoHorizontal";
+import useCurrentPseFormation from '~/hooks/useCurrentPseFormation';
 import useMenuMatches from "~/hooks/useMenuMatches";
+import useUser from '~/hooks/useUser';
 import MenuItem from "./MenuItem";
 import SidebarDivider from "./SidebarDivider";
 import SubMenu from "./SubMenu";
-import useUser from '~/hooks/useUser';
-import useCurrentPseFormation from '~/hooks/useCurrentPseFormation';
 
 type MenuProps = {
   openedMenu: MenuName;
@@ -38,7 +38,7 @@ const MainListItems = ({ openedMenu, handleToggle, dense, menuItems }: MenuProps
 
       <MenuItem
         name="Formations - PSE"
-        href="/formation/pse"
+        href="/pse"
         icon={<BubbleChartIcon />}
         dense={dense}
       />
@@ -192,15 +192,15 @@ export default function SidebarMenu({ open, isDesktop, toggleDrawer }: Props) {
     menuCurrentPseFormation: !currentPseFormation ? []  : [
       {
         name: "Dashboard",
-        href: `/formation/pse/${currentPseFormation.id}`,
+        href: `/pse/${currentPseFormation.id}`,
       },
       {
         name: "Cas concrets",
-        href: `/formation/pse/${currentPseFormation.id}/concrete-case`,
+        href: `/pse/${currentPseFormation.id}/concrete-case`,
       },
       {
         name: "Suivi",
-        href: `/formation/pse/${currentPseFormation.id}/resume`,
+        href: `/pse/${currentPseFormation.id}/resume`,
       },
     ].filter(Boolean)
   };

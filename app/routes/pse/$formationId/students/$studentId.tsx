@@ -57,19 +57,19 @@ export default function UserPseFormationSummaryRoute() {
   const tabs = [
     {
       label: 'Travail préparatoire',
-      href: `/formation/pse/${formation.id}/students/${student.id}/preparatory-work`
+      href: `/pse/${formation.id}/students/${student.id}/preparatory-work`
     },
     {
       label: 'Techniques',
-      href: `/formation/pse/${formation.id}/students/${student.id}/technique`
+      href: `/pse/${formation.id}/students/${student.id}/technique`
     },
     {
       label: 'Savoir de mise en oeuvre des procédures',
-      href: `/formation/pse/${formation.id}/students/${student.id}/concrete-case`
+      href: `/pse/${formation.id}/students/${student.id}/concrete-case`
     },
     {
       label: 'Suivi final',
-      href: `/formation/pse/${formation.id}/students/${student.id}/final`
+      href: `/pse/${formation.id}/students/${student.id}/final`
     }
   ]
 

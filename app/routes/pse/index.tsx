@@ -1,15 +1,15 @@
+import { Link } from "@mui/material";
 import type { LoaderArgs, MetaFunction } from "@remix-run/node";
 import { json } from "@remix-run/node";
+import { useLoaderData } from '@remix-run/react';
 import invariant from "tiny-invariant";
 import PageContainer from "~/components/layout/PageContainer";
 import type { OrderByDirection } from "~/constants/types";
-import { getUserPseFormations } from "~/services/pseformation.server";
-import { getSearchParamNumber, getSearchParam } from "~/services/request.server";
-import { requireUser } from '~/services/session.server';
-import { useLoaderData } from '@remix-run/react';
 import { paginateEntityToApiObject } from "~/mapper/abstract.mapper";
 import { pseFormationApiObjectToDto } from "~/mapper/pseformation.mapper";
-import { Link } from "@mui/material";
+import { getUserPseFormations } from "~/services/pseformation.server";
+import { getSearchParam, getSearchParamNumber } from "~/services/request.server";
+import { requireUser } from '~/services/session.server';
 
 export async function loader({ request }: LoaderArgs) {
   const user = await requireUser(request);
@@ -44,7 +44,7 @@ export default function FromationPseRoute() {
 
       {formations.data.map(formation => (
         <div key={formation.id}>
-          <Link href={`/formation/pse/${formation.id}`}>
+          <Link href={`/pse/${formation.id}`}>
             {formation.title} {formation.place.title}
           </Link>
         </div>

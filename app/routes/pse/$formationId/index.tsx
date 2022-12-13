@@ -108,7 +108,7 @@ function StudentList({ students, formationId, hasAdminPermission }: { students: 
           <ListItem
             secondaryAction={
               <Link
-                href={`/formation/pse/${formationId}/students/${student.id}`}
+                href={`/pse/${formationId}/students/${student.id}`}
               >
                 <Button>Suivi individuel</Button>
               </Link>
@@ -121,7 +121,7 @@ function StudentList({ students, formationId, hasAdminPermission }: { students: 
             </ListItemAvatar>
             <Link
               key={student.id}
-              href={`/formation/pse/${formationId}/students/${student.id}`}
+              href={`/pse/${formationId}/students/${student.id}`}
             >
               <ListItemText primary={student.fullName} />
             </Link>
