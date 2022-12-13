@@ -13,6 +13,12 @@ export interface UserDto {
   fullName: string;
   createdAt: DateTime;
   updatedAt: DateTime;
+
+  isAdmin: boolean;
+  isSuperAdmin: boolean;
+
+  // isAdmin or isSuperAdmin
+  hasAdminPermission: boolean;
 }
 
 export interface UserPostDto {
@@ -38,5 +44,11 @@ export interface UserMeDto {
   lastName: string;
   createdAt: DateTime;
   updatedAt: DateTime;
+
+  isAdmin: boolean;
+  isSuperAdmin: boolean;
+
+  // isAdmin or isSuperAdmin
+  hasAdminPermission: boolean;
 }
 

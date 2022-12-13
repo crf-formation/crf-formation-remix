@@ -1,23 +1,14 @@
 import { Add } from "@mui/icons-material";
 import {
-  FunctionField,
-  ReferenceField,
-  ReferenceInput,
-  AutocompleteInput,
   Datagrid,
-  ReferenceManyField,
   TextField,
   ArrayInput,
-  BooleanInput,
-  required,
   SimpleFormIterator,
-  TextInput,
   ArrayField,
   BooleanField,
 } from "react-admin";
 import { Box, Button, Typography } from "@mui/material";
 import { UserReferenceInput } from "../UserReference";
-import { PseFormationUserStateInput } from "./PseFormationUserState";
 import type { UserOnPseFormationRoleApiEnum } from "~/apiobject/useronpseformation.apiobject";
 
 interface Props {
@@ -66,7 +57,7 @@ export function PseFormationUserReferenceInput({ label, source, role }: Props) {
             </Button>
           }
         >
-          <UserReferenceInput source="userId" validate={required()} />
+          <UserReferenceInput source="id" />
         </SimpleFormIterator>
       </ArrayInput>
     </Box>

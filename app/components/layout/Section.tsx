@@ -4,11 +4,12 @@ import { Box, Container, Divider, Paper, Typography } from "@mui/material";
 import type { ReactNode } from 'react';
 
 interface SectionProps extends PaperProps {
-  title: ReactNode | undefined
+  title: ReactNode | undefined;
+  action: ReactNode | undefined | null;
 }
 
 export default function Section(props: SectionProps) {
-  const { children, sx, title, ...other } = props;
+  const { children, sx, title, action, ...other } = props;
 
   return (
     <Box sx={{ ...sx }} component="section">
@@ -21,7 +22,15 @@ export default function Section(props: SectionProps) {
       >
         {title && (
           <Box px={2} py={1}>
-            <Typography variant="subtitle2" sx={{ fontVariant: 'small-caps' }}>{title}</Typography>
+            <Box display="flex" justifyContent="space-between">
+              <Typography
+                variant="subtitle2"
+                sx={{ fontVariant: "small-caps" }}
+              >
+                {title}
+              </Typography>
+              {action && action}
+            </Box>
             <Divider />
           </Box>
         )}

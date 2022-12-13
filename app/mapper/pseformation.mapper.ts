@@ -42,11 +42,11 @@ export function pseFormationApiObjectToDto(apiObject: PseFormationApiObject): Ps
 		updatedAt: apiObject.updatedAt,
 		state: apiObject.state,
 		title: apiObject.title,
-		from: apiObject.from,
-		to: apiObject.to,
+		from: apiObject.from.toISOString(),
+		to: apiObject.to.toISOString(),
 		place: placeApiObjectToDto(apiObject.place),
 		placeId: apiObject.place?.id,
-		users,
+		// /!\ is not loaded for lists.
 		teachers: users.filter(user => user.role === 'TEACHER').map(user => user.user),
 		students: users.filter(user => user.role === 'STUDENT').map(user => user.user),
 	}

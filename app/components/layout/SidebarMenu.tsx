@@ -61,7 +61,7 @@ const SecondaryListItems = ({ openedMenu, handleToggle, dense, menuItems }: Menu
   const user = useUser()
   return (
     <>
-      {(user.role === "ADMIN" || user.role == "SUPER_ADMIN") && (
+      {user.hasAdminPermission && (
         <>
           <Category name="Admin" />
 
@@ -189,7 +189,7 @@ export default function SidebarMenu({ open, isDesktop, toggleDrawer }: Props) {
       },
     ],
 
-    menuCurrentPseFormation: [
+    menuCurrentPseFormation: !currentPseFormation ? []  : [
       {
         name: "Dashboard",
         href: `/formation/pse/${currentPseFormation.id}`,
@@ -202,7 +202,7 @@ export default function SidebarMenu({ open, isDesktop, toggleDrawer }: Props) {
         name: "Suivi",
         href: `/formation/pse/${currentPseFormation.id}/resume`,
       },
-    ]
+    ].filter(Boolean)
   };
 
 	const [openedSubMenu, setOpenedSubMenu] = useState<MenuName | undefined>(

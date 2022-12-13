@@ -1,5 +1,7 @@
-import { Avatar, Badge, Box, Grid, List, ListItem, ListItemAvatar, ListItemText, Typography } from "@mui/material";
-import { Image as ImageIcon, People as PeopleIcon } from '@mui/icons-material';
+import { Avatar, Badge, Box, Grid, Link, List, ListItem, ListItemAvatar, ListItemText, Stack, Typography } from "@mui/material";
+import ImageIcon from '@mui/icons-material/Image';
+import EditIcon from '@mui/icons-material/Edit';
+import PersonAddIcon from '@mui/icons-material/PersonAdd';
 import type { LoaderFunction, MetaFunction } from "@remix-run/node";
 import { json } from "@remix-run/node";
 import { useLoaderData } from "@remix-run/react";
@@ -16,6 +18,7 @@ import Property from "~/components/typography/Property";
 import type { PseFormationDto } from "~/dto/pseformation.dto";
 import useI18n from "~/hooks/useI18n";
 import FormationPseStatusChip from "~/components/formationpse/FormationPseStatusChip";
+import useUser from "~/hooks/useUser";
 
 // GET a formation
 export const loader: LoaderFunction = async ({
@@ -45,9 +48,18 @@ export const meta: MetaFunction<typeof loader> = ({ data }) => {
   };
 };
 
-function TeacherList({ teachers }: { teachers: Array<UserDto> }) {
+function TeacherList({ teachers, formationId, hasAdminPermission }: { teachers: Array<UserDto>, formationId: string, hasAdminPermission: boolean }) {
   return (
-    <Section title={<span>Teachers ({teachers.length})</span>}>
+    <Section
+      title={<span>Teachers ({teachers.length})</span>}
+      action={
+        hasAdminPermission && (
+          <span>
+            <Link href={`/admin/pse/${formationId}/teachers`}><PersonAddIcon /></Link>
+          </span>
+        )
+      }
+    >
       {teachers.length === 0 && (
         <Callout severity="warning">Aucun formateur n'a été configuré</Callout>
       )}
@@ -67,11 +79,22 @@ function TeacherList({ teachers }: { teachers: Array<UserDto> }) {
   );
 }
 
-function StudentList({ students }: { students: Array<UserDto> }) {
+function StudentList({ students, formationId, hasAdminPermission }: { students: Array<UserDto>, formationId: string, hasAdminPermission: boolean }) {
   return (
-    <Section title={<span>Students ({students.length})</span>}>
+    <Section
+      title={<span>Students ({students.length})</span>}
+      action={
+        hasAdminPermission && (
+          <span>
+            <Link href={`/admin/pse/${formationId}/students`}><PersonAddIcon /></Link>
+          </span>
+        )
+      }
+    >
       {students.length === 0 && (
-        <Callout severity="warning">Aucun participant n'a été configuré</Callout>
+        <Callout severity="warning">
+          Aucun participant n'a été configuré
+        </Callout>
       )}
       <List>
         {students.map((student: UserDto) => (
@@ -89,11 +112,20 @@ function StudentList({ students }: { students: Array<UserDto> }) {
   );
 }
 
-function Formation({ formation }: { formation: PseFormationDto }) {
+function Formation({ formation, hasAdminPermission }: { formation: PseFormationDto, hasAdminPermission: boolean}) {
 	const { formatDate } = useI18n()
 
 	return (
-    <Section title="Formation">
+    <Section 
+      title="Formation"
+      action={
+        hasAdminPermission && (
+          <span>
+            <Link href={`/admin/pse/${formation.id}/summary`}><EditIcon /></Link>
+          </span>
+        )
+      }
+    >
       <Property name="Status" value={<FormationPseStatusChip state={formation.state} />} />
       <Property name="Date" value={<span>{formatDate(formation.from)} au {formatDate(formation.to)}</span>} />
       <Property name="Lieu" value={<span>{formation.place.title}</span>} />
@@ -103,6 +135,7 @@ function Formation({ formation }: { formation: PseFormationDto }) {
 
 export default function FromationPseRoute() {
   const { formation } = useLoaderData<typeof loader>();
+  const user = useUser();
 
   return (
     <PageContainer>
@@ -112,19 +145,25 @@ export default function FromationPseRoute() {
         </Grid>
 
         <Grid item md={8}>
-          <Box>
-            <Formation formation={formation} />
-          </Box>
-
-          <Box mt={2}>
-            <StudentList students={formation.students} />
-          </Box>
+          <Stack spacing={2}>
+            <Formation formation={formation} hasAdminPermission={user.hasAdminPermission}
+ />
+            <StudentList
+              formationId={formation.id}
+              students={formation.students}
+              hasAdminPermission={user.hasAdminPermission}
+            />
+          </Stack>
         </Grid>
 
         <Grid item md={4}>
-          <Box>
-            <TeacherList teachers={formation.teachers} />
-          </Box>
+          <Stack spacing={2}>
+            <TeacherList
+              formationId={formation.id}
+              teachers={formation.teachers}
+              hasAdminPermission={user.hasAdminPermission}
+            />
+          </Stack>
         </Grid>
       </Grid>
     </PageContainer>

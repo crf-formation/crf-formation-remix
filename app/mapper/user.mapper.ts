@@ -35,16 +35,20 @@ export function userEntityToUserApiObject(userEntity: UserEntity): UserApiObject
 	}
 }
 
-export function userApiObjectToUserMeDto(userEntity: UserEntity): UserMeDto {
+export function userApiObjectToUserMeDto(userApiObject: UserApiObject): UserMeDto {
 	return {
-		id: userEntity.id,
-		state: stringToUserStateApiEnum(userEntity.state),
-		role: stringToUserRoleApiEnum(userEntity.role),
-		email: userEntity.email,
-		firstName: userEntity.firstName,
-		lastName: userEntity.lastName,
-		createdAt: userEntity.createdAt.toISOString(),
-		updatedAt: userEntity.updatedAt.toISOString(),
+		id: userApiObject.id,
+		state: stringToUserStateApiEnum(userApiObject.state),
+		role: stringToUserRoleApiEnum(userApiObject.role),
+		email: userApiObject.email,
+		firstName: userApiObject.firstName,
+		lastName: userApiObject.lastName,
+		createdAt: userApiObject.createdAt.toISOString(),
+		updatedAt: userApiObject.updatedAt.toISOString(),
+		
+		isAdmin: userApiObject.role === "ADMIN",
+		isSuperAdmin: userApiObject.role === "SUPER_ADMIN",
+		hasAdminPermission: userApiObject.role === "ADMIN" || userApiObject.role === "SUPER_ADMIN",
 	}
 }
 
@@ -59,6 +63,10 @@ export function userApiObjectToUserDto(userApiObject: UserApiObject): UserDto {
 		fullName: [userApiObject.firstName, userApiObject.lastName].filter(Boolean).join(' '),
 		createdAt: userApiObject.createdAt.toISOString(),
 		updatedAt: userApiObject.updatedAt.toISOString(),
+
+		isAdmin: userApiObject.role === "ADMIN",
+		isSuperAdmin: userApiObject.role === "SUPER_ADMIN",
+		hasAdminPermission: userApiObject.role === "ADMIN" || userApiObject.role === "SUPER_ADMIN",
 	}
 }
 
