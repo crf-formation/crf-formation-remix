@@ -1,19 +1,33 @@
 import { Box, Button, Link, TextField, Typography } from "@mui/material";
 import type { ActionArgs, LoaderArgs, MetaFunction } from "@remix-run/node";
 import { json, redirect } from "@remix-run/node";
-import { Form, useActionData, useSearchParams } from "@remix-run/react";
+import { Form, useActionData, useLoaderData, useSearchParams } from "@remix-run/react";
 import { useEffect, useRef } from "react";
+import { z } from "zod";
 import FormErrorHelperText from "~/components/form/FormErrorHelperText";
 import PageFullContentWithLogo from "~/components/layout/PageFullContentWithLogo";
 import { askForPasswordRecovery } from "~/services/passwordrecovery.server";
-import { validateUserEmail } from "~/services/user.server";
 import { getSession, getUserId } from "~/services/session.server";
+import { validateUserEmail } from "~/services/user.server";
+import { getSearchParamsOrFail } from "~/utils/remix.params";
 import { badRequest } from '../../utils/responses';
+
+const URLSearchParamsSchema = z.object({
+  email: z.string(),
+  redirectTo: z.string().default("/dashboard"),
+});
+
 
 export async function loader({ request }: LoaderArgs) {
   const userId = await getUserId(request);
   if (userId) return redirect("/");
-  return json({});
+
+  const { email: defaultEmail, redirectTo } = getSearchParamsOrFail(request, URLSearchParamsSchema);
+
+  return json({
+    redirectTo, 
+    defaultEmail,
+  });
 }
 
 export async function action({ request }: ActionArgs) {
@@ -40,10 +54,9 @@ export const meta: MetaFunction<typeof loader> = () => {
 };
 
 export default function PasswordResetRoute() {
-  const [searchParams] = useSearchParams();
+  const { redirectTo, defaultEmail } = useLoaderData<typeof loader>();
 
-  const redirectTo = searchParams.get("redirectTo") || "/dashboard";
-  const defaultEmail = searchParams.get("email") || "";
+  const [searchParams] = useSearchParams();
 
   const actionData = useActionData<typeof action>();
   const emailRef = useRef<HTMLInputElement>(null);

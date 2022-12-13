@@ -1,24 +1,36 @@
+import { faker } from "@faker-js/faker";
 import { Box, Button, Link, TextField } from "@mui/material";
 import type { ActionArgs, LoaderArgs, MetaFunction } from "@remix-run/node";
 import { json, redirect } from "@remix-run/node";
-import { Form, useActionData, useSearchParams } from "@remix-run/react";
+import { Form, useActionData, useLoaderData, useSearchParams } from "@remix-run/react";
 import { isEmpty } from "lodash";
 import { useEffect, useRef } from "react";
-import { createUser, findUserByEmail, validateUserEmail } from "~/services/user.server";
-import { getUserId } from "~/services/session.server";
-import { badRequest } from "~/utils/responses";
+import { z } from "zod";
+import type { UserPostApiObject } from "~/apiobject/user.apiobject";
 import FormErrorHelperText from "~/components/form/FormErrorHelperText";
 import PageFullContentWithLogo from "~/components/layout/PageFullContentWithLogo";
 import type { UserPostDto } from "~/dto/user.dto";
-import type { UserPostApiObject } from "~/apiobject/user.apiobject";
 import { userPostDtoToUserPostApiObject } from "~/mapper/user.mapper";
 import { askForPasswordCreation } from "~/services/passwordrecovery.server";
-import { faker } from "@faker-js/faker";
+import { getUserId } from "~/services/session.server";
+import { createUser, findUserByEmail, validateUserEmail } from "~/services/user.server";
+import { getSearchParamsOrFail } from "~/utils/remix.params";
+import { badRequest } from "~/utils/responses";
+
+const URLSearchParamsSchema = z.object({
+  redirectTo: z.string().optional(),
+});
+
 
 export async function loader({ request }: LoaderArgs) {
   const userId = await getUserId(request);
   if (userId) return redirect("/");
-  return json({});
+
+  const { redirectTo } = getSearchParamsOrFail(request, URLSearchParamsSchema)
+
+  return json({
+    redirectTo
+  });
 }
 
 export async function action({ request }: ActionArgs) {
@@ -89,8 +101,10 @@ export const meta: MetaFunction<typeof loader> = () => {
 };
 
 export default function JoinRoute() {
+  const { redirectTo } = useLoaderData<typeof loader>();
+
   const [searchParams] = useSearchParams();
-  const redirectTo = searchParams.get("redirectTo") ?? undefined;
+
   const actionData = useActionData<typeof action>();
 
   const firstNameRef = useRef<HTMLInputElement>(null);

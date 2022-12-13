@@ -1,7 +1,7 @@
 import { Box, Button, TextField, Typography } from "@mui/material";
 import type { ActionArgs, LoaderArgs, MetaFunction } from "@remix-run/node";
 import { json, redirect } from "@remix-run/node";
-import { Form, useActionData, useSearchParams } from "@remix-run/react";
+import { Form, useActionData, useLoaderData } from "@remix-run/react";
 import { useEffect, useRef, useState } from "react";
 import { z } from "zod";
 import FormErrorHelperText from "~/components/form/FormErrorHelperText";
@@ -10,7 +10,7 @@ import PageFullContentWithLogo from "~/components/layout/PageFullContentWithLogo
 import { createPassword, verifyTokenIsValid } from "~/services/passwordrecovery.server";
 import { createUserSession, getSession, getUserId } from "~/services/session.server";
 import { verifyLogin } from "~/services/user.server";
-import { getParamsOrFail } from "~/utils/remix.params";
+import { getParamsOrFail, getSearchParamsOrFail } from "~/utils/remix.params";
 import { badRequest } from "~/utils/responses";
 import { badRequestWithFlash } from "~/utils/responsesError";
 
@@ -18,15 +18,21 @@ const ParamsSchema = z.object({
   token: z.string(),
 });
 
+const URLSearchParamsSchema = z.object({
+  email: z.string()
+});
+
 export async function loader({ request, params }: LoaderArgs) {
   const userId = await getUserId(request);
   if (userId) return redirect("/");
 
-	const { token } = getParamsOrFail(params, ParamsSchema)
+  const { token } = getParamsOrFail(params, ParamsSchema);
+  const { email } = getSearchParamsOrFail(request, URLSearchParamsSchema);
 
-  await verifyTokenIsValid(token)
+  await verifyTokenIsValid(token);
 
   return json({
+    email,
   });
 }
 
@@ -102,8 +108,7 @@ export const meta: MetaFunction<typeof loader> = () => {
 };
 
 export default function PasswordResetRoute() {
-  const [searchParams] = useSearchParams();
-  const email = searchParams.get("email") || '';
+  const { email } = useLoaderData<typeof loader>();
 
   const actionData = useActionData<typeof action>();
 

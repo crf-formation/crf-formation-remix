@@ -1,7 +1,7 @@
 import { Box, Button, TextField, Typography } from "@mui/material";
 import type { ActionArgs, LoaderArgs, MetaFunction } from "@remix-run/node";
 import { json, redirect } from "@remix-run/node";
-import { Form, useActionData, useSearchParams } from "@remix-run/react";
+import { Form, useActionData, useLoaderData } from "@remix-run/react";
 import { useEffect, useRef, useState } from "react";
 import { z } from "zod";
 import FormErrorHelperText from "~/components/form/FormErrorHelperText";
@@ -10,7 +10,7 @@ import PageFullContentWithLogo from "~/components/layout/PageFullContentWithLogo
 import { addFlashMessage } from "~/services/flash.server";
 import { recoverPassword } from "~/services/passwordrecovery.server";
 import { commitSession, getSession, getUserId } from "~/services/session.server";
-import { getParamsOrFail } from "~/utils/remix.params";
+import { getParamsOrFail, getSearchParamsOrFail } from "~/utils/remix.params";
 import { badRequest } from "~/utils/responses";
 import { badRequestWithFlash } from "~/utils/responsesError";
 import type { ApiErrorException } from '../../services/api.error';
@@ -19,11 +19,18 @@ const ParamsSchema = z.object({
   token: z.string(),
 });
 
-export async function loader({ request }: LoaderArgs) {
+const URLSearchParamsSchema = z.object({
+  email: z.string()
+});
+
+export async function loader({ request, }: LoaderArgs) {
   const userId = await getUserId(request);
   if (userId) return redirect("/");
 
+  const { email } = getSearchParamsOrFail(request, URLSearchParamsSchema);
+
   return json({
+    email
   });
 }
 
@@ -88,8 +95,7 @@ export const meta: MetaFunction<typeof loader> = () => {
 };
 
 export default function PasswordResetRoute() {
-  const [searchParams] = useSearchParams();
-  const email = searchParams.get("email") || '';
+  const { email } = useLoaderData<typeof loader>();
 
   const actionData = useActionData<typeof action>();
 

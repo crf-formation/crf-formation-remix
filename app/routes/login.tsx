@@ -1,8 +1,9 @@
 import { Box, Button, Link, TextField } from "@mui/material";
 import type { ActionArgs, LoaderArgs, MetaFunction } from "@remix-run/node";
 import { json, redirect } from "@remix-run/node";
-import { Form, useActionData, useSearchParams } from "@remix-run/react";
+import { Form, useActionData, useLoaderData, useSearchParams } from "@remix-run/react";
 import { useEffect, useRef, useState } from "react";
+import { z } from "zod";
 import FormErrorHelperText from "~/components/form/FormErrorHelperText";
 import PasswordCheckView from "~/components/hibp/PasswordCheckView";
 import PageFullContentWithLogo from "~/components/layout/PageFullContentWithLogo";
@@ -10,14 +11,25 @@ import { USER_PASSWORD_MIN_LENGTH } from "~/constants";
 import { createUserSession, getSession, getUserId } from "~/services/session.server";
 import { validateUserEmail, verifyLogin } from "~/services/user.server";
 import { createAuthenticityToken } from "~/utils/csrf.server";
+import { getSearchParamsOrFail } from "~/utils/remix.params";
 import { safeRedirect } from "~/utils/routing";
 // import { logger } from '~/services/logger';
 
+const URLSearchParamsSchema = z.object({
+  redirectTo: z.string().default("/dashboard"),
+  email: z.string().default("test@crf-formation.fr" || "" /* TODO: fixture - remove */),
+});
+
 export async function loader({ request }: LoaderArgs) {
-  
   const userId = await getUserId(request);
   if (userId) return redirect("/");
-  return json({});
+  
+  const { redirectTo, email: defaultEmail } = getSearchParamsOrFail(request, URLSearchParamsSchema)
+
+  return json({
+    redirectTo,
+    defaultEmail
+  });
 }
 
 export async function action({ request }: ActionArgs) {
@@ -88,10 +100,9 @@ export const meta: MetaFunction<typeof loader> = () => {
 };
 
 export default function LoginRoute() {
-  const [searchParams] = useSearchParams();
+  const { redirectTo, defaultEmail } = useLoaderData<typeof loader>();
 
-  const redirectTo = searchParams.get("redirectTo") || "/dashboard";
-  const defaultEmail = searchParams.get("email") || "test@crf-formation.fr" || ""; // TODO: fixture - remove
+  const [searchParams] = useSearchParams();
 
   const [email, setEmail] = useState(defaultEmail)
 
