@@ -19,7 +19,6 @@ const zparams = z.object({
 export async function loader({ params }: LoaderArgs) {
   const { formationId, studentId } = zparams.parse(params)
 
-
   const preparatoryWorksApiObjects = await getPreparatoryWorksForUser(formationId, studentId)
 
   return json({
@@ -47,7 +46,7 @@ export default function PreparatoryWorkRoute() {
               <TableCell>
                 {index}. {preparatoryWork.pseModule.name}
               </TableCell>
-              <TableCell>{preparatoryWork.openingDate}</TableCell>
+              <TableCell>{preparatoryWork.openingDate}</TableCell> 
               <TableCell>{preparatoryWork.realised}</TableCell>
               <TableCell>{preparatoryWork.openingDate}</TableCell>
             </TableRow>

@@ -1,7 +1,7 @@
 import type { PseModuleDto } from "./psemodule.dto";
 
 export interface PseUserPreparatoryWorkDto {
-	id: string;
+	id: Optional<string>; // null when object not yet created on database
   createdAt: DateISOString;
   updatedAt: DateISOString;
   userId: string;

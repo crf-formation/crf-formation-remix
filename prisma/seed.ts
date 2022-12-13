@@ -3,6 +3,36 @@ import bcrypt from "bcryptjs";
 
 const prisma = new PrismaClient();
 
+async function seedPseTechniques() {
+  // TODO: implementation - complete
+  const techniques = [
+    // {
+    //   id: "", 
+    //   name: "",
+    //   pseModuleId: "",
+    //   requiredForPse1: true
+    // },
+    {
+      id: "INVENTAIRE_SAC_PS", 
+      name: "Réaliser l'inventaire des sacs de premier secours",
+      pseModuleId: "M1",
+      requiredForPse1: true
+    },
+    {
+      id: "INVENTAIRE_VPSP", 
+      name: "Identifier et réaliser l'inventaire du matériel (lot A et VPSP)",
+      pseModuleId: "M1",
+      requiredForPse1: false
+    },
+  ]
+
+  techniques.forEach(async technique => {
+    await prisma.pseTechnique.create({
+      data: technique
+    })
+  })
+}
+
 async function seedPlaces() {
   const places = [
     {
@@ -56,7 +86,7 @@ async function seedPseModule() {
     { id: 'M4', moduleId: 'M4', name: `Appareil d'aide à l'examen d'une victime`, },
     { id: 'M5', moduleId: 'M5', name: 'Hygiène et asepsie', },
     { id: 'M6', moduleId: 'M6', name: 'Sécurité', },
-    // TODO: complete
+    // TODO: implementation - complete
   ]
 
   pseModules.forEach(async pseModule => {
@@ -66,7 +96,8 @@ async function seedPseModule() {
   })
 }
 
-async function seed() {
+
+async function seedDefaultUser() {
   const email = "test@crf-formation.fr";
 
   // cleanup the existing database
@@ -98,9 +129,13 @@ async function seed() {
       tokenExpirationDate: new Date(Date.now())
     }
   })
+}
 
+async function seed() {
+  await seedDefaultUser()
   await seedPlaces()
   await seedPseModule()
+  await seedPseTechniques()
 
   // nothing to seed yet
   console.log(`Database has been seeded. 🌱`);

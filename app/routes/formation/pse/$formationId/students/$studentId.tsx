@@ -1,10 +1,12 @@
-import { Grid, Typography } from "@mui/material";
+import { Grid, Link, Typography } from "@mui/material";
 import type { LoaderFunction, MetaFunction } from "@remix-run/node";
 import { json } from "@remix-run/node";
 import { Outlet, useLoaderData } from "@remix-run/react";
 import { z } from "zod";
 import AppTabsLink from "~/components/layout/AppTabsLink";
 import PageContainer from "~/components/layout/PageContainer";
+import Section from "~/components/layout/Section";
+import useUser from "~/hooks/useUser";
 import { pseFormationApiObjectToDto } from "~/mapper/pseformation.mapper";
 import { userOnPseFormationApiObjectToDto } from '~/mapper/useronpseformation.mapper';
 import { findPseFormationById } from "~/services/pseformation.server";
@@ -50,6 +52,7 @@ export const meta: MetaFunction<typeof loader> = ({ data }) => {
 
 export default function UserPseFormationSummaryRoute() {
   const { formation, student } = useLoaderData<typeof loader>();
+  const user = useUser();
 
   const tabs = [
     {
@@ -65,8 +68,8 @@ export default function UserPseFormationSummaryRoute() {
       href: `/formation/pse/${formation.id}/students/${student.id}/concrete-case`
     },
     {
-      label: 'Commentaire final',
-      href: `/formation/pse/${formation.id}/students/${student.id}/final-comment`
+      label: 'Suivi final',
+      href: `/formation/pse/${formation.id}/students/${student.id}/final`
     }
   ]
 
@@ -79,8 +82,16 @@ export default function UserPseFormationSummaryRoute() {
             <Typography variant="h1">{student.fullName}</Typography>
           </Grid>
 
-          <Grid item xs={12}>
+          <Grid item xs={9}>
             <Outlet />
+          </Grid>
+          <Grid item xs={3}>
+            <Section title="">
+              {user.hasAdminPermission && (
+                <Link href={`/admin/user/${student.id}`}>Éditer l'utilisateur</Link>
+              )}
+
+            </Section>
           </Grid>
         </Grid>
       </PageContainer>

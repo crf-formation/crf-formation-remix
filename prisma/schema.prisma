@@ -8,18 +8,19 @@ datasource db {
 }
 
 model User {
-  id                           String                         @id @default(cuid())
-  email                        String                         @unique
-  createdAt                    DateTime                       @default(now())
-  updatedAt                    DateTime                       @default(now()) @updatedAt
-  state                        String                         @default("CREATED")
-  role                         String                         @default("USER")
-  firstName                    String
-  lastName                     String
-  password                     Password?
-  UserPasswordToken            UserPasswordToken?
+  id                     String                   @id @default(cuid())
+  email                  String                   @unique
+  createdAt              DateTime                 @default(now())
+  updatedAt              DateTime                 @default(now()) @updatedAt
+  state                  String                   @default("CREATED")
+  role                   String                   @default("USER")
+  firstName              String
+  lastName               String
+  password               Password?
+  UserPasswordToken      UserPasswordToken?
   PseUserPreparatoryWork PseUserPreparatoryWork[]
   UserOnPseFormation     UserOnPseFormation[]
+  PseUserTechnique       PseUserTechnique[]
 }
 
 model Password {
@@ -46,7 +47,7 @@ model Place {
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now()) @updatedAt
 
-  title String
+  title String  // TODO: rename to name
 
   PseFormation PseFormation[]
 }
@@ -57,7 +58,7 @@ model PseFormation {
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now()) @updatedAt
 
-  title String
+  title String // TODO: rename to name
 
   state String
 
@@ -69,6 +70,7 @@ model PseFormation {
 
   PseUserPreparatoryWork PseUserPreparatoryWork[]
   UserOnPseFormation     UserOnPseFormation[]
+  PseUserTechnique       PseUserTechnique[]
 }
 
 model PseModule {
@@ -78,6 +80,7 @@ model PseModule {
   moduleId String @unique
 
   PseUserPreparatoryWork PseUserPreparatoryWork[]
+  PseTechnique           PseTechnique[]
 }
 
 model UserOnPseFormation {
@@ -117,4 +120,34 @@ model PseUserPreparatoryWork {
   realised Boolean @default(false)
 
   @@unique([userId, formationId, pseModuleId])
+}
+
+model PseTechnique {
+  id String @id @default(cuid())
+
+  name String
+
+  requiredForPse1 Boolean
+
+  pseModule   PseModule @relation(fields: [pseModuleId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  pseModuleId String
+
+  PseUserTechnique PseUserTechnique[]
+}
+
+model PseUserTechnique {
+  id String @id @default(cuid())
+
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  userId String
+
+  formation   PseFormation @relation(fields: [formationId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  formationId String
+
+  technique   PseTechnique @relation(fields: [techniqueId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  techniqueId String
+
+  acquired Boolean @default(false)
+
+  @@unique([userId, formationId, techniqueId])
 }

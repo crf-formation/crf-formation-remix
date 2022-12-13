@@ -1,7 +1,7 @@
 import type { PseModuleApiObject } from "./psemodule.apiobject";
 
 export interface PseUserPreparatoryWorkApiObject {
-	id: string;
+	id: Optional<string>; // null when object not yet created on database
   createdAt: Date;
   updatedAt: Date;
   userId: string;

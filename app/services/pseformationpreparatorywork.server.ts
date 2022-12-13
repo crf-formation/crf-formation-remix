@@ -15,10 +15,10 @@ const pseModulesToPrepare = [
 ]
 
 export async function getPreparatoryWorksForUser(formationId: string, userId: string): Promise<Array<PseUserPreparatoryWorkApiObject>> {
-	return Promise.all(pseModulesToPrepare.map(async pseModuleId => await createPreparatoryWork(formationId, userId, pseModuleId)))
+	return Promise.all(pseModulesToPrepare.map(async pseModuleId => await createPseUserPreparatoryWorkApiObject(formationId, userId, pseModuleId)))
 }
 
-async function createPreparatoryWork(formationId: string, userId: string, pseModuleId: any): Promise<PseUserPreparatoryWorkApiObject> {
+async function createPseUserPreparatoryWorkApiObject(formationId: string, userId: string, pseModuleId: string): Promise<PseUserPreparatoryWorkApiObject> {
 	const pseModuleApiObject = await getPseModuleByModuleId(pseModuleId);
 
 	return {
