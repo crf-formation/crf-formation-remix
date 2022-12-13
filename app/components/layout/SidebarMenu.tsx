@@ -1,7 +1,5 @@
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import DashboardIcon from '@mui/icons-material/Dashboard';
-import WorkIcon from '@mui/icons-material/Work';
-import StickyNote2Icon from '@mui/icons-material/StickyNote2';
 import AssignmentIcon from '@mui/icons-material/Assignment';
 import BubbleChartIcon from '@mui/icons-material/BubbleChart';
 import { Box, Drawer as MuiDrawer, GlobalStyles, IconButton, List, ListItem, ListItemText, Toolbar } from "@mui/material";
@@ -22,38 +20,12 @@ type MenuProps = {
   openedMenu: MenuName;
 	dense: boolean;
   handleToggle: Function;
+  menuItems: Array<Map<String, any[]>>;
 }
 
-export type MenuName = 'menuDevTools' | 'menuAdmin' | undefined
+export type MenuName = 'menuDevTools' | 'menuAdmin' | 'menuCurrentPseFormation' | undefined
 
-const menuItems = {
-
-  menuAdmin: [
-    {
-      name: "Users",
-      href: "/admin/users"
-    },
-    {
-      name: "Formations - PSE",
-      href: "/admin/pse"
-    }
-  ],
-
-  menuDevTools: [
-    {
-      name: "Theme",
-      href: "/dev/theme",
-    },
-
-    {
-      name: "Test Page",
-      href: "/dev/test",
-    },
-  ]
-
-};
-
-const MainListItems = ({ openedMenu, handleToggle, dense }: MenuProps) => {
+const MainListItems = ({ openedMenu, handleToggle, dense, menuItems }: MenuProps) => {
   const currentPseFormation = useCurrentPseFormation()
   return (
     <>
@@ -72,34 +44,20 @@ const MainListItems = ({ openedMenu, handleToggle, dense }: MenuProps) => {
       />
 
       {currentPseFormation && (
-        <>
-          <MenuItem
-            name="Mon PSE"
-            href={`/formation/pse/${currentPseFormation.id}`}
-            icon={<AssignmentIcon />}
-            dense={dense}
-          />
-
-          <MenuItem
-            name="Mon PSE - cas concrets"
-            href={`/formation/pse/${currentPseFormation.id}/concrete-case`}
-            icon={<WorkIcon />}
-            dense={dense}
-          />
-
-          <MenuItem
-            name="Mon PSE - suivi"
-            href={`/formation/pse/${currentPseFormation.id}/resume`}
-            icon={<StickyNote2Icon />}
-            dense={dense}
-          />
-        </>
+        <SubMenu
+          handleToggle={() => handleToggle("menuCurrentPseFormation")}
+          open={openedMenu === "menuCurrentPseFormation"}
+          name="Mon PSE"
+          icon={<AssignmentIcon />}
+          dense={dense}
+          items={menuItems.menuCurrentPseFormation}
+        />
       )}
     </>
   );
 };
 
-const SecondaryListItems = ({ openedMenu, handleToggle, dense }: MenuProps) => {
+const SecondaryListItems = ({ openedMenu, handleToggle, dense, menuItems }: MenuProps) => {
   const user = useUser()
   return (
     <>
@@ -121,7 +79,7 @@ const SecondaryListItems = ({ openedMenu, handleToggle, dense }: MenuProps) => {
   );
 };
 
-const BottomListItems = ({ openedMenu, handleToggle, dense }: MenuProps) => (
+const BottomListItems = ({ openedMenu, handleToggle, dense, menuItems }: MenuProps) => (
   <>
     <Category name="Dev tools" />
 
@@ -204,7 +162,48 @@ interface Props {
 }
 
 export default function SidebarMenu({ open, isDesktop, toggleDrawer }: Props) {
- const { getMatchingMenuName } = useMenuMatches()
+  const { getMatchingMenuName } = useMenuMatches()
+  const currentPseFormation = useCurrentPseFormation()
+
+  const menuItems = {
+    menuAdmin: [
+      {
+        name: "Users",
+        href: "/admin/user",
+      },
+      {
+        name: "Formations - PSE",
+        href: "/admin/pse",
+      },
+    ],
+
+    menuDevTools: [
+      {
+        name: "Theme",
+        href: "/dev/theme",
+      },
+
+      {
+        name: "Test Page",
+        href: "/dev/test",
+      },
+    ],
+
+    menuCurrentPseFormation: [
+      {
+        name: "Dashboard",
+        href: `/formation/pse/${currentPseFormation.id}`,
+      },
+      {
+        name: "Cas concrets",
+        href: `/formation/pse/${currentPseFormation.id}/concrete-case`,
+      },
+      {
+        name: "Suivi",
+        href: `/formation/pse/${currentPseFormation.id}/resume`,
+      },
+    ]
+  };
 
 	const [openedSubMenu, setOpenedSubMenu] = useState<MenuName | undefined>(
     getMatchingMenuName(menuItems)
@@ -263,12 +262,14 @@ export default function SidebarMenu({ open, isDesktop, toggleDrawer }: Props) {
             dense={dense}
             openedMenu={openedSubMenu}
             handleToggle={handleToggle}
+            menuItems={menuItems}
           />
           <SidebarDivider sx={{ my: 1 }} />
           <SecondaryListItems
             dense={dense}
             openedMenu={openedSubMenu}
             handleToggle={handleToggle}
+            menuItems={menuItems}
           />
         </List>
 
@@ -287,6 +288,7 @@ export default function SidebarMenu({ open, isDesktop, toggleDrawer }: Props) {
             dense={dense}
             openedMenu={openedSubMenu}
             handleToggle={handleToggle}
+            menuItems={menuItems}
           />
         </List>
       </Drawer>
