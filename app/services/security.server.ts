@@ -10,6 +10,7 @@ export async function assertUserHasAccessToFormation(userId: string, formationId
 	}
 }
 
+
 export async function userHasAccessToFormation(userId: string, formationId: string): Promise<boolean> {
 	const userOnPseFormationEntity: Optional<UserOnPseFormationEntity> = await findUserOnPseFormationEntityById(userId, formationId)
 	return userOnPseFormationEntity !== null;

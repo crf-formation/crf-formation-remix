@@ -3,7 +3,7 @@ import type { UserOnPseFormationApiObject, UserOnPseFormationPutApiObject, UserO
 import type { UserOnPseFormationDto, UserOnPseFormationPutDto, UserOnPseFormationRoleDtoEnum } from "~/dto/useronpseformation.dto";
 import { userApiObjectToUserDto, userEntityToUserApiObject } from "./user.mapper";
 
-export function userOnPseformationDataToPutDto(data: any, role: UserOnPseFormationRoleDtoEnum): UserOnPseFormationPutDto {
+export function userOnPseFormationDataToPutDto(data: any, role: UserOnPseFormationRoleDtoEnum): UserOnPseFormationPutDto {
   return {
     userId: data.id,
     assignedAt: data.assignedAt,
@@ -11,7 +11,7 @@ export function userOnPseformationDataToPutDto(data: any, role: UserOnPseFormati
   }
 }
 
-export function userOnPseformationDataPutDtoToApiObject(dto: UserOnPseFormationPutDto, current: Optional<UserOnPseFormationApiObject>, formationId: string): UserOnPseFormationPutApiObject {
+export function userOnPseFormationDataPutDtoToApiObject(dto: UserOnPseFormationPutDto, current: Optional<UserOnPseFormationApiObject>, formationId: string): UserOnPseFormationPutApiObject {
   return {
     id: current?.id,
     userId: dto.userId,
@@ -21,7 +21,7 @@ export function userOnPseformationDataPutDtoToApiObject(dto: UserOnPseFormationP
   }
 }
 
-export function userOnPseformationApiObjectToDto(apiObject: UserOnPseFormationApiObject): UserOnPseFormationDto {
+export function userOnPseFormationApiObjectToDto(apiObject: UserOnPseFormationApiObject): UserOnPseFormationDto {
   return {
     formationId: apiObject.formationId,
     userId: apiObject.userId,
@@ -31,7 +31,7 @@ export function userOnPseformationApiObjectToDto(apiObject: UserOnPseFormationAp
   };
 }
 
-export function userOnPseformationEntityToApiObject(entity: UserOnPseFormationEntity): UserOnPseFormationApiObject {
+export function userOnPseFormationEntityToApiObject(entity: UserOnPseFormationEntity): UserOnPseFormationApiObject {
   return {
     id: entity.id,
     formationId: entity.formationId,

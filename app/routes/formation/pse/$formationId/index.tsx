@@ -1,4 +1,4 @@
-import { Avatar, Badge, Box, Grid, Link, List, ListItem, ListItemAvatar, ListItemText, Stack, Typography } from "@mui/material";
+import { Avatar, Badge, Box, Button, Grid, Link, List, ListItem, ListItemAvatar, ListItemText, Stack, Typography } from "@mui/material";
 import ImageIcon from '@mui/icons-material/Image';
 import EditIcon from '@mui/icons-material/Edit';
 import PersonAddIcon from '@mui/icons-material/PersonAdd';
@@ -51,7 +51,7 @@ export const meta: MetaFunction<typeof loader> = ({ data }) => {
 function TeacherList({ teachers, formationId, hasAdminPermission }: { teachers: Array<UserDto>, formationId: string, hasAdminPermission: boolean }) {
   return (
     <Section
-      title={<span>Teachers ({teachers.length})</span>}
+      title={<span>Formateurs ({teachers.length})</span>}
       action={
         hasAdminPermission && (
           <span>
@@ -82,11 +82,13 @@ function TeacherList({ teachers, formationId, hasAdminPermission }: { teachers: 
 function StudentList({ students, formationId, hasAdminPermission }: { students: Array<UserDto>, formationId: string, hasAdminPermission: boolean }) {
   return (
     <Section
-      title={<span>Students ({students.length})</span>}
+      title={<span>Participants ({students.length})</span>}
       action={
         hasAdminPermission && (
           <span>
-            <Link href={`/admin/pse/${formationId}/students`}><PersonAddIcon /></Link>
+            <Link href={`/admin/pse/${formationId}/students`}>
+              <PersonAddIcon />
+            </Link>
           </span>
         )
       }
@@ -98,13 +100,26 @@ function StudentList({ students, formationId, hasAdminPermission }: { students: 
       )}
       <List>
         {students.map((student: UserDto) => (
-          <ListItem key={student.id}>
+          <ListItem
+            secondaryAction={
+              <Link
+                href={`/formation/pse/${formationId}/students/${student.id}`}
+              >
+                <Button>Suivi individuel</Button>
+              </Link>
+            }
+          >
             <ListItemAvatar>
               <Avatar>
                 <ImageIcon />
               </Avatar>
             </ListItemAvatar>
-            <ListItemText primary={student.fullName} />
+            <Link
+              key={student.id}
+              href={`/formation/pse/${formationId}/students/${student.id}`}
+            >
+              <ListItemText primary={student.fullName} />
+            </Link>
           </ListItem>
         ))}
       </List>
@@ -146,8 +161,10 @@ export default function FromationPseRoute() {
 
         <Grid item md={8}>
           <Stack spacing={2}>
-            <Formation formation={formation} hasAdminPermission={user.hasAdminPermission}
- />
+            <Formation
+              formation={formation}
+              hasAdminPermission={user.hasAdminPermission}
+            />
             <StudentList
               formationId={formation.id}
               students={formation.students}

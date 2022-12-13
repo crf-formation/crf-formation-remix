@@ -12,6 +12,7 @@ import { useState } from "react";
 import ClientOnly from '~/utils/ClientOnly';
 import UserMenu from "./UserMenu";
 import useUser from "~/hooks/useUser";
+import { red } from "@mui/material/colors";
 
 interface HeaderProps {
   sidebarIsOpen: boolean;
@@ -41,6 +42,7 @@ export default function Header(props: HeaderProps) {
         <Toolbar
           variant="dense"
           sx={(theme) => ({
+            background: red[700]
             // pr: isLoggedIn ? 4 : 0,
             // [theme.breakpoints.up("md")]: {
             //   pl: 1.5,

@@ -3,7 +3,7 @@ import type { PseFormationEntity } from "~/apiobject/entity";
 import type { PseFormationApiObject, PseFormationPostApiObject, PseFormationPutApiObject, PseFormationStateApiEnum } from "~/apiobject/pseformation.apiobject";
 import type { PseFormationDto, PseFormationPostDto, PseFormationPutDto } from "~/dto/pseformation.dto";
 import { placeApiObjectToDto, placeEntityToApiObject } from "./place.mapper";
-import { userOnPseformationApiObjectToDto, userOnPseformationDataPutDtoToApiObject, userOnPseformationDataToPutDto, userOnPseformationEntityToApiObject } from "./useronpseformation.mapper";
+import { userOnPseFormationApiObjectToDto, userOnPseFormationDataPutDtoToApiObject, userOnPseFormationDataToPutDto, userOnPseFormationEntityToApiObject } from "./useronpseformation.mapper";
 
 export function dataToPseFormationPostDto(data: any): PseFormationPostDto {
 	return {
@@ -25,17 +25,17 @@ export function dataToPseFormationPutDto(data: any): PseFormationPutDto {
     placeId: data.placeId,
     users: [
       ...(data.teachers || []).map((userOnPseFormationData: any) =>
-        userOnPseformationDataToPutDto(userOnPseFormationData, "TEACHER")
+        userOnPseFormationDataToPutDto(userOnPseFormationData, "TEACHER")
       ),
       ...(data.students || []).map((userOnPseFormationData: any) =>
-        userOnPseformationDataToPutDto(userOnPseFormationData, "STUDENT")
+        userOnPseFormationDataToPutDto(userOnPseFormationData, "STUDENT")
       ),
     ],
   };
 }
 
 export function pseFormationApiObjectToDto(apiObject: PseFormationApiObject): PseFormationDto {
-	const users = apiObject.users?.map(userOnPseformationApiObjectToDto)
+	const users = apiObject.users?.map(userOnPseFormationApiObjectToDto)
 	return {
 		id: apiObject.id,
 		createdAt: apiObject.createdAt,
@@ -59,7 +59,7 @@ export function pseFormationPutDtoToApiObject(putDto: PseFormationPutDto, curren
 		from: putDto.from,
 		to: putDto.to,
 		placeId: putDto.placeId,
-		users: putDto.users.map(user => userOnPseformationDataPutDtoToApiObject(user, current.users.find(u => user.userId === u.userId), current.id))
+		users: putDto.users.map(user => userOnPseFormationDataPutDtoToApiObject(user, current.users.find(u => user.userId === u.userId), current.id))
 	}
 }
 
@@ -86,7 +86,7 @@ export function pseFormationEntityToApiObject(entity: PseFormationEntity): PseFo
 		// TODO: how to make typescript PseFormationEntity with place / UserOnPseFormation etc?
 		place: placeEntityToApiObject(entity.place),
 		// can be null when loading list
-		users: (entity.UserOnPseFormation || []).map(userOnPseformationEntityToApiObject)
+		users: (entity.UserOnPseFormation || []).map(userOnPseFormationEntityToApiObject)
 	}
 }
 
