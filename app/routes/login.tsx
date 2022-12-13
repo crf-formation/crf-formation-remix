@@ -7,8 +7,8 @@ import FormErrorHelperText from "~/components/form/FormErrorHelperText";
 import PasswordCheckView from "~/components/hibp/PasswordCheckView";
 import PageFullContentWithLogo from "~/components/layout/PageFullContentWithLogo";
 import { USER_PASSWORD_MIN_LENGTH } from "~/constants";
-import { validateUserEmail, verifyLogin } from "~/services/user.server";
 import { createUserSession, getSession, getUserId } from "~/services/session.server";
+import { validateUserEmail, verifyLogin } from "~/services/user.server";
 import { createAuthenticityToken } from "~/utils/csrf.server";
 import { safeRedirect } from "~/utils/routing";
 // import { logger } from '~/services/logger';
@@ -75,7 +75,6 @@ export async function action({ request }: ActionArgs) {
   return createUserSession({
     session,
     userId: userAuthToken.user.id,
-    token: userAuthToken.token,
     remember: remember === "on" ? true : false,
     redirectTo,
   });
@@ -90,6 +89,7 @@ export const meta: MetaFunction<typeof loader> = () => {
 
 export default function LoginRoute() {
   const [searchParams] = useSearchParams();
+
   const redirectTo = searchParams.get("redirectTo") || "/dashboard";
   const defaultEmail = searchParams.get("email") || "test@crf-formation.fr" || ""; // TODO: fixture - remove
 

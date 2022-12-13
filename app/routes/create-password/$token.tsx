@@ -3,23 +3,28 @@ import type { ActionArgs, LoaderArgs, MetaFunction } from "@remix-run/node";
 import { json, redirect } from "@remix-run/node";
 import { Form, useActionData, useSearchParams } from "@remix-run/react";
 import { useEffect, useRef, useState } from "react";
+import { z } from "zod";
 import FormErrorHelperText from "~/components/form/FormErrorHelperText";
 import PasswordCheckView from "~/components/hibp/PasswordCheckView";
 import PageFullContentWithLogo from "~/components/layout/PageFullContentWithLogo";
 import { createPassword, verifyTokenIsValid } from "~/services/passwordrecovery.server";
-import { verifyLogin } from "~/services/user.server";
 import { createUserSession, getSession, getUserId } from "~/services/session.server";
+import { verifyLogin } from "~/services/user.server";
+import { getParamsOrFail } from "~/utils/remix.params";
 import { badRequest } from "~/utils/responses";
 import { badRequestWithFlash } from "~/utils/responsesError";
-import invariant from "tiny-invariant";
+
+const ParamsSchema = z.object({
+  token: z.string(),
+});
 
 export async function loader({ request, params }: LoaderArgs) {
   const userId = await getUserId(request);
   if (userId) return redirect("/");
 
-  invariant(params.token, "Missing token param")
+	const { token } = getParamsOrFail(params, ParamsSchema)
 
-  await verifyTokenIsValid(params.token as string)
+  await verifyTokenIsValid(token)
 
   return json({
   });
@@ -29,10 +34,13 @@ export async function action({ request, params  }: ActionArgs) {
   let session = await getSession(request);
   const formData = await request.formData();
 
+	const { token } = getParamsOrFail(params, ParamsSchema)
+
+	const email = formData.get("email") as string;
 	const password = formData.get("password");
 	const passwordVerification = formData.get("passwordVerification");
-	const token = params.token as string;
-	const email = formData.get("email") as string;
+
+  // TODO: validate data using zod
 
   if (typeof password !== "string" || password.length === 0) {
     return badRequest({

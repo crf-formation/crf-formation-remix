@@ -1,38 +1,43 @@
-import { Avatar, Badge, Box, Button, Grid, Link, List, ListItem, ListItemAvatar, ListItemText, Stack, Typography } from "@mui/material";
-import ImageIcon from '@mui/icons-material/Image';
 import EditIcon from '@mui/icons-material/Edit';
+import ImageIcon from '@mui/icons-material/Image';
 import PersonAddIcon from '@mui/icons-material/PersonAdd';
+import { Avatar, Button, Grid, Link, List, ListItem, ListItemAvatar, ListItemText, Stack, Typography } from "@mui/material";
 import type { LoaderFunction, MetaFunction } from "@remix-run/node";
 import { json } from "@remix-run/node";
 import { useLoaderData } from "@remix-run/react";
-import invariant from "tiny-invariant";
+import { z } from "zod";
+import FormationPseStatusChip from "~/components/formationpse/FormationPseStatusChip";
 import PageContainer from "~/components/layout/PageContainer";
 import Section from "~/components/layout/Section";
 import Callout from "~/components/typography/Callout";
+import Property from "~/components/typography/Property";
+import type { PseFormationDto } from "~/dto/pseformation.dto";
 import type { UserDto } from "~/dto/user.dto";
+import useI18n from "~/hooks/useI18n";
+import useUser from "~/hooks/useUser";
 import { pseFormationApiObjectToDto } from "~/mapper/pseformation.mapper";
 import { findPseFormationById } from "~/services/pseformation.server";
 import { assertUserHasAccessToFormation } from "~/services/security.server";
 import { requireUser } from "~/services/session.server";
-import Property from "~/components/typography/Property";
-import type { PseFormationDto } from "~/dto/pseformation.dto";
-import useI18n from "~/hooks/useI18n";
-import FormationPseStatusChip from "~/components/formationpse/FormationPseStatusChip";
-import useUser from "~/hooks/useUser";
+import { getParamsOrFail } from '~/utils/remix.params';
+
+const ParamsSchema = z.object({
+  formationId: z.string(),
+});
 
 // GET a formation
 export const loader: LoaderFunction = async ({
   request,
 	params
 }) => {
-	invariant(params.formationId, `Missing formationId parameter`)
+	const { formationId } = getParamsOrFail(params, ParamsSchema)
 
 	const user = await requireUser(request)
 
-	const pseFormationApiObject = await findPseFormationById(params.formationId)
+	const pseFormationApiObject = await findPseFormationById(formationId)
 	
 	if (!pseFormationApiObject) {
-		throw new Error(`Formation not found: ${params.formationId}`);
+		throw new Error(`Formation not found: ${formationId}`);
 	}
 	
 	await assertUserHasAccessToFormation(user.id, pseFormationApiObject.id)

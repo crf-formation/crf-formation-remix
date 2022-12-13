@@ -2,7 +2,6 @@ import { Grid, Typography } from "@mui/material";
 import type { LoaderFunction, MetaFunction } from "@remix-run/node";
 import { json } from "@remix-run/node";
 import { useLoaderData } from "@remix-run/react";
-import invariant from "tiny-invariant";
 import { z } from "zod";
 import PageContainer from "~/components/layout/PageContainer";
 import { pseFormationApiObjectToDto } from "~/mapper/pseformation.mapper";
@@ -22,9 +21,6 @@ export const loader: LoaderFunction = async ({
   request,
 	params
 }) => {
-	invariant(params.formationId, `Missing formationId parameter`)
-	invariant(params.studentId, `Missing studentId parameter`)
-
   const { formationId, studentId } = zparams.parse(params)
 
 	// TODO: requireTeacher / admin

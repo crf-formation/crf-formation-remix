@@ -3,16 +3,21 @@ import type { ActionArgs, LoaderArgs, MetaFunction } from "@remix-run/node";
 import { json, redirect } from "@remix-run/node";
 import { Form, useActionData, useSearchParams } from "@remix-run/react";
 import { useEffect, useRef, useState } from "react";
-import invariant from "tiny-invariant";
+import { z } from "zod";
 import FormErrorHelperText from "~/components/form/FormErrorHelperText";
 import PasswordCheckView from "~/components/hibp/PasswordCheckView";
 import PageFullContentWithLogo from "~/components/layout/PageFullContentWithLogo";
-import { recoverPassword } from "~/services/passwordrecovery.server";
 import { addFlashMessage } from "~/services/flash.server";
+import { recoverPassword } from "~/services/passwordrecovery.server";
 import { commitSession, getSession, getUserId } from "~/services/session.server";
+import { getParamsOrFail } from "~/utils/remix.params";
 import { badRequest } from "~/utils/responses";
 import { badRequestWithFlash } from "~/utils/responsesError";
 import type { ApiErrorException } from '../../services/api.error';
+
+const ParamsSchema = z.object({
+  token: z.string(),
+});
 
 export async function loader({ request }: LoaderArgs) {
   const userId = await getUserId(request);
@@ -26,13 +31,13 @@ export async function action({ request, params  }: ActionArgs) {
   let session = await getSession(request);
   const formData = await request.formData();
 
+	const { token } = getParamsOrFail(params, ParamsSchema)
+
 	const password = formData.get("password");
 	const passwordVerification = formData.get("passwordVerification");
-	const token = params.token as string;
 	const email = formData.get("email") as string;
 
-  invariant(!token, "Missing token")
-
+  // TODO: validate data using zod
   if (typeof password !== "string" || password.length === 0) {
     return badRequest({
       errors: { password: "Password is required" }

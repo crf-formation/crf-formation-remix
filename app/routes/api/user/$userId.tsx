@@ -12,7 +12,6 @@ const ParamsSchema = z.object({
   userId: z.string(),
 })
 
-
 // GET a user
 export const loader: LoaderFunction = async ({
   request,
