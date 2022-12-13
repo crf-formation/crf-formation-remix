@@ -6,6 +6,7 @@ import SimpleFormLayout from '~/components/reactadmin/layout/SimpleFormLayout';
 import { PlaceReferenceInput } from '../PlaceReference';
 import { PseFormationUserReferenceInput } from './PseFormationUserReference';
 import { FormationStateInput } from './PseFormationState';
+import { Grid } from '@mui/material';
 
 
 export default function PseFormationEdit() {
@@ -26,22 +27,26 @@ export default function PseFormationEdit() {
 
         <FormationStateInput source="state" />
 
-        <DateInput
-          source="from"
-          label="from"
-          validate={required()}
-          fullWidth
-        />
+        <DateInput source="from" label="from" validate={required()} fullWidth />
 
-        <DateInput
-          source="to"
-          label="to"
-          validate={required()}
-          fullWidth
-        />
+        <DateInput source="to" label="to" validate={required()} fullWidth />
 
-        <PseFormationUserReferenceInput source="users" />
-
+        <Grid container spacing={2}>
+          <Grid item md={6}>
+            <PseFormationUserReferenceInput
+              label="Students"
+              source="students"
+              role="STUDENT"
+            />
+          </Grid>
+          <Grid item md={6}>
+            <PseFormationUserReferenceInput
+              label="Teachers"
+              source="teachers"
+              role="TEACHER"
+            />
+          </Grid>
+        </Grid>
       </SimpleFormLayout>
     </EditLayout>
   );

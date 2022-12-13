@@ -106,11 +106,13 @@ export default function FromationPseRoute() {
 
   return (
     <PageContainer>
-      <Typography>PSE: {formation.title}</Typography>
-
       <Grid container spacing={2}>
+        <Grid item xs={12}>
+          <Typography variant="h1">PSE: {formation.title}</Typography>
+        </Grid>
+
         <Grid item md={8}>
-          <Box mt={2}>
+          <Box>
             <Formation formation={formation} />
           </Box>
 
@@ -120,7 +122,7 @@ export default function FromationPseRoute() {
         </Grid>
 
         <Grid item md={4}>
-          <Box mt={2}>
+          <Box>
             <TeacherList teachers={formation.teachers} />
           </Box>
         </Grid>

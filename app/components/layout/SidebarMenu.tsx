@@ -1,6 +1,9 @@
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import DashboardIcon from '@mui/icons-material/Dashboard';
-import PeopleIcon from '@mui/icons-material/People';
+import WorkIcon from '@mui/icons-material/Work';
+import StickyNote2Icon from '@mui/icons-material/StickyNote2';
+import AssignmentIcon from '@mui/icons-material/Assignment';
+import BubbleChartIcon from '@mui/icons-material/BubbleChart';
 import { Box, Drawer as MuiDrawer, GlobalStyles, IconButton, List, ListItem, ListItemText, Toolbar } from "@mui/material";
 import { styled } from '@mui/material/styles';
 import type { MouseEventHandler } from "react";
@@ -62,9 +65,9 @@ const MainListItems = ({ openedMenu, handleToggle, dense }: MenuProps) => {
       />
 
       <MenuItem
-        name="PSE"
+        name="Formations - PSE"
         href="/formation/pse"
-        icon={<DashboardIcon />}
+        icon={<BubbleChartIcon />}
         dense={dense}
       />
 
@@ -73,21 +76,21 @@ const MainListItems = ({ openedMenu, handleToggle, dense }: MenuProps) => {
           <MenuItem
             name="Mon PSE"
             href={`/formation/pse/${currentPseFormation.id}`}
-            icon={<DashboardIcon />}
+            icon={<AssignmentIcon />}
             dense={dense}
           />
 
           <MenuItem
             name="Mon PSE - cas concrets"
             href={`/formation/pse/${currentPseFormation.id}/concrete-case`}
-            icon={<DashboardIcon />}
+            icon={<WorkIcon />}
             dense={dense}
           />
 
           <MenuItem
             name="Mon PSE - suivi"
             href={`/formation/pse/${currentPseFormation.id}/resume`}
-            icon={<DashboardIcon />}
+            icon={<StickyNote2Icon />}
             dense={dense}
           />
         </>
@@ -95,7 +98,6 @@ const MainListItems = ({ openedMenu, handleToggle, dense }: MenuProps) => {
     </>
   );
 };
-
 
 const SecondaryListItems = ({ openedMenu, handleToggle, dense }: MenuProps) => {
   const user = useUser()

@@ -15,16 +15,18 @@ import {
   ArrayField,
   BooleanField,
 } from "react-admin";
-import type { UserOnPseFormationDto } from "~/dto/useronpseformation.dto";
 import { Box, Button, Typography } from "@mui/material";
 import { UserReferenceInput } from "../UserReference";
 import { PseFormationUserStateInput } from "./PseFormationUserState";
+import type { UserOnPseFormationRoleApiEnum } from "~/apiobject/useronpseformation.apiobject";
 
 interface Props {
   source: string;
+  role: UserOnPseFormationRoleApiEnum;
+  label: string;
 }
 
-export function PseFormationUserReferenceField({ source }: Props) {
+export function PseFormationUserReferenceField({ source, role }: Props) {
   return (
     <Box component="section" sx={{ mt: 2 }}>
       <Typography variant="h4">Users</Typography>
@@ -41,7 +43,7 @@ export function PseFormationUserReferenceField({ source }: Props) {
   );
 }
 
-export function PseFormationUserReferenceInput({ source }: Props) {
+export function PseFormationUserReferenceInput({ label, source, role }: Props) {
   return (
     <Box
       sx={{
@@ -55,7 +57,7 @@ export function PseFormationUserReferenceInput({ source }: Props) {
         },
       }}
     >
-      <ArrayInput source="users">
+      <ArrayInput source={source} label={label}>
         <SimpleFormIterator
           inline
           addButton={
@@ -65,10 +67,6 @@ export function PseFormationUserReferenceInput({ source }: Props) {
           }
         >
           <UserReferenceInput source="userId" validate={required()} />
-
-          <PseFormationUserStateInput
-            source="type"
-          />
         </SimpleFormIterator>
       </ArrayInput>
     </Box>

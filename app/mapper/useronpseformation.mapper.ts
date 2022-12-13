@@ -1,13 +1,13 @@
 import type { UserOnPseFormationEntity } from "~/apiobject/entity";
 import type { UserOnPseFormationApiObject, UserOnPseFormationPutApiObject, UserOnPseFormationRoleApiEnum } from "~/apiobject/useronpseformation.apiobject";
-import type { UserOnPseFormationDto, UserOnPseFormationPutDto } from "~/dto/useronpseformation.dto";
+import type { UserOnPseFormationDto, UserOnPseFormationPutDto, UserOnPseFormationRoleDtoEnum } from "~/dto/useronpseformation.dto";
 import { userApiObjectToUserDto, userEntityToUserApiObject } from "./user.mapper";
 
-export function userOnPseformationDataToPutDto(data: any): UserOnPseFormationPutDto {
+export function userOnPseformationDataToPutDto(data: any, role: UserOnPseFormationRoleDtoEnum): UserOnPseFormationPutDto {
   return {
     userId: data.userId,
-    role: data.role,
-    assignedAt: new Date(),
+    assignedAt: data.assignedAt,
+    role,
   }
 }
 

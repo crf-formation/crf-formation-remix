@@ -23,7 +23,14 @@ export function dataToPseFormationPutDto(data: any): PseFormationPutDto {
     from: parseISO(data.from),
     to: parseISO(data.to),
     placeId: data.placeId,
-		users: (data.users || []).map(userOnPseformationDataToPutDto)
+    users: [
+      ...(data.teachers || []).map((userOnPseFormationData: any) =>
+        userOnPseformationDataToPutDto(userOnPseFormationData, "TEACHER")
+      ),
+      ...(data.students || []).map((userOnPseFormationData: any) =>
+        userOnPseformationDataToPutDto(userOnPseFormationData, "STUDENT")
+      ),
+    ],
   };
 }
 
