@@ -1,4 +1,4 @@
-import { Table, TableHead, TableRow, TableCell, TableBody, Typography, Box, Stack } from "@mui/material";
+import { Table, TableHead, TableRow, TableCell, TableBody, Typography, Box, Stack, Checkbox, FormControlLabel } from "@mui/material";
 import { useLoaderData } from "@remix-run/react";
 import type { LoaderArgs} from "@remix-run/server-runtime";
 import { json } from "@remix-run/server-runtime";
@@ -44,24 +44,38 @@ function ModuleView({ pseModule, pseUserTechniques }: { pseModule?: PseModuleDto
         </span>
       }
     >
-      {pseUserTechniques.map((pseUserTechnique: PseUserTechniqueDto) => (
-        <div key={pseUserTechnique.technique.id}>
-          <Box
-            sx={{
-              fontWeight: pseUserTechnique.technique.requiredForPse1
-                ? 500
-                : undefined,
-            }}
-          >
-            <span>{pseUserTechnique.technique.name}</span>
-            {pseUserTechnique.technique.requiredForPse1 && (
-              <Typography variant="caption" sx={{ ml: 1 }}>
-                PSE1
-              </Typography>
-            )}
-          </Box>
-        </div>
-      ))}
+      <Stack spacing={1}>
+        {pseUserTechniques.map((pseUserTechnique: PseUserTechniqueDto) => (
+          <div key={pseUserTechnique.technique.id}>
+            <Box
+              sx={{
+                fontWeight: pseUserTechnique.technique.requiredForPse1
+                  ? 500
+                  : undefined,
+              }}
+            >
+              <FormControlLabel
+                control={
+                  <Checkbox
+                    defaultChecked={pseUserTechnique.acquired}
+                    name={pseUserTechnique.technique.id}
+                  />
+                }
+                label={
+                  <span>
+                    <span>{pseUserTechnique.technique.name}</span>
+                    {pseUserTechnique.technique.requiredForPse1 && (
+                      <Typography variant="caption" sx={{ ml: 1 }}>
+                        PSE1
+                      </Typography>
+                    )}
+                  </span>
+                }
+              />
+            </Box>
+          </div>
+        ))}
+      </Stack>
     </Section>
   );
 }
@@ -77,7 +91,7 @@ export default function TechniqueRoute() {
         {map(groupedByModule, (pseUserTechniques, moduleId) => (
           <ModuleView
             pseModule={pseModules.find((m) => m.id === moduleId)}
-            pseUserTechniques={pseUserTechniques}
+            pseUserTechniques={pseUserTechniques as Array<PseUserTechniqueDto>}
           />
         ))}
       </Stack>

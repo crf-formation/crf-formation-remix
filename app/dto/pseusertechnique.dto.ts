@@ -7,4 +7,5 @@ export interface PseUserTechniqueDto {
   formationId: string;
   technique: PseTechniqueDto;
   techniqueId: string;
+  acquired: boolean;
 }

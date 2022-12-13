@@ -10,6 +10,7 @@ import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
+import { FormControlLabel, Checkbox } from "@mui/material";
 
 const zparams = z.object({
   formationId: z.string(),
@@ -47,7 +48,17 @@ export default function PreparatoryWorkRoute() {
                 {index}. {preparatoryWork.pseModule.name}
               </TableCell>
               <TableCell>{preparatoryWork.openingDate}</TableCell> 
-              <TableCell>{preparatoryWork.realised}</TableCell>
+              <TableCell>{preparatoryWork.realised}
+              <FormControlLabel
+                control={
+                  <Checkbox
+                    defaultChecked={preparatoryWork.realised}
+                    name={`[${preparatoryWork.pseModuleId}][realised]`}
+                  />
+                }
+                label=""
+              />
+              </TableCell>
               <TableCell>{preparatoryWork.openingDate}</TableCell>
             </TableRow>
           ))}

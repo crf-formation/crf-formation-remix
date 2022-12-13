@@ -15,6 +15,7 @@ async function createPseUserTechniqueApiObject(formationId: string, userId: stri
 		userId,
 		formationId,
 		technique: pseTechniqueApiObject,
-		techniqueId: pseTechniqueApiObject.id
+		techniqueId: pseTechniqueApiObject.id,
+		acquired: false,
 	}
 }
