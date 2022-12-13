@@ -121,3 +121,13 @@ export async function findPseFormationForUserEntities(
   });
 }
 
+// TODO: feature - do not take the first one found but the one chosen by the user
+export async function findCurrentPseFormationEntityForUser(userId: string) {
+  const pseFormationPaginateObjectEntities = await findPseFormationForUserEntities(userId, 0, 1, "from", "desc");
+
+  if (pseFormationPaginateObjectEntities.page.totalElements === 0) {
+    return null
+  }
+
+  return pseFormationPaginateObjectEntities.data[0]
+}

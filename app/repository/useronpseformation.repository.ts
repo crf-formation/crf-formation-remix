@@ -3,15 +3,20 @@ import type { UserOnPseFormationEntity } from "~/apiobject/entity";
 import type { OrderByDirection, PaginateObject } from "~/constants/types";
 import { createPaginateObject } from "./abstract.repository";
 
-export async function findUserOnPseFormationEntityById(formationId: string, userId: string): Promise<Optional<UserOnPseFormationEntity>> {
-	const useronpseformationEntity = await prisma.userOnPseFormation.findUnique({
-    where: { formationId, userId },
+export async function findUserOnPseFormationEntityById(userId: string, formationId: string): Promise<Optional<UserOnPseFormationEntity>> {
+	const userOnPpseFormationEntity = await prisma.userOnPseFormation.findUnique({
+    where: { 
+      formationId_userId: { 
+        formationId,
+        userId,
+      }
+    },
 		include: { user: true }
   });
-  if (!useronpseformationEntity) {
+  if (!userOnPpseFormationEntity) {
     return null;
   }
-  return useronpseformationEntity;
+  return userOnPpseFormationEntity;
 }
 
 export async function findUserOnPseFormations(

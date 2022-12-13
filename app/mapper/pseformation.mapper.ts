@@ -28,6 +28,7 @@ export function dataToPseFormationPutDto(data: any): PseFormationPutDto {
 }
 
 export function pseFormationApiObjectToDto(apiObject: PseFormationApiObject): PseFormationDto {
+	const users = apiObject.users?.map(userOnPseformationApiObjectToDto)
 	return {
 		id: apiObject.id,
 		createdAt: apiObject.createdAt,
@@ -38,7 +39,9 @@ export function pseFormationApiObjectToDto(apiObject: PseFormationApiObject): Ps
 		to: apiObject.to,
 		place: placeApiObjectToDto(apiObject.place),
 		placeId: apiObject.place?.id,
-		users: apiObject.users?.map(userOnPseformationApiObjectToDto)
+		users,
+		teachers: users.filter(user => user.role === 'TEACHER').map(user => user.user),
+		students: users.filter(user => user.role === 'STUDENT').map(user => user.user),
 	}
 }
 

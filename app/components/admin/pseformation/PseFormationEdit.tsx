@@ -22,11 +22,9 @@ export default function PseFormationEdit() {
           fullWidth
         />
 
-        <FormationStateInput source="state" />
-        
         <PlaceReferenceInput source="placeId" />
 
-        <PseFormationUserReferenceInput source="users" />
+        <FormationStateInput source="state" />
 
         <DateInput
           source="from"
@@ -41,6 +39,8 @@ export default function PseFormationEdit() {
           validate={required()}
           fullWidth
         />
+
+        <PseFormationUserReferenceInput source="users" />
 
       </SimpleFormLayout>
     </EditLayout>

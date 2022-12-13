@@ -10,6 +10,7 @@ export interface UserDto {
   email: string;
   firstName: string;
   lastName: string;
+  fullName: string;
   createdAt: DateTime;
   updatedAt: DateTime;
 }
@@ -29,12 +30,12 @@ export interface UserPutDto {
 }
 
 export interface UserMeDto {
-  id: String;
-  email: String;
+  id: string;
+  email: string;
   state: UserStateDtoEnum;
   role: UserRoleDtoEnum;
-  firstName: String;
-  lastName: String;
+  firstName: string;
+  lastName: string;
   createdAt: DateTime;
   updatedAt: DateTime;
 }

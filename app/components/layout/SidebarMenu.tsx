@@ -13,6 +13,7 @@ import MenuItem from "./MenuItem";
 import SidebarDivider from "./SidebarDivider";
 import SubMenu from "./SubMenu";
 import useUser from '~/hooks/useUser';
+import useCurrentPseFormation from '~/hooks/useCurrentPseFormation';
 
 type MenuProps = {
   openedMenu: MenuName;
@@ -49,23 +50,52 @@ const menuItems = {
 
 };
 
-const MainListItems = ({ openedMenu, handleToggle, dense }: MenuProps) => (
-  <>
-    <MenuItem
-      name="Dashboard"
-      href="/dashboard"
-      icon={<DashboardIcon />}
-      dense={dense}
-    />
+const MainListItems = ({ openedMenu, handleToggle, dense }: MenuProps) => {
+  const currentPseFormation = useCurrentPseFormation()
+  return (
+    <>
+      <MenuItem
+        name="Dashboard"
+        href="/dashboard"
+        icon={<DashboardIcon />}
+        dense={dense}
+      />
 
-    <MenuItem
-      name="PSE"
-      href="/formation/pse"
-      icon={<DashboardIcon />}
-      dense={dense}
-    />
-  </>
-);
+      <MenuItem
+        name="PSE"
+        href="/formation/pse"
+        icon={<DashboardIcon />}
+        dense={dense}
+      />
+
+      {currentPseFormation && (
+        <>
+          <MenuItem
+            name="Mon PSE"
+            href={`/formation/pse/${currentPseFormation.id}`}
+            icon={<DashboardIcon />}
+            dense={dense}
+          />
+
+          <MenuItem
+            name="Mon PSE - cas concrets"
+            href={`/formation/pse/${currentPseFormation.id}/concrete-case`}
+            icon={<DashboardIcon />}
+            dense={dense}
+          />
+
+          <MenuItem
+            name="Mon PSE - suivi"
+            href={`/formation/pse/${currentPseFormation.id}/resume`}
+            icon={<DashboardIcon />}
+            dense={dense}
+          />
+        </>
+      )}
+    </>
+  );
+};
+
 
 const SecondaryListItems = ({ openedMenu, handleToggle, dense }: MenuProps) => {
   const user = useUser()

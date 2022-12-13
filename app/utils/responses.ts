@@ -1,6 +1,5 @@
 // https://github.com/sergiodxa/remix-utils/blob/main/src/server/responses.ts
 import { json as remixJson, redirect } from "@remix-run/server-runtime";
-import type { ApiError } from '../services/api.server';
 
 export type ReplacerFunction = (key: string, value: unknown) => unknown;
 

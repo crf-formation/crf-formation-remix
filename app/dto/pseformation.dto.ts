@@ -1,23 +1,26 @@
 import type { PlaceDto } from "./place.dto";
+import type { UserDto } from "./user.dto";
 import type { UserOnPseFormationDto, UserOnPseFormationPutDto } from "./useronpseformation.dto";
 
-export type FormationStateDtoEnum = 'CREATED' | 'DISABLED' | 'ENABLED' | 'ARCHIVED'
+export type PseFormationStateDtoEnum = 'CREATED' | 'DISABLED' | 'ENABLED' | 'ARCHIVED'
 
 export interface PseFormationDto {
   id: string;
   createdAt: Date;
   updatedAt: Date;
-  state: FormationStateDtoEnum;
+  state: PseFormationStateDtoEnum;
   title: string;
-	from: Date;
-	to: Date;
+	from: string;
+	to: string;
 	place: PlaceDto;
 	placeId: string;
 	users: Array<UserOnPseFormationDto>;
+	teachers: Array<UserDto>;
+	students: Array<UserDto>;
 }
 
 export interface PseFormationPostDto {
-	state: FormationStateDtoEnum;
+	state: PseFormationStateDtoEnum;
   title: string;
 	from: Date;
 	to: Date;
@@ -25,7 +28,7 @@ export interface PseFormationPostDto {
 }
 
 export interface PseFormationPutDto {
-	state: FormationStateDtoEnum;
+	state: PseFormationStateDtoEnum;
   title: string;
 	from: Date;
 	to: Date;

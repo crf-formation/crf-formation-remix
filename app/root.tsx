@@ -49,6 +49,9 @@ import type { Locales } from "./services/request.server";
 import { getClientLocales, isDesktop } from "./services/request.server";
 import DebugMatches from "./components/dev/DebugMatches";
 import type { PublicPropertiesDto } from "./dto/publicproperties.dto";
+import type { PseFormationDto } from "./dto/pseformation.dto";
+import { getCurrentPseFormationForUser } from "./services/pseformation.server";
+import { pseFormationApiObjectToDto } from './mapper/pseformation.mapper';
 
 export interface RootLoaderData {
   user: Optional<UserMeDto>;
@@ -59,6 +62,7 @@ export interface RootLoaderData {
   isDesktop: boolean;
   flashMessages: FlashMessage[];
   publicProperties: Optional<PublicPropertiesDto>;
+  currentPseFormation: Optional<PseFormationDto>;
 }
 
 export async function loader({ request }: LoaderArgs) {
@@ -73,6 +77,8 @@ export async function loader({ request }: LoaderArgs) {
 
   const user = await getMe(request)
 
+  const currentPseFormationApiObject = user ? await getCurrentPseFormationForUser(user.id) : null
+
   return json<RootLoaderData>(
     {
       // https://github.com/sergiodxa/remix-utils
@@ -85,6 +91,8 @@ export async function loader({ request }: LoaderArgs) {
       isDesktop: isDesktop(request),
 
       publicProperties: await getPublicProperties(),
+
+      currentPseFormation: currentPseFormationApiObject ? pseFormationApiObjectToDto(currentPseFormationApiObject) : null,
 
       flashMessages,
     },

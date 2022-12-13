@@ -1,6 +1,6 @@
 import type { UserDto } from "./user.dto";
 
-export type UserOnPseFormationRoleDtoEnum = 'STUDENT'
+export type UserOnPseFormationRoleDtoEnum = 'STUDENT' | 'TEACHER'
 
 export interface UserOnPseFormationPutDto {
 	userId: string;

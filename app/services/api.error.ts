@@ -1,14 +1,12 @@
 
 export function toApiError(status: number, jsonResponse: any): ApiErrorException | null {
-	if (status === 404) {
-    return new NotFoundApiError(jsonResponse);
+	if (status === 403) {
+    return new ForbiddenException(jsonResponse);
   } else if (status === 500) {
-    return new InternalServerApiError(jsonResponse);
-  } else if (status >= 400) {
-    return new ApiErrorException('', jsonResponse, status);
-  }
+    return new InternalServerException(jsonResponse);
+  } 
 
-	return null;
+  return new ApiErrorException('', jsonResponse, status);
 }
 
 export interface ApiError {
@@ -63,15 +61,20 @@ export class ApiErrorException extends Error {
 
 }
 
-export class NotFoundApiError extends ApiErrorException {
-  constructor(jsonResponse: any) {
-    super(jsonResponse.path, jsonResponse, 404);
+export class NotFoundException extends ApiErrorException {
+  constructor(entity: string, id: string) {
+    super(`Not found ${entity}`, id, 404);
   }
 }
 
-export class InternalServerApiError extends ApiErrorException {
-  constructor(jsonResponse: any) {
-    super(jsonResponse.extra?.stackMessage, jsonResponse, 500);
+export class InternalServerException extends ApiErrorException {
+  constructor(message: string) {
+    super(message, null, 500);
   }
 }
 
+export class ForbiddenException extends ApiErrorException {
+  constructor(message: string) {
+    super(message, null, 403);
+  }
+}

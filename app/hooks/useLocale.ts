@@ -1,3 +1,3 @@
 export default function useLocale(): string {
-	return 'en-US'
+	return 'fr-FR' // TODO:
 }

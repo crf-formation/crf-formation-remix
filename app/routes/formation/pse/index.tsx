@@ -9,6 +9,7 @@ import { requireUser } from '~/services/session.server';
 import { useLoaderData } from '@remix-run/react';
 import { paginateEntityToApiObject } from "~/mapper/abstract.mapper";
 import { pseFormationApiObjectToDto } from "~/mapper/pseformation.mapper";
+import { Link } from "@mui/material";
 
 export async function loader({ request }: LoaderArgs) {
   const user = await requireUser(request);
@@ -42,7 +43,11 @@ export default function FromationPseRoute() {
     <PageContainer>
 
       {formations.data.map(formation => (
-        <div key={formation.id}>{formation.title} {formation.place.title}</div>
+        <div key={formation.id}>
+          <Link href={`/formation/pse/${formation.id}`}>
+            {formation.title} {formation.place.title}
+          </Link>
+        </div>
       ))}
 
     </PageContainer>
