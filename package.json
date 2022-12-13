@@ -5,7 +5,7 @@
   "scripts": {
     "build": "run-s build:*",
     "build:remix": "remix build",
-    "dev": "run-p dev:* | pino-pretty",
+    "dev": "PORT=4243 run-p dev:* | pino-pretty",
     "dev:remix": "cross-env NODE_ENV=development binode --require ./mocks -- @remix-run/dev:remix dev | pino-pretty",
     "format": "prettier --write .",
     "lint": "eslint --cache --cache-location ./node_modules/.cache/eslint .",
@@ -58,7 +58,8 @@
     "react-json-view": "^1.21.3",
     "tiny-invariant": "^1.2.0",
     "ua-parser-js": "^1.0.2",
-    "uuid": "^9.0.0"
+    "uuid": "^9.0.0",
+    "zod": "^3.20.2"
   },
   "devDependencies": {
     "@faker-js/faker": "^7.4.0",

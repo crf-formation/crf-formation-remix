@@ -1,30 +1,28 @@
 import type { ActionFunction, LoaderFunction } from "@remix-run/node";
 import { json } from "@remix-run/node";
 import type { Params } from "@remix-run/react";
-import invariant from "tiny-invariant";
-import type { OrderByDirection } from "~/constants/types";
-import type { PseFormationPostDto  } from "~/dto/pseformation.dto";
+import { z } from "zod";
+import type { PseFormationPostDto } from "~/dto/pseformation.dto";
 import { paginateEntityToApiObject } from "~/mapper/abstract.mapper";
-import { dataToPseFormationPostDto, pseFormationApiObjectToDto, pseFormationPostDtoToApiObject, pseFormationPutDtoToApiObject } from "~/mapper/pseformation.mapper";
-import { createPseFormation, getPseFormations, updatePseFormation } from "~/services/pseformation.server";
-import { getSearchParam, getSearchParamNumber } from "~/services/request.server";
+import { dataToPseFormationPostDto, pseFormationApiObjectToDto, pseFormationPostDtoToApiObject } from "~/mapper/pseformation.mapper";
+import { createPseFormation, getPseFormations } from "~/services/pseformation.server";
 import { requireAdmin } from "~/services/session.server";
+import { getSearchParamsOrFail } from "~/utils/remix.params";
+
+const URLSearchParamsSchema = z.object({
+  page: z.number().default(0),
+  pageSize: z.number().default(25),
+	orderBy: z.string().default("createdAt"),
+	orderByDirection: z.enum([ 'asc', 'desc']),
+})
 
 // GET list of formations
 export const loader: LoaderFunction = async ({
   request,
-	params
 }) => {
 	await requireAdmin(request)
 
-	const page = getSearchParamNumber(request, 'page') || 0
-	const pageSize = getSearchParamNumber(request, 'pageSize') || 25
-
-	const orderBy = getSearchParam(request, 'orderBy')
-	const orderByDirection = getSearchParam(request, 'orderByDirection') as OrderByDirection
-
-	invariant(orderBy, `Missing orderBy`)
-	invariant(orderByDirection, `Missing orderByDirection`)
+	const { page, pageSize, orderBy, orderByDirection } = getSearchParamsOrFail(request, URLSearchParamsSchema)
 
 	const formationsPaginatedObjectApiObject = await getPseFormations(page, pageSize, orderBy, orderByDirection)
 
@@ -33,11 +31,11 @@ export const loader: LoaderFunction = async ({
 
 // POST
 export const action: ActionFunction = async ({ request, params }) => {
-	if (request.method === 'POST') {
-		return postAction(request, params)
-	}
+	switch (request.method) {
+    case "POST":
+      return await postAction(request, params);
+  }
 };
-
 
 async function postAction(request: Request, params: Params<string>) {
 	await requireAdmin(request)

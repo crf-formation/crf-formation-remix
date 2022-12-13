@@ -1,30 +1,31 @@
 import type { LoaderFunction } from "@remix-run/node";
 import { json } from "@remix-run/node";
-import invariant from "tiny-invariant";
-import type { OrderByDirection } from "~/constants/types";
+import { z } from "zod";
 import { paginateEntityToApiObject } from "~/mapper/abstract.mapper";
 import { userApiObjectToUserDto } from "~/mapper/user.mapper";
-import { getSearchParam, getSearchParamNumber } from "~/services/request.server";
 import { requireAdmin } from "~/services/session.server";
 import { getUsers } from "~/services/user.server";
+import { getSearchParamsOrFail } from "~/utils/remix.params";
+
+const URLSearchParamsSchema = z.object({
+  page: z.number().default(0),
+  pageSize: z.number().default(25),
+	orderBy: z.string().default("createdAt"),
+	orderByDirection: z.enum([ 'asc', 'desc']),
+})
 
 // GET list of users
 export const loader: LoaderFunction = async ({
   request,
-	params
 }) => {
 	await requireAdmin(request)
 
-	const page = getSearchParamNumber(request, 'page') || 0
-	const pageSize = getSearchParamNumber(request, 'pageSize') || 25
-
-	const orderBy = getSearchParam(request, 'orderBy')
-	const orderByDirection = getSearchParam(request, 'orderByDirection') as OrderByDirection;
-
-	invariant(orderBy, `Missing orderBy`)
-	invariant(orderByDirection, `Missing orderByDirection`)
+	const { page, pageSize, orderBy, orderByDirection } = getSearchParamsOrFail(request, URLSearchParamsSchema)
 
 	const usersPaginatedObjectApiObject = await getUsers(page, pageSize, orderBy, orderByDirection)
 
   return json(paginateEntityToApiObject(usersPaginatedObjectApiObject, userApiObjectToUserDto));
 };
+
+
+// No POST, must use /join action

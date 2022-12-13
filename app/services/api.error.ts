@@ -26,23 +26,24 @@ export class ApiErrorException extends Error {
   extra: any;
 	jsonResponse: any;
 
-  constructor(additionnalMessage: any, jsonResponse: any, status: number) {
+  constructor(prefixMessage: any, jsonResponse: any, status: number) {
 		const messages = [
 			jsonResponse.localizedMessage,
 			(jsonResponse.errorCode && jsonResponse.message) && `${jsonResponse.errorCode}: ${jsonResponse.message}`,
 			jsonResponse.message && jsonResponse.message,
 			jsonResponse.errorCode && jsonResponse.errorCode,
 			jsonResponse.error,
+      JSON.stringify(jsonResponse)
 		].filter(Boolean)
 
     const responseMessage = messages[0]
 
-		const message = `${responseMessage}: ${additionnalMessage}`;
+		const message = `${prefixMessage}: ${responseMessage}`;
 
 		console.log({
 			messages,
 			message,
-			additionnalMessage,
+			prefixMessage,
 			responseMessage,
 			jsonResponse
 		})
@@ -63,7 +64,13 @@ export class ApiErrorException extends Error {
 
 export class NotFoundException extends ApiErrorException {
   constructor(entity: string, id: string) {
-    super(`Not found ${entity}`, id, 404);
+    super(`Not found ${entity}`, { entity, id }, 404);
+  }
+}
+
+export class BadRequestException extends ApiErrorException {
+  constructor(message: string, json: any) {
+    super(message, json, 400);
   }
 }
 
