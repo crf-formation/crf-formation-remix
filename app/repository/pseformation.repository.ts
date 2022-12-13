@@ -61,21 +61,17 @@ export async function updatePseFormationEntity(id: string, pseFormationPutApiObj
 }
 
 export async function findPseFormationEntityById(id: string): Promise<Optional<PseFormationEntity>> {
-	const pseFormationEntity = await prisma.pseFormation.findUnique({
+  return await prisma.pseFormation.findUnique({
     where: { id },
     include: {
       place: true,
       UserOnPseFormation: {
-        include: { 
-          user: true
-        }
-      }, 
+        include: {
+          user: true,
+        },
+      },
     },
   });
-  if (!pseFormationEntity) {
-    return null;
-  }
-  return pseFormationEntity;
 }
 
 export async function findPseFormationEntities(

@@ -5,13 +5,13 @@ import {
   ListItem, Menu, Tooltip, Typography
 } from "@mui/material";
 import { Form, useLocation } from "@remix-run/react";
+import type { UserMeDto } from "~/dto/user.dto";
 import useRootData from "~/hooks/useRootData";
-import type { ProUserMeDto } from '../../dto/prouser.dto';
 
 interface Props {
   open: boolean;
   anchorRef: HTMLElement | null;
-  user: ProUserMeDto;
+  user: UserMeDto;
   handleClose: (event: MouseEvent | TouchEvent) => void;
 }
 

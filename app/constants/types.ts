@@ -12,6 +12,9 @@ declare global {
 
   // also see "NonNullable" https://www.typescriptlang.org/docs/handbook/utility-types.html#nonnullabletype
   type Optional<T> = T | null | undefined 
+  
+  // date.toISOString()
+  type DateISOString = string
 
 }
 

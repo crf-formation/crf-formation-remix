@@ -5,7 +5,7 @@ import type { ReactNode } from 'react';
 
 interface SectionProps extends PaperProps {
   title: ReactNode | undefined;
-  action: ReactNode | undefined | null;
+  action?: ReactNode | undefined | null;
 }
 
 export default function Section(props: SectionProps) {

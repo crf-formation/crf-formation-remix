@@ -11,8 +11,8 @@ export interface UserDto {
   firstName: string;
   lastName: string;
   fullName: string;
-  createdAt: DateTime;
-  updatedAt: DateTime;
+  createdAt: DateISOString;
+  updatedAt: DateISOString;
 
   isAdmin: boolean;
   isSuperAdmin: boolean;
@@ -42,8 +42,8 @@ export interface UserMeDto {
   role: UserRoleDtoEnum;
   firstName: string;
   lastName: string;
-  createdAt: DateTime;
-  updatedAt: DateTime;
+  createdAt: DateISOString;
+  updatedAt: DateISOString;
 
   isAdmin: boolean;
   isSuperAdmin: boolean;

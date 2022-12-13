@@ -5,7 +5,7 @@ import { Paper } from "@mui/material";
 import Button from '@mui/material/Button';
 import { useEffect, useRef } from 'react';
 import { Title, useTranslate } from 'react-admin';
-import { useLocation } from 'react-router';
+import { useLocation } from "@remix-run/react";
 import PageContainer from '../../layout/PageContainer';
 
 interface Props {
