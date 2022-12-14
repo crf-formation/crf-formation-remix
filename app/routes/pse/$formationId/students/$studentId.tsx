@@ -69,7 +69,7 @@ export default function UserPseFormationSummaryRoute() {
     },
     {
       label: 'Suivi final',
-      href: `/pse/${formation.id}/students/${student.id}/final`
+      href: `/pse/${formation.id}/students/${student.id}/summary`
     }
   ]
 
