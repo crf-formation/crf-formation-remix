@@ -6,6 +6,7 @@ import { z } from "zod";
 import Section from "~/components/layout/Section";
 import { BooleanText } from "~/components/typography/BooleanText";
 import Property from "~/components/typography/Property";
+import { PseCompetenceDto } from "~/dto/psecompetence.dto";
 import type {
   PseUserSummaryConcreteCaseDto,
   PseUserSummaryPreparatoryWorkDto,
@@ -131,18 +132,7 @@ function FinalComment() {
   );
 }
 
-function ConcreteCase({ concreteCase }: { concreteCase: PseUserSummaryConcreteCaseDto }) {
-  // TODO: move on loader: constant or from database
-  const pseCompetences = [
-    "C1",
-    "C2",
-    "C3",
-    "C4_1",
-    "C4_2",
-    "C4_3",
-    "C5",
-    "C6",
-  ]
+function ConcreteCase({ pseCompetences, concreteCase }: { pseCompetences: Array<PseCompetenceDto>, concreteCase: PseUserSummaryConcreteCaseDto }) {
   return (
     <>
       <Table size="small">
@@ -150,8 +140,10 @@ function ConcreteCase({ concreteCase }: { concreteCase: PseUserSummaryConcreteCa
           <TableRow>
             <TableCell>N</TableCell>
             <TableCell>Thème du cas concret</TableCell>
-            {pseCompetences.map((pseCompetenceId) => (
-              <TableCell key={pseCompetenceId} align="center">{pseCompetenceId}</TableCell>
+            {pseCompetences.map((pseCompetence) => (
+              <TableCell key={pseCompetence.id} align="center">
+                {pseCompetence.id}
+              </TableCell>
             ))}
           </TableRow>
         </TableHead>
@@ -160,11 +152,13 @@ function ConcreteCase({ concreteCase }: { concreteCase: PseUserSummaryConcreteCa
             <TableRow key={concreteCaseModule.pseModuleId}>
               <TableCell>{index}</TableCell>
               <TableCell>{concreteCaseModule.pseModule.name}</TableCell>
-              {pseCompetences.map((pseCompetenceId) => {
-                const c = concreteCaseModule.competences.find(c => c.pseCompetenceId === pseCompetenceId)
-                if (!c) return null
+              {pseCompetences.map((pseCompetenceResult) => {
+                const c = concreteCaseModule.competenceResults.find(
+                  (c) => c.pseCompetenceId === pseCompetenceResult.id
+                );
+                if (!c) return null;
                 return (
-                  <TableCell key={pseCompetenceId} align="center">
+                  <TableCell key={pseCompetenceResult.id} align="center">
                     {c.acquired ? (
                       <BooleanText withColor checked={c.acquired} />
                     ) : (
@@ -180,6 +174,25 @@ function ConcreteCase({ concreteCase }: { concreteCase: PseUserSummaryConcreteCa
               })}
             </TableRow>
           ))}
+          {/* RESULT */}
+          <TableRow>
+            <TableCell></TableCell>
+            <TableCell><Typography fontWeight={500}>RESULTAT</Typography></TableCell>
+            {concreteCase.competenceResults.map((pseCompetenceResult) => (
+              <TableCell key={pseCompetenceResult.pseCompetenceId} align="center">
+                {pseCompetenceResult.acquired ? (
+                  <BooleanText withColor checked={pseCompetenceResult.acquired} />
+                ) : (
+                  <BooleanText
+                    withColor
+                    checked={pseCompetenceResult.acquiredForPse1}
+                    trueText="PSE1"
+                    trueColor="warning.main"
+                  />
+                )}
+              </TableCell>
+            ))}
+          </TableRow>
         </TableBody>
       </Table>
     </>
@@ -190,7 +203,7 @@ export default function SummaryRoute() {
   const { pseUserSummary } = useLoaderData<typeof loader>();
 
   return (
-    <Stack spacing={2}>
+    <Stack spacing={2} sx={{ "& .Property-name": { width: 360 } }}>
       <Section title="Summary">
         <Summary
           hasValidatePse={pseUserSummary.hasValidatePse}
@@ -207,7 +220,10 @@ export default function SummaryRoute() {
       </Section>
 
       <Section title="Savoir de mise en oeuvre des procédures">
-        <ConcreteCase concreteCase={pseUserSummary.concreteCase} />
+        <ConcreteCase
+          concreteCase={pseUserSummary.concreteCase}
+          pseCompetences={pseUserSummary.pseCompetences}
+        />
       </Section>
 
       <Section title="Commentaire final">

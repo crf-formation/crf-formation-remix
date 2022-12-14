@@ -1,5 +1,5 @@
-import type { PseUserSummaryApiObject, PseUserSummaryConcreteCaseApiObject, PseUserSummaryConcreteCaseModuleApiObject, PseUserSummaryConcreteCaseCompetenceApiObject, PseUserSummaryPreparatoryWorkApiObject, PseUserSummaryTechniqueApiObject } from "~/apiobject/pseusesummary.apiobject";
-import type { PseUserSummaryConcreteCaseDto, PseUserSummaryConcreteCaseModuleDto, PseUserSummaryConcreteCaseCompetenceDto, PseUserSummaryDto, PseUserSummaryPreparatoryWorkDto, PseUserSummaryTechniqueDto } from "~/dto/pseusesummary.dto";
+import type { PseUserSummaryApiObject, PseUserSummaryConcreteCaseApiObject, PseUserSummaryConcreteCaseModuleApiObject, ConcreteCaseCompetenceResultApiObject, PseUserSummaryPreparatoryWorkApiObject, PseUserSummaryTechniqueApiObject } from "~/apiobject/pseusesummary.apiobject";
+import type { PseUserSummaryConcreteCaseDto, PseUserSummaryConcreteCaseModuleDto, ConcreteCaseCompetenceResultDto, PseUserSummaryDto, PseUserSummaryPreparatoryWorkDto, PseUserSummaryTechniqueDto } from "~/dto/pseusesummary.dto";
 import { pseCompetenceApiObjectToDto } from "./psecompetence.mapper";
 import { pseUserPreparatoryWorkApiObjectToDto } from './pseformationpreparatorywork.mapper';
 import { pseModuleApiObjectToDto } from "./psemodule.mapper";
@@ -12,6 +12,7 @@ export function pseUserSummaryApiObjectToDto(apiObject: PseUserSummaryApiObject)
 		technique: techniqueApiObjectToDto(apiObject.technique),
 		preparatoryWork: preparatoryWorkApiObjectToDto(apiObject.preparatoryWork),
 		concreteCase: pseUserSummaryConcreteCaseApiObjectToDto(apiObject.concreteCase),
+		pseCompetences: apiObject.pseCompetences.map(pseCompetenceApiObjectToDto),
 		hasValidatePse: apiObject.hasValidatePse,
 		hasValidatePse1: apiObject.hasValidatePse1,
 	}
@@ -42,6 +43,7 @@ function pseUserSummaryConcreteCaseApiObjectToDto(apiObject: PseUserSummaryConcr
 		concreteCaseModules: apiObject.concreteCaseModules.map(pseUserSummaryConcreteCaseModuleApiObjectToDto),
 		hasAcquiredAllModules: apiObject.hasAcquiredAllModules,
 		hasAcquiredAllModulesForPse1: apiObject.hasAcquiredAllModulesForPse1,
+		competenceResults: apiObject.competenceResults.map(pseUserSummaryConcreteCaseTechniqueApiObjectToDto),
 	}
 }
 
@@ -50,14 +52,14 @@ function pseUserSummaryConcreteCaseModuleApiObjectToDto(apiObject: PseUserSummar
 		pseModuleId: apiObject.pseModuleId,
 		pseModule: pseModuleApiObjectToDto(apiObject.pseModule),
 
-		competences: apiObject.competences.map(pseUserSummaryConcreteCaseTechniqueApiObjectToDto),
+		competenceResults: apiObject.competenceResults.map(pseUserSummaryConcreteCaseTechniqueApiObjectToDto),
 
 		hasAcquiredAllCompetences: apiObject.hasAcquiredAllCompetences,
 		hasAcquiredAllCompetencesForPse1: apiObject.hasAcquiredAllCompetencesForPse1,
 	}
 }
 
-function pseUserSummaryConcreteCaseTechniqueApiObjectToDto(apiObject: PseUserSummaryConcreteCaseCompetenceApiObject): PseUserSummaryConcreteCaseCompetenceDto {
+function pseUserSummaryConcreteCaseTechniqueApiObjectToDto(apiObject: ConcreteCaseCompetenceResultApiObject): ConcreteCaseCompetenceResultDto {
 	return {
 		pseCompetenceId: apiObject.pseCompetenceId,
 		pseCompetence: pseCompetenceApiObjectToDto(apiObject.pseCompetence),

@@ -15,12 +15,13 @@ export default function Property({ name, value, help, sx }: PropertyProps) {
       <Box
         sx={{ display: "flex", flexDirection: "row", py: 1, pb: 1.5, px: 1 }}
       >
-        <Box sx={{ minWidth: 240, fontWeight: "500" }} component="span">
+        <Box sx={{ minWidth: 240, fontWeight: "500" }} className="Property-name" component="span">
           {name}
         </Box>
         <Box
           sx={{ display: "flex", flex: 1, color: "grey.700" }}
           component="span"
+          className="Property-value" 
         >
           {value}
         </Box>

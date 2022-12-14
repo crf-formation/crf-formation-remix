@@ -11,27 +11,20 @@ export interface PseUserSummaryDto {
   preparatoryWork: PseUserSummaryPreparatoryWorkDto;
   concreteCase: PseUserSummaryConcreteCaseDto;
 
+  pseCompetences: Array<PseCompetenceDto>;
+
   hasValidatePse: boolean;
   hasValidatePse1: boolean;
 }
 
 export interface PseUserSummaryPreparatoryWorkDto {
-  /**
-   * Should be true to validate the PSE.
-   */
   hasRealisedAllModules: boolean;
 
   preparatoryWorks: PseUserPreparatoryWorkDto[];
 }
 
 export interface PseUserSummaryTechniqueDto {
-  /**
-   * Must be true to validate the PSE.
-   */
   hasAcquiredAllTechniques: boolean;
-  /**
-   * When the PSE is not validated, we can validate a PSE1, must be true to validate the PSE1.
-   */
   hasAcquiredAllTechniquesToValidatePse1: boolean;
 
   userTechniques: Array<PseUserTechniqueDto>;
@@ -48,20 +41,22 @@ export interface PseUserSummaryConcreteCaseDto {
   // TODO: list of selected concreate cases
   hasAcquiredAllModules: boolean;
   hasAcquiredAllModulesForPse1: boolean;
+
+  competenceResults: Array<ConcreteCaseCompetenceResultDto>;
 }
 
 export interface PseUserSummaryConcreteCaseModuleDto {
   pseModuleId: string;
   pseModule: PseModuleDto;
 
-	competences: Array<PseUserSummaryConcreteCaseCompetenceDto>;
+	competenceResults: Array<ConcreteCaseCompetenceResultDto>;
 
   hasAcquiredAllCompetences: boolean;
   hasAcquiredAllCompetencesForPse1: boolean;
   // TODO: list of selected concreate cases for module
 }
 
-export interface PseUserSummaryConcreteCaseCompetenceDto {
+export interface ConcreteCaseCompetenceResultDto {
   pseCompetenceId: string;
   pseCompetence: PseCompetenceDto;
   acquired: boolean
