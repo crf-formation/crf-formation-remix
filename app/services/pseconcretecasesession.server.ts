@@ -4,7 +4,7 @@ import { paginateEntityToApiObject } from "~/mapper/abstract.mapper";
 import { pseConcreteCaseSessionEntityToApiObject } from "~/mapper/pseconcretecasesession.mapper";
 import { createPseConcreteCaseSessionsEntity, findPseConcreteCaseSessionsEntityById, getPseConcreteCaseSessionEntitiesByFormationId } from "~/repository/pseconcretecasesession.repository";
 
-export async function getFormationConcreteCaseSessions(
+export async function getPseFormationConcreteCaseSessions(
 	formationId: string,
 	page: number,
   pageSize: number,
@@ -22,18 +22,19 @@ export async function getFormationConcreteCaseSessions(
 	return paginateEntityToApiObject(pseConcreteCaseSessionPaginateObjectEntities, pseConcreteCaseSessionEntityToApiObject);
 }
 
-export async function findConcreteCaseSession(
+export async function getPseConcreteCaseSessionById(
   id: string
-): Promise<Optional<PseConcreteCaseSessionApiObject>> {
-  const pseConcreteCaseSessionEntity = await findPseConcreteCaseSessionsEntityById(id);
+): Promise<PseConcreteCaseSessionApiObject> {
+  const pseConcreteCaseSessionEntity =
+    await findPseConcreteCaseSessionsEntityById(id);
   if (!pseConcreteCaseSessionEntity) {
-    return null;
+    throw new Error(`Session not found: ${id}`);
   }
   return pseConcreteCaseSessionEntityToApiObject(pseConcreteCaseSessionEntity);
 }
 
 
-export async function createConcreteCaseSession(
+export async function createPseConcreteCaseSession(
 	pseConcreteCaseSessionApiObject: PseConcreteCaseSessionPostApiObject
 ): Promise<PseConcreteCaseSessionApiObject> {
 	// TODO: check a session does not exists with this name. 

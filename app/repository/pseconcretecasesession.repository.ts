@@ -27,7 +27,7 @@ export async function getPseConcreteCaseSessionEntitiesByFormationId(
 
 export async function findPseConcreteCaseSessionsEntityById(
   id: string,
-): Promise<PseConcreteCaseSessionEntity> {
+): Promise<Optional<PseConcreteCaseSessionEntity>> {
   return await prisma.pseConcreteCaseSession.findUnique({
     where: { id },
 		include: { groups: true, situations: true },

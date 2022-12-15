@@ -9,7 +9,7 @@ import PageContainer from "~/components/layout/PageContainer";
 import Section from "~/components/layout/Section";
 import { PseConcreteCaseSessionPostDto } from "~/dto/pseconcretecasesession.dto";
 import { pseConcreteCaseSessionPostDtoToApiObject } from "~/mapper/pseconcretecasesession.mapper";
-import { createConcreteCaseSession } from "~/services/pseconcretecasesession.server";
+import { createPseConcreteCaseSession } from "~/services/pseconcretecasesession.server";
 import { getSession, requireUser } from "~/services/session.server";
 import { getFormData, getParamsOrFail } from "~/utils/remix.params";
 
@@ -52,7 +52,7 @@ export async function action({ request, params }: ActionArgs) {
 		// TODO: error
 	}
 
-	const concreteCaseSessionApiObject = await createConcreteCaseSession(
+	const concreteCaseSessionApiObject = await createPseConcreteCaseSession(
 		pseConcreteCaseSessionPostDtoToApiObject(postDto)
 	)
 

@@ -7,7 +7,7 @@ import PageContainer from "~/components/layout/PageContainer";
 import Section from "~/components/layout/Section";
 import { paginateApiObjectToDto } from "~/mapper/abstract.mapper";
 import { pseConcreteCaseSessionApiObjectToDto } from "~/mapper/pseconcretecasesession.mapper";
-import { getFormationConcreteCaseSessions } from "~/services/pseconcretecasesession.server";
+import { getPseFormationConcreteCaseSessions } from "~/services/pseconcretecasesession.server";
 import { requireUser } from "~/services/session.server";
 import { getParamsOrFail, getSearchParamsOrFail } from "~/utils/remix.params";
 
@@ -28,7 +28,7 @@ export async function loader({ request, params }: LoaderArgs) {
 	const { formationId } = getParamsOrFail(params, ParamsSchema)
   const { page, pageSize, orderBy, orderByDirection } = getSearchParamsOrFail(request, URLSearchParamsSchema)
 
-  const concreteCaseSessionsPaginateObject = await getFormationConcreteCaseSessions(formationId, page, pageSize, orderBy, orderByDirection)
+  const concreteCaseSessionsPaginateObject = await getPseFormationConcreteCaseSessions(formationId, page, pageSize, orderBy, orderByDirection)
 
   return json({
     formationId,
@@ -43,7 +43,7 @@ export default function ConcreteCaseSessionsRoute() {
     <PageContainer>
       <Section>
         <Link
-          href={`/pse/${formationId}/concrete-case/sessions/new`}
+          href={`/pse/${formationId}/concrete-case/session/new`}
         >
           <Button>Créer une session</Button>
         </Link>
@@ -60,7 +60,7 @@ export default function ConcreteCaseSessionsRoute() {
                 <TableRow key={concreteCaseSession.id}>
                   <TableCell>
                     <Link
-                      href={`/pse/${formationId}/concrete-case/sessions/${concreteCaseSession.id}`}
+                      href={`/pse-concrete-case-session/${concreteCaseSession.id}`}
                     >
                       {concreteCaseSession.name}
                     </Link>
