@@ -8,23 +8,23 @@ datasource db {
 }
 
 model User {
-  id                     String                   @id @default(cuid())
-  email                  String                   @unique
-  createdAt              DateTime                 @default(now())
-  updatedAt              DateTime                 @default(now()) @updatedAt
-  state                  String                   @default("CREATED")
-  role                   String                   @default("USER")
-  firstName              String
-  lastName               String
-  password               Password?
+  id        String    @id @default(cuid())
+  email     String    @unique
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @default(now()) @updatedAt
+  state     String    @default("CREATED")
+  role      String    @default("USER")
+  firstName String
+  lastName  String
+  password  Password?
 
-  userPasswordToken      UserPasswordToken?
-  pseUserPreparatoryWorks PseUserPreparatoryWork[]
-  userOnPseFormations     UserOnPseFormation[]
-  pseUserTechniques       PseUserTechnique[]
+  userPasswordToken                UserPasswordToken?
+  pseUserPreparatoryWorks          PseUserPreparatoryWork[]
+  userOnPseFormations              UserOnPseFormation[]
+  pseUserTechniques                PseUserTechnique[]
   pseUserConcreteCaseGroupStudents PseUserConcreteCaseGroupStudent[]
-  pseConcreteCaseSituations PseConcreteCaseSituation[]
-  pseUserConcreteCases PseUserConcreteCase[]
+  pseConcreteCaseSituations        PseConcreteCaseSituation[]
+  pseUserConcreteCases             PseUserConcreteCase[]
 }
 
 model Password {
@@ -51,7 +51,7 @@ model Place {
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now()) @updatedAt
 
-  title String  // TODO: rename to name
+  title String // TODO: rename to name
 
   pseFormations PseFormation[]
 }
@@ -167,113 +167,114 @@ model PseConcreteCaseType {
 
   name String
 
-  competencesToEvaluate PseCompetence[]
+  competencesToEvaluate    PseCompetence[]
+  pseConcreteCaseSituation PseConcreteCaseSituation[]
+  pseUserConcreteCases     PseUserConcreteCase[]
 }
 
 model PseConcreteCaseGroup {
-  id String @id @default(cuid())
+  id        String   @id @default(cuid())
   createdAt DateTime @default(now())
-  updatedAt DateTime @default(now()) @updatedAt 
+  updatedAt DateTime @default(now()) @updatedAt
 
-  name String
+  name  String
   state String
 
-	pseConcreteCaseSession PseConcreteCaseSession @relation(fields: [pseConcreteCaseSessionId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  pseConcreteCaseSession   PseConcreteCaseSession @relation(fields: [pseConcreteCaseSessionId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   pseConcreteCaseSessionId String
 
-  students PseUserConcreteCaseGroupStudent[]
-
+  students                       PseUserConcreteCaseGroupStudent[]
   pseSituationConcreteCaseGroups PseSituationConcreteCaseGroup[]
+  pseUserConcreteCases           PseUserConcreteCase[]
 }
 
 model PseUserConcreteCaseGroupStudent {
-  id String @id @default(cuid())
+  id        String   @id @default(cuid())
   createdAt DateTime @default(now())
-  updatedAt DateTime @default(now()) @updatedAt  
-  
+  updatedAt DateTime @default(now()) @updatedAt
+
   user   User   @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   userId String
 
-  pseConcreteCaseGroup PseConcreteCaseGroup @relation(fields: [pseConcreteCaseGroupId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  pseConcreteCaseGroup   PseConcreteCaseGroup @relation(fields: [pseConcreteCaseGroupId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   pseConcreteCaseGroupId String
 }
 
 model PseConcreteCaseSession {
-  id String @id @default(cuid())
+  id        String   @id @default(cuid())
   createdAt DateTime @default(now())
-  updatedAt DateTime @default(now()) @updatedAt 
+  updatedAt DateTime @default(now()) @updatedAt
 
-  name String
+  name  String
   state String
 
-  groups: PseConcreteCaseGroup[]
-  situations: PseConcreteCaseSituation[]
+  groups                         PseConcreteCaseGroup[]
+  situations                     PseConcreteCaseSituation[]
+  pseSituationConcreteCaseGroups PseSituationConcreteCaseGroup[]
 }
 
 model PseConcreteCaseSituation {
-  id String @id @default(cuid())
+  id        String   @id @default(cuid())
   createdAt DateTime @default(now())
-  updatedAt DateTime @default(now()) @updatedAt 
+  updatedAt DateTime @default(now()) @updatedAt
 
   teacher   User   @relation(fields: [teacherId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   teacherId String
 
-  pseConcreteCaseType PseConcreteCaseType @relation(fields: [pseConcreteCaseTypeId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  pseConcreteCaseType   PseConcreteCaseType @relation(fields: [pseConcreteCaseTypeId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   pseConcreteCaseTypeId String
 
-	pseConcreteCaseSession: PseConcreteCaseSession @relation(fields: [pseConcreteCaseSessionId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  pseConcreteCaseSession   PseConcreteCaseSession @relation(fields: [pseConcreteCaseSessionId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   pseConcreteCaseSessionId String
 
-	pseConcreteCaseGroups: PseSituationConcreteCaseGroup[]
+  pseConcreteCaseGroups PseSituationConcreteCaseGroup[]
 }
 
 model PseSituationConcreteCaseGroup {
-  id String @id @default(cuid())
+  id        String   @id @default(cuid())
   createdAt DateTime @default(now())
-  updatedAt DateTime @default(now()) @updatedAt 
+  updatedAt DateTime @default(now()) @updatedAt
 
   position Int @default(-1)
-  
-  pseConcreteCaseSession: PseConcreteCaseSession @relation(fields: [pseConcreteCaseSessionId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+
+  pseConcreteCaseSession   PseConcreteCaseSession @relation(fields: [pseConcreteCaseSessionId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   pseConcreteCaseSessionId String
 
-  pseConcreteCaseGroup PseConcreteCaseGroup @relation(fields: [pseConcreteCaseGroupId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  pseConcreteCaseGroup   PseConcreteCaseGroup @relation(fields: [pseConcreteCaseGroupId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   pseConcreteCaseGroupId String
 
-  pseConcreteCaseSituation PseConcreteCaseSituation @relation(fields: [pseConcreteCaseSituationId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  pseConcreteCaseSituation   PseConcreteCaseSituation @relation(fields: [pseConcreteCaseSituationId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   pseConcreteCaseSituationId String
 }
 
-
 model PseUserConcreteCase {
-  id String @id @default(cuid())
+  id        String   @id @default(cuid())
   createdAt DateTime @default(now())
-  updatedAt DateTime @default(now()) @updatedAt 
+  updatedAt DateTime @default(now()) @updatedAt
 
   user   User   @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   userId String
 
-	concreteCaseGroup PseConcreteCaseGroup @relation(fields: [concreteCaseGroupId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  concreteCaseGroup   PseConcreteCaseGroup @relation(fields: [concreteCaseGroupId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   concreteCaseGroupId String
 
-	concreteCaseType PseConcreteCaseType  @relation(fields: [concreteCaseTypeId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  concreteCaseType   PseConcreteCaseType @relation(fields: [concreteCaseTypeId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   concreteCaseTypeId String
 
-	state String
-	selected: Boolean @default(false)
-	role String
- 
-	competences PseUserConcreteCaseCompetence[]
+  state    String
+  selected Boolean @default(false)
+  role     String
+
+  competences PseUserConcreteCaseCompetence[]
 }
 
 model PseUserConcreteCaseCompetence {
-  id String @id @default(cuid())
+  id        String   @id @default(cuid())
   createdAt DateTime @default(now())
-  updatedAt DateTime @default(now()) @updatedAt  
+  updatedAt DateTime @default(now()) @updatedAt
 
-  pseUserConcreteCase PseUserConcreteCase @relation(fields: [pseUserConcreteCaseId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  pseUserConcreteCase   PseUserConcreteCase @relation(fields: [pseUserConcreteCaseId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   pseUserConcreteCaseId String
 
-	grade String
+  grade String
 }
-
