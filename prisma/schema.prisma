@@ -22,6 +22,9 @@ model User {
   pseUserPreparatoryWorks PseUserPreparatoryWork[]
   userOnPseFormations     UserOnPseFormation[]
   pseUserTechniques       PseUserTechnique[]
+  pseUserConcreteCaseGroupStudents PseUserConcreteCaseGroupStudent[]
+  pseConcreteCaseSituations PseConcreteCaseSituation[]
+  pseUserConcreteCases PseUserConcreteCase[]
 }
 
 model Password {
@@ -155,6 +158,8 @@ model PseUserTechnique {
 
 model PseCompetence {
   id String @id @default(cuid())
+
+  pseConcreteCaseTypes PseConcreteCaseType[]
 }
 
 model PseConcreteCaseType {
@@ -173,10 +178,12 @@ model PseConcreteCaseGroup {
   name String
   state String
 
-	pseConcreteCaseSituation PseConcreteCaseSituation @relation(fields: [pseConcreteCaseSituationId], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  pseConcreteCaseSituationId String
+	pseConcreteCaseSession PseConcreteCaseSession @relation(fields: [pseConcreteCaseSessionId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  pseConcreteCaseSessionId String
 
   students PseUserConcreteCaseGroupStudent[]
+
+  pseSituationConcreteCaseGroups PseSituationConcreteCaseGroup[]
 }
 
 model PseUserConcreteCaseGroupStudent {
@@ -186,6 +193,9 @@ model PseUserConcreteCaseGroupStudent {
   
   user   User   @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   userId String
+
+  pseConcreteCaseGroup PseConcreteCaseGroup @relation(fields: [pseConcreteCaseGroupId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  pseConcreteCaseGroupId String
 }
 
 model PseConcreteCaseSession {
@@ -208,8 +218,8 @@ model PseConcreteCaseSituation {
   teacher   User   @relation(fields: [teacherId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   teacherId String
 
-  pseConcreteCase PseConcreteCaseType @relation(fields: [pseConcreteCaseId], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  pseConcreteCaseId String
+  pseConcreteCaseType PseConcreteCaseType @relation(fields: [pseConcreteCaseTypeId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  pseConcreteCaseTypeId String
 
 	pseConcreteCaseSession: PseConcreteCaseSession @relation(fields: [pseConcreteCaseSessionId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   pseConcreteCaseSessionId String

@@ -12,7 +12,7 @@ export interface PseConcreteCaseSituationApiObject {
 	teacherId: string;
 	teacher: UserApiObject;
 
-	pseConcreteCase: PseConcreteCaseTypeApiObject;
+	pseConcreteCaseType: PseConcreteCaseTypeApiObject;
 
 	pseConcreteCaseSession: PseConcreteCaseSessionApiObject;
 
