@@ -8,7 +8,7 @@ import {
   BooleanField,
 } from "react-admin";
 import { Box, Button, Typography } from "@mui/material";
-import { UserReferenceInput } from "../UserReference";
+import { TeacherReferenceInput } from "../TeacherReference";
 import type { UserOnPseFormationRoleApiEnum } from "~/apiobject/useronpseformation.apiobject";
 
 interface Props {
@@ -17,10 +17,10 @@ interface Props {
   label: string;
 }
 
-export function PseFormationUserReferenceField({ source, role }: Props) {
+export function PseFormationTeacherReferenceField({ source, role }: Props) {
   return (
     <Box component="section" sx={{ mt: 2 }}>
-      <Typography variant="h4">Participants</Typography>
+      <Typography variant="h4">Formateurs</Typography>
       <Box sx={{ mt: 2 }}>
         <ArrayField source="configurations">
           <Datagrid>
@@ -34,7 +34,7 @@ export function PseFormationUserReferenceField({ source, role }: Props) {
   );
 }
 
-export function PseFormationUserReferenceInput({ label, source, role }: Props) {
+export function PseFormationTeacherReferenceInput({ label, source, role }: Props) {
   return (
     <Box
       sx={{
@@ -63,7 +63,7 @@ export function PseFormationUserReferenceInput({ label, source, role }: Props) {
             </Button>
           }
         >
-          <UserReferenceInput source="id" />
+          <TeacherReferenceInput source="id" />
         </SimpleFormIterator>
       </ArrayInput>
     </Box>

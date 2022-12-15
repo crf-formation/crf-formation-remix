@@ -8,7 +8,7 @@ interface Props {
 export function UserReferenceField({ source }: Props) {
 	return (
     <ReferenceField label="User" reference="user" source={source} fullWidth>
-       <FunctionField render={(user: UserDto) => user && `${user.firstName} ${user.lastName}`} />
+       <FunctionField render={(user: UserDto) => user && user.fullName} />
     </ReferenceField>
   );
 }
@@ -18,9 +18,8 @@ export function UserReferenceInput({ source }: Props) {
     <ReferenceInput reference="user" source={source} fullWidth>
       <AutocompleteInput
 				fullWidth
-        optionText={(user:  UserDto) =>
-          user == null ? "not defined" : `${user.firstName} ${user.lastName}`
-        }
+        label="Participant"
+        optionText={(user:  UserDto) => user == null ? "not defined" : user.fullName}
       />
     </ReferenceInput>
   );

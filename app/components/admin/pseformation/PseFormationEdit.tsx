@@ -5,6 +5,7 @@ import EditLayout from '~/components/reactadmin/layout/EditLayout';
 import { PlaceReferenceInput } from '../PlaceReference';
 import { PseFormationUserReferenceInput } from './PseFormationUserReference';
 import { FormationStateInput } from './PseFormationState';
+import { PseFormationTeacherReferenceInput } from './PseFormationTeacherReference';
 
 
 export default function PseFormationEdit() {
@@ -45,7 +46,7 @@ export default function PseFormationEdit() {
         </FormTab>
 
         <FormTab label="Teachers" path="teachers">
-          <PseFormationUserReferenceInput
+          <PseFormationTeacherReferenceInput
             label=""
             source="teachers"
             role="TEACHER"
