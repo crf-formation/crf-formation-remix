@@ -1,6 +1,5 @@
-import type { PseConcreteCaseTypeApiObject } from './pseconcretecase';
-import type { PseConcreteCaseSessionApiObject } from './pseconcretecasesession.apiobject';
-import type { PseConcreteCaseGroupApiObject } from './pseuserconcretecasegroup.apiobject';
+import type { PseConcreteCaseTypeApiObject } from './pseconcretecasetype.apiobject';
+import type { PseConcreteCaseGroupApiObject } from './pseconcretecasegroup.apiobject';
 import type { UserApiObject } from './user.apiobject';
 
 
@@ -14,10 +13,7 @@ export interface PseConcreteCaseSituationApiObject {
 
 	pseConcreteCaseType: PseConcreteCaseTypeApiObject;
 
-	pseConcreteCaseSession: PseConcreteCaseSessionApiObject;
-
 	pseConcreteCaseGroups: Array<PseSituationConcreteCaseGroupApiObject>
-
 }
 
 export interface PseSituationConcreteCaseGroupApiObject {

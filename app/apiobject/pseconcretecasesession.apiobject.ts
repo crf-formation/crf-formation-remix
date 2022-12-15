@@ -1,8 +1,8 @@
-import type { PseConcreteCaseSituationApiObject } from "./psesituation.apiobject";
-import type { PseConcreteCaseGroupApiObject } from './pseuserconcretecasegroup.apiobject';
+import type { PseConcreteCaseSituationApiObject } from './pseconcretecasesituation.apiobject';
+import type { PseConcreteCaseGroupApiObject } from './pseconcretecasegroup.apiobject';
 
 
-export type PseConcreteCaseSessionStateEnum = 'CREATED' | 'RUNNING' | 'CLOSED';
+export type PseConcreteCaseSessionStateApiEnum = 'CREATED' | 'RUNNING' | 'CLOSED';
 
 export interface PseConcreteCaseSessionApiObject {
 	id: string;
@@ -10,7 +10,7 @@ export interface PseConcreteCaseSessionApiObject {
 	updatedAt: Date;
 
 	name: string;
-	state: PseConcreteCaseSessionStateEnum;
+	state: PseConcreteCaseSessionStateApiEnum;
 
 	groups: Array<PseConcreteCaseGroupApiObject>;
 	situations: Array<PseConcreteCaseSituationApiObject>;

@@ -3,7 +3,7 @@ import { json } from "@remix-run/node";
 import type { Params } from "@remix-run/react";
 import { z } from "zod";
 import type { UserPutDto } from "~/dto/user.dto";
-import { dataToUserPutDto, userApiObjectToUserDto, userPutDtoToUserPutApiObject } from "~/mapper/user.mapper";
+import { dataToUserPutDto, userApiObjectToDto, userPutDtoToUserPutApiObject } from "~/mapper/user.mapper";
 import { requireAdmin } from "~/services/session.server";
 import { findUserById, updateUser } from "~/services/user.server";
 import { getParamsOrFail } from "~/utils/remix.params";
@@ -27,7 +27,7 @@ export const loader: LoaderFunction = async ({
 		throw new Error(`User not found: ${userId}`);
 	}
 
-  return json(userApiObjectToUserDto(userApiObject));
+  return json(userApiObjectToDto(userApiObject));
 };
 
 // POST, PUT, PATCH, or DELETE
@@ -49,5 +49,5 @@ async function putAction(request: Request, params: Params<string>) {
 
 	const updatedApiObject = await updateUser(userId, userPutDtoToUserPutApiObject(userPutDto));
 
-  return json(userApiObjectToUserDto(updatedApiObject));
+  return json(userApiObjectToDto(updatedApiObject));
 }

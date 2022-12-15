@@ -12,4 +12,13 @@ export type {
   PseUserPreparatoryWork as PseUserPreparatoryWorkEntity,
   PseTechnique as PseTechniqueEntity,
   PseUserTechnique as PseUserTechniqueEntity,
+  PseCompetence as PseCompetenceEntity,
+  PseConcreteCaseGroup as PseConcreteCaseGroupEntity,
+  PseUserConcreteCaseGroupStudent as PseUserConcreteCaseGroupStudentEntity,
+  PseConcreteCaseSession as PseConcreteCaseSessionEntity,
+  PseConcreteCaseSituation as PseConcreteCaseSituationEntity,
+  PseSituationConcreteCaseGroup as PseSituationConcreteCaseGroupEntity,
+  PseUserConcreteCase as PseUserConcreteCaseEntity,
+  PseUserConcreteCaseCompetence as PseUserConcreteCaseCompetenceEntity,
+  PseConcreteCaseType as PseConcreteCaseTypeEntity,
 } from "@prisma/client";

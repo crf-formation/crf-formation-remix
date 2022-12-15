@@ -14,7 +14,7 @@ import {
   updateUserEntity,
   updateUserEntityPassword,
 } from "~/repository/user.repository";
-import { userEntityToUserApiObject } from "~/mapper/user.mapper";
+import { userEntityToApiObject } from "~/mapper/user.mapper";
 import { USER_PASSWORD_MIN_LENGTH } from "~/constants";
 import { paginateEntityToApiObject } from "~/mapper/abstract.mapper";
 import type { OrderByDirection, PaginateObject } from "~/constants/types";
@@ -24,14 +24,14 @@ export async function updateUser(
   userPutApiObject: UserPutApiObject
 ) {
   const userEntity = await updateUserEntity(userId, userPutApiObject);
-  return userEntityToUserApiObject(userEntity);
+  return userEntityToApiObject(userEntity);
 }
 
 export async function createUser(
   userPostApiObject: UserPostApiObject
 ): Promise<UserApiObject> {
   const userEntity = await createUserEntity(userPostApiObject);
-  return userEntityToUserApiObject(userEntity);
+  return userEntityToApiObject(userEntity);
 }
 
 export async function updatePassword(userId: string, password: string) {
@@ -46,7 +46,7 @@ export async function findUserById(
   if (!userEntity) {
     return null;
   }
-  return userEntityToUserApiObject(userEntity);
+  return userEntityToApiObject(userEntity);
 }
 
 export async function verifyLogin(
@@ -59,7 +59,7 @@ export async function verifyLogin(
   }
 
   return {
-    user: userEntityToUserApiObject(userEntity),
+    user: userEntityToApiObject(userEntity),
   };
 }
 
@@ -70,7 +70,7 @@ export async function findUserByEmail(
   if (!userEntity) {
     return null;
   }
-  return userEntityToUserApiObject(userEntity);
+  return userEntityToApiObject(userEntity);
 }
 
 export function validateUserEmail(email: unknown): email is string {
@@ -88,7 +88,7 @@ export async function getUsers(
   orderByDirection: OrderByDirection
 ): Promise<PaginateObject<UserApiObject>> {
   const userEntities = await findUsers(page, pageSize, orderBy, orderByDirection);
-  return paginateEntityToApiObject(userEntities, userEntityToUserApiObject);
+  return paginateEntityToApiObject(userEntities, userEntityToApiObject);
 }
 
 //
@@ -100,5 +100,5 @@ export async function getUserMe(userId: string): Promise<UserApiObject> {
   if (!userEntity) {
     throw new Error(`User ${userId} could not be found`);
   }
-  return userEntityToUserApiObject(userEntity);
+  return userEntityToApiObject(userEntity);
 }

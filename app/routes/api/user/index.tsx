@@ -2,7 +2,7 @@ import type { LoaderFunction } from "@remix-run/node";
 import { json } from "@remix-run/node";
 import { z } from "zod";
 import { paginateEntityToApiObject } from "~/mapper/abstract.mapper";
-import { userApiObjectToUserDto } from "~/mapper/user.mapper";
+import { userApiObjectToDto } from "~/mapper/user.mapper";
 import { requireAdmin } from "~/services/session.server";
 import { getUsers } from "~/services/user.server";
 import { getSearchParamsOrFail } from "~/utils/remix.params";
@@ -24,7 +24,7 @@ export const loader: LoaderFunction = async ({
 
 	const usersPaginatedObjectApiObject = await getUsers(page, pageSize, orderBy, orderByDirection)
 
-  return json(paginateEntityToApiObject(usersPaginatedObjectApiObject, userApiObjectToUserDto));
+  return json(paginateEntityToApiObject(usersPaginatedObjectApiObject, userApiObjectToDto));
 };
 
 

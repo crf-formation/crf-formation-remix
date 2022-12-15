@@ -78,7 +78,7 @@ export function pseFormationEntityToApiObject(entity: PseFormationEntity): PseFo
 		id: entity.id,
 		createdAt: entity.createdAt,
 		updatedAt: entity.updatedAt,
-		state: stringToPseFormationStateApiEnum(entity.state),
+		state: pseFormationStateStringToApiEnum(entity.state),
 		title: entity.title,
 		from: entity.from,
 		to: entity.to,
@@ -89,7 +89,7 @@ export function pseFormationEntityToApiObject(entity: PseFormationEntity): PseFo
 	}
 }
 
-function stringToPseFormationStateApiEnum(state: string): PseFormationStateApiEnum {
+function pseFormationStateStringToApiEnum(state: string): PseFormationStateApiEnum {
 	// TODO: enforce validity
 	return state as PseFormationStateApiEnum
 }

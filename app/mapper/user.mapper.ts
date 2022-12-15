@@ -22,11 +22,11 @@ export function userPutDtoToUserPutApiObject(dto: UserPutDto): UserPutApiObject 
 	}
 }
 
-export function userEntityToUserApiObject(userEntity: UserEntity): UserApiObject {
+export function userEntityToApiObject(userEntity: UserEntity): UserApiObject {
 	return {
 		id: userEntity.id,
-		state: stringToUserStateApiEnum(userEntity.state),
-		role: stringToUserRoleApiEnum(userEntity.role),
+		state: userStateStringToApiEnum(userEntity.state),
+		role: userRoleStringToApiEnum(userEntity.role),
 		email: userEntity.email,
 		firstName: userEntity.firstName,
 		lastName: userEntity.lastName,
@@ -38,8 +38,8 @@ export function userEntityToUserApiObject(userEntity: UserEntity): UserApiObject
 export function userApiObjectToUserMeDto(userApiObject: UserApiObject): UserMeDto {
 	return {
 		id: userApiObject.id,
-		state: stringToUserStateApiEnum(userApiObject.state),
-		role: stringToUserRoleApiEnum(userApiObject.role),
+		state: userStateStringToApiEnum(userApiObject.state),
+		role: userRoleStringToApiEnum(userApiObject.role),
 		email: userApiObject.email,
 		firstName: userApiObject.firstName,
 		lastName: userApiObject.lastName,
@@ -52,7 +52,7 @@ export function userApiObjectToUserMeDto(userApiObject: UserApiObject): UserMeDt
 	}
 }
 
-export function userApiObjectToUserDto(userApiObject: UserApiObject): UserDto {
+export function userApiObjectToDto(userApiObject: UserApiObject): UserDto {
 	return {
 		id: userApiObject.id,
 		state: userApiObject.state,
@@ -80,12 +80,12 @@ export function dataToUserPutDto(data: any): UserPutDto {
 	};
 }
 
-function stringToUserRoleApiEnum(role: string): UserRoleApiEnum {
+function userRoleStringToApiEnum(role: string): UserRoleApiEnum {
 	// TODO: enforce validity
 	return role as UserRoleApiEnum
 }
 
-function stringToUserStateApiEnum(state: string): UserStateApiEnum {
+function userStateStringToApiEnum(state: string): UserStateApiEnum {
 	// TODO: enforce validity
 	return state as UserStateApiEnum
 }

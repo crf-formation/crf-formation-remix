@@ -1,11 +1,11 @@
 import type { PseCompetenceApiObject } from './psecompetence.apiobject';
-import type { PseConcreteCaseTypeApiObject } from './pseconcretecase';
-import type { PseConcreteCaseGroupApiObject } from './pseuserconcretecasegroup.apiobject';
+import type { PseConcreteCaseTypeApiObject } from './pseconcretecasetype.apiobject';
+import type { PseConcreteCaseGroupApiObject } from './pseconcretecasegroup.apiobject';
 import type { UserApiObject } from './user.apiobject';
 
-type PseUserConcreteCaseStateApiEnum = 'CREATED' | 'RUNNING' | 'CLOSED';
-type PseUserConcreteCaseCompetenceGradeApiEnum = 'A' | 'B' | 'C' | 'D' | 'NOT_EVALUATED';
-type PseUserConcreteCaseRoleApi = 'LEADER' | 'MINION' | 'WATCHER'
+export type PseUserConcreteCaseStateApiEnum = 'CREATED' | 'RUNNING' | 'CLOSED';
+export type PseUserConcreteCaseCompetenceGradeApiEnum = 'A' | 'B' | 'C' | 'D' | 'NOT_EVALUATED';
+export type PseUserConcreteCaseRoleApiEnum = 'LEADER' | 'MINION' | 'WATCHER'
 
 export interface PseUserConcreteCaseApiObject {
 	id: string;
@@ -19,7 +19,7 @@ export interface PseUserConcreteCaseApiObject {
 	state: PseUserConcreteCaseStateApiEnum;
 	selected: boolean;
 	competences: Array<PseUserConcreteCaseCompetenceApiObject>
-	role: PseUserConcreteCaseRoleApi;
+	role: PseUserConcreteCaseRoleApiEnum;
 }
 
 export interface PseUserConcreteCaseCompetenceApiObject {

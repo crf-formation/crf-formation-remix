@@ -1,7 +1,7 @@
 import type { UserOnPseFormationEntity } from "~/apiobject/entity";
 import type { UserOnPseFormationApiObject, UserOnPseFormationPutApiObject, UserOnPseFormationRoleApiEnum } from "~/apiobject/useronpseformation.apiobject";
 import type { UserOnPseFormationDto, UserOnPseFormationPutDto, UserOnPseFormationRoleDtoEnum } from "~/dto/useronpseformation.dto";
-import { userApiObjectToUserDto, userEntityToUserApiObject } from "./user.mapper";
+import { userApiObjectToDto, userEntityToApiObject } from "./user.mapper";
 
 export function userOnPseFormationDataToPutDto(data: any, role: UserOnPseFormationRoleDtoEnum): UserOnPseFormationPutDto {
   return {
@@ -26,8 +26,8 @@ export function userOnPseFormationApiObjectToDto(apiObject: UserOnPseFormationAp
     formationId: apiObject.formationId,
     userId: apiObject.userId,
     role: userOnPseFormationRoleApiEnumToDtoEnum(apiObject.role),
-    assignedAt: apiObject.assignedAt,
-    user: userApiObjectToUserDto(apiObject.user)
+    assignedAt: apiObject.assignedAt.toISOString(),
+    user: userApiObjectToDto(apiObject.user)
   };
 }
 
@@ -36,13 +36,13 @@ export function userOnPseFormationEntityToApiObject(entity: UserOnPseFormationEn
     id: entity.id,
     formationId: entity.formationId,
     userId: entity.userId,
-    role: stringToUserOnPseFormationRoleApiEnum(entity.role),
+    role: userOnPseFormationRoleStringToApiEnum(entity.role),
     assignedAt: entity.assignedAt,
-    user: userEntityToUserApiObject(entity.user),
+    user: userEntityToApiObject(entity.user),
   }
 }
 
-function stringToUserOnPseFormationRoleApiEnum(role: string): UserOnPseFormationRoleApiEnum {
+function userOnPseFormationRoleStringToApiEnum(role: string): UserOnPseFormationRoleApiEnum {
   // TODO: enforce validity
   return role as UserOnPseFormationRoleApiEnum;
 }

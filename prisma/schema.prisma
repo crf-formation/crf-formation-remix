@@ -160,16 +160,17 @@ model PseCompetence {
   id String @id @default(cuid())
 
   pseConcreteCaseTypes PseCompetencesOnPseConcreteCaseTypes[]
+  pseUserConcreteCaseCompetence PseUserConcreteCaseCompetence[]
 }
 
 model PseConcreteCaseType {
   id String @id @default(cuid())
-
   name String
+  competencesToEvaluate    PseCompetencesOnPseConcreteCaseTypes[]
 
+  // linked to
   pseConcreteCaseSituation PseConcreteCaseSituation[]
   pseUserConcreteCases     PseUserConcreteCase[]
-  competencesToEvaluate    PseCompetencesOnPseConcreteCaseTypes[]
 }
 
 // ManyToMany explicit
@@ -195,10 +196,14 @@ model PseConcreteCaseGroup {
   name  String
   state String
 
+  // linked to
   pseConcreteCaseSession   PseConcreteCaseSession @relation(fields: [pseConcreteCaseSessionId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   pseConcreteCaseSessionId String
 
+	// contains
   students                       PseUserConcreteCaseGroupStudent[]
+
+  // linked to
   pseSituationConcreteCaseGroups PseSituationConcreteCaseGroup[]
   pseUserConcreteCases           PseUserConcreteCase[]
 }
@@ -211,6 +216,7 @@ model PseUserConcreteCaseGroupStudent {
   user   User   @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   userId String
 
+  // linked to
   pseConcreteCaseGroup   PseConcreteCaseGroup @relation(fields: [pseConcreteCaseGroupId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   pseConcreteCaseGroupId String
 }
@@ -223,8 +229,11 @@ model PseConcreteCaseSession {
   name  String
   state String
 
+	// contains
   groups                         PseConcreteCaseGroup[]
   situations                     PseConcreteCaseSituation[]
+
+  // linked to
   pseSituationConcreteCaseGroups PseSituationConcreteCaseGroup[]
 }
 
@@ -233,15 +242,19 @@ model PseConcreteCaseSituation {
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now()) @updatedAt
 
+  // linked to
   teacher   User   @relation(fields: [teacherId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   teacherId String
 
+	// linked to
   pseConcreteCaseType   PseConcreteCaseType @relation(fields: [pseConcreteCaseTypeId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   pseConcreteCaseTypeId String
 
+  // linked to
   pseConcreteCaseSession   PseConcreteCaseSession @relation(fields: [pseConcreteCaseSessionId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   pseConcreteCaseSessionId String
 
+	// contains
   pseConcreteCaseGroups PseSituationConcreteCaseGroup[]
 }
 
@@ -252,12 +265,15 @@ model PseSituationConcreteCaseGroup {
 
   position Int @default(-1)
 
+  // linked to
   pseConcreteCaseSession   PseConcreteCaseSession @relation(fields: [pseConcreteCaseSessionId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   pseConcreteCaseSessionId String
 
+  // linked to
   pseConcreteCaseGroup   PseConcreteCaseGroup @relation(fields: [pseConcreteCaseGroupId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   pseConcreteCaseGroupId String
 
+  // linked to
   pseConcreteCaseSituation   PseConcreteCaseSituation @relation(fields: [pseConcreteCaseSituationId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   pseConcreteCaseSituationId String
 }
@@ -267,19 +283,23 @@ model PseUserConcreteCase {
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now()) @updatedAt
 
-  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  userId String
-
-  concreteCaseGroup   PseConcreteCaseGroup @relation(fields: [concreteCaseGroupId], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  concreteCaseGroupId String
-
-  concreteCaseType   PseConcreteCaseType @relation(fields: [concreteCaseTypeId], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  concreteCaseTypeId String
-
   state    String
   selected Boolean @default(false)
   role     String
 
+  // linked to
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  userId String
+
+  // linked to
+  concreteCaseGroup   PseConcreteCaseGroup @relation(fields: [concreteCaseGroupId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  concreteCaseGroupId String
+
+  // linked to
+  concreteCaseType   PseConcreteCaseType @relation(fields: [concreteCaseTypeId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  concreteCaseTypeId String
+
+  // contains
   competences PseUserConcreteCaseCompetence[]
 }
 
@@ -288,8 +308,13 @@ model PseUserConcreteCaseCompetence {
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now()) @updatedAt
 
+  grade String
+
+	// linked back to
   pseUserConcreteCase   PseUserConcreteCase @relation(fields: [pseUserConcreteCaseId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   pseUserConcreteCaseId String
 
-  grade String
+  // linked to
+  pseCompetence PseCompetence @relation(fields: [pseCompetenceId], references: [id], onDelete: Cascade, onUpdate: Cascade) 
+  pseCompetenceId String
 }
