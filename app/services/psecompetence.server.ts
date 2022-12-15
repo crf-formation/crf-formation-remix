@@ -1,32 +1,9 @@
 import type { PseCompetenceApiObject } from "~/apiobject/psecompetence.apiobject";
-
+import { pseCompetenceEntityToApiObject } from "~/mapper/psecompetence.mapper";
+import { getPseCompetenceEntites } from "~/repository/psecompetence.repository";
 
 export async function getPseCompetences(): Promise<Array<PseCompetenceApiObject>> {
-	// TODO: load from database
-	return [
-		{
-			id: "C1",
-		},
-		{
-			id: "C2",
-		},
-		{
-			id: "C3",
-		},
-		{
-			id: "C4_1",
-		},
-		{
-			id: "C4_2",
-		},
-		{
-			id: "C4_3",
-		},
-		{
-			id: "C5",
-		},
-		{
-			id: "C6",
-		},
-	]
+	const list = await getPseCompetenceEntites()
+
+	return list.map(pseCompetenceEntityToApiObject)
 }

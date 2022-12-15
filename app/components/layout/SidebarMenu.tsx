@@ -196,7 +196,7 @@ export default function SidebarMenu({ open, isDesktop, toggleDrawer }: Props) {
       },
       {
         name: "Cas concrets",
-        href: `/pse/${currentPseFormation.id}/concrete-case`,
+        href: `/pse/${currentPseFormation.id}/concrete-case/sessions`,
       },
       {
         name: "Suivi",

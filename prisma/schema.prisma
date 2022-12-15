@@ -75,6 +75,7 @@ model PseFormation {
   pseUserPreparatoryWorks PseUserPreparatoryWork[]
   userOnPseFormations     UserOnPseFormation[]
   pseUserTechniques       PseUserTechnique[]
+  pseConcreteCaseSessions PseConcreteCaseSession[]
 }
 
 model PseModule {
@@ -90,9 +91,11 @@ model PseModule {
 model UserOnPseFormation {
   id String @id @default(cuid())
 
+ // linked to
   formation   PseFormation @relation(fields: [formationId], references: [id])
   formationId String
 
+  // linked to
   user   User   @relation(fields: [userId], references: [id])
   userId String
 
@@ -216,7 +219,7 @@ model PseUserConcreteCaseGroupStudent {
   user   User   @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   userId String
 
-  // linked to
+  // parent
   pseConcreteCaseGroup   PseConcreteCaseGroup @relation(fields: [pseConcreteCaseGroupId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   pseConcreteCaseGroupId String
 }
@@ -232,6 +235,10 @@ model PseConcreteCaseSession {
 	// contains
   groups                         PseConcreteCaseGroup[]
   situations                     PseConcreteCaseSituation[]
+
+  // parent
+  formation   PseFormation @relation(fields: [formationId], references: [id])
+  formationId String
 
   // linked to
   pseSituationConcreteCaseGroups PseSituationConcreteCaseGroup[]
@@ -291,7 +298,7 @@ model PseUserConcreteCase {
   user   User   @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   userId String
 
-  // linked to
+  // parent
   concreteCaseGroup   PseConcreteCaseGroup @relation(fields: [concreteCaseGroupId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   concreteCaseGroupId String
 
@@ -310,7 +317,7 @@ model PseUserConcreteCaseCompetence {
 
   grade String
 
-	// linked back to
+	// parent
   pseUserConcreteCase   PseUserConcreteCase @relation(fields: [pseUserConcreteCaseId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   pseUserConcreteCaseId String
 

@@ -45,6 +45,7 @@ async function putAction(request: Request, params: Params<string>) {
 
 	const data = await request.json();
 
+	// TODO: use zod to map data
 	const userPutDto: UserPutDto = dataToUserPutDto(data);
 
 	const updatedApiObject = await updateUser(userId, userPutDtoToUserPutApiObject(userPutDto));

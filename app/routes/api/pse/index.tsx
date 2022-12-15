@@ -42,6 +42,7 @@ async function postAction(request: Request, params: Params<string>) {
 
 	const data = await request.json();
 
+	// TODO: use zod to map data
 	const formationPutDto: PseFormationPostDto = dataToPseFormationPostDto(data);
 
 	const createdApiObject = await createPseFormation(pseFormationPostDtoToApiObject(formationPutDto));

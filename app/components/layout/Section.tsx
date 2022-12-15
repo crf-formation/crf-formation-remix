@@ -4,7 +4,7 @@ import { Box, Container, Divider, Paper, Typography } from "@mui/material";
 import type { ReactNode } from 'react';
 
 interface SectionProps extends PaperProps {
-  title: ReactNode | undefined;
+  title?: ReactNode | undefined;
   action?: ReactNode | undefined | null;
 }
 

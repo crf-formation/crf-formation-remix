@@ -48,7 +48,9 @@ CREATE TABLE "PseConcreteCaseSession" (
     "createdAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "name" TEXT NOT NULL,
-    "state" TEXT NOT NULL
+    "state" TEXT NOT NULL,
+    "formationId" TEXT NOT NULL,
+    CONSTRAINT "PseConcreteCaseSession_formationId_fkey" FOREIGN KEY ("formationId") REFERENCES "PseFormation" ("id") ON DELETE RESTRICT ON UPDATE CASCADE
 );
 
 -- CreateTable
@@ -83,12 +85,12 @@ CREATE TABLE "PseUserConcreteCase" (
     "id" TEXT NOT NULL PRIMARY KEY,
     "createdAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "userId" TEXT NOT NULL,
-    "concreteCaseGroupId" TEXT NOT NULL,
-    "concreteCaseTypeId" TEXT NOT NULL,
     "state" TEXT NOT NULL,
     "selected" BOOLEAN NOT NULL DEFAULT false,
     "role" TEXT NOT NULL,
+    "userId" TEXT NOT NULL,
+    "concreteCaseGroupId" TEXT NOT NULL,
+    "concreteCaseTypeId" TEXT NOT NULL,
     CONSTRAINT "PseUserConcreteCase_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User" ("id") ON DELETE CASCADE ON UPDATE CASCADE,
     CONSTRAINT "PseUserConcreteCase_concreteCaseGroupId_fkey" FOREIGN KEY ("concreteCaseGroupId") REFERENCES "PseConcreteCaseGroup" ("id") ON DELETE CASCADE ON UPDATE CASCADE,
     CONSTRAINT "PseUserConcreteCase_concreteCaseTypeId_fkey" FOREIGN KEY ("concreteCaseTypeId") REFERENCES "PseConcreteCaseType" ("id") ON DELETE CASCADE ON UPDATE CASCADE
@@ -99,7 +101,9 @@ CREATE TABLE "PseUserConcreteCaseCompetence" (
     "id" TEXT NOT NULL PRIMARY KEY,
     "createdAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "pseUserConcreteCaseId" TEXT NOT NULL,
     "grade" TEXT NOT NULL,
-    CONSTRAINT "PseUserConcreteCaseCompetence_pseUserConcreteCaseId_fkey" FOREIGN KEY ("pseUserConcreteCaseId") REFERENCES "PseUserConcreteCase" ("id") ON DELETE CASCADE ON UPDATE CASCADE
+    "pseUserConcreteCaseId" TEXT NOT NULL,
+    "pseCompetenceId" TEXT NOT NULL,
+    CONSTRAINT "PseUserConcreteCaseCompetence_pseUserConcreteCaseId_fkey" FOREIGN KEY ("pseUserConcreteCaseId") REFERENCES "PseUserConcreteCase" ("id") ON DELETE CASCADE ON UPDATE CASCADE,
+    CONSTRAINT "PseUserConcreteCaseCompetence_pseCompetenceId_fkey" FOREIGN KEY ("pseCompetenceId") REFERENCES "PseCompetence" ("id") ON DELETE CASCADE ON UPDATE CASCADE
 );

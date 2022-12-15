@@ -29,12 +29,16 @@ export async function createPaginateObject<T>(props: Props<typeof model>): Promi
     model, 
     page, 
     pageSize, 
-    orderBy = 'createdAt', 
-    orderByDirection = 'asc', 
+    orderBy, 
+    orderByDirection,
     include, 
     select, 
     where 
   } = PropsSchema.parse(props)
+
+  console.log('TOTO')
+  console.log(props)
+  console.log(PropsSchema.parse(props))
 
   invariant(model, `Missing model`)
   invariant(page >= 0, `Invalid page ${page}`)

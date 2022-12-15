@@ -22,3 +22,8 @@ export interface PseConcreteCaseSessionDto {
 	 */
 	isConfigured: boolean;
 }
+
+export interface PseConcreteCaseSessionPostDto {
+	formationId: string;
+	name: string;
+}

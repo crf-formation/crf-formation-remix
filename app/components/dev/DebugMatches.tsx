@@ -2,7 +2,7 @@ import { Box, Button, Dialog, DialogContent, DialogTitle, IconButton, Typography
 import { useMemo, useState } from 'react';
 import BugReportIcon from '@mui/icons-material/BugReport';
 import CloseIcon from '@mui/icons-material/Close';
-import { useMatches } from "@remix-run/react";
+import { useActionData, useMatches } from "@remix-run/react";
 import { ReactJson } from "../typography/Json";
 import isEmpty from "lodash/isEmpty"
 
@@ -48,8 +48,23 @@ function RouteDataView({ routeData }) {
   );
 }
 
+function ActionDataView({ actionData }) {
+  if (isEmpty(actionData)) {
+    return null;
+  }
+
+  return (
+    <Box>
+      <Typography variant="h5">Action data</Typography>
+
+      <ReactJson src={actionData} />
+    </Box>
+  );
+}
+
 function DebugContent({ show, onClose }) {
 	const debug = useDebugMatches()
+  const actionData = useActionData();
 
 	return (
     <Dialog
@@ -80,6 +95,7 @@ function DebugContent({ show, onClose }) {
       </DialogTitle>
       <DialogContent sx={{ p: 4, mt: 2 }}>
         <div>
+          <ActionDataView actionData={actionData} />
           {debug?.map((routeData) => (
             <Box key={routeData.id} mb={2}>
               <span>{routeData.pathname}</span>{" "}

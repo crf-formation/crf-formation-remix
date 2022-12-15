@@ -65,7 +65,7 @@ export default function UserPseFormationSummaryRoute() {
     },
     {
       label: 'Savoir de mise en oeuvre des procédures',
-      href: `/pse/${formation.id}/students/${student.id}/concrete-case`
+      href: `/pse/${formation.id}/students/${student.id}/concrete-case/sessions`
     },
     {
       label: 'Suivi final',

@@ -51,6 +51,7 @@ async function putAction(request: Request, params: Params<string>) {
 		throw new Error(`Formation not found: ${formationId}`);
 	}
 
+	// TODO: use zod to map data
 	const pseFormationPutDto: PseFormationPutDto = dataToPseFormationPutDto(data);
 
 	const updatedApiObject = await updatePseFormation(formationId, pseFormationPutDtoToApiObject(pseFormationPutDto, pseFormationApiObject));

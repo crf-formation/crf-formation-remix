@@ -1,8 +1,9 @@
 import { isEmpty } from "lodash";
 import type { PseConcreteCaseSessionEntity } from "~/apiobject/entity";
-import type { PseConcreteCaseSessionApiObject, PseConcreteCaseSessionStateApiEnum } from "~/apiobject/pseconcretecasesession.apiobject";
-import type { PseConcreteCaseSessionDto, PseConcreteCaseSessionStateDtoEnum } from "~/dto/pseconcretecasesession.dto";
+import type { PseConcreteCaseSessionApiObject, PseConcreteCaseSessionPostApiObject, PseConcreteCaseSessionStateApiEnum } from "~/apiobject/pseconcretecasesession.apiobject";
+import type { PseConcreteCaseSessionDto, PseConcreteCaseSessionPostDto, PseConcreteCaseSessionStateDtoEnum } from "~/dto/pseconcretecasesession.dto";
 import { pseConcreteCaseGroupApiObjectToDto, pseConcreteCaseGroupEntityToApiObject } from "./pseconcretecasegroup.mapper";
+import { pseConcreteCaseSituationApiObjectToDto, pseConcreteCaseSituationEntityToApiObject } from "./pseconcretecasesituation.mapper";
 
 export function pseConcreteCaseSessionEntityToApiObject(
   entity: PseConcreteCaseSessionEntity
@@ -45,4 +46,13 @@ export function pseConcreteCaseSessionApiObjectToDto(
 function pseConcreteCaseSessionStateApiEnumToDto(state: PseConcreteCaseSessionStateApiEnum): PseConcreteCaseSessionStateDtoEnum {
 	// TODO: enforce validity
 	return state as PseConcreteCaseSessionStateDtoEnum
+}
+
+
+export function pseConcreteCaseSessionPostDtoToApiObject(dto: PseConcreteCaseSessionPostDto): PseConcreteCaseSessionPostApiObject {
+	return {
+    name: dto.name,
+    state: "CREATED",
+    formationId: dto.formationId,
+  };
 }

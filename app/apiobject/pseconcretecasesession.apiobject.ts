@@ -22,3 +22,9 @@ export interface PseConcreteCaseSessionApiObject {
 	 */
 	isConfigured: boolean;
 }
+
+export interface PseConcreteCaseSessionPostApiObject {
+	name: string;
+	state: PseConcreteCaseSessionStateApiEnum;
+	formationId: string;
+}

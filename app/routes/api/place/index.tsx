@@ -1,12 +1,18 @@
 import type { LoaderFunction } from "@remix-run/node";
 import { json } from "@remix-run/node";
-import invariant from "tiny-invariant";
-import type { OrderByDirection } from "~/constants/types";
+import { z } from "zod";
 import { paginateEntityToApiObject } from "~/mapper/abstract.mapper";
 import { placeApiObjectToDto } from "~/mapper/place.mapper";
 import { getPlaces } from "~/services/place.server";
-import { getSearchParam, getSearchParamNumber } from "~/services/request.server";
 import { requireAdmin } from "~/services/session.server";
+import { getSearchParamsOrFail } from "~/utils/remix.params";
+
+const URLSearchParamsSchema = z.object({
+  page: z.number().default(0),
+  pageSize: z.number().default(25),
+	orderBy: z.string().default("createdAt"),
+	orderByDirection: z.enum([ 'asc', 'desc']),
+})
 
 // GET list of formations
 export const loader: LoaderFunction = async ({
@@ -15,14 +21,8 @@ export const loader: LoaderFunction = async ({
 }) => {
 	await requireAdmin(request)
 
-	const page = getSearchParamNumber(request, 'page') || 0
-	const pageSize = getSearchParamNumber(request, 'pageSize') || 25
+	const { page, pageSize, orderBy, orderByDirection } = getSearchParamsOrFail(request, URLSearchParamsSchema)
 
-	const orderBy = getSearchParam(request, 'orderBy')
-	const orderByDirection = getSearchParam(request, 'orderByDirection') as OrderByDirection
-
-	invariant(orderBy, `Missing orderBy`)
-	invariant(orderByDirection, `Missing orderByDirection`)
 
 	const formationsPaginatedObjectApiObject = await getPlaces(page, pageSize, orderBy, orderByDirection)
 

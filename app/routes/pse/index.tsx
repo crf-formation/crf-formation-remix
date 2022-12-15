@@ -1,32 +1,32 @@
-import { Link } from "@mui/material";
+import { Link, Table, TableBody, TableCell, TableHead, TableRow } from "@mui/material";
 import type { LoaderArgs, MetaFunction } from "@remix-run/node";
 import { json } from "@remix-run/node";
 import { useLoaderData } from '@remix-run/react';
-import invariant from "tiny-invariant";
+import { z } from "zod";
 import PageContainer from "~/components/layout/PageContainer";
-import type { OrderByDirection } from "~/constants/types";
-import { paginateEntityToApiObject } from "~/mapper/abstract.mapper";
+import { paginateApiObjectToDto } from "~/mapper/abstract.mapper";
 import { pseFormationApiObjectToDto } from "~/mapper/pseformation.mapper";
 import { getUserPseFormations } from "~/services/pseformation.server";
-import { getSearchParam, getSearchParamNumber } from "~/services/request.server";
 import { requireUser } from '~/services/session.server';
+import { getSearchParamsOrFail } from "~/utils/remix.params";
+
+const URLSearchParamsSchema = z.object({
+  page: z.number().default(0),
+  pageSize: z.number().default(25),
+	orderBy: z.string().default("createdAt"),
+	orderByDirection: z.enum([ 'asc', 'desc']).default("desc"),
+})
 
 export async function loader({ request }: LoaderArgs) {
   const user = await requireUser(request);
 
-  const page = getSearchParamNumber(request, 'page') || 0
-	const pageSize = getSearchParamNumber(request, 'pageSize') || 25
+	const { page, pageSize, orderBy, orderByDirection } = getSearchParamsOrFail(request, URLSearchParamsSchema)
 
-	const orderBy = getSearchParam(request, 'orderBy')  || "from"
-	const orderByDirection = (getSearchParam(request, 'orderByDirection') || "desc") as OrderByDirection
-
-	invariant(orderBy, `Missing orderBy`)
-	invariant(orderByDirection, `Missing orderByDirection`)
 
   const formationsPaginatedObjectApiObject = await getUserPseFormations(user.id, page, pageSize, orderBy, orderByDirection)
 
   return json({
-    formations: paginateEntityToApiObject(formationsPaginatedObjectApiObject, pseFormationApiObjectToDto)
+    formationsPaginateObject: paginateApiObjectToDto(formationsPaginatedObjectApiObject, pseFormationApiObjectToDto)
   });
 }
 
@@ -37,19 +37,29 @@ export const meta: MetaFunction<typeof loader> = () => {
 };
 
 export default function FromationPseRoute() {
-  const { formations } = useLoaderData<typeof loader>();
+  const { formationsPaginateObject } = useLoaderData<typeof loader>();
 
   return (
     <PageContainer>
-
-      {formations.data.map(formation => (
-        <div key={formation.id}>
-          <Link href={`/pse/${formation.id}`}>
-            {formation.title} {formation.place.title}
-          </Link>
-        </div>
-      ))}
-
+      <Table size="small">
+        <TableHead>
+          <TableRow>
+            <TableCell>Nom</TableCell>
+          </TableRow>
+        </TableHead>
+        <TableBody>
+          {formationsPaginateObject.data.map((formation) => (
+            <TableRow key={formation.id}>
+              <TableCell>
+                <Link href={`/pse/${formation.id}`}>
+                  {formation.title} {formation.place.title}
+                </Link>
+              </TableCell>
+            </TableRow>
+          ))}
+        </TableBody>
+        {/* TODO: paginaation */}
+      </Table>
     </PageContainer>
   );
 }
