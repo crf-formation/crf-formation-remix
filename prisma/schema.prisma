@@ -20,7 +20,7 @@ model User {
 
   userPasswordToken                UserPasswordToken?
   pseUserPreparatoryWorks          PseUserPreparatoryWork[]
-  userOnPseFormations              UserOnPseFormation[]
+  usersOnPseFormation              UserOnPseFormation[]
   pseUserTechniques                PseUserTechnique[]
   pseUserConcreteCaseGroupStudents PseUserConcreteCaseGroupStudent[]
   pseConcreteCaseSituations        PseConcreteCaseSituation[]

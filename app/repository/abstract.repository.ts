@@ -1,4 +1,5 @@
 import invariant from "tiny-invariant";
+import { z } from "zod";
 import type { OrderByDirection, PaginateObject } from "~/constants/types";
 
 interface Props<T> {
@@ -12,7 +13,29 @@ interface Props<T> {
   select?: any;
 }
 
-export async function createPaginateObject<T>({ model, page, pageSize, orderBy = 'createdAt', orderByDirection = 'asc', include, select, where }: Props<typeof model>): Promise<PaginateObject<T>> {
+const PropsSchema = z.object({
+  model: z.any(),
+	page: z.number(),
+	pageSize: z.number(),
+  orderBy: z.string().default("createdAt"),
+  orderByDirection: z.string().default("asc"),
+  include: z.any().optional(),
+  where: z.any().optional(),
+  select: z.any().optional(),
+});
+
+export async function createPaginateObject<T>(props: Props<typeof model>): Promise<PaginateObject<T>> {
+  const { 
+    model, 
+    page, 
+    pageSize, 
+    orderBy = 'createdAt', 
+    orderByDirection = 'asc', 
+    include, 
+    select, 
+    where 
+  } = PropsSchema.parse(props)
+
   invariant(model, `Missing model`)
   invariant(page >= 0, `Invalid page ${page}`)
   invariant(pageSize > 0, `Invalid pageSize ${pageSize}`)
@@ -64,28 +87,3 @@ export async function createPaginateObject<T>({ model, page, pageSize, orderBy =
     },
   }; 
 }
-
-
-
-//
-//
-// 
-
-/**
- * Prepare which items to update / create for an array of objects, based on the id existing or not.
- */
-export function prepareChildrenRequest<T extends { id: Optional<String> }>(data: Array<T>): any {
-  const create: Array<T> = []
-  const update: Array<T> = []
-
-  data.forEach(item => {
-    if (item.id) { // has an id, already exsits, we update
-      update.push(item)
-    } else {
-      create.push(item)    
-    }
-  })
-
-  return { create, update }
-}
-

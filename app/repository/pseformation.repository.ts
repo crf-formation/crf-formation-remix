@@ -2,8 +2,7 @@ import { prisma } from "~/db.server";
 import type { PseFormationEntity } from "~/apiobject/entity";
 import type { PseFormationPostApiObject, PseFormationPutApiObject } from "~/apiobject/pseformation.apiobject";
 import type { OrderByDirection, PaginateObject } from "~/constants/types";
-import { createPaginateObject, prepareChildrenRequest } from "./abstract.repository";
-import { UserOnPseFormationPutApiObject } from "~/apiobject/useronpseformation.apiobject";
+import { createPaginateObject } from "./abstract.repository";
 
 export async function createPseFormationEntity(pseFormationPostApiObject: PseFormationPostApiObject): Promise<PseFormationEntity> {
   return await prisma.pseFormation.create({
@@ -12,7 +11,7 @@ export async function createPseFormationEntity(pseFormationPostApiObject: PseFor
     },
 		include: {
 			place: true,
-      UserOnPseFormation: {
+      userOnPseFormations: {
         include: { 
           user: true
         }
@@ -40,7 +39,7 @@ export async function updatePseFormationEntity(id: string, pseFormationPutApiObj
     return await prisma.pseFormation.update({
       data: {
         ...data,
-        // UserOnPseFormation: {
+        // userOnPseFormations: {
         //   // createMany is not supported by SQLite.
         //   createMany: { data: users }
         // },
@@ -50,7 +49,7 @@ export async function updatePseFormationEntity(id: string, pseFormationPutApiObj
       },
       include: {
         place: true,
-        UserOnPseFormation: {
+        userOnPseFormations: {
           include: {
             user: true,
           },
@@ -65,7 +64,7 @@ export async function findPseFormationEntityById(id: string): Promise<Optional<P
     where: { id },
     include: {
       place: true,
-      UserOnPseFormation: {
+      userOnPseFormations: {
         include: {
           user: true,
         },
@@ -107,7 +106,7 @@ export async function findPseFormationForUserEntities(
     orderBy,
     orderByDirection,
     where: {
-      UserOnPseFormation: { some: { userId } }
+      userOnPseFormations: { some: { userId } }
     },
 		include: {
       place: true,

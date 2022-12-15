@@ -85,7 +85,7 @@ export function pseFormationEntityToApiObject(entity: PseFormationEntity): PseFo
 		// TODO: how to make typescript PseFormationEntity with place / UserOnPseFormation etc?
 		place: placeEntityToApiObject(entity.place),
 		// can be null when loading list
-		users: (entity.UserOnPseFormation || []).map(userOnPseFormationEntityToApiObject)
+		users: (entity.userOnPseFormations || []).map(userOnPseFormationEntityToApiObject)
 	}
 }
 
