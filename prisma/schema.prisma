@@ -159,7 +159,7 @@ model PseUserTechnique {
 model PseCompetence {
   id String @id @default(cuid())
 
-  pseConcreteCaseTypes PseConcreteCaseType[]
+  pseConcreteCaseTypes PseCompetencesOnPseConcreteCaseTypes[]
 }
 
 model PseConcreteCaseType {
@@ -167,10 +167,25 @@ model PseConcreteCaseType {
 
   name String
 
-  competencesToEvaluate    PseCompetence[]
   pseConcreteCaseSituation PseConcreteCaseSituation[]
   pseUserConcreteCases     PseUserConcreteCase[]
+  competencesToEvaluate    PseCompetencesOnPseConcreteCaseTypes[]
 }
+
+// ManyToMany explicit
+// https://www.prisma.io/docs/concepts/components/prisma-schema/relations/many-to-many-relations#explicit-many-to-many-relations
+model PseCompetencesOnPseConcreteCaseTypes {
+  pseCompetence       PseCompetence     @relation(fields: [pseCompetenceId], references: [id])
+  pseCompetenceId     String
+
+  pseConcreteCaseType   PseConcreteCaseType @relation(fields: [pseConcreteCaseTypeId], references: [id])
+  pseConcreteCaseTypeId String
+
+  assignedAt DateTime @default(now())
+
+  @@id([pseCompetenceId, pseConcreteCaseTypeId])
+}
+
 
 model PseConcreteCaseGroup {
   id        String   @id @default(cuid())

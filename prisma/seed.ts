@@ -26,10 +26,33 @@ async function seedPseTechniques() {
     },
   ]
 
-  techniques.forEach(async technique => {
-    await prisma.pseTechnique.create({
-      data: technique
-    })
+  techniques.forEach(async pseTechnique => {
+    await prisma.pseTechnique.upsert({
+      where: { id: pseTechnique.id },
+      update: pseTechnique,
+      create: pseTechnique
+    });
+  })
+}
+
+async function seedPseCompetence() {
+  const competences = [
+    { id: "C1" },
+    { id: "C2" },
+    { id: "C3" },
+    { id: "C4_1" },
+    { id: "C4_2" },
+    { id: "C4_3" },
+    { id: "C5" },
+    { id: "C6" },
+  ]
+
+  competences.forEach(async pseCompetence => {
+    await prisma.pseCompetence.upsert({
+      where: { id: pseCompetence.id },
+      update: pseCompetence,
+      create: pseCompetence,
+    });
   })
 }
 
@@ -72,9 +95,11 @@ async function seedPlaces() {
   ];
 
   places.forEach(async place => {
-    await prisma.place.create({
-      data: place
-    })
+    await prisma.place.upsert({
+      where: { id: place.id },
+      update: place,
+      create: place,
+    });
   })
 }
 
@@ -90,9 +115,11 @@ async function seedPseModule() {
   ]
 
   pseModules.forEach(async pseModule => {
-    await prisma.pseModule.create({
-      data: pseModule
-    })
+    await prisma.pseModule.upsert({
+      where: { id: pseModule.id },
+      update: pseModule,
+      create: pseModule,
+    });
   })
 }
 
@@ -136,6 +163,7 @@ async function seed() {
   await seedPlaces()
   await seedPseModule()
   await seedPseTechniques()
+  await seedPseCompetence()
 
   // nothing to seed yet
   console.log(`Database has been seeded. 🌱`);
