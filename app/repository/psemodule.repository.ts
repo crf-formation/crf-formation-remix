@@ -1,4 +1,4 @@
-import type { PseModuleEntity } from "~/apiobject/entity";
+import type { PseModuleEntity } from "~/entity";
 import { prisma } from "~/db.server";
 
 export async function getPseModuleEntities(): Promise<Array<PseModuleEntity>> {

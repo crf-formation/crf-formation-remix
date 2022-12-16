@@ -1,5 +1,5 @@
 import { prisma } from "~/db.server";
-import type { PseTechniqueEntity } from "~/apiobject/entity";
+import type { PseTechniqueEntity } from "~/entity";
 
 export async function findPseTechniqueEntityById(id: string): Promise<Optional<PseTechniqueEntity>> {
 	const pseTechniqueEntity = await prisma.pseTechnique.findUnique({

@@ -4,7 +4,7 @@ import type {
   UserPutApiObject,
 } from "~/apiobject/user.apiobject";
 import bcrypt from "bcryptjs";
-import type { UserEntity, PasswordEntity } from "~/apiobject/entity";
+import type { UserEntity, PasswordEntity } from "~/entity";
 import { v4 as uuid } from "uuid";
 import type { OrderByDirection, PaginateObject } from "~/constants/types";
 import { createPaginateObject } from "./abstract.repository";

@@ -1,4 +1,4 @@
-import type { UserOnPseFormationEntity } from "~/apiobject/entity"
+import type { UserOnPseFormationEntity } from "~/entity"
 import type { UserOnPseFormationApiObject } from "~/apiobject/useronpseformation.apiobject"
 import { userOnPseFormationEntityToApiObject } from "~/mapper/useronpseformation.mapper"
 import { findUserOnPseFormationEntityById } from "~/repository/useronpseformation.repository"

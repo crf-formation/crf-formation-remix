@@ -1,4 +1,4 @@
-import type { PseConcreteCaseSituationEntity } from "~/apiobject/entity";
+import type { PseConcreteCaseSituationEntity } from "~/entity";
 import type { PseConcreteCaseSituationApiObject } from "~/apiobject/pseconcretecasesituation.apiobject";
 import type { PseConcreteCaseSituationDto } from "~/dto/pseconcretecasesituation.dto";
 import { pseConcreteCaseGroupEntityToApiObject } from "./pseconcretecasegroup.mapper";

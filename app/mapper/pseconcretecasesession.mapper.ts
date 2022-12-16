@@ -1,5 +1,5 @@
 import { isEmpty } from "lodash";
-import type { PseConcreteCaseSessionEntity } from "~/apiobject/entity";
+import type { PseConcreteCaseSessionEntity } from "~/entity";
 import type { PseConcreteCaseSessionApiObject, PseConcreteCaseSessionPostApiObject, PseConcreteCaseSessionStateApiEnum } from "~/apiobject/pseconcretecasesession.apiobject";
 import type { PseConcreteCaseSessionDto, PseConcreteCaseSessionPostDto, PseConcreteCaseSessionStateDtoEnum } from "~/dto/pseconcretecasesession.dto";
 import { pseConcreteCaseGroupApiObjectToDto, pseConcreteCaseGroupEntityToApiObject } from "./pseconcretecasegroup.mapper";

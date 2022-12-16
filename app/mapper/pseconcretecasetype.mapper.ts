@@ -1,4 +1,4 @@
-import type { PseConcreteCaseTypeEntity } from "~/apiobject/entity";
+import type { PseConcreteCaseTypeEntity } from "~/entity";
 import type { PseConcreteCaseTypeApiObject } from "~/apiobject/pseconcretecasetype.apiobject";
 import type { PseConcreteCaseTypeDto } from "~/dto/pseconcretecasetype.dto";
 import { pseCompetenceApiObjectToDto } from "./psecompetence.mapper";

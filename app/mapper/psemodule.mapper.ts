@@ -1,4 +1,4 @@
-import type { PseModuleEntity } from "~/apiobject/entity";
+import type { PseModuleEntity } from "~/entity";
 import type { PseModuleApiObject } from "~/apiobject/psemodule.apiobject";
 import type { PseModuleDto } from "~/dto/psemodule.dto";
 

@@ -1,4 +1,4 @@
-import type { PseConcreteCaseGroupEntity, PseUserConcreteCaseGroupStudentEntity } from "~/apiobject/entity";
+import type { PseConcreteCaseGroupEntity, PseUserConcreteCaseGroupStudentEntity } from "~/entity";
 import type { PseConcreteCaseGroupApiEnum, PseConcreteCaseGroupApiObject, PseUserConcreteCaseGroupStudentApiObject } from "~/apiobject/pseconcretecasegroup.apiobject";
 import type { PseConcreteCaseGroupDto, PseConcreteCaseGroupDtoEnum, PseUserConcreteCaseGroupStudentDto } from "~/dto/pseconcretecasegroup.dto";
 import { userApiObjectToDto, userEntityToApiObject } from "./user.mapper";

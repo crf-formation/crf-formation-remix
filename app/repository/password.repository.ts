@@ -1,6 +1,6 @@
 import { prisma } from "~/db.server";
 import type { UserPasswordTokenApiObject } from "~/apiobject/passwordrecovery.apiobject";
-import type { UserPasswordTokenEntity } from "~/apiobject/entity";
+import type { UserPasswordTokenEntity } from "~/entity";
 
 export async function createUserPasswordTokenEntity(
   userPasswordTokenApiObject: UserPasswordTokenApiObject

@@ -3,7 +3,7 @@ import { v4 as uuid } from "uuid";
 import { addDays, isAfter } from 'date-fns'
 import { PASSWORD_CREATION_EXPIRATION_IN_DAYS } from "~/constants/index.server";
 import { createUserPasswordTokenEntity, getUserPasswordTokenEntity, removeUserPasswordTokenEntity } from "~/repository/password.repository";
-import { UserPasswordTokenEntity } from "~/apiobject/entity";
+import { UserPasswordTokenEntity } from "~/entity";
 import { findUserEntityById, updateUserEntityPassword } from "~/repository/user.repository";
 
 export async function askForPasswordRecovery(

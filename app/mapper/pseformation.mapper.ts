@@ -1,5 +1,5 @@
 import { parse, parseISO } from "date-fns";
-import type { PseFormationEntity } from "~/apiobject/entity";
+import type { PseFormationEntity } from "~/entity";
 import type { PseFormationApiObject, PseFormationPostApiObject, PseFormationPutApiObject, PseFormationStateApiEnum } from "~/apiobject/pseformation.apiobject";
 import type { PseFormationDto, PseFormationPostDto, PseFormationPutDto } from "~/dto/pseformation.dto";
 import { placeApiObjectToDto, placeEntityToApiObject } from "./place.mapper";

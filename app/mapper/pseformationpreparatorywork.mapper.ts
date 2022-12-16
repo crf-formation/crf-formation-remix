@@ -1,4 +1,4 @@
-import type { PseUserPreparatoryWorkEntity } from "~/apiobject/entity";
+import type { PseUserPreparatoryWorkEntity } from "~/entity";
 import type { PseUserPreparatoryWorkApiObject } from "~/apiobject/pseformationpreparatorywork.apiobject";
 import type { PseUserPreparatoryWorkDto } from "~/dto/pseformationpreparatorywork.dto";
 import { pseModuleEntityToApiObject } from "./psemodule.mapper";

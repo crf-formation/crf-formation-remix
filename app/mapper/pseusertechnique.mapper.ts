@@ -1,4 +1,4 @@
-import type { PseUserTechniqueEntity } from "~/apiobject/entity";
+import type { PseUserTechniqueEntity } from "~/entity";
 import type { PseUserTechniqueApiObject } from "~/apiobject/pseusertechnique.apiobject";
 import type { PseUserTechniqueDto } from "~/dto/pseusertechnique.dto";
 import { pseTechniqueApiObjectToDto, pseTechniqueEntityToApiObject } from "./psetechnique.mapper";

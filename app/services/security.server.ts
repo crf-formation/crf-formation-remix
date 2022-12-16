@@ -1,4 +1,4 @@
-import type { UserOnPseFormationEntity } from "~/apiobject/entity";
+import type { UserOnPseFormationEntity } from "~/entity";
 import { findUserOnPseFormationEntityById } from "~/repository/useronpseformation.repository";
 import { ForbiddenException } from "./api.error";
 

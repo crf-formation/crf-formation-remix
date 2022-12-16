@@ -1,4 +1,4 @@
-import type { PseCompetenceEntity } from "~/apiobject/entity";
+import type { PseCompetenceEntity } from "~/entity";
 import type { PseCompetenceApiObject } from "~/apiobject/psecompetence.apiobject";
 import type { PseCompetenceDto } from "~/dto/psecompetence.dto";
 

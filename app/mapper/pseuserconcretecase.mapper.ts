@@ -1,4 +1,4 @@
-import type { PseUserConcreteCaseCompetenceEntity, PseUserConcreteCaseEntity } from "~/apiobject/entity";
+import type { PseUserConcreteCaseCompetenceEntity, PseUserConcreteCaseEntity } from "~/entity";
 import type { PseUserConcreteCaseApiObject, PseUserConcreteCaseCompetenceApiObject, PseUserConcreteCaseCompetenceGradeApiEnum, PseUserConcreteCaseRoleApiEnum, PseUserConcreteCaseStateApiEnum } from "~/apiobject/pseuserconcretecase.apiobject";
 import type { PseUserConcreteCaseCompetenceDto, PseUserConcreteCaseCompetenceGradeDtoEnum, PseUserConcreteCaseDto, PseUserConcreteCaseStateDtoEnum } from "~/dto/pseuserconcretecase.dto";
 import { pseCompetenceApiObjectToDto, pseCompetenceEntityToApiObject } from "./psecompetence.mapper";

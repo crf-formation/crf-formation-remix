@@ -1,4 +1,4 @@
-import type { PlaceEntity } from "~/apiobject/entity";
+import type { PlaceEntity } from "~/entity";
 import type { PlaceApiObject } from "~/apiobject/place.apiobject";
 import type { PlaceDto } from "~/dto/place.dto";
 

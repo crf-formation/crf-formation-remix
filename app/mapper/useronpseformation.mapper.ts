@@ -1,4 +1,4 @@
-import type { UserOnPseFormationEntity } from "~/apiobject/entity";
+import type { UserOnPseFormationEntity } from "~/entity";
 import type { UserOnPseFormationApiObject, UserOnPseFormationPutApiObject, UserOnPseFormationRoleApiEnum } from "~/apiobject/useronpseformation.apiobject";
 import type { UserOnPseFormationDto, UserOnPseFormationPutDto, UserOnPseFormationRoleDtoEnum } from "~/dto/useronpseformation.dto";
 import { userApiObjectToDto, userEntityToApiObject } from "./user.mapper";
