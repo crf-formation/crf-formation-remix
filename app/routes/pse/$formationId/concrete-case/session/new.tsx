@@ -1,16 +1,17 @@
 import { Button, Box, TextField, Typography } from "@mui/material";
 import { Form, useActionData, useLoaderData } from "@remix-run/react";
-import { ActionArgs, LoaderArgs, redirect } from "@remix-run/server-runtime";
+import type { ActionArgs, LoaderArgs} from "@remix-run/server-runtime";
+import { redirect } from "@remix-run/server-runtime";
 import { json } from "@remix-run/server-runtime";
 import { useRef, useEffect } from "react";
 import { z } from "zod";
 import FormErrorHelperText from "~/components/form/FormErrorHelperText";
 import PageContainer from "~/components/layout/PageContainer";
 import Section from "~/components/layout/Section";
-import { PseConcreteCaseSessionPostDto } from "~/dto/pseconcretecasesession.dto";
+import type { PseConcreteCaseSessionPostDto } from "~/dto/pseconcretecasesession.dto";
 import { pseConcreteCaseSessionPostDtoToApiObject } from "~/mapper/pseconcretecasesession.mapper";
 import { createPseConcreteCaseSession } from "~/services/pseconcretecasesession.server";
-import { getSession, requireUser } from "~/services/session.server";
+import { requireUser } from "~/services/session.server";
 import { getFormData, getParamsOrFail } from "~/utils/remix.params";
 
 const ParamsSchema = z.object({
@@ -18,7 +19,7 @@ const ParamsSchema = z.object({
 });
 
 export async function loader({ request, params }: LoaderArgs) {
-  const user = await requireUser(request);
+  await requireUser(request);
 	// TODO: has access to formation
 
 	const { formationId } = getParamsOrFail(params, ParamsSchema)
@@ -34,9 +35,7 @@ const PostSchema = z.object({
 });
 
 export async function action({ request, params }: ActionArgs) {
-  const session = await getSession(request);
-
-  const user = await requireUser(request);
+  await requireUser(request);
 	// TODO: has access to formation
 
 	const { formationId } = getParamsOrFail(params, ParamsSchema)

@@ -3,7 +3,6 @@ import type {
   UserAuthTokenApiObject,
   UserPostApiObject,
   UserPutApiObject,
-  UserRoleApiEnum,
 } from "~/apiobject/user.apiobject";
 import {
   createUserEntity,

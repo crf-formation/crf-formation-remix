@@ -23,7 +23,7 @@ const URLSearchParamsSchema = z.object({
 })
 
 export async function loader({ request, params }: LoaderArgs) {
-  const user = await requireUser(request);
+  await requireUser(request);
 
 	const { formationId } = getParamsOrFail(params, ParamsSchema)
   const { page, pageSize, orderBy, orderByDirection } = getSearchParamsOrFail(request, URLSearchParamsSchema)

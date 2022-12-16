@@ -1,4 +1,3 @@
-import { Box, Card, CardContent, Divider } from "@mui/material";
 import { Datagrid, DateField, TextField } from "react-admin";
 import CrudActionsTabs from '~/components/reactadmin/layout/CrudActionsTabs';
 import ListLayout from '~/components/reactadmin/layout/ListLayout';

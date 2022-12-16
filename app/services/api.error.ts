@@ -1,14 +1,3 @@
-
-export function toApiError(status: number, jsonResponse: any): ApiErrorException | null {
-	if (status === 403) {
-    return new ForbiddenException(jsonResponse);
-  } else if (status === 500) {
-    return new InternalServerException(jsonResponse);
-  } 
-
-  return new ApiErrorException('', jsonResponse, status);
-}
-
 export interface ApiError {
   status: number;
   localizedMessage: string;

@@ -43,9 +43,7 @@ function parseParams(o: any, schema: any, key: string, value: any) {
     parseParams(o[parentProp], shape[parentProp], rest.join("."), value);
     return;
   }
-  let isArray = false;
   if (key.includes("[]")) {
-    isArray = true;
     key = key.replace("[]", "");
   }
   const def = shape[key];
@@ -92,13 +90,13 @@ function getParamsInternal<T>(
       }
     };
     for (let issue of result.error.issues) {
-      const { message, path, code, expected, received } = issue;
+      const { message, path, /*code, expected, received*/ } = issue;
       const [key, index] = path;
       let value = o[key];
-      let prop = key;
+      // let prop = key;
       if (index !== undefined) {
         value = value[index];
-        prop = `${key}[${index}]`;
+        // prop = `${key}[${index}]`;
       }
       addError(key, message);
     }

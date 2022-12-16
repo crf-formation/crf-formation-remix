@@ -2,7 +2,7 @@ import { prisma } from "~/db.server";
 import type { PseConcreteCaseSessionEntity } from "~/entity";
 import type { OrderByDirection, PaginateObject } from "~/constants/types";
 import { createPaginateObject } from "./abstract.repository";
-import { PseConcreteCaseSessionPostApiObject } from "~/apiobject/pseconcretecasesession.apiobject";
+import type { PseConcreteCaseSessionPostApiObject } from "~/apiobject/pseconcretecasesession.apiobject";
 
 
 export async function getPseConcreteCaseSessionEntitiesByFormationId(

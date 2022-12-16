@@ -1,5 +1,4 @@
 // from https://github.com/marmelab/react-admin/blob/master/packages/ra-data-simple-rest/src/index.ts
-import isEmpty from 'lodash/isEmpty';
 import type { DataProvider, GetListParams } from 'ra-core';
 import { fetchUtils } from 'ra-core';
 import type { GetManyReferenceParams, GetOneParams, UpdateManyParams } from 'react-admin';

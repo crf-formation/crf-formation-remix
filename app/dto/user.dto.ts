@@ -1,5 +1,3 @@
-import type { DateTime } from "~/constants/types";
-
 export type UserStateDtoEnum = 'CREATED' | 'DISABLED' | 'ENABLED' | 'ARCHIVED'
 export type UserRoleDtoEnum = 'USER' | 'ADMIN' | 'SUPER_ADMIN'
 

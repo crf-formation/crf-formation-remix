@@ -106,6 +106,7 @@ function StudentList({ students, formationId, hasAdminPermission }: { students: 
       <List>
         {students.map((student: UserDto) => (
           <ListItem
+            key={student.id}
             secondaryAction={
               <Link
                 href={`/pse/${formationId}/students/${student.id}`}

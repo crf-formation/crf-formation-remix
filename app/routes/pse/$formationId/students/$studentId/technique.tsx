@@ -1,4 +1,4 @@
-import { Table, TableHead, TableRow, TableCell, TableBody, Typography, Box, Stack, Checkbox, FormControlLabel } from "@mui/material";
+import { Typography, Box, Stack, Checkbox, FormControlLabel } from "@mui/material";
 import { useLoaderData } from "@remix-run/react";
 import type { LoaderArgs} from "@remix-run/server-runtime";
 import { json } from "@remix-run/server-runtime";

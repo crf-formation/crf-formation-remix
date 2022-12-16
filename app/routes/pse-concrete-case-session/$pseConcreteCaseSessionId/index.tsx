@@ -6,7 +6,6 @@ import { z } from "zod";
 import PageContainer from "~/components/layout/PageContainer";
 import { pseConcreteCaseSessionApiObjectToDto } from "~/mapper/pseconcretecasesession.mapper";
 import { getPseConcreteCaseSessionById } from "~/services/pseconcretecasesession.server";
-import { assertUserHasAccessToFormation } from "~/services/security.server";
 import { requireUser } from "~/services/session.server";
 import { getParamsOrFail } from '~/utils/remix.params';
 
@@ -21,7 +20,7 @@ export const loader: LoaderFunction = async ({
 }) => {
 	const { pseConcreteCaseSessionId } = getParamsOrFail(params, ParamsSchema)
 
-	const user = await requireUser(request)
+	await requireUser(request)
 
 	const pseConcreteCaseSessionApiObject = await getPseConcreteCaseSessionById(pseConcreteCaseSessionId)
 	

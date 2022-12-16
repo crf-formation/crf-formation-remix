@@ -6,7 +6,7 @@ import { z } from "zod";
 import Section from "~/components/layout/Section";
 import { BooleanText } from "~/components/typography/BooleanText";
 import Property from "~/components/typography/Property";
-import { PseCompetenceDto } from "~/dto/psecompetence.dto";
+import type { PseCompetenceDto } from "~/dto/psecompetence.dto";
 import type {
   PseUserSummaryConcreteCaseDto,
   PseUserSummaryPreparatoryWorkDto,

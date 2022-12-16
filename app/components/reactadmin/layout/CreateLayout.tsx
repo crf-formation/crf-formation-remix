@@ -3,7 +3,7 @@ import type { CreateProps } from "react-admin";
 import { Create } from "react-admin";
 import Main from "~/components/layout/Main";
 
-interface CreateLayoutProps<DataDto> extends CreateProps {
+interface CreateLayoutProps extends CreateProps {
   children: ReactElement;
   /**
    * to have a reduced form width. Usefull for simple forms, avoiding input that takes the whole screen length.
@@ -11,7 +11,7 @@ interface CreateLayoutProps<DataDto> extends CreateProps {
   small?: boolean;
 }
 
-export default function CreateLayout<DataDto>({ children, small, mapper, ...props }: CreateLayoutProps<DataDto>) {
+export default function CreateLayout({ children, small, mapper, ...props }: CreateLayoutProps) {
   return (
     <Main>
       <Box

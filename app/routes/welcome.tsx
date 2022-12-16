@@ -25,7 +25,7 @@ export default function WelcomeRoute() {
     <PageContainer>
       <Paper sx={{ textAlign: "center", py: 4 }}>
         <Typography variant="h2" sx={{ mt: 2 }}>
-        Bienvenue !
+          Bienvenue {user.firstName} !
         </Typography>
 
         <Typography variant="h5" sx={{ mt: 2 }}>
@@ -35,9 +35,7 @@ export default function WelcomeRoute() {
         <Typography sx={{ mt: 2 }}>
           Vous avez désormais accès à CRF Formation.
         </Typography>
-
       </Paper>
-
     </PageContainer>
   );
 }
