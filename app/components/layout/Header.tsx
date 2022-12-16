@@ -9,7 +9,6 @@ import Toolbar from "@mui/material/Toolbar";
 import Tooltip from "@mui/material/Tooltip";
 import Typography from "@mui/material/Typography";
 import { useState } from "react";
-import ClientOnly from '~/utils/ClientOnly';
 import UserMenu from "./UserMenu";
 import useUser from "~/hooks/useUser";
 import { red } from "@mui/material/colors";
@@ -74,11 +73,13 @@ export default function Header(props: HeaderProps) {
                 component="h1"
                 sx={{ ml: 1 }}
               >
-                <ClientOnly fallback="">
+                {/* disabled: page title on header */}
+
+                {/* <ClientOnly fallback="">
                   {() => window.document?.title}
-                </ClientOnly>
+                </ClientOnly> */}
                 {/* only when on a react admin page, will replace the title for us */}
-                <span id="react-admin-title" style={{ marginLeft: 4 }} />
+                {/* <span id="react-admin-title" style={{ marginLeft: 4 }} /> */}
               </Typography>
             </Grid>
 

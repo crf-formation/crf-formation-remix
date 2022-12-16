@@ -8,7 +8,6 @@ import type { UserEntity, PasswordEntity } from "~/entity";
 import { v4 as uuid } from "uuid";
 import type { OrderByDirection, PaginateObject } from "~/constants/types";
 import { createPaginateObject } from "./abstract.repository";
-import { UserOnPseFormationApiObject } from '../apiobject/useronpseformation.apiobject';
 
 export async function createUserEntity(
   userPostApiObject: UserPostApiObject

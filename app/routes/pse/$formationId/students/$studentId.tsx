@@ -1,10 +1,11 @@
-import { Grid, Link, Typography } from "@mui/material";
+import { Grid, Link } from "@mui/material";
 import type { LoaderFunction, MetaFunction } from "@remix-run/node";
 import { json } from "@remix-run/node";
 import { Outlet, useLoaderData } from "@remix-run/react";
 import { z } from "zod";
 import AppTabsLink from "~/components/layout/AppTabsLink";
 import PageContainer from "~/components/layout/PageContainer";
+import PageTitle from "~/components/layout/PageTitle";
 import Section from "~/components/layout/Section";
 import useUser from "~/hooks/useUser";
 import { pseFormationApiObjectToDto } from "~/mapper/pseformation.mapper";
@@ -46,7 +47,7 @@ export const loader: LoaderFunction = async ({
 
 export const meta: MetaFunction<typeof loader> = ({ data }) => {
   return {
-    title: `PSE - ${data?.student?.fullName}`,
+    title: data?.student?.fullName,
   };
 };
 
@@ -65,7 +66,7 @@ export default function UserPseFormationSummaryRoute() {
     },
     {
       label: 'Savoir de mise en oeuvre des procédures',
-      href: `/pse/${formation.id}/students/${student.id}/concrete-case/sessions`
+      href: `/pse/${formation.id}/students/${student.id}/concrete-case/session`
     },
     {
       label: 'Suivi final',
@@ -77,20 +78,19 @@ export default function UserPseFormationSummaryRoute() {
     <>
       <AppTabsLink tabs={tabs} />
       <PageContainer>
-        <Grid container spacing={2}>
-          <Grid item xs={12}>
-            <Typography variant="h1">{student.fullName}</Typography>
-          </Grid>
+        <PageTitle title={student.fullName} />
 
+        <Grid container spacing={2}>
           <Grid item xs={9}>
             <Outlet />
           </Grid>
           <Grid item xs={3}>
             <Section title="">
               {user.hasAdminPermission && (
-                <Link href={`/admin/user/${student.id}`}>Éditer l'utilisateur</Link>
+                <Link href={`/admin/user/${student.id}`}>
+                  Éditer l'utilisateur
+                </Link>
               )}
-
             </Section>
           </Grid>
         </Grid>

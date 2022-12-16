@@ -1,4 +1,5 @@
-import { Button, Box, TextField, Typography } from "@mui/material";
+
+import { Button, Box, TextField } from "@mui/material";
 import { Form, useActionData, useLoaderData } from "@remix-run/react";
 import type { ActionArgs, LoaderArgs} from "@remix-run/server-runtime";
 import { redirect } from "@remix-run/server-runtime";
@@ -7,7 +8,9 @@ import { useRef, useEffect } from "react";
 import { z } from "zod";
 import FormErrorHelperText from "~/components/form/FormErrorHelperText";
 import PageContainer from "~/components/layout/PageContainer";
+import PageTitle from "~/components/layout/PageTitle";
 import Section from "~/components/layout/Section";
+import Callout from "~/components/typography/Callout";
 import type { PseConcreteCaseSessionPostDto } from "~/dto/pseconcretecasesession.dto";
 import { pseConcreteCaseSessionPostDtoToApiObject } from "~/mapper/pseconcretecasesession.mapper";
 import { createPseConcreteCaseSession } from "~/services/pseconcretecasesession.server";
@@ -42,9 +45,8 @@ export async function action({ request, params }: ActionArgs) {
 
 	const result = await getFormData(request, PostSchema);
   if (!result.success) {
-    return json(result.errors, { status: 400 });
+    return json(result, { status: 400 });
   }
-
 	const postDto = result.data as PseConcreteCaseSessionPostDto
 
 	if (formationId !== postDto.formationId) {
@@ -55,7 +57,7 @@ export async function action({ request, params }: ActionArgs) {
 		pseConcreteCaseSessionPostDtoToApiObject(postDto)
 	)
 
-	return redirect(`/pse/${formationId}/concrete-case/session/${concreteCaseSessionApiObject.id}`);
+	return redirect(`/pse-concrete-case-session/${concreteCaseSessionApiObject.id}`);
 }
 
 export default function ConcreteCaseSessionsRoute() {
@@ -72,8 +74,9 @@ export default function ConcreteCaseSessionsRoute() {
 
   return (
     <PageContainer>
+      <PageTitle title="Créer une session" />
       <Section>
-        <Typography variant="h3">Créer une session de cas concrets</Typography>
+        <Callout severity="info">Créez une nouvelle session de cas concret</Callout>
 
         <Form method="post">
           <input type="hidden" name="formationId" value={formationId} />

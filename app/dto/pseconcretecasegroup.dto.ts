@@ -23,3 +23,12 @@ export interface PseUserConcreteCaseGroupStudentDto {
 	userId: string;
 	user?: Optional<UserDto>;
 }
+
+export interface PseConcreteCaseGroupPostDto {
+	pseConcreteCaseSessionId: string;
+	name: string;
+	/**
+	 * array of user id
+	 */ 
+	students: Array<String>
+}

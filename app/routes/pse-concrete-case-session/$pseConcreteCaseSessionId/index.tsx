@@ -1,4 +1,4 @@
-import { Grid, Link, Stack, Typography } from "@mui/material";
+import { Grid, Link, Stack } from "@mui/material";
 import type { LoaderFunction, MetaFunction } from "@remix-run/node";
 import { json } from "@remix-run/node";
 import { useLoaderData } from "@remix-run/react";
@@ -11,6 +11,9 @@ import { requireUser } from "~/services/session.server";
 import { getParamsOrFail } from '~/utils/remix.params';
 import PersonAddIcon from '@mui/icons-material/PersonAdd';
 import AddIcon from '@mui/icons-material/Add';
+import { getPseFormationByPseConcreteCaseSessionId } from "~/services/pseformation.server";
+import { pseFormationApiObjectToDto } from "~/mapper/pseformation.mapper";
+import PageTitle from "~/components/layout/PageTitle";
 
 const ParamsSchema = z.object({
   pseConcreteCaseSessionId: z.string(),
@@ -26,19 +29,20 @@ export const loader: LoaderFunction = async ({
 	await requireUser(request)
 
 	const pseConcreteCaseSessionApiObject = await getPseConcreteCaseSessionById(pseConcreteCaseSessionId)
-	
+  const pseFormationApiObject = await getPseFormationByPseConcreteCaseSessionId(pseConcreteCaseSessionApiObject.id)	
 
 	// TODO:
 	// await assertUserHasAccessToFormation(user.id, pseConcreteCaseSessionApiObject.id)
 
   return json({
-		pseConcreteCaseSession: pseConcreteCaseSessionApiObjectToDto(pseConcreteCaseSessionApiObject)
+    pseFormation: pseFormationApiObjectToDto(pseFormationApiObject),
+		pseConcreteCaseSession: pseConcreteCaseSessionApiObjectToDto(pseConcreteCaseSessionApiObject),
 	});
 };
 
 export const meta: MetaFunction<typeof loader> = ({ data }) => {
   return {
-    title: `PSE - ${data.pseConcreteCaseSession.name}`,
+    title: `Session - ${data?.pseConcreteCaseSession?.name}`,
   };
 };
 
@@ -77,10 +81,9 @@ export default function SessionPseRoute() {
 
   return (
     <PageContainer>
+      <PageTitle title={pseConcreteCaseSession.name} />
+
       <Grid container spacing={2}>
-        <Grid item xs={12}>
-          <Typography variant="h1">Session: {pseConcreteCaseSession.name}</Typography>
-        </Grid>
 
         <Grid item md={8}>
           <Stack spacing={2}>

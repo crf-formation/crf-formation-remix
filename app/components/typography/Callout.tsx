@@ -90,6 +90,7 @@ const StyledCallout = styled(Callout)(({ theme, sx }) => ({
     },
   },
 
+  // TODO: replace primary by blue?
   "&.MuiCallout-info": {
     color:
       theme.palette.mode === "dark"

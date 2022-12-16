@@ -8,6 +8,7 @@ import { useLoaderData } from "@remix-run/react";
 import { z } from "zod";
 import FormationPseStatusChip from "~/components/formationpse/FormationPseStatusChip";
 import PageContainer from "~/components/layout/PageContainer";
+import PageTitle from '~/components/layout/PageTitle';
 import Section from "~/components/layout/Section";
 import Callout from "~/components/typography/Callout";
 import Property from "~/components/typography/Property";
@@ -160,11 +161,9 @@ export default function FromationPseRoute() {
 
   return (
     <PageContainer>
-      <Grid container spacing={2}>
-        <Grid item xs={12}>
-          <Typography variant="h1">PSE: {formation.title}</Typography>
-        </Grid>
+      <PageTitle title={`PSE: ${formation.title}`} />
 
+      <Grid container spacing={2}>
         <Grid item md={8}>
           <Stack spacing={2}>
             <Formation

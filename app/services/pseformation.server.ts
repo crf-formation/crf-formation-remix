@@ -10,10 +10,12 @@ import {
   updatePseFormationEntity,
   findPseFormationForUserEntities,
   findCurrentPseFormationEntityForUser,
+  findPseSessionEntityByPseConcreteCaseSessionId,
 } from "~/repository/pseformation.repository";
 import { pseFormationEntityToApiObject } from "~/mapper/pseformation.mapper";
 import { paginateEntityToApiObject } from "~/mapper/abstract.mapper";
 import type { OrderByDirection, PaginateObject } from "~/constants/types";
+import { NotFoundException } from './api.error';
 
 export async function updatePseFormation(
   pseFormationId: string,
@@ -36,6 +38,15 @@ export async function findPseFormationById(
   const pseFormationEntity = await findPseFormationEntityById(id);
   if (!pseFormationEntity) {
     return null;
+  }
+  return pseFormationEntityToApiObject(pseFormationEntity);
+}
+
+
+export async function getPseFormationByPseConcreteCaseSessionId(pseConcreteCaseSessionId: string) : Promise<PseFormationApiObject> {
+  const pseFormationEntity = await findPseSessionEntityByPseConcreteCaseSessionId(pseConcreteCaseSessionId);
+  if (!pseFormationEntity) {
+    throw new NotFoundException("PseFormation for pseConcreteCaseSessionId", pseConcreteCaseSessionId)
   }
   return pseFormationEntityToApiObject(pseFormationEntity);
 }

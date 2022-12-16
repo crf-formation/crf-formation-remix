@@ -3,11 +3,13 @@ import type { LoaderArgs} from "@remix-run/server-runtime";
 import { json} from "@remix-run/server-runtime";
 import { useEffect } from "react";
 import { z } from "zod";
+import type { UserDto } from "~/dto/user.dto";
 import { paginateEntityToApiObject } from "~/mapper/abstract.mapper";
 import { userApiObjectToDto } from "~/mapper/user.mapper";
 import { requireUser } from "~/services/session.server";
 import { searchFormationStudents } from "~/services/user.server";
 import { getSearchParamsOrFail } from "~/utils/remix.params";
+import type { PaginateObject } from '../../constants/types';
 
 const URLSearchParamsSchema = z.object({
 	formationId: z.string(),
@@ -35,8 +37,15 @@ export async function loader({ request }: LoaderArgs) {
   });
 }
 
+interface OtherProps {
+  children: (props: {
+    usersPaginateObject?: PaginateObject<UserDto>;
+    isLoading: boolean;
+  }) => JSX.Element;
+}
+
 // TODO: can we transform this to a hook?
-export default function FormationStudentAutocompleteResource(props: z.infer<typeof URLSearchParamsSchema>) {
+export default function FormationStudentAutocompleteResource(props: z.infer<typeof URLSearchParamsSchema> & OtherProps) {
 	const fetcher = useFetcher<typeof loader>()
 	const data = fetcher.data
 
@@ -60,11 +69,5 @@ export default function FormationStudentAutocompleteResource(props: z.infer<type
 
 	const isLoading = fetcher.state !== 'idle'
 
-	// return (
-  //   <div>
-  //     {isLoading ? "LOADING" : "LOADED"}
-  //     <pre>{JSON.stringify(data, null, 2)}</pre>
-  //   </div>
-  // );
-  return props.children(data || {})
+  return props.children({ isLoading, usersPaginateObject: data?.usersPaginateObject })
 }

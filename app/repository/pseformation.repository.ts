@@ -73,6 +73,38 @@ export async function findPseFormationEntityById(id: string): Promise<Optional<P
   });
 }
 
+export async function findPseSessionEntityByPseConcreteCaseSessionId(pseConcreteCaseSessionId: string): Promise<Optional<PseFormationEntity>> {
+  // TODO: better way?
+  const pseConcreteCaseSessionEntity = await prisma.pseConcreteCaseSession.findUnique({
+    where: {
+      id: pseConcreteCaseSessionId
+    },
+    include: {
+      formation: true
+    }
+  })
+
+  // shortcut to load formation with the right includes
+  return findPseFormationEntityById(pseConcreteCaseSessionEntity.formation.id);
+  // return await prisma.pseFormation.findUnique({
+  //   where: {
+  //     pseConcreteCaseSessions: {
+  //       select: {
+  //         id: pseConcreteCaseSessionId
+  //       }
+  //     }
+  //   },
+  //   include: {
+  //     place: true,
+  //     userOnPseFormations: {
+  //       include: {
+  //         user: true,
+  //       },
+  //     },
+  //   },
+  // });
+}
+
 export async function findPseFormationEntities(
 	page: number,
   pageSize: number,
