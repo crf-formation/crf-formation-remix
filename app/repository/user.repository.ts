@@ -8,6 +8,7 @@ import type { UserEntity, PasswordEntity } from "~/entity";
 import { v4 as uuid } from "uuid";
 import type { OrderByDirection, PaginateObject } from "~/constants/types";
 import { createPaginateObject } from "./abstract.repository";
+import { UserOnPseFormationApiObject } from '../apiobject/useronpseformation.apiobject';
 
 export async function createUserEntity(
   userPostApiObject: UserPostApiObject
@@ -110,7 +111,7 @@ export async function findUserEntityByEmailAndPassword(
   return userWithoutPassword;
 }
 
-export async function findUsers(
+export async function findUserEntities(
   page: number,
   pageSize: number,
   orderBy: string,
@@ -123,5 +124,55 @@ export async function findUsers(
     orderBy,
     orderByDirection,
     where: {},
+  });
+}
+
+export async function searchFormationStudentsEntities(
+  formationId: string,
+  query: string,
+  page: number,
+  pageSize: number,
+  orderBy: string,
+  orderByDirection: OrderByDirection
+): Promise<PaginateObject<UserEntity>> {
+  return await createPaginateObject<UserEntity>({
+    model: prisma.user,
+    page,
+    pageSize,
+    orderBy,
+    orderByDirection,
+    where: {
+      // TODO: filter by formation/student
+      usersOnPseFormation: {
+        every: {
+          formationId,
+          role: "STUDENT",
+        },
+      },
+
+      // TODO: if not using sqlite anymore: https://www.prisma.io/docs/concepts/components/prisma-client/full-text-search
+
+      // TODO: real search
+      OR: [
+        {
+          firstName: {
+            endsWith: query,
+            // mode: "insensitive",
+          },
+        },
+        {
+          lastName: {
+            endsWith: query,
+            // mode: "insensitive",
+          },
+        },
+        {
+          email: {
+            endsWith: query,
+            // mode: "insensitive",
+          },
+        },
+      ],
+    },
   });
 }

@@ -36,10 +36,6 @@ export async function createPaginateObject<T>(props: Props<typeof model>): Promi
     where 
   } = PropsSchema.parse(props)
 
-  console.log('TOTO')
-  console.log(props)
-  console.log(PropsSchema.parse(props))
-
   invariant(model, `Missing model`)
   invariant(page >= 0, `Invalid page ${page}`)
   invariant(pageSize > 0, `Invalid pageSize ${pageSize}`)
@@ -62,7 +58,7 @@ export async function createPaginateObject<T>(props: Props<typeof model>): Promi
 				totalPages: 0,
 			},
 			sort: {
-				direction: orderByDirection,
+				direction: orderByDirection as string,
 				orderBy,
 			},
 		}; 
@@ -86,7 +82,7 @@ export async function createPaginateObject<T>(props: Props<typeof model>): Promi
       totalPages: Math.ceil(totalCount / pageSize),
     },
     sort: {
-      direction: orderByDirection,
+      direction: orderByDirection as string,
       orderBy,
     },
   }; 

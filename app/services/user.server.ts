@@ -9,7 +9,8 @@ import {
   findUserEntityByEmail,
   findUserEntityByEmailAndPassword,
   findUserEntityById,
-  findUsers,
+  findUserEntities,
+  searchFormationStudentsEntities,
   updateUserEntity,
   updateUserEntityPassword,
 } from "~/repository/user.repository";
@@ -86,7 +87,19 @@ export async function getUsers(
   orderBy: string,
   orderByDirection: OrderByDirection
 ): Promise<PaginateObject<UserApiObject>> {
-  const userEntities = await findUsers(page, pageSize, orderBy, orderByDirection);
+  const userEntities = await findUserEntities(page, pageSize, orderBy, orderByDirection);
+  return paginateEntityToApiObject(userEntities, userEntityToApiObject);
+}
+
+export async function searchFormationStudents(
+  formationId: string,
+  query: string,
+  page: number,
+  pageSize: number,
+  orderBy: string,
+  orderByDirection: OrderByDirection
+): Promise<PaginateObject<UserApiObject>> {
+  const userEntities = await searchFormationStudentsEntities(formationId, query, page, pageSize, orderBy, orderByDirection);
   return paginateEntityToApiObject(userEntities, userEntityToApiObject);
 }
 
