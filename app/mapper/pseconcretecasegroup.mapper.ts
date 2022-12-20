@@ -2,6 +2,7 @@ import type { PseConcreteCaseGroupEntity, PseUserConcreteCaseGroupStudentEntity 
 import type { PseConcreteCaseGroupApiEnum, PseConcreteCaseGroupApiObject, PseConcreteCaseGroupPostApiObject, PseUserConcreteCaseGroupStudentApiObject } from "~/apiobject/pseconcretecasegroup.apiobject";
 import type { PseConcreteCaseGroupDto, PseConcreteCaseGroupDtoEnum, PseConcreteCaseGroupPostDto, PseUserConcreteCaseGroupStudentDto } from "~/dto/pseconcretecasegroup.dto";
 import { userApiObjectToDto, userEntityToApiObject } from "./user.mapper";
+import { uniq } from "lodash";
 
 export function pseConcreteCaseGroupEntityToApiObject(entity: PseConcreteCaseGroupEntity): PseConcreteCaseGroupApiObject {
 	console.log({ entity })
@@ -62,6 +63,6 @@ export function pseConcreteCaseGroupPostDtoToApiObject(dto: PseConcreteCaseGroup
 		pseConcreteCaseSessionId: dto.pseConcreteCaseSessionId,
 		name: dto.name,
 		state: 'CREATED',
-		students: dto.students,
+		students: uniq(dto.students),
 	}
 }

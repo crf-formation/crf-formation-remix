@@ -10,7 +10,7 @@ interface Props {
 }
 
 export default function FormationUserAutocomplete({ formationId, name ="students" }: Props) {
-	const [query, setQuery] = useState("Flo") // TODO: ""
+	const [query, setQuery] = useState("")
   const [selectedUsers, setSelectedUsers] = useState<UserDto>([])
 
   return (

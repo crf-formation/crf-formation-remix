@@ -126,6 +126,31 @@ export async function findUserEntities(
   });
 }
 
+export async function getFormationStudentsEntities(
+  formationId: string,
+  page: number,
+  pageSize: number,
+  orderBy: string,
+  orderByDirection: OrderByDirection
+): Promise<PaginateObject<UserEntity>> {
+  return await createPaginateObject<UserEntity>({
+    model: prisma.user,
+    page,
+    pageSize,
+    orderBy,
+    orderByDirection,
+    where: {
+      usersOnPseFormation: {
+        every: {
+          formationId,
+          role: "STUDENT",
+        },
+      },
+    },
+  });
+}
+
+
 export async function searchFormationStudentsEntities(
   formationId: string,
   query: string,
@@ -141,7 +166,6 @@ export async function searchFormationStudentsEntities(
     orderBy,
     orderByDirection,
     where: {
-      // TODO: filter by formation/student
       usersOnPseFormation: {
         every: {
           formationId,
