@@ -4,7 +4,6 @@ import type { OrderByDirection, PaginateObject } from "~/constants/types";
 import { createPaginateObject } from "./abstract.repository";
 import type { PseConcreteCaseSessionPostApiObject } from "~/apiobject/pseconcretecasesession.apiobject";
 
-
 export async function getPseConcreteCaseSessionEntitiesByFormationId(
   formationId: string,
   page: number,
@@ -21,27 +20,38 @@ export async function getPseConcreteCaseSessionEntitiesByFormationId(
     where: {
       formationId,
     },
-    include: { groups: true, situations: true },
+    include: {
+      groups: { include: { 
+        students: { include: { user: true } } } 
+      },
+      situations: true,
+    },
   });
 }
 
 export async function findPseConcreteCaseSessionsEntityById(
-  id: string,
+  id: string
 ): Promise<Optional<PseConcreteCaseSessionEntity>> {
   return await prisma.pseConcreteCaseSession.findUnique({
     where: { id },
-		include: { groups: true, situations: true },
+    include: {
+      groups: { include: { students: { include: { user: true } } } },
+      situations: true,
+    },
   });
 }
 
 export async function createPseConcreteCaseSessionsEntity(
-	pseConcreteCaseSessionApiObject: PseConcreteCaseSessionPostApiObject
+  pseConcreteCaseSessionApiObject: PseConcreteCaseSessionPostApiObject
 ): Promise<PseConcreteCaseSessionEntity> {
   return await prisma.pseConcreteCaseSession.create({
     data: {
       ...pseConcreteCaseSessionApiObject,
     },
     // will be empty
-    include: { groups: true, situations: true },
-  }); 
+    include: {
+      groups: { include: { students: { include: { user: true } } } },
+      situations: true,
+    },
+  });
 }

@@ -3,15 +3,14 @@ import { findUserOnPseFormationEntityById } from "~/repository/useronpseformatio
 import { ForbiddenException } from "./api.error";
 
 
-export async function assertUserHasAccessToFormation(userId: string, formationId: string) {
-	const hasAccess: boolean = await userHasAccessToFormation(userId, formationId)
+export async function assertUserHasAccessToFormationAsTeacher(userId: string, formationId: string) {
+	const hasAccess: boolean = await userHasAccessToFormationAsTeacher(userId, formationId)
 	if (!hasAccess) {
 		throw new ForbiddenException(`User ${userId} does not have access to formation ${formationId}`);
 	}
 }
 
-
-export async function userHasAccessToFormation(userId: string, formationId: string): Promise<boolean> {
+export async function userHasAccessToFormationAsTeacher(userId: string, formationId: string): Promise<boolean> {
 	const userOnPseFormationEntity: Optional<UserOnPseFormationEntity> = await findUserOnPseFormationEntityById(userId, formationId)
-	return userOnPseFormationEntity !== null;
+	return userOnPseFormationEntity !== null && userOnPseFormationEntity?.role === 'TEACHER';
 }

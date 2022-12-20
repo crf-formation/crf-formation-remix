@@ -1,5 +1,6 @@
 import { Box, Button, Stack, TextField } from "@mui/material";
-import type { ActionArgs, LoaderFunction, MetaFunction } from "@remix-run/node";
+import type { ActionArgs, LoaderFunction, MetaFunction} from "@remix-run/node";
+import { redirect } from "@remix-run/node";
 import { json } from "@remix-run/node";
 import { Form, useActionData, useLoaderData } from "@remix-run/react";
 import { z } from "zod";
@@ -16,6 +17,9 @@ import { pseFormationApiObjectToDto } from "~/mapper/pseformation.mapper";
 import type { PseConcreteCaseGroupPostDto } from "~/dto/pseconcretecasegroup.dto";
 import Section from "~/components/layout/Section";
 import PageTitle from "~/components/layout/PageTitle";
+import { pseConcreteCaseGroupPostDtoToApiObject } from "~/mapper/pseconcretecasegroup.mapper";
+import { assertUserHasAccessToFormationAsTeacher } from "~/services/security.server";
+import { createPseConcreteCaseGroup } from "~/services/pseconcretecasegroup.server";
 
 const ParamsSchema = z.object({
   pseConcreteCaseSessionId: z.string(),
@@ -28,14 +32,11 @@ export const loader: LoaderFunction = async ({
 }) => {
 	const { pseConcreteCaseSessionId } = getParamsOrFail(params, ParamsSchema)
 
-	await requireUser(request)
-
+	const user = await requireUser(request)
 	const pseConcreteCaseSessionApiObject = await getPseConcreteCaseSessionById(pseConcreteCaseSessionId)
 
   const pseFormationApiObject = await getPseFormationByPseConcreteCaseSessionId(pseConcreteCaseSessionApiObject.id)
-
-	// TODO:
-	// await assertUserHasAccessToFormation(user.id, pseConcreteCaseSessionApiObject.id)
+	await assertUserHasAccessToFormationAsTeacher(user.id, pseFormationApiObject.id)
 
   return json({
     pseFormation: pseFormationApiObjectToDto(pseFormationApiObject),
@@ -52,12 +53,11 @@ const PostSchema = z.object({
 export async function action({ request, params  }: ActionArgs) {
 	const { pseConcreteCaseSessionId } = getParamsOrFail(params, ParamsSchema)
 
-	await requireUser(request)
+	const user = await requireUser(request)
 	const pseConcreteCaseSessionApiObject = await getPseConcreteCaseSessionById(pseConcreteCaseSessionId)
 
   const pseFormationApiObject = await getPseFormationByPseConcreteCaseSessionId(pseConcreteCaseSessionApiObject.id)
- 	// TODO:
-	// await assertUserHasAccessToFormation(user.id, pseConcreteCaseSessionApiObject.id)
+	await assertUserHasAccessToFormationAsTeacher(user.id, pseFormationApiObject.id)
 
   // TODO: finalize creation
   console.log({
@@ -70,7 +70,12 @@ export async function action({ request, params  }: ActionArgs) {
   }
 	const postDto = result.data as PseConcreteCaseGroupPostDto
 
-  console.log(JSON.stringify(postDto, null, 2))
+  const postApiObject = pseConcreteCaseGroupPostDtoToApiObject(postDto)
+
+  const createdApiObject = await createPseConcreteCaseGroup(postApiObject)
+  console.log(JSON.stringify(createdApiObject, null, 2))
+
+  return redirect(`/pse-concrete-case-session/${pseConcreteCaseSessionApiObject.id}`)
 }
 
 export const meta: MetaFunction<typeof loader> = ({ data }) => {

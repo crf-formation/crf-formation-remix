@@ -30,5 +30,5 @@ export interface PseConcreteCaseGroupPostDto {
 	/**
 	 * array of user id
 	 */ 
-	students: Array<String>
+	students: Array<string>
 }

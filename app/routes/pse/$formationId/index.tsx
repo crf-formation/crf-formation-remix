@@ -1,7 +1,7 @@
 import EditIcon from '@mui/icons-material/Edit';
 import ImageIcon from '@mui/icons-material/Image';
 import PersonAddIcon from '@mui/icons-material/PersonAdd';
-import { Avatar, Button, Grid, Link, List, ListItem, ListItemAvatar, ListItemText, Stack, Typography } from "@mui/material";
+import { Avatar, Button, Grid, Link, List, ListItem, ListItemAvatar, ListItemText, Stack } from "@mui/material";
 import type { LoaderFunction, MetaFunction } from "@remix-run/node";
 import { json } from "@remix-run/node";
 import { useLoaderData } from "@remix-run/react";
@@ -18,7 +18,7 @@ import useI18n from "~/hooks/useI18n";
 import useUser from "~/hooks/useUser";
 import { pseFormationApiObjectToDto } from "~/mapper/pseformation.mapper";
 import { findPseFormationById } from "~/services/pseformation.server";
-import { assertUserHasAccessToFormation } from "~/services/security.server";
+import { assertUserHasAccessToFormationAsTeacher } from "~/services/security.server";
 import { requireUser } from "~/services/session.server";
 import { getParamsOrFail } from '~/utils/remix.params';
 
@@ -41,7 +41,7 @@ export const loader: LoaderFunction = async ({
 		throw new Error(`Formation not found: ${formationId}`);
 	}
 	
-	await assertUserHasAccessToFormation(user.id, pseFormationApiObject.id)
+	await assertUserHasAccessToFormationAsTeacher(user.id, pseFormationApiObject.id)
 
   return json({
 		formation: pseFormationApiObjectToDto(pseFormationApiObject)

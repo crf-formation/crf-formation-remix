@@ -11,7 +11,7 @@ import useUser from "~/hooks/useUser";
 import { pseFormationApiObjectToDto } from "~/mapper/pseformation.mapper";
 import { userOnPseFormationApiObjectToDto } from '~/mapper/useronpseformation.mapper';
 import { findPseFormationById } from "~/services/pseformation.server";
-import { assertUserHasAccessToFormation } from "~/services/security.server";
+import { assertUserHasAccessToFormationAsTeacher } from "~/services/security.server";
 import { requireUser } from "~/services/session.server";
 import { getUserOnPseFormationEntityById } from "~/services/useronpseformation.server";
 
@@ -35,7 +35,7 @@ export const loader: LoaderFunction = async ({
 	if (!pseFormationApiObject) {
 		throw new Error(`Formation not found: ${formationId}`);
 	}
-	await assertUserHasAccessToFormation(user.id, pseFormationApiObject.id)
+	await assertUserHasAccessToFormationAsTeacher(user.id, pseFormationApiObject.id)
 
 	const userOnPseFormationApiObject = await getUserOnPseFormationEntityById(formationId, studentId)
 

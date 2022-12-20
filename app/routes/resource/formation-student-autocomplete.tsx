@@ -65,6 +65,7 @@ export default function FormationStudentAutocompleteResource(props: z.infer<type
         { method: "get", action: "/resource/formation-student-autocomplete" }
       );
     }
+	// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [ props.query, fetcher.submit ])
 
 	const isLoading = fetcher.state !== 'idle'

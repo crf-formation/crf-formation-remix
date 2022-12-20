@@ -1,9 +1,10 @@
 import type { PseConcreteCaseGroupEntity, PseUserConcreteCaseGroupStudentEntity } from "~/entity";
-import type { PseConcreteCaseGroupApiEnum, PseConcreteCaseGroupApiObject, PseUserConcreteCaseGroupStudentApiObject } from "~/apiobject/pseconcretecasegroup.apiobject";
-import type { PseConcreteCaseGroupDto, PseConcreteCaseGroupDtoEnum, PseUserConcreteCaseGroupStudentDto } from "~/dto/pseconcretecasegroup.dto";
+import type { PseConcreteCaseGroupApiEnum, PseConcreteCaseGroupApiObject, PseConcreteCaseGroupPostApiObject, PseUserConcreteCaseGroupStudentApiObject } from "~/apiobject/pseconcretecasegroup.apiobject";
+import type { PseConcreteCaseGroupDto, PseConcreteCaseGroupDtoEnum, PseConcreteCaseGroupPostDto, PseUserConcreteCaseGroupStudentDto } from "~/dto/pseconcretecasegroup.dto";
 import { userApiObjectToDto, userEntityToApiObject } from "./user.mapper";
 
 export function pseConcreteCaseGroupEntityToApiObject(entity: PseConcreteCaseGroupEntity): PseConcreteCaseGroupApiObject {
+	console.log({ entity })
 	return {
 		id: entity.id,
 		createdAt: entity.createdAt,
@@ -32,8 +33,8 @@ function pseUserConcreteCaseGroupStudentEntityToApiObject(entity: PseUserConcret
 export function pseConcreteCaseGroupApiObjectToDto(apiObject: PseConcreteCaseGroupApiObject): PseConcreteCaseGroupDto {
 	return {
 		id: apiObject.id,
-		createdAt: apiObject.createdAt.toISOString(),
-		updatedAt: apiObject.updatedAt.toISOString(),
+		createdAt: apiObject.createdAt?.toISOString(), // TODO: fix date
+		updatedAt: apiObject.updatedAt?.toISOString(),  // TODO: fix date
 		name: apiObject.name,
 		state: pseConcreteCaseGroupApiEnumToDto(apiObject.state),
 		pseConcreteCaseSessionId: apiObject.pseConcreteCaseSessionId,
@@ -48,9 +49,19 @@ function pseConcreteCaseGroupApiEnumToDto(state: string): PseConcreteCaseGroupDt
 function pseUserConcreteCaseGroupStudentApiObjectToDto(apiObject: PseUserConcreteCaseGroupStudentApiObject): PseUserConcreteCaseGroupStudentDto {
 	return {
 		id: apiObject.id,
-		createdAt: apiObject.createdAt.toISOString(),
-		updatedAt: apiObject.updatedAt.toISOString(),
+		createdAt: apiObject.createdAt?.toISOString(), // TODO: fix date
+		updatedAt: apiObject.updatedAt?.toISOString(), // TODO: fix date
 		userId: apiObject.userId,
 		user: apiObject.user && userApiObjectToDto(apiObject.user),
+	}
+}
+
+
+export function pseConcreteCaseGroupPostDtoToApiObject(dto: PseConcreteCaseGroupPostDto): PseConcreteCaseGroupPostApiObject {
+	return {
+		pseConcreteCaseSessionId: dto.pseConcreteCaseSessionId,
+		name: dto.name,
+		state: 'CREATED',
+		students: dto.students,
 	}
 }

@@ -31,8 +31,8 @@ export default function FormationUserAutocomplete({ formationId, name ="students
               <TextField {...params} label="Participants" fullWidth value={query} onChange={e => setQuery(e.target.value)} />
             )}
           />
-          {selectedUsers.map((user: UserDto ) => (
-            <input key={user.id} type="hidden" name={`${name}[${user.id}]`} />
+          {selectedUsers.map((user: UserDto, index) => (
+            <input key={user.id} type="hidden" name={`${name}`} value={user.id} />
           ))}
         </>
       )}
