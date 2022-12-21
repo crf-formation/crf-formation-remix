@@ -48,22 +48,24 @@ export const loader: LoaderFunction = async ({ request, params }) => {
   });
 };
 
-const PostSchema = z.object({
+// PseConcreteCaseSessionPutDto
+const PutSchema = z.object({
 	name: z.string(),
+	state: z.string(),
 });
 
 export async function action({ request, params }: ActionArgs) {
 	const { pseConcreteCaseSessionApiObject } = await security(request, params)
 
-	const result = await getFormData(request, PostSchema);
+	const result = await getFormData(request, PutSchema);
   if (!result.success) {
     return json(result, { status: 400 });
   }
-	const postDto = result.data as PseConcreteCaseSessionPutDto
+	const putDto = result.data as PseConcreteCaseSessionPutDto
 
 	const concreteCaseSessionApiObject = await updatePseConcreteCaseSession(
 		pseConcreteCaseSessionApiObject.id,
-		pseConcreteCaseSessionPutDtoToApiObject(postDto)
+		pseConcreteCaseSessionPutDtoToApiObject(putDto)
 	)
 
 	return redirect(`/pse-concrete-case-session/${concreteCaseSessionApiObject.id}`);

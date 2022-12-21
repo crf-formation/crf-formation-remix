@@ -26,7 +26,6 @@ CREATE TABLE "PseConcreteCaseGroup" (
     "createdAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "name" TEXT NOT NULL,
-    "state" TEXT NOT NULL,
     "pseConcreteCaseSessionId" TEXT NOT NULL,
     CONSTRAINT "PseConcreteCaseGroup_pseConcreteCaseSessionId_fkey" FOREIGN KEY ("pseConcreteCaseSessionId") REFERENCES "PseConcreteCaseSession" ("id") ON DELETE CASCADE ON UPDATE CASCADE
 );

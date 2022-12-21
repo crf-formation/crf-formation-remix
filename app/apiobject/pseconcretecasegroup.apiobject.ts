@@ -25,7 +25,7 @@ export interface PseUserConcreteCaseGroupStudentApiObject {
 export interface PseConcreteCaseGroupPostApiObject {
 	pseConcreteCaseSessionId: string;
 	name: string;
-	/**
+	/*state *
 	 * array of user id
 	 */ 
 	students: Array<string>

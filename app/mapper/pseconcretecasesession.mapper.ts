@@ -69,9 +69,18 @@ export function pseConcreteCaseSessionPostDtoToApiObject(dto: PseConcreteCaseSes
 export function pseConcreteCaseSessionPutDtoToApiObject(dto: PseConcreteCaseSessionPutDto): PseConcreteCaseSessionPutApiObject {
 	return {
     name: dto.name,
-    state: dto.state,
+    state: pseConcreteCaseSessionStateDtoEnumToApi(dto.state),
   };
 }
+
+function pseConcreteCaseSessionStateDtoEnumToApi(state: PseConcreteCaseSessionStateDtoEnum): PseConcreteCaseSessionStateApiEnum {
+	return assertEnum<PseConcreteCaseSessionStateApiEnum>(state, [
+    "CREATED",
+    "RUNNING",
+    "CLOSED",
+  ]);
+}
+
 function getStateLabel(state: PseConcreteCaseSessionStateDtoEnum) {
 	switch (state) {
 		case 'CREATED': return 'Non commencé'

@@ -51,8 +51,6 @@ const security: SecurityFunction<{
 async function putAction(request: Request, params: Params<string>) {
 	const { formationId } = getParamsOrFail(params, ParamsSchema)
 
-	await requireAdmin(request)
-
 	const data = await request.json();
 
 	const pseFormationApiObject = await findPseFormationById(formationId)

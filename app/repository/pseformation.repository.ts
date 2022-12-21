@@ -20,23 +20,26 @@ export async function createPseFormationEntity(pseFormationPostApiObject: PseFor
   });
 }
 
-export async function updatePseFormationEntity(id: string, pseFormationPutApiObject: PseFormationPutApiObject): Promise<PseFormationEntity> {
-  const { users, ...data } = pseFormationPutApiObject
+export async function updatePseFormationEntity(
+  id: string,
+  pseFormationPutApiObject: PseFormationPutApiObject
+): Promise<PseFormationEntity> {
+  const { users, ...data } = pseFormationPutApiObject;
 
-  // TODO: transaction
-  // await prisma.$transaction(async (tx) => {
-
+  return await prisma.$transaction<PseFormationEntity>(async (tx) => {
     // createMany is not supported by SQLite.
     // first delete existing
-    await prisma.userOnPseFormation.deleteMany({ where: { formationId: id } });
+    await tx.userOnPseFormation.deleteMany({ where: { formationId: id } });
 
     // create new
-    await Promise.all(users.map(async (user) => {
-      return prisma.userOnPseFormation.create({ data: user }) 
-    }));
+    await Promise.all(
+      users.map(async (user) => {
+        return tx.userOnPseFormation.create({ data: user });
+      })
+    );
 
     // update
-    return await prisma.pseFormation.update({
+    return await tx.pseFormation.update({
       data: {
         ...data,
         // userOnPseFormations: {
@@ -56,7 +59,7 @@ export async function updatePseFormationEntity(id: string, pseFormationPutApiObj
         },
       },
     });
-  // });
+  });
 }
 
 export async function findPseFormationEntityById(id: string): Promise<Optional<PseFormationEntity>> {

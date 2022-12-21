@@ -56,8 +56,7 @@ export async function action({ request, params  }: ActionArgs) {
 
   const postApiObject = pseConcreteCaseGroupPostDtoToApiObject(postDto)
 
-  const createdApiObject = await createPseConcreteCaseGroup(postApiObject)
-  console.log(JSON.stringify(createdApiObject, null, 2))
+  await createPseConcreteCaseGroup(postApiObject)
 
   return redirect(`/pse-concrete-case-session/${pseConcreteCaseSessionApiObject.id}`)
 }

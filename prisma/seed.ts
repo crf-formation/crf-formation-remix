@@ -159,6 +159,8 @@ async function seedDefaultUser() {
 }
 
 async function seed() {
+  // await prisma.$queryRaw(Prisma.sql`ALTER TABLE PseConcreteCaseGroup DROP COLUMN state;`)
+
   await seedDefaultUser()
   await seedPlaces()
   await seedPseModule()
