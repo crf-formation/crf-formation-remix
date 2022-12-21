@@ -14,13 +14,13 @@ export function PseUserConcreteCaseEntityToApiObject(entity: PseUserConcreteCase
 		userId: entity.userId,
 		user: entity.user && userEntityToApiObject(entity.user),
 
-		concreteCaseGroup: pseConcreteCaseGroupEntityToApiObject(entity.concreteCaseGroup),
-		concreteCaseType: pseConcreteCaseTypeEntityToApiObject(entity.concreteCaseType),
+		concreteCaseGroup: entity.concreteCaseGroup && pseConcreteCaseGroupEntityToApiObject(entity.concreteCaseGroup),
+		concreteCaseType: entity.concreteCaseType && pseConcreteCaseTypeEntityToApiObject(entity.concreteCaseType),
 
 		state: pseUserConcreteCaseStateStringToApiEnum(entity.state),
 		selected: entity.selected,
 
-		competences: entity.competences.map(pseUserConcreteCaseCompetenceEntityToApiObject),
+		competences: entity.competences?.map(pseUserConcreteCaseCompetenceEntityToApiObject),
 
 		role: pseUserConcreteCaseRoleStringToApiEnum(entity.role),
 	}

@@ -29,3 +29,17 @@ export interface PseSituationConcreteCaseGroupApiObject {
 	 */
 	position: number;
 }
+
+export interface PseConcreteCaseSituationPostApiObject {
+	pseConcreteCaseSessionId: string;
+	pseConcreteCaseTypeId: string;
+	teacherId: string;
+	pseConcreteCaseGroups: any // TODO:
+}
+
+export interface PseConcreteCaseSituationPutApiObject {
+	pseConcreteCaseSessionId: string;
+	pseConcreteCaseTypeId: string;
+	teacherId: string;
+	pseConcreteCaseGroups: any // TODO:
+}

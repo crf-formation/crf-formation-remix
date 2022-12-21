@@ -18,7 +18,7 @@ export interface PseUserConcreteCaseGroupStudentDto {
 	createdAt: DateISOString;
 	updatedAt: DateISOString;
 	userId: string;
-	user?: Optional<UserDto>;
+	user: UserDto;
 }
 
 export interface PseConcreteCaseGroupPostDto {

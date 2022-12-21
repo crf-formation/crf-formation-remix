@@ -1,8 +1,9 @@
 import type { PseConcreteCaseSituationEntity } from "~/entity";
-import type { PseConcreteCaseSituationApiObject } from "~/apiobject/pseconcretecasesituation.apiobject";
-import type { PseConcreteCaseSituationDto } from "~/dto/pseconcretecasesituation.dto";
-import { pseConcreteCaseGroupEntityToApiObject } from "./pseconcretecasegroup.mapper";
+import type { PseConcreteCaseSituationApiObject, PseConcreteCaseSituationPostApiObject } from "~/apiobject/pseconcretecasesituation.apiobject";
+import type { PseConcreteCaseSituationDto, PseConcreteCaseSituationPostDto } from "~/dto/pseconcretecasesituation.dto";
+import { pseConcreteCaseGroupApiObjectToDto, pseConcreteCaseGroupEntityToApiObject } from "./pseconcretecasegroup.mapper";
 import { userApiObjectToDto, userEntityToApiObject } from "./user.mapper";
+import { pseConcreteCaseTypeEntityToApiObject, pseConcreteCaseTypeApiObjectToDto } from "./pseconcretecasetype.mapper";
 
 
 export function pseConcreteCaseSituationEntityToApiObject(entity: PseConcreteCaseSituationEntity): PseConcreteCaseSituationApiObject {
@@ -11,20 +12,28 @@ export function pseConcreteCaseSituationEntityToApiObject(entity: PseConcreteCas
 		createdAt: entity.createdAt,
 		updatedAt: entity.updatedAt,
 		teacherId: entity.teacherId,
-		teacher: userEntityToApiObject(entity.teacher),
-		pseConcreteCaseType: pseConcreteCaseTypeEntityToApiObject(entity.pseConcreteCaseType),
-		pseConcreteCaseGroups: entity.pseConcreteCaseGroups.map(pseConcreteCaseGroupEntityToApiObject),
+		teacher: entity.teacher && userEntityToApiObject(entity.teacher),
+		pseConcreteCaseType: entity.pseConcreteCaseType && pseConcreteCaseTypeEntityToApiObject(entity.pseConcreteCaseType),
+		pseConcreteCaseGroups: entity.pseConcreteCaseGroups?.map(pseConcreteCaseGroupEntityToApiObject),
 	}
 }
 
-export function pseConcreteCaseSituationApiObjectToDto(entity: PseConcreteCaseSituationApiObject): PseConcreteCaseSituationDto {
+export function pseConcreteCaseSituationApiObjectToDto(apiObject: PseConcreteCaseSituationApiObject): PseConcreteCaseSituationDto {
 	return {
-		id: entity.id,
-		createdAt: entity.createdAt.toISOString(),
-		updatedAt: entity.updatedAt.toISOString(),
-		teacherId: entity.teacherId,
-		teacher: userApiObjectToDto(entity.teacher),
-		pseConcreteCaseType: pseConcreteCaseTypeApiObjectToDto(entity.pseConcreteCaseType),
-		pseConcreteCaseGroups: entity.pseConcreteCaseGroups.map(pseConcreteCaseGroupApiObjectToDto),
+		id: apiObject.id,
+		createdAt: apiObject.createdAt.toISOString(),
+		updatedAt: apiObject.updatedAt.toISOString(),
+		teacherId: apiObject.teacherId,
+		teacher: apiObject.teacher && userApiObjectToDto(apiObject.teacher),
+		pseConcreteCaseType: apiObject.pseConcreteCaseType && pseConcreteCaseTypeApiObjectToDto(apiObject.pseConcreteCaseType),
+		pseConcreteCaseGroups: apiObject.pseConcreteCaseGroups?.map(pseConcreteCaseGroupApiObjectToDto),
+	}
+}
+
+export function pseConcreteCaseSituationPostDtoToApiObject(postDto: PseConcreteCaseSituationPostDto): PseConcreteCaseSituationPostApiObject {
+	return {
+		pseConcreteCaseSessionId: postDto.pseConcreteCaseSessionId,
+		pseConcreteCaseTypeId: postDto.pseConcreteCaseTypeId,
+		teacherId: postDto.teacherId,
 	}
 }

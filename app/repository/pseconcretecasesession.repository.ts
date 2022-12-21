@@ -24,7 +24,13 @@ export async function getPseConcreteCaseSessionEntitiesByFormationId(
       groups: { include: { 
         students: { include: { user: true } } } 
       },
-      situations: true,
+      situations: {
+        include: {
+          pseConcreteCaseGroups: { include: { pseConcreteCaseGroup: true } },
+          teacher: true,
+                    pseConcreteCaseType: true
+        },
+      },
     },
   });
 }
@@ -36,7 +42,13 @@ export async function findPseConcreteCaseSessionsEntityById(
     where: { id },
     include: {
       groups: { include: { students: { include: { user: true } } } },
-      situations: true,
+      situations: {
+        include: {
+          pseConcreteCaseGroups: { include: { pseConcreteCaseGroup: true } },
+          teacher: true,
+          pseConcreteCaseType: true,
+        },
+      },
     },
   });
 }
@@ -51,7 +63,13 @@ export async function createPseConcreteCaseSessionsEntity(
     // will be empty
     include: {
       groups: { include: { students: { include: { user: true } } } },
-      situations: true,
+      situations: {
+        include: {
+          pseConcreteCaseGroups: { include: { pseConcreteCaseGroup: true } },
+          teacher: true,
+          pseConcreteCaseType: true,
+        },
+      },
     },
   });
 }
@@ -65,11 +83,17 @@ export async function updatePseConcreteCaseSessionsEntity(
       ...pseConcreteCaseSessionPutApiObject,
     },
     where: {
-      id
+      id,
     },
     include: {
       groups: { include: { students: { include: { user: true } } } },
-      situations: true,
+      situations: {
+        include: {
+          pseConcreteCaseGroups: { include: { pseConcreteCaseGroup: true } },
+          teacher: true,
+          pseConcreteCaseType: true
+        },
+      },
     },
   });
 }

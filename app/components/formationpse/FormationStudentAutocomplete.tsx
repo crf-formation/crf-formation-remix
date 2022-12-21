@@ -1,8 +1,9 @@
 import { TextField } from "@mui/material";
 import { useState } from "react";
 import UserAutocompleteResource from "~/routes/resource/formation-student-autocomplete";
+import type { AutocompleteProps } from "@mui/material/Autocomplete";
 import Autocomplete from "@mui/material/Autocomplete";
-import type { UserDto } from "../../dto/user.dto";
+import type { UserDto } from "~/dto/user.dto";
 
 interface Props extends AutocompleteProps {
   formationId: string;
@@ -43,7 +44,7 @@ function Content({ usersPaginateObject, isLoading, name, defaultValue, query, se
   );
 }
 
-export default function FormationUserAutocomplete({
+export default function FormationStudentAutocomplete({
   formationId,
   name = "students",
   defaultValue,

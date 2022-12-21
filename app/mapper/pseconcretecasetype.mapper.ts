@@ -8,7 +8,7 @@ export function pseConcreteCaseTypeEntityToApiObject(entity: PseConcreteCaseType
 	return {
     id: entity.id,
     name: entity.name,
-    competencesToEvaluate: entity.competencesToEvaluate.map(
+    competencesToEvaluate: entity.competencesToEvaluate?.map(
       pseConcreteCaseTypeEntityToApiObject
     ),
   };
@@ -18,6 +18,6 @@ export function pseConcreteCaseTypeApiObjectToDto(apiObject: PseConcreteCaseType
 	return {
 		id: apiObject.id,
 		name: apiObject.name,
-		competencesToEvaluate: apiObject.competencesToEvaluate.map(pseCompetenceApiObjectToDto)
+		competencesToEvaluate: apiObject.competencesToEvaluate?.map(pseCompetenceApiObjectToDto)
 	}
 }

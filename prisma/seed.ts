@@ -3,6 +3,43 @@ import bcrypt from "bcryptjs";
 
 const prisma = new PrismaClient();
 
+async function seedPseConcreteCaseTypes() {
+   // TODO: implementation - complete
+  const pseConcreteCaseTypes = [
+    {
+      id: "OBVA",
+      name: "OBVA",
+      competencesToEvaluate: [
+        "C1",
+        "C2",
+        // TODO: implementation - complete
+      ],
+    },
+  ];
+
+  pseConcreteCaseTypes.forEach(async pseConcreteCaseType => {
+    const data = {
+      ...pseConcreteCaseType,
+      competencesToEvaluate: undefined
+    }
+    await prisma.pseConcreteCaseType.upsert({
+      where: { id: pseConcreteCaseType.id },
+      update: data,
+      create: data
+    });
+    
+    // TODO: implementation - add competencesToEvaluate
+    // competencesToEvaluate: {
+    //   create: {
+    //     pseConcreteCaseType.competencesToEvaluate.map(competenceToEvaluate => {
+    //   return {
+    //     pseCompetenceId: competenceToEvaluate
+    //   }
+    // }
+    // })
+  })
+}
+
 async function seedPseTechniques() {
   // TODO: implementation - complete
   const techniques = [
@@ -161,11 +198,13 @@ async function seedDefaultUser() {
 async function seed() {
   // await prisma.$queryRaw(Prisma.sql`ALTER TABLE PseConcreteCaseGroup DROP COLUMN state;`)
 
-  await seedDefaultUser()
   await seedPlaces()
   await seedPseModule()
   await seedPseTechniques()
   await seedPseCompetence()
+  await seedPseConcreteCaseTypes()
+
+  await seedDefaultUser()
 
   // nothing to seed yet
   console.log(`Database has been seeded. 🌱`);

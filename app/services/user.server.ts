@@ -14,6 +14,8 @@ import {
   updateUserEntity,
   updateUserEntityPassword,
   getFormationStudentsEntities,
+  getFormationTeachersEntities,
+  searchFormationTeachersEntities,
 } from "~/repository/user.repository";
 import { userEntityToApiObject } from "~/mapper/user.mapper";
 import { USER_PASSWORD_MIN_LENGTH } from "~/constants";
@@ -112,6 +114,30 @@ export async function searchFormationStudents(
   orderByDirection: OrderByDirection
 ): Promise<PaginateObject<UserApiObject>> {
   const userEntities = await searchFormationStudentsEntities(formationId, query, page, pageSize, orderBy, orderByDirection);
+  return paginateEntityToApiObject(userEntities, userEntityToApiObject);
+}
+
+
+export async function getFormationTeachers(
+  formationId: string,
+  page: number,
+  pageSize: number,
+  orderBy: string,
+  orderByDirection: OrderByDirection
+): Promise<PaginateObject<UserApiObject>> {
+  const userEntities = await getFormationTeachersEntities(formationId, page, pageSize, orderBy, orderByDirection);
+  return paginateEntityToApiObject(userEntities, userEntityToApiObject);
+}
+
+export async function searchFormationTeachers(
+  formationId: string,
+  query: string,
+  page: number,
+  pageSize: number,
+  orderBy: string,
+  orderByDirection: OrderByDirection
+): Promise<PaginateObject<UserApiObject>> {
+  const userEntities = await searchFormationTeachersEntities(formationId, query, page, pageSize, orderBy, orderByDirection);
   return paginateEntityToApiObject(userEntities, userEntityToApiObject);
 }
 

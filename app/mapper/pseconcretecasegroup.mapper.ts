@@ -26,7 +26,7 @@ export function pseConcreteCaseGroupEntityToApiObject(
     updatedAt: entity.updatedAt,
     name: entity.name,
     pseConcreteCaseSessionId: entity.pseConcreteCaseSessionId,
-    students: entity.students.map(
+    students: entity.students?.map(
       pseUserConcreteCaseGroupStudentEntityToApiObject
     ),
   };
@@ -53,7 +53,7 @@ export function pseConcreteCaseGroupApiObjectToDto(
     updatedAt: apiObject.updatedAt?.toISOString(), // TODO: fix date
     name: apiObject.name,
     pseConcreteCaseSessionId: apiObject.pseConcreteCaseSessionId,
-    students: apiObject.students.map(
+    students: apiObject.students?.map(
       pseUserConcreteCaseGroupStudentApiObjectToDto
     ),
   };

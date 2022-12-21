@@ -22,6 +22,7 @@ import type { PseFormationApiObject } from "~/apiobject/pseformation.apiobject";
 import type { PseConcreteCaseSessionApiObject } from "~/apiobject/pseconcretecasesession.apiobject";
 import type { SecurityFunction } from "~/constants/remix";
 import PageAction from "~/components/layout/PageAction";
+import type { PseConcreteCaseSituationDto } from '../../../dto/pseconcretecasesituation.dto';
 
 // GET PSE concrete case sessions
 
@@ -88,7 +89,6 @@ function Groups({ pseFormationId, pseConcreteCaseSessionId, groups }) {
         <TableHead>
           <TableRow>
             <TableCell>Nom</TableCell>
-            <TableCell>Status</TableCell>
             <TableCell>Membres</TableCell>
           </TableRow>
         </TableHead>
@@ -101,11 +101,6 @@ function Groups({ pseFormationId, pseConcreteCaseSessionId, groups }) {
                 </Link>
               </TableCell>
               <TableCell>
-                <Link href={`/pse-concrete-case-group/${group.id}`}>
-                  {group.state}
-                </Link>
-              </TableCell>
-              <TableCell>
                 {group.students.map((student) => (
                   <div key={student.id}>
                     <Link href={`/pse/${pseFormationId}/students/${student.user.id}`}>{student.user.fullName}</Link>
@@ -115,24 +110,48 @@ function Groups({ pseFormationId, pseConcreteCaseSessionId, groups }) {
             </TableRow>
           ))}
         </TableBody>
-        {/* TODO: paginaation */}
+        {/* TODO: pagination */}
       </Table>
     </Section>
   );
 }
 
-function Situations({ pseConcreteCaseSessionId }) {
+function Situations({ pseConcreteCaseSessionId, situations }) {
   return (
     <Section
       title="Situations"
       action={
         <span>
-          <Link href={`/pse-concrete-case-session/${pseConcreteCaseSessionId}/situation/new`}>
+          <Link
+            href={`/pse-concrete-case-session/${pseConcreteCaseSessionId}/situation/new`}
+          >
             <AddIcon />
           </Link>
         </span>
       }
-    ></Section>
+    >
+      <Table size="small">
+        <TableHead>
+          <TableRow>
+            <TableCell>Nom</TableCell>
+            <TableCell>Formateur</TableCell>
+          </TableRow>
+        </TableHead>
+        <TableBody>
+          {situations.map((situation: PseConcreteCaseSituationDto) => (
+            <TableRow key={situation.id}>
+              <TableCell>
+                <Link href={`/pse-concrete-case-group/${situation.id}`}>
+                  {situation.pseConcreteCaseType.name}
+                </Link>
+              </TableCell>
+              <TableCell>{situation.teacher.fullName}</TableCell>
+            </TableRow>
+          ))}
+        </TableBody>
+        {/* TODO: pagination */}
+      </Table>
+    </Section>
   );
 }
 
@@ -159,7 +178,7 @@ export default function SessionPseRoute() {
         <Grid item md={8}>
           <Stack spacing={2}>
             {/* TODO:  list situations */}
-            <Situations pseConcreteCaseSessionId={pseConcreteCaseSession.id} />
+            <Situations pseConcreteCaseSessionId={pseConcreteCaseSession.id} situations={pseConcreteCaseSession.situations} />
             {/* TODO:  list groups */}
             <Groups
               pseFormationId={pseFormation.id}

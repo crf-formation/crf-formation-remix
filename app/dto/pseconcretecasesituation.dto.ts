@@ -29,3 +29,9 @@ export interface PseSituationConcreteCaseGroupDto {
 	 */
 	position: number;
 }
+
+export interface PseConcreteCaseSituationPostDto {
+	pseConcreteCaseSessionId: string;
+	pseConcreteCaseTypeId: string;
+	teacherId: string;
+}

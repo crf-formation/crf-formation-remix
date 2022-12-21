@@ -199,3 +199,79 @@ export async function searchFormationStudentsEntities(
     },
   });
 }
+
+
+export async function getFormationTeachersEntities(
+  formationId: string,
+  page: number,
+  pageSize: number,
+  orderBy: string,
+  orderByDirection: OrderByDirection
+): Promise<PaginateObject<UserEntity>> {
+  return await createPaginateObject<UserEntity>({
+    model: prisma.user,
+    page,
+    pageSize,
+    orderBy,
+    orderByDirection,
+    where: {
+      usersOnPseFormation: {
+        every: {
+          formationId,
+          role: "TEACHER",
+        },
+      },
+    },
+  });
+}
+
+
+export async function searchFormationTeachersEntities(
+  formationId: string,
+  query: string,
+  page: number,
+  pageSize: number,
+  orderBy: string,
+  orderByDirection: OrderByDirection
+): Promise<PaginateObject<UserEntity>> {
+  return await createPaginateObject<UserEntity>({
+    model: prisma.user,
+    page,
+    pageSize,
+    orderBy,
+    orderByDirection,
+    where: {
+      usersOnPseFormation: {
+        every: {
+          formationId,
+          role: "TEACHER",
+        },
+      },
+
+      // TODO: if not using sqlite anymore: https://www.prisma.io/docs/concepts/components/prisma-client/full-text-search
+
+      // TODO: real search
+      OR: [
+        {
+          firstName: {
+            endsWith: query,
+            // mode: "insensitive",
+          },
+        },
+        {
+          lastName: {
+            endsWith: query,
+            // mode: "insensitive",
+          },
+        },
+        {
+          email: {
+            endsWith: query,
+            // mode: "insensitive",
+          },
+        },
+      ],
+    },
+  });
+}
+
