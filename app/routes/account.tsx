@@ -8,6 +8,7 @@ import {
 	Tooltip,
 	Typography
 } from "@mui/material";
+import type { Params} from "@remix-run/react";
 import { Form, useActionData, useLoaderData, useLocation } from "@remix-run/react";
 import type { ActionArgs, LoaderArgs, MetaFunction } from "@remix-run/server-runtime";
 import { json, redirect } from "@remix-run/server-runtime";
@@ -17,10 +18,17 @@ import Section from "~/components/layout/Section";
 import useRootData from "~/hooks/useRootData";
 import { updatePassword, validateUserEmail, verifyLogin, updateUser } from "~/services/user.server";
 import { addFlashMessage } from "~/services/flash.server";
-import { commitSession, getSession, requireAuth, requireUser } from '~/services/session.server';
+import { commitSession, getSession, requireUser } from '~/services/session.server';
 import { verifyAuthenticityToken } from "~/utils/csrf.server";
 import { badRequest } from "~/utils/responses";
 import PageContainer from '../components/layout/PageContainer';
+import { getFormData } from "~/utils/remix.params";
+import { namedActionWithFormType } from "~/utils/named-actions";
+import { z } from "zod";
+import type { UserPutDto } from "~/dto/user.dto";
+import { userPutDtoToApiObject, userApiObjectToDto } from '../mapper/user.mapper';
+import type { SecurityFunction } from "~/constants/remix";
+import type { UserApiObject } from "~/apiobject/user.apiobject";
 
 export const meta: MetaFunction<typeof loader> = () => {
   return {
@@ -28,65 +36,58 @@ export const meta: MetaFunction<typeof loader> = () => {
   };
 };
 
-export async function loader({ request }: LoaderArgs) {
-  const user = await requireUser(request)
+export async function loader({ request, params }: LoaderArgs) {
+  const { userApiObject } = await security(request, params)
 
   return json({
-		user
+		user: userApiObjectToDto(userApiObject)
 	});
 }
 
-export async function action({ request }: ActionArgs) {
-  const formData = await request.formData();
-  const session = await getSession(request);
-
-  const formType = formData.get("formType");
-
-  await verifyAuthenticityToken(formData, session);
-
-	switch (formType) {
-		case "password":
-			return await actionPassword(request, formData)
-		case "profile":
-			return await actionProfile(request, formData)
-	}
-
+export async function action({ request, params }: ActionArgs) {
+  return namedActionWithFormType(request, params, {
+		actionPassword,
+    actionProfile,
+	});
 }
 
-async function actionProfile(request: Request, formData: FormData) {
-  const { userId } = await requireAuth(request)
+const security: SecurityFunction<{
+  userApiObject: UserApiObject;
+}> = async (request: Request, params: Params) => {
+  const userApiObject = await requireUser(request)
+  return {
+    userApiObject,
+  }
+}
 
-  const firstName = formData.get("firstName");
-  const lastName = formData.get("lastName");
-  const email = formData.get("email");
-  const phoneNumber = formData.get("phoneNumber");
+const ProfileSchema = z.object({
+	firstName: z.string(),
+	lastName: z.string(),
+	email: z.string(),
+});
 
-  if (typeof firstName !== "string" || firstName.length === 0) {
-    return badRequest({
-      profile: { errors: { firstName: "First name required" }, },
-    });
+async function actionProfile(request: Request, params: Params) {
+  const { userApiObject } = await security(request, params)
+
+  let session = await getSession(request);
+  await verifyAuthenticityToken(request, session);
+
+  const result = await getFormData(request, ProfileSchema);
+  if (!result.success) {
+    return json(result, { status: 400 });
   }
 
-  if (typeof lastName !== "string" || lastName.length === 0) {
-    return badRequest({
-      profile: { errors: { lastName: "Last name required" }, },
-    });
-  }
+  const userPutDto = result.data as UserPutDto
 
-  if (!validateUserEmail(email)) {
+  if (!validateUserEmail(userPutDto.email)) {
     return badRequest({
       profile: { errors: { email: "Email is invalid" }, },
     });
   }
 
-  await updateUser(userId, {
-    firstName,
-    lastName,
-    email,
-    phoneNumber
-  });
+  await updateUser(userApiObject.id, userPutDtoToApiObject(userPutDto));
 
-	const session = await addFlashMessage(
+	session = await addFlashMessage(
 		request,
 		"success",
     `Your account has been updated`
@@ -99,12 +100,28 @@ async function actionProfile(request: Request, formData: FormData) {
   });
 }
 
-async function actionPassword(request: Request, formData: FormData) {
-  const user = await requireUser(request)
+const PasswordSchema = z.object({
+	passwordVerification: z.string(),
+	password: z.string(),
+	currentPassword: z.string(),
+});
 
-	const password = formData.get("password");
-	const passwordVerification = formData.get("passwordVerification");
-	const currentPassword = formData.get("currentPassword");
+async function actionPassword(request: Request, params: Params) {
+  const { userApiObject } = await security(request, params)
+
+  let session = await getSession(request);
+  await verifyAuthenticityToken(request, session);
+
+  const result = await getFormData(request, PasswordSchema);
+  if (!result.success) {
+    return json(result, { status: 400 });
+  }
+
+  const userPasswordPutDto = result.data // TODO: as Dto
+
+	const password = userPasswordPutDto.password;
+	const passwordVerification = userPasswordPutDto.passwordVerification;
+	const currentPassword = userPasswordPutDto.currentPassword;
 
   if (typeof currentPassword !== "string" || currentPassword.length === 0) {
     return badRequest({
@@ -112,7 +129,7 @@ async function actionPassword(request: Request, formData: FormData) {
     });
   }
 
-  const isPasswordCorrect = await verifyLogin(user.email, currentPassword);
+  const isPasswordCorrect = await verifyLogin(userApiObject.email, currentPassword);
   if (!isPasswordCorrect) {
     return badRequest({
       password: { errors: { currentPassword: "Invalid password" } },
@@ -147,9 +164,9 @@ async function actionPassword(request: Request, formData: FormData) {
     });
   }
   
-  await updatePassword(user.id, password);
+  await updatePassword(userApiObject.id, password);
 
-	const session = await addFlashMessage(
+	session = await addFlashMessage(
 		request,
 		"success",
     `Your password has been updated`

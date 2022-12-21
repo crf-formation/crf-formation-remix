@@ -63,7 +63,7 @@ export async function requireUserId(
   return userId;
 }
 
-export async function requireUser(request: Request): Promise<UserApiObject> {
+export async function requireUser(request: Request): Promise<UserApiObject> { // TODO: return UserMeApiObject?
   const userId = await requireUserId(request);
 
   const userDto = await findUserById(userId);
@@ -72,7 +72,7 @@ export async function requireUser(request: Request): Promise<UserApiObject> {
   throw await logout(request);
 }
 
-export async function requireAdmin(request: Request): Promise<UserApiObject> {
+export async function requireAdmin(request: Request): Promise<UserApiObject> { // TODO: return UserMeApiObject?
 	const user = await requireUser(request);
 
   if (user.role === 'ADMIN' || user.role == 'SUPER_ADMIN') return user;

@@ -87,9 +87,9 @@ export async function action({ request, params  }: ActionArgs) {
 
   // password has been created, automatically login
 
-  const proUserAuthToken = await verifyLogin(email, password);
+  const userAuthToken = await verifyLogin(email, password);
 
-  if (!proUserAuthToken) {
+  if (!userAuthToken) {
     return json(
       { errors: { email: "Invalid email or password", password: null } },
       { status: 400 }
@@ -98,7 +98,7 @@ export async function action({ request, params  }: ActionArgs) {
 
   return createUserSession({
     session,
-    userId: proUserAuthToken.user.id,
+    userId: userAuthToken.user.id,
     remember: true,
     redirectTo: "/welcome",
   });

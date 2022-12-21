@@ -12,7 +12,7 @@ import FormView from "~/components/form/FormView";
 import PageFullContentWithLogo from "~/components/layout/PageFullContentWithLogo";
 import type { UserPostDto } from "~/dto/user.dto";
 import useFormFocusError from "~/hooks/useFormFocusError";
-import { userPostDtoToUserPostApiObject } from "~/mapper/user.mapper";
+import { userPostDtoToApiObject } from "~/mapper/user.mapper";
 import { askForPasswordCreation } from "~/services/passwordrecovery.server";
 import { getUserId } from "~/services/session.server";
 import { createUser, findUserByEmail, validateUserEmail } from "~/services/user.server";
@@ -86,7 +86,7 @@ export async function action({ request }: ActionArgs) {
   }
 
   // -- map to api object
-  const userPostApiObject: UserPostApiObject = userPostDtoToUserPostApiObject(userPostDto);
+  const userPostApiObject: UserPostApiObject = userPostDtoToApiObject(userPostDto);
 
   // -- create user
   const user = await createUser(userPostApiObject);

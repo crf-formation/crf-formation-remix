@@ -53,10 +53,10 @@ export async function findUserById(
 export async function verifyLogin(
   email: string,
   password: string
-): Promise<UserAuthTokenApiObject> {
+): Promise<Optional<UserAuthTokenApiObject>> {
   const userEntity = await findUserEntityByEmailAndPassword(email, password);
   if (!userEntity) {
-    throw new Error("Invalid user");
+    return null
   }
 
   return {

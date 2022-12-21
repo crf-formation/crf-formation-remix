@@ -38,7 +38,8 @@ function FlashMessageSnackbar({ flashMessage }: FlashMessageSnackbarProps) {
       })}
     >
       <Alert 
-        severity={flashMessage.severity}
+        severity={flashMessage.severity || "info"}
+        color={"info"} // TODO: remove, use only severity
         onClick={() => setOpen(false)}
       >
         {flashMessage.message}

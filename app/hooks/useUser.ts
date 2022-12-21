@@ -1,7 +1,7 @@
-import type { ProUserMeDto } from "~/dto/prouser.dto";
+import type { UserMeDto } from "~/dto/user.dto";
 import useOptionalUser from "./useOptionalUser";
 
-export default function useUser(): ProUserMeDto {
+export default function useUser(): UserMeDto {
   const maybeUser = useOptionalUser();
   if (!maybeUser) {
     throw new Error(

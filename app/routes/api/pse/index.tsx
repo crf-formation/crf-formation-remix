@@ -8,6 +8,7 @@ import { paginateEntityToApiObject } from "~/mapper/abstract.mapper";
 import { dataToPseFormationPostDto, pseFormationApiObjectToDto, pseFormationPostDtoToApiObject } from "~/mapper/pseformation.mapper";
 import { createPseFormation, getPseFormations } from "~/services/pseformation.server";
 import { requireAdmin } from "~/services/session.server";
+import { namedAction } from "~/utils/named-actions";
 import { getSearchParamsOrFail } from "~/utils/remix.params";
 
 const URLSearchParamsSchema = z.object({
@@ -36,10 +37,10 @@ export const loader: LoaderFunction = async ({
 export const action: ActionFunction = async ({ request, params }) => {
 	await security(request, params)
 
-	switch (request.method) {
-    case "POST":
-      return await postAction(request, params);
-  }
+	return namedAction(request, params, {
+		postAction
+	})
+
 };
 
 const security: SecurityFunction<{}> = async (request: Request, params: Params) => {

@@ -8,6 +8,7 @@ import type { PseFormationPutDto } from "~/dto/pseformation.dto";
 import { dataToPseFormationPutDto, pseFormationApiObjectToDto, pseFormationPutDtoToApiObject } from "~/mapper/pseformation.mapper";
 import { findPseFormationById, getPseFormationById, updatePseFormation } from "~/services/pseformation.server";
 import { requireAdmin } from "~/services/session.server";
+import { namedAction } from "~/utils/named-actions";
 import { getParamsOrFail } from "~/utils/remix.params";
 
 const ParamsSchema = z.object({
@@ -28,10 +29,9 @@ export const loader: LoaderFunction = async ({
 export const action: ActionFunction = async ({ request, params }) => {
 	await security(request, params)
 
-	switch (request.method) {
-    case "PUT":
-      return await putAction(request, params);
-  }
+	return namedAction(request, params, {
+		putAction
+	})
 };
 
 const security: SecurityFunction<{

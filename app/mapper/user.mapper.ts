@@ -16,7 +16,7 @@ import type {
 } from "~/dto/user.dto";
 import { assertEnum } from "~/utils/enum";
 
-export function userPostDtoToUserPostApiObject(
+export function userPostDtoToApiObject(
   dto: UserPostDto
 ): UserPostApiObject {
   return {
@@ -28,7 +28,7 @@ export function userPostDtoToUserPostApiObject(
   };
 }
 
-export function userPutDtoToUserPutApiObject(
+export function userPutDtoToApiObject(
   dto: UserPutDto
 ): UserPutApiObject {
   return {
