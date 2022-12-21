@@ -1,8 +1,8 @@
 import { Box, Button, TextField, Typography } from "@mui/material";
 import type { ActionArgs, LoaderArgs, MetaFunction } from "@remix-run/node";
 import { json, redirect } from "@remix-run/node";
-import { Form, useActionData, useLoaderData } from "@remix-run/react";
-import { useEffect, useRef, useState } from "react";
+import { useActionData, useLoaderData } from "@remix-run/react";
+import { useRef, useState } from "react";
 import { z } from "zod";
 import FormErrorHelperText from "~/components/form/FormErrorHelperText";
 import PasswordCheckView from "~/components/hibp/PasswordCheckView";
@@ -14,6 +14,9 @@ import { getParamsOrFail, getSearchParamsOrFail } from "~/utils/remix.params";
 import { badRequest } from "~/utils/responses";
 import { badRequestWithFlash } from "~/utils/responsesError";
 import type { ApiErrorException } from '../../services/api.error';
+import useFormFocusError from "~/hooks/useFormFocusError";
+import FormView from "~/components/form/FormView";
+import { generateAria } from "~/utils/form";
 
 const ParamsSchema = z.object({
   token: z.string(),
@@ -96,21 +99,17 @@ export const meta: MetaFunction<typeof loader> = () => {
 
 export default function PasswordResetRoute() {
   const { email } = useLoaderData<typeof loader>();
-
   const actionData = useActionData<typeof action>();
+
+  const [password, setPassword] = useState("");
 
   const passwordRef = useRef<HTMLInputElement>(null);
   const passwordVerificationRef = useRef<HTMLInputElement>(null);
 
-  const [password, setPassword] = useState('')
-
-  useEffect(() => {
-    if (actionData?.errors?.password) {
-      passwordRef.current?.focus();
-    } else if (actionData?.errors?.passwordVerification) {
-      passwordVerificationRef.current?.focus();
-    }
-  }, [actionData]);
+  useFormFocusError(actionData, [
+    ["password", passwordRef],
+    ["passwordVerification", passwordVerificationRef],
+  ]);
 
   return (
     <PageFullContentWithLogo>
@@ -122,51 +121,46 @@ export default function PasswordResetRoute() {
         </Typography>
       </Box>
 
-      <Form method="post">
-        <input type="hidden" name="email" value={email} />
-
-        <Box sx={{ display: "flex", flexDirection: "column", mt: 2 }}>
-          <TextField
-            name="password"
-            ref={passwordRef}
-            label="New password"
-            variant="outlined"
-            margin="normal"
-            type="password"
-            autoComplete="new-password"
-            aria-invalid={actionData?.errors?.password ? true : undefined}
-            aria-describedby="password-form-error"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-          />
-          <FormErrorHelperText name="password" actionData={actionData} />
-
-          <TextField
-            name="passwordVerification"
-            ref={passwordVerificationRef}
-            label="Ret-enter your new password"
-            variant="outlined"
-            margin="normal"
-            type="password"
-            autoComplete="new-password"
-            aria-invalid={actionData?.errors?.passwordVerification ? true : undefined}
-            aria-describedby="password-form-error"
-          />
-          <FormErrorHelperText
-            name="passwordVerification"
-            actionData={actionData}
-          />
-
-          <PasswordCheckView password={password} />
-        </Box>
-
-        <Box sx={{ mt: 3, display: "flex", justifyContent: "end" }}>
+      <FormView
+        action={
           <Button type="submit" variant="contained" color="primary" fullWidth>
             Submit
           </Button>
-        </Box>
+        }
+      >
+        <input type="hidden" name="email" value={email} />
 
-      </Form>
+        <TextField
+          name="password"
+          ref={passwordRef}
+          label="New password"
+          variant="outlined"
+          margin="normal"
+          type="password"
+          autoComplete="new-password"
+          {...generateAria(actionData, "password")}
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+        />
+        <FormErrorHelperText name="password" actionData={actionData} />
+
+        <TextField
+          name="passwordVerification"
+          ref={passwordVerificationRef}
+          label="Ret-enter your new password"
+          variant="outlined"
+          margin="normal"
+          type="password"
+          autoComplete="new-password"
+          {...generateAria(actionData, "passwordVerification")}
+        />
+        <FormErrorHelperText
+          name="passwordVerification"
+          actionData={actionData}
+        />
+
+        <PasswordCheckView password={password} />
+      </FormView>
     </PageFullContentWithLogo>
   );
 }

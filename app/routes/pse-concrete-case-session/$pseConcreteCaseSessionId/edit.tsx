@@ -1,9 +1,9 @@
-import { Box, Button, TextField } from "@mui/material";
+import { Button, TextField } from "@mui/material";
 import type { ActionArgs, LoaderFunction} from "@remix-run/node";
 import { redirect } from "@remix-run/node";
 import { json } from "@remix-run/node";
 import type { Params} from "@remix-run/react";
-import { Form, useActionData} from "@remix-run/react";
+import { useActionData} from "@remix-run/react";
 import { useLoaderData } from "@remix-run/react";
 import { z } from "zod";
 import PageContainer from "~/components/layout/PageContainer";
@@ -21,9 +21,12 @@ import type { PseFormationApiObject } from "~/apiobject/pseformation.apiobject";
 import type { PseConcreteCaseSessionApiObject } from "~/apiobject/pseconcretecasesession.apiobject";
 import type { SecurityFunction } from "~/constants/remix";
 import FormErrorHelperText from "~/components/form/FormErrorHelperText";
-import { useEffect, useRef } from "react";
+import { useRef } from "react";
 import type { PseConcreteCaseSessionPutDto } from "~/dto/pseconcretecasesession.dto";
 import PseConcreteCaseSessionStateAutocomplete from "~/components/pse-concrete-case-session/PseConcreteCaseSessionStateAutocomplete";
+import useFormFocusError from "~/hooks/useFormFocusError";
+import FormView from "~/components/form/FormView";
+import { generateAria } from "~/utils/form";
 
 // update PSE concrete case session
 
@@ -94,58 +97,50 @@ export default function SessionPseRoute() {
   const nameRef = useRef<HTMLInputElement>(null);
   const stateRef = useRef<HTMLInputElement>(null);
 
-  useEffect(() => {
-    if (actionData?.errors?.name) {
-      nameRef.current?.focus();
-    } else if (actionData?.errors?.state) {
-      stateRef.current?.focus();
-    }
-  }, [actionData]);
+	useFormFocusError(actionData, [ 
+		[ 'name', nameRef ],
+		[ 'state', stateRef ],
+	])
 
   return (
     <PageContainer>
       <PageTitle title={pseConcreteCaseSession.name} />
 
       <Section>
-        <Form method="post">
-          <Box sx={{ display: "flex", flexDirection: "column", mt: 2 }}>
-            <TextField
-              name="name"
-              ref={nameRef}
-							defaultValue={pseConcreteCaseSession.name}
-              label="Nom de la session"
-              variant="standard"
-              margin="normal"
-              type="string"
-							required
-              autoFocus
-              aria-invalid={actionData?.errors?.name ? true : undefined}
-              aria-describedby="name-form-error"
-            />
-            <FormErrorHelperText name="name" actionData={actionData} />
-
-						<PseConcreteCaseSessionStateAutocomplete
-              name="state"
-              ref={stateRef}
-							defaultValue={pseConcreteCaseSession.state}
-              label="Status"
-              variant="standard"
-              margin="normal"
-              type="string"
-							required
-              autoFocus
-              aria-invalid={actionData?.errors?.state ? true : undefined}
-              aria-describedby="state-form-error"
-            />
-            <FormErrorHelperText name="state" actionData={actionData} />
-          </Box>
-
-          <Box sx={{ mt: 3, display: "flex", justifyContent: "end" }}>
+        <FormView
+          action={
             <Button type="submit" variant="contained" color="primary" fullWidth>
               Submit
             </Button>
-          </Box>
-        </Form>
+          }
+        >
+          <TextField
+            name="name"
+            ref={nameRef}
+            defaultValue={pseConcreteCaseSession.name}
+            label="Nom de la session"
+            variant="standard"
+            margin="normal"
+            type="string"
+            autoFocus
+						{...generateAria(actionData, 'name')}
+          />
+          <FormErrorHelperText name="name" actionData={actionData} />
+
+          <PseConcreteCaseSessionStateAutocomplete
+            name="state"
+            ref={stateRef}
+            defaultValue={pseConcreteCaseSession.state}
+            label="Status"
+            variant="standard"
+            margin="normal"
+            type="string"
+            required
+            autoFocus
+						{...generateAria(actionData, 'state')}
+          />
+          <FormErrorHelperText name="state" actionData={actionData} />
+        </FormView>
       </Section>
     </PageContainer>
   );

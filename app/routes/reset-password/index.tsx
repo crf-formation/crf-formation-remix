@@ -1,8 +1,8 @@
 import { Box, Button, Link, TextField, Typography } from "@mui/material";
 import type { ActionArgs, LoaderArgs, MetaFunction } from "@remix-run/node";
 import { json, redirect } from "@remix-run/node";
-import { Form, useActionData, useLoaderData, useSearchParams } from "@remix-run/react";
-import { useEffect, useRef } from "react";
+import { useActionData, useLoaderData, useSearchParams } from "@remix-run/react";
+import { useRef } from "react";
 import { z } from "zod";
 import FormErrorHelperText from "~/components/form/FormErrorHelperText";
 import PageFullContentWithLogo from "~/components/layout/PageFullContentWithLogo";
@@ -11,6 +11,9 @@ import { getSession, getUserId } from "~/services/session.server";
 import { validateUserEmail } from "~/services/user.server";
 import { getSearchParamsOrFail } from "~/utils/remix.params";
 import { badRequest } from '../../utils/responses';
+import useFormFocusError from "~/hooks/useFormFocusError";
+import FormView from "~/components/form/FormView";
+import { generateAria } from "~/utils/form";
 
 const URLSearchParamsSchema = z.object({
   email: z.string(),
@@ -55,62 +58,52 @@ export const meta: MetaFunction<typeof loader> = () => {
 
 export default function PasswordResetRoute() {
   const { redirectTo, defaultEmail } = useLoaderData<typeof loader>();
+  const actionData = useActionData<typeof action>();
 
   const [searchParams] = useSearchParams();
 
-  const actionData = useActionData<typeof action>();
   const emailRef = useRef<HTMLInputElement>(null);
 
-  useEffect(() => {
-    if (actionData?.errors?.email) {
-      emailRef.current?.focus();
-    }   
-  }, [actionData]);
+  useFormFocusError(actionData, [
+    ["email", emailRef],
+  ]);
 
   return (
     <PageFullContentWithLogo>
+      <Box sx={{ textAlign: "center", mt: 2 }}>
+        <Typography variant="h5">Reset your password</Typography>
 
-      <Box sx={{ textAlign: "center", mt: 2, }}>
-        <Typography variant="h5">
-          Reset your password
-        </Typography>
-        
         <Typography variant="subtitle1" sx={{ md: 2, maxWidth: 300, mt: 3 }}>
           Enter your email address and we will send you a password reset link.
         </Typography>
       </Box>
 
-      <Form method="post">
-
-        <input type="hidden" name="redirectTo" value={redirectTo} />
-
-        <Box sx={{ display: "flex", flexDirection: "column", mt: 2, }}>
-          <TextField
-            name="email"
-            label="Email"
-            variant="outlined"
-            margin="normal"
-            autoFocus
-            type="email"
-            autoComplete="email"
-            aria-invalid={actionData?.errors?.email ? true : undefined}
-            aria-describedby="email-form-error"
-            defaultValue={defaultEmail}
-          />
-          <FormErrorHelperText name="email" actionData={actionData} />
-
-        </Box>
-
-        <Box sx={{ mt: 2, display: "flex", justifyContent: "end" }}>
+      <FormView
+        action={
           <Button type="submit" variant="contained" color="primary" fullWidth>
             Submit
           </Button>
-        </Box>
+        }
+      >
+        <input type="hidden" name="redirectTo" value={redirectTo} />
 
-        <Box mt={3} textAlign="center">
-          <Link href={`/login?${searchParams.toString()}`}>Return to log in</Link>
-        </Box>
-      </Form>
+        <TextField
+          name="email"
+          label="Email"
+          variant="outlined"
+          margin="normal"
+          autoFocus
+          type="email"
+          autoComplete="email"
+          {...generateAria(actionData, "email")}
+          defaultValue={defaultEmail}
+        />
+        <FormErrorHelperText name="email" actionData={actionData} />
+      </FormView>
+
+      <Box mt={3} textAlign="center">
+        <Link href={`/login?${searchParams.toString()}`}>Return to log in</Link>
+      </Box>
     </PageFullContentWithLogo>
   );
 }

@@ -8,7 +8,6 @@ import PageContainer from "~/components/layout/PageContainer";
 import { getPseConcreteCaseSessionById } from "~/services/pseconcretecasesession.server";
 import { requireUser } from "~/services/session.server";
 import { getFormData, getParamsOrFail } from '~/utils/remix.params';
-import { useEffect, useRef } from "react";
 import type { PseConcreteCaseGroupPutDto, PseUserConcreteCaseGroupStudentDto } from "~/dto/pseconcretecasegroup.dto";
 import Section from "~/components/layout/Section";
 import PageTitle from "~/components/layout/PageTitle";
@@ -102,14 +101,6 @@ export default function PseConcreteCaseGroupRoute() {
   const { pseFormation, pseConcreteCaseSession, pseConcreteCaseGroup } = useLoaderData<typeof loader>();
 
 	const actionData = useActionData<typeof action>();
-
-  const nameRef = useRef<HTMLInputElement>(null);
-
-  useEffect(() => {
-    if (actionData?.errors?.name) {
-      nameRef.current?.focus();
-    }
-  }, [actionData]);
 
   return (
     <PageContainer>

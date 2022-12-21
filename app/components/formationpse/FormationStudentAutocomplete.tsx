@@ -4,13 +4,13 @@ import UserAutocompleteResource from "~/routes/resource/formation-student-autoco
 import Autocomplete from "@mui/material/Autocomplete";
 import type { UserDto } from "../../dto/user.dto";
 
-interface Props {
+interface Props extends AutocompleteProps {
   formationId: string;
   name?: string;
-  defaultValue?: Array<string>;
+  defaultValue?: Array<any>;
 }
 
-function Content({ usersPaginateObject, isLoading, name, defaultValue, query, setQuery }) {
+function Content({ usersPaginateObject, isLoading, name, defaultValue, query, setQuery, ...otherProps }) {
   const [selectedUsers, setSelectedUsers] = useState<Array<UserDto>>(defaultValue || []);
 
   return (
@@ -34,6 +34,7 @@ function Content({ usersPaginateObject, isLoading, name, defaultValue, query, se
             onChange={(e) => setQuery(e.target.value)}
           />
         )}
+        {...otherProps}
       />
       {selectedUsers.map((user: UserDto) => (
         <input key={user.id} type="hidden" name={`${name}`} value={user.id} />
@@ -46,6 +47,7 @@ export default function FormationUserAutocomplete({
   formationId,
   name = "students",
   defaultValue,
+  ...otherProps
 }: Props) {
   const [query, setQuery] = useState("");
 
@@ -63,6 +65,7 @@ export default function FormationUserAutocomplete({
             query={query}
             setQuery={setQuery}
             defaultValue={defaultValue}
+            {...otherProps}
           />
         )
       }

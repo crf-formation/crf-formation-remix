@@ -2,18 +2,21 @@ import { faker } from "@faker-js/faker";
 import { Box, Button, Link, TextField } from "@mui/material";
 import type { ActionArgs, LoaderArgs, MetaFunction } from "@remix-run/node";
 import { json, redirect } from "@remix-run/node";
-import { Form, useActionData, useLoaderData, useSearchParams } from "@remix-run/react";
+import { useActionData, useLoaderData, useSearchParams } from "@remix-run/react";
 import { isEmpty } from "lodash";
-import { useEffect, useRef } from "react";
+import { useRef } from "react";
 import { z } from "zod";
 import type { UserPostApiObject } from "~/apiobject/user.apiobject";
 import FormErrorHelperText from "~/components/form/FormErrorHelperText";
+import FormView from "~/components/form/FormView";
 import PageFullContentWithLogo from "~/components/layout/PageFullContentWithLogo";
 import type { UserPostDto } from "~/dto/user.dto";
+import useFormFocusError from "~/hooks/useFormFocusError";
 import { userPostDtoToUserPostApiObject } from "~/mapper/user.mapper";
 import { askForPasswordCreation } from "~/services/passwordrecovery.server";
 import { getUserId } from "~/services/session.server";
 import { createUser, findUserByEmail, validateUserEmail } from "~/services/user.server";
+import { generateAria } from "~/utils/form";
 import { getSearchParamsOrFail } from "~/utils/remix.params";
 import { badRequest } from "~/utils/responses";
 
@@ -111,15 +114,11 @@ export default function JoinRoute() {
   const lastNameRef = useRef<HTMLInputElement>(null);
   const emailRef = useRef<HTMLInputElement>(null);
 
-  useEffect(() => {
-    if (actionData?.errors?.firstName) {
-      firstNameRef.current?.focus();
-    } else if (actionData?.errors?.lastName) {
-      lastNameRef.current?.focus();
-    } else if (actionData?.errors?.email) {
-      emailRef.current?.focus();
-    }
-  }, [actionData]);
+  useFormFocusError(actionData, [
+    [ "firstName", firstNameRef ],
+    [ "lastName", lastNameRef ],
+    [ "email", emailRef ],
+  ]);
 
   const fakeFirstName = faker.name.firstName();
   const fakeLastName = faker.name.lastName();
@@ -132,66 +131,60 @@ export default function JoinRoute() {
 
   return (
     <PageFullContentWithLogo>
-      <Form method="post">
+      <FormView
+        action={
+          <Button type="submit" variant="contained" color="primary" fullWidth>
+            Créer le compte
+          </Button>
+        }
+      >
         <input type="hidden" name="redirectTo" value={redirectTo} />
 
-        <Box sx={{ display: "flex", flexDirection: "column" }}>
-          <TextField
-            name="firstName"
-            ref={firstNameRef}
-            label="First name"
-            variant="standard"
-            margin="normal"
-            type="string"
-            autoComplete="firstName"
-            autoFocus
-            aria-invalid={actionData?.errors?.firstName ? true : undefined}
-            aria-describedby="firstName-form-error"
-            defaultValue={fakeData?.firstName}
-          />
-          <FormErrorHelperText name="firstName" actionData={actionData} />
+        <TextField
+          name="firstName"
+          ref={firstNameRef}
+          label="Prénom"
+          variant="standard"
+          margin="normal"
+          type="string"
+          autoComplete="firstName"
+          autoFocus
+          {...generateAria(actionData, "firstName")}
+          defaultValue={fakeData?.firstName}
+        />
+        <FormErrorHelperText name="firstName" actionData={actionData} />
 
-          <TextField
-            name="lastName"
-            ref={lastNameRef}
-            label="Last name"
-            variant="standard"
-            margin="normal"
-            type="string"
-            autoComplete="lastName"
-            aria-invalid={actionData?.errors?.lastName ? true : undefined}
-            aria-describedby="lastName-form-error"
-            defaultValue={fakeData?.lastName}
-          />
-          <FormErrorHelperText name="lastName" actionData={actionData} />
+        <TextField
+          name="lastName"
+          ref={lastNameRef}
+          label="Nom"
+          variant="standard"
+          margin="normal"
+          type="string"
+          autoComplete="lastName"
+          {...generateAria(actionData, "lastName")}
+          defaultValue={fakeData?.lastName}
+        />
+        <FormErrorHelperText name="lastName" actionData={actionData} />
 
-          <TextField
-            name="email"
-            ref={emailRef}
-            label="Email"
-            variant="standard"
-            margin="normal"
-            type="email"
-            autoComplete="email"
-            aria-invalid={actionData?.errors?.email ? true : undefined}
-            aria-describedby="email-form-error"
-            defaultValue={fakeData?.email}
-          />
-          <FormErrorHelperText name="email" actionData={actionData} />
+        <TextField
+          name="email"
+          ref={emailRef}
+          label="Email"
+          variant="standard"
+          margin="normal"
+          type="email"
+          autoComplete="email"
+          {...generateAria(actionData, "email")}
+          defaultValue={fakeData?.email}
+        />
+        <FormErrorHelperText name="email" actionData={actionData} />
+      </FormView>
 
-        </Box>
-
-        <Box sx={{ marginTop: 2, display: "flex", justifyContent: "end" }}>
-          <Button type="submit" variant="contained" color="primary" fullWidth>
-            Create account
-          </Button>
-        </Box>
-
-        <Box mt={3} textAlign="center">
-          Already have an account?{" "}
-          <Link href={`/login?${searchParams.toString()}`}>Log in</Link>
-        </Box>
-      </Form>
+      <Box mt={3} textAlign="center">
+        Already have an account?{" "}
+        <Link href={`/login?${searchParams.toString()}`}>Log in</Link>
+      </Box>
     </PageFullContentWithLogo>
   );
 }

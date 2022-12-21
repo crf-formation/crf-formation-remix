@@ -1,25 +1,28 @@
 
 import { Button, Box, TextField } from "@mui/material";
 import type { Params} from "@remix-run/react";
-import { Form, useActionData, useLoaderData } from "@remix-run/react";
+import { useActionData, useLoaderData } from "@remix-run/react";
 import type { ActionArgs, LoaderArgs} from "@remix-run/server-runtime";
 import { redirect } from "@remix-run/server-runtime";
 import { json } from "@remix-run/server-runtime";
-import { useRef, useEffect } from "react";
+import { useRef } from "react";
 import { z } from "zod";
 import type { PseFormationApiObject } from "~/apiobject/pseformation.apiobject";
 import FormErrorHelperText from "~/components/form/FormErrorHelperText";
+import FormView from "~/components/form/FormView";
 import PageContainer from "~/components/layout/PageContainer";
 import PageTitle from "~/components/layout/PageTitle";
 import Section from "~/components/layout/Section";
 import Callout from "~/components/typography/Callout";
 import type { SecurityFunction } from "~/constants/remix";
 import type { PseConcreteCaseSessionPostDto } from "~/dto/pseconcretecasesession.dto";
+import useFormFocusError from "~/hooks/useFormFocusError";
 import { pseConcreteCaseSessionPostDtoToApiObject } from "~/mapper/pseconcretecasesession.mapper";
 import { createPseConcreteCaseSession } from "~/services/pseconcretecasesession.server";
 import { findPseFormationById } from "~/services/pseformation.server";
 import { assertUserHasAccessToFormationAsTeacher } from "~/services/security.server";
 import { requireUser } from "~/services/session.server";
+import { generateAria } from "~/utils/form";
 import { getFormData, getParamsOrFail } from "~/utils/remix.params";
 
 const ParamsSchema = z.object({
@@ -85,19 +88,25 @@ export default function ConcreteCaseSessionsRoute() {
 
   const nameRef = useRef<HTMLInputElement>(null);
 
-  useEffect(() => {
-    if (actionData?.errors?.name) {
-      nameRef.current?.focus();
-    }
-  }, [actionData]);
+  useFormFocusError(actionData, [
+    [ "name", nameRef ],
+  ]);
 
   return (
     <PageContainer>
       <PageTitle title="Créer une session" />
       <Section>
-        <Callout severity="info">Créez une nouvelle session de cas concret</Callout>
+        <Callout severity="info">
+          Créez une nouvelle session de cas concret
+        </Callout>
 
-        <Form method="post">
+        <FormView
+          action={
+            <Button type="submit" variant="contained" color="primary" fullWidth>
+              Créer
+            </Button>
+          }
+        >
           <input type="hidden" name="formationId" value={formationId} />
 
           <Box sx={{ display: "flex", flexDirection: "column", mt: 2 }}>
@@ -110,18 +119,11 @@ export default function ConcreteCaseSessionsRoute() {
               type="string"
               required
               autoFocus
-              aria-invalid={actionData?.errors?.name ? true : undefined}
-              aria-describedby="name-form-error"
+              {...generateAria(actionData, "name")}
             />
             <FormErrorHelperText name="name" actionData={actionData} />
           </Box>
-
-          <Box sx={{ mt: 3, display: "flex", justifyContent: "end" }}>
-            <Button type="submit" variant="contained" color="primary" fullWidth>
-              Submit
-            </Button>
-          </Box>
-        </Form>
+        </FormView>
       </Section>
     </PageContainer>
   );

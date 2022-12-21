@@ -1,15 +1,18 @@
 import { Box, Button, TextField, Typography } from "@mui/material";
 import type { ActionArgs, LoaderArgs, MetaFunction } from "@remix-run/node";
 import { json, redirect } from "@remix-run/node";
-import { Form, useActionData, useLoaderData } from "@remix-run/react";
-import { useEffect, useRef, useState } from "react";
+import { useActionData, useLoaderData } from "@remix-run/react";
+import { useRef, useState } from "react";
 import { z } from "zod";
 import FormErrorHelperText from "~/components/form/FormErrorHelperText";
+import FormView from "~/components/form/FormView";
 import PasswordCheckView from "~/components/hibp/PasswordCheckView";
 import PageFullContentWithLogo from "~/components/layout/PageFullContentWithLogo";
+import useFormFocusError from "~/hooks/useFormFocusError";
 import { createPassword, verifyTokenIsValid } from "~/services/passwordrecovery.server";
 import { createUserSession, getSession, getUserId } from "~/services/session.server";
 import { verifyLogin } from "~/services/user.server";
+import { generateAria } from "~/utils/form";
 import { getParamsOrFail, getSearchParamsOrFail } from "~/utils/remix.params";
 import { badRequest } from "~/utils/responses";
 import { badRequestWithFlash } from "~/utils/responsesError";
@@ -109,21 +112,17 @@ export const meta: MetaFunction<typeof loader> = () => {
 
 export default function PasswordResetRoute() {
   const { email } = useLoaderData<typeof loader>();
-
   const actionData = useActionData<typeof action>();
+
+  const [password, setPassword] = useState('bonjour1') // TODO: remove default value
 
   const passwordRef = useRef<HTMLInputElement>(null);
   const passwordVerificationRef = useRef<HTMLInputElement>(null);
 
-  const [password, setPassword] = useState('bonjour1') // TODO: remove default value
-
-  useEffect(() => {
-    if (actionData?.errors?.password) {
-      passwordRef.current?.focus();
-    } else if (actionData?.errors?.passwordVerification) {
-      passwordVerificationRef.current?.focus();
-    }
-  }, [actionData]);
+  useFormFocusError(actionData, [
+    [ "password", passwordRef ],
+    [ "passwordVerification", passwordVerificationRef ],
+  ]);
 
   return (
     <PageFullContentWithLogo>
@@ -135,52 +134,47 @@ export default function PasswordResetRoute() {
         </Typography>
       </Box>
 
-      <Form method="post">
+      <FormView
+        action={
+          <Button type="submit" variant="contained" color="primary" fullWidth>
+            Valider
+          </Button>
+        }
+      >
         <input type="hidden" name="email" value={email} />
 
-        <Box sx={{ display: "flex", flexDirection: "column", mt: 2 }}>
-          <TextField
-            name="password"
-            ref={passwordRef}
-            label="New password"
-            variant="outlined"
-            margin="normal"
-            type="password"
-            autoComplete="new-password"
-            aria-invalid={actionData?.errors?.password ? true : undefined}
-            aria-describedby="password-form-error"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-          />
-          <FormErrorHelperText name="password" actionData={actionData} />
+        <TextField
+          name="password"
+          ref={passwordRef}
+          label="New password"
+          variant="outlined"
+          margin="normal"
+          type="password"
+          autoComplete="new-password"
+          {...generateAria(actionData, "password")}
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+        />
+        <FormErrorHelperText name="password" actionData={actionData} />
 
-          <TextField
-            name="passwordVerification"
-            ref={passwordVerificationRef}
-            label="Ret-enter your new password"
-            variant="outlined"
-            margin="normal"
-            type="password"
-            autoComplete="new-password"
-            aria-invalid={actionData?.errors?.passwordVerification ? true : undefined}
-            aria-describedby="password-form-error"
-            defaultValue="bonjour1"
-          />
-          <FormErrorHelperText
-            name="passwordVerification"
-            actionData={actionData}
-          />
+        <TextField
+          name="passwordVerification"
+          ref={passwordVerificationRef}
+          label="Ret-enter your new password"
+          variant="outlined"
+          margin="normal"
+          type="password"
+          autoComplete="new-password"
+          {...generateAria(actionData, "passwordVerification")}
+          defaultValue="bonjour1"
+        />
+        <FormErrorHelperText
+          name="passwordVerification"
+          actionData={actionData}
+        />
 
-          <PasswordCheckView password={password} />
-        </Box>
-
-        <Box sx={{ mt: 3, display: "flex", justifyContent: "end" }}>
-          <Button type="submit" variant="contained" color="primary" fullWidth>
-            Submit
-          </Button>
-        </Box>
-
-      </Form>
+        <PasswordCheckView password={password} />
+      </FormView>
     </PageFullContentWithLogo>
   );
 }
