@@ -197,7 +197,6 @@ model PseConcreteCaseGroup {
   updatedAt DateTime @default(now()) @updatedAt
 
   name  String
-  state String
 
   // linked to
   pseConcreteCaseSession   PseConcreteCaseSession @relation(fields: [pseConcreteCaseSessionId], references: [id], onDelete: Cascade, onUpdate: Cascade)

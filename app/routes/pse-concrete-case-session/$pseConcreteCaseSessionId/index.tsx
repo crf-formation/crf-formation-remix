@@ -11,10 +11,11 @@ import { requireUser } from "~/services/session.server";
 import { getParamsOrFail } from '~/utils/remix.params';
 import PersonAddIcon from '@mui/icons-material/PersonAdd';
 import AddIcon from '@mui/icons-material/Add';
-import { getPseFormationByPseConcreteCaseSessionId } from "~/services/pseformation.server";
 import { pseFormationApiObjectToDto } from "~/mapper/pseformation.mapper";
 import PageTitle from "~/components/layout/PageTitle";
 import type { PseConcreteCaseGroupDto } from '../../../dto/pseconcretecasegroup.dto';
+import { getPseFormationByPseConcreteCaseSessionId } from '~/services/pseformation.server';
+import { assertUserHasAccessToFormationAsTeacher } from "~/services/security.server";
 
 const ParamsSchema = z.object({
   pseConcreteCaseSessionId: z.string(),
@@ -27,13 +28,12 @@ export const loader: LoaderFunction = async ({
 }) => {
 	const { pseConcreteCaseSessionId } = getParamsOrFail(params, ParamsSchema)
 
-	await requireUser(request)
+	const user = await requireUser(request)
 
 	const pseConcreteCaseSessionApiObject = await getPseConcreteCaseSessionById(pseConcreteCaseSessionId)
   const pseFormationApiObject = await getPseFormationByPseConcreteCaseSessionId(pseConcreteCaseSessionApiObject.id)	
 
-	// TODO:
-	// await assertUserHasAccessToFormationAsTeacher(user.id, pseConcreteCaseSessionApiObject.id)
+	await assertUserHasAccessToFormationAsTeacher(user.id, pseConcreteCaseSessionApiObject.id)
 
   return json({
     pseFormation: pseFormationApiObjectToDto(pseFormationApiObject),
@@ -50,7 +50,7 @@ export const meta: MetaFunction<typeof loader> = ({ data }) => {
 function Groups({ pseFormationId, pseConcreteCaseSessionId, groups }) {
   return (
     <Section
-      title="Groups"
+      title="Groupes"
       action={
         <span>
           <Link

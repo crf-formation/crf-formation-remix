@@ -10,7 +10,7 @@ import {
   updatePseFormationEntity,
   findPseFormationForUserEntities,
   findCurrentPseFormationEntityForUser,
-  findPseSessionEntityByPseConcreteCaseSessionId,
+  findPseFormationEntityByPseConcreteCaseSessionId,
 } from "~/repository/pseformation.repository";
 import { pseFormationEntityToApiObject } from "~/mapper/pseformation.mapper";
 import { paginateEntityToApiObject } from "~/mapper/abstract.mapper";
@@ -43,8 +43,8 @@ export async function findPseFormationById(
 }
 
 
-export async function getPseFormationByPseConcreteCaseSessionId(pseConcreteCaseSessionId: string) : Promise<PseFormationApiObject> {
-  const pseFormationEntity = await findPseSessionEntityByPseConcreteCaseSessionId(pseConcreteCaseSessionId);
+export async function eetPseFormationByPseConcreteCaseSessionId(pseConcreteCaseSessionId: string) : Promise<PseFormationApiObject> {
+  const pseFormationEntity = await findPseFormationEntityByPseConcreteCaseSessionId(pseConcreteCaseSessionId);
   if (!pseFormationEntity) {
     throw new NotFoundException("PseFormation for pseConcreteCaseSessionId", pseConcreteCaseSessionId)
   }
@@ -78,4 +78,12 @@ export async function getCurrentPseFormationForUser(userId: string): Promise<Opt
     return null;
   }
   return pseFormationEntityToApiObject(pseFormationEntity);
+}
+
+export async function getPseFormationByPseConcreteCaseSessionId(concreteCaseSessionId: string): Promise<PseFormationApiObject> {
+  const entity = await findPseFormationEntityByPseConcreteCaseSessionId(concreteCaseSessionId);
+  if (entity == null) {
+		throw new NotFoundException('findPseFormationEntityByPseConcreteCaseSessionId', concreteCaseSessionId)
+  }
+  return pseFormationEntityToApiObject(entity)
 }

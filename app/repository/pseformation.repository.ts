@@ -73,7 +73,7 @@ export async function findPseFormationEntityById(id: string): Promise<Optional<P
   });
 }
 
-export async function findPseSessionEntityByPseConcreteCaseSessionId(pseConcreteCaseSessionId: string): Promise<Optional<PseFormationEntity>> {
+export async function findPseFormationEntityByPseConcreteCaseSessionId(pseConcreteCaseSessionId: string): Promise<Optional<PseFormationEntity>> {
   // TODO: better way?
   const pseConcreteCaseSessionEntity = await prisma.pseConcreteCaseSession.findUnique({
     where: {
@@ -83,6 +83,10 @@ export async function findPseSessionEntityByPseConcreteCaseSessionId(pseConcrete
       formation: true
     }
   })
+
+  if (!pseConcreteCaseSessionEntity) {
+    return null;
+  }
 
   // shortcut to load formation with the right includes
   return findPseFormationEntityById(pseConcreteCaseSessionEntity.formation.id);
@@ -147,7 +151,7 @@ export async function findPseFormationForUserEntities(
 }
 
 // TODO: feature - do not take the first one found but the one chosen by the user
-export async function findCurrentPseFormationEntityForUser(userId: string) {
+export async function findCurrentPseFormationEntityForUser(userId: string): Promise<Optional<PseFormationEntity>> {
   const pseFormationPaginateObjectEntities = await findPseFormationForUserEntities(userId, 0, 1, "from", "desc");
 
   if (pseFormationPaginateObjectEntities.page.totalElements === 0) {

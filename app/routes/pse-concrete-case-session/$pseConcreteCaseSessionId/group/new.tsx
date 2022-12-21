@@ -1,17 +1,14 @@
-import { Box, Button, Stack, TextField } from "@mui/material";
 import type { ActionArgs, LoaderFunction, MetaFunction} from "@remix-run/node";
 import { redirect } from "@remix-run/node";
 import { json } from "@remix-run/node";
-import { Form, useActionData, useLoaderData } from "@remix-run/react";
+import type { Params} from "@remix-run/react";
+import { useActionData, useLoaderData } from "@remix-run/react";
 import { z } from "zod";
-import FormErrorHelperText from "~/components/form/FormErrorHelperText";
 import PageContainer from "~/components/layout/PageContainer";
 import { pseConcreteCaseSessionApiObjectToDto } from "~/mapper/pseconcretecasesession.mapper";
 import { getPseConcreteCaseSessionById } from "~/services/pseconcretecasesession.server";
 import { requireUser } from "~/services/session.server";
 import { getFormData, getParamsOrFail } from '~/utils/remix.params';
-import FormationStudentAutocomplete from "~/components/formationpse/FormationStudentAutocomplete"
-import { useEffect, useRef } from "react";
 import { getPseFormationByPseConcreteCaseSessionId } from "~/services/pseformation.server";
 import { pseFormationApiObjectToDto } from "~/mapper/pseformation.mapper";
 import type { PseConcreteCaseGroupPostDto } from "~/dto/pseconcretecasegroup.dto";
@@ -20,23 +17,20 @@ import PageTitle from "~/components/layout/PageTitle";
 import { pseConcreteCaseGroupPostDtoToApiObject } from "~/mapper/pseconcretecasegroup.mapper";
 import { assertUserHasAccessToFormationAsTeacher } from "~/services/security.server";
 import { createPseConcreteCaseGroup } from "~/services/pseconcretecasegroup.server";
+import PseConcreteCaseGroupForm from "~/components/pse-concrete-case-group/PseConcreteCaseGroupForm";
+import type { PseFormationApiObject } from "~/apiobject/pseformation.apiobject";
+import type { PseConcreteCaseSessionApiObject } from "~/apiobject/pseconcretecasesession.apiobject";
+import type { UserApiObject } from "~/apiobject/user.apiobject";
 
 const ParamsSchema = z.object({
   pseConcreteCaseSessionId: z.string(),
 });
 
-// GET a formation
 export const loader: LoaderFunction = async ({
   request,
 	params
 }) => {
-	const { pseConcreteCaseSessionId } = getParamsOrFail(params, ParamsSchema)
-
-	const user = await requireUser(request)
-	const pseConcreteCaseSessionApiObject = await getPseConcreteCaseSessionById(pseConcreteCaseSessionId)
-
-  const pseFormationApiObject = await getPseFormationByPseConcreteCaseSessionId(pseConcreteCaseSessionApiObject.id)
-	await assertUserHasAccessToFormationAsTeacher(user.id, pseFormationApiObject.id)
+	const { pseFormationApiObject, pseConcreteCaseSessionApiObject } = await secure(request, params)
 
   return json({
     pseFormation: pseFormationApiObjectToDto(pseFormationApiObject),
@@ -51,18 +45,7 @@ const PostSchema = z.object({
 });
 
 export async function action({ request, params  }: ActionArgs) {
-	const { pseConcreteCaseSessionId } = getParamsOrFail(params, ParamsSchema)
-
-	const user = await requireUser(request)
-	const pseConcreteCaseSessionApiObject = await getPseConcreteCaseSessionById(pseConcreteCaseSessionId)
-
-  const pseFormationApiObject = await getPseFormationByPseConcreteCaseSessionId(pseConcreteCaseSessionApiObject.id)
-	await assertUserHasAccessToFormationAsTeacher(user.id, pseFormationApiObject.id)
-
-  // TODO: finalize creation
-  console.log({
-    formData: await (await request.clone().formData()).get("students")
-  })
+	const { pseConcreteCaseSessionApiObject } = await secure(request, params)
 
   const result = await getFormData(request, PostSchema);
   if (!result.success) {
@@ -78,68 +61,48 @@ export async function action({ request, params  }: ActionArgs) {
   return redirect(`/pse-concrete-case-session/${pseConcreteCaseSessionApiObject.id}`)
 }
 
+interface SecureData {
+  userApiObject: UserApiObject;
+  pseFormationApiObject: PseFormationApiObject;
+  pseConcreteCaseSessionApiObject: PseConcreteCaseSessionApiObject;
+}
+
+async function secure(request: Request, params: Params): Promise<SecureData> {
+  const { pseConcreteCaseSessionId } = getParamsOrFail(params, ParamsSchema)
+
+  const userApiObject = await requireUser(request)
+	const pseConcreteCaseSessionApiObject = await getPseConcreteCaseSessionById(pseConcreteCaseSessionId)
+
+  const pseFormationApiObject = await getPseFormationByPseConcreteCaseSessionId(pseConcreteCaseSessionApiObject.id)
+	await assertUserHasAccessToFormationAsTeacher(userApiObject.id, pseFormationApiObject.id)
+
+  return {
+    userApiObject,
+    pseFormationApiObject,
+    pseConcreteCaseSessionApiObject,
+  }
+}
+
 export const meta: MetaFunction<typeof loader> = ({ data }) => {
   return {
     title: `Nouveau groupe`,
   };
 };
 
-export default function SessionPseRoute() {
+export default function PseConcreteCaseSessionNewGroupRoute() {
   const { pseFormation, pseConcreteCaseSession } = useLoaderData<typeof loader>();
 
 	const actionData = useActionData<typeof action>();
-
-  const nameRef = useRef<HTMLInputElement>(null);
-
-  useEffect(() => {
-    if (actionData?.errors?.name) {
-      nameRef.current?.focus();
-    }
-  }, [actionData]);
 
   return (
     <PageContainer>
       <PageTitle title="Créer un groupe" />
       <Section>
-        <Box sx={{ display: "flex", justifyContent: "center" }}>
-          <Form method="post">
-            <input
-              type="hidden"
-              name="pseConcreteCaseSessionId"
-              value={pseConcreteCaseSession.id}
-            />
-
-            <Stack
-              spacing={2}
-              sx={{ display: "flex", flexDirection: "column", mt: 2 }}
-            >
-              <TextField
-                name="name"
-                ref={nameRef}
-                label="Nom du groupe"
-                variant="standard"
-                margin="normal"
-                type="string"
-                autoFocus
-                aria-invalid={actionData?.errors?.name ? true : undefined}
-                aria-describedby="name-form-error"
-              />
-              <FormErrorHelperText name="firstName" actionData={actionData} />
-
-              <FormationStudentAutocomplete
-                formationId={pseFormation.id}
-                name="students"
-              />
-              <FormErrorHelperText name="students" actionData={actionData} />
-            </Stack>
-
-            <Box sx={{ mt: 3, display: "flex", justifyContent: "end" }}>
-              <Button type="submit" variant="contained" color="primary">
-                Submit
-              </Button>
-            </Box>
-          </Form>
-        </Box>
+        <PseConcreteCaseGroupForm 
+          pseFormationId={pseFormation.id}
+          pseConcreteCaseSessionId={pseConcreteCaseSession.id}
+          actionData={actionData}
+        />
       </Section>
     </PageContainer>
   );

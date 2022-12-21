@@ -1,8 +1,15 @@
-import type { PseConcreteCaseGroupApiObject, PseConcreteCaseGroupPostApiObject } from "~/apiobject/pseconcretecasegroup.apiobject";
-import { createPseConcreteCaseGroupEntity, findPseConcreteCaseGroupEntity } from "~/repository/pseconcretecasegroup.repository";
+import type { PseConcreteCaseGroupApiObject, PseConcreteCaseGroupPostApiObject, PseConcreteCaseGroupPutApiObject } from "~/apiobject/pseconcretecasegroup.apiobject";
+import { createPseConcreteCaseGroupEntity, findPseConcreteCaseGroupEntity, updatePseConcreteCaseGroupEntity } from "~/repository/pseconcretecasegroup.repository";
 import { pseConcreteCaseGroupEntityToApiObject } from "~/mapper/pseconcretecasegroup.mapper";
 import { NotFoundException } from "./api.error";
 
+export async function getPseConcreteCaseGroup(id: string): Promise<PseConcreteCaseGroupApiObject> {
+  const entity = await findPseConcreteCaseGroupEntity(id);
+  if (entity == null) {
+		throw new NotFoundException('PseConcreteCaseGroupEntity', id)
+  }
+  return pseConcreteCaseGroupEntityToApiObject(entity)
+}
 
 export async function createPseConcreteCaseGroup(
 	pseConcreteCaseGroupPostApiObject: PseConcreteCaseGroupPostApiObject
@@ -13,11 +20,12 @@ export async function createPseConcreteCaseGroup(
   return pseConcreteCaseGroupEntityToApiObject(entity)
 }
 
-export async function getPseConcreteCaseGroup(id: string): Promise<Optional<PseConcreteCaseGroupApiObject>> {
-  const entity = await findPseConcreteCaseGroupEntity(id);
-  if (entity == null) {
-		throw new NotFoundException('PseConcreteCaseGroupEntity', id)
+export async function updatePseConcreteCaseGroup(
+  id: string,
+  pseConcreteCaseGroupPutApiObject: PseConcreteCaseGroupPutApiObject
+) : Promise<PseConcreteCaseGroupApiObject> {
+    // TODO: verify students are valid and exists
+  
+    const entity = await updatePseConcreteCaseGroupEntity(id, pseConcreteCaseGroupPutApiObject);
+    return pseConcreteCaseGroupEntityToApiObject(entity)
   }
-  return pseConcreteCaseGroupEntityToApiObject(entity)
-
-}

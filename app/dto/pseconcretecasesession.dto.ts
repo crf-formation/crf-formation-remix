@@ -1,5 +1,5 @@
-import type { PseConcreteCaseSituationDto } from "./psesituation.dto";
 import type { PseConcreteCaseGroupDto } from './pseconcretecasegroup.dto';
+import type { PseConcreteCaseSituationDto } from './pseconcretecasesituation.dto';
 
 
 export type PseConcreteCaseSessionStateDtoEnum = 'CREATED' | 'RUNNING' | 'CLOSED';

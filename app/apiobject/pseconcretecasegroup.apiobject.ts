@@ -1,14 +1,11 @@
 import type { UserApiObject } from './user.apiobject';
 
-export type PseConcreteCaseGroupApiEnum = 'CREATED' | 'RUNNING' | 'CLOSED';
-
 // TODO:
 export interface PseConcreteCaseGroupApiObject {
 	id: string;
 	createdAt: Date;
 	updatedAt: Date;
 	name: string;
-	state: PseConcreteCaseGroupApiEnum
 
 	pseConcreteCaseSessionId: string
 	// pseConcreteCaseSession?: Optional<> TODO:
@@ -28,7 +25,15 @@ export interface PseUserConcreteCaseGroupStudentApiObject {
 export interface PseConcreteCaseGroupPostApiObject {
 	pseConcreteCaseSessionId: string;
 	name: string;
-	state: string;
+	/**
+	 * array of user id
+	 */ 
+	students: Array<string>
+}
+
+export interface PseConcreteCaseGroupPutApiObject {
+	pseConcreteCaseSessionId: string;
+	name: string;
 	/**
 	 * array of user id
 	 */ 
