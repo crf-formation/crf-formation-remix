@@ -119,7 +119,7 @@ export default function ConcreteCaseSessionsRoute() {
                         {concreteCaseSession.name}
                       </Link>
                     </TableCell>
-                    <TableCell>{concreteCaseSession.state}</TableCell>
+                    <TableCell>{concreteCaseSession.stateLabel}</TableCell>
                   </TableRow>
                 )
               )}

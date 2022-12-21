@@ -17,7 +17,7 @@ import { safeRedirect } from "~/utils/routing";
 
 const URLSearchParamsSchema = z.object({
   redirectTo: z.string().default("/dashboard"),
-  email: z.string().default("test@crf-formation.fr" || "" /* TODO: fixture - remove */),
+  email: z.string().default("jon-doe@crf-formation.fr" || "" /* TODO: fixture - remove */),
 });
 
 export async function loader({ request }: LoaderArgs) {

@@ -1,4 +1,4 @@
-import { Grid, Link, Stack, Table, TableBody, TableCell, TableHead, TableRow } from "@mui/material";
+import { Button, Chip, Grid, Link, Stack, Table, TableBody, TableCell, TableHead, TableRow } from "@mui/material";
 import type { LoaderFunction, MetaFunction } from "@remix-run/node";
 import { json } from "@remix-run/node";
 import type { Params} from "@remix-run/react";
@@ -21,12 +21,14 @@ import type { UserApiObject } from "~/apiobject/user.apiobject";
 import type { PseFormationApiObject } from "~/apiobject/pseformation.apiobject";
 import type { PseConcreteCaseSessionApiObject } from "~/apiobject/pseconcretecasesession.apiobject";
 import type { SecurityFunction } from "~/constants/remix";
+import PageAction from "~/components/layout/PageAction";
+
+// GET PSE concrete case sessions
 
 const ParamsSchema = z.object({
   pseConcreteCaseSessionId: z.string(),
 });
 
-// GET a formation
 export const loader: LoaderFunction = async ({ request, params }) => {
   const {
     pseFormationApiObject,
@@ -53,7 +55,7 @@ const security: SecurityFunction<{
 	const pseConcreteCaseSessionApiObject = await getPseConcreteCaseSessionById(pseConcreteCaseSessionId)
   const pseFormationApiObject = await getPseFormationByPseConcreteCaseSessionId(pseConcreteCaseSessionApiObject.id)	
 
-	await assertUserHasAccessToFormationAsTeacher(userApiObject.id, pseConcreteCaseSessionApiObject.id)
+	await assertUserHasAccessToFormationAsTeacher(userApiObject.id, pseFormationApiObject.id)
 
   return {
     userApiObject,
@@ -141,17 +143,31 @@ export default function SessionPseRoute() {
     <PageContainer>
       <PageTitle title={pseConcreteCaseSession.name} />
 
-      <Grid container spacing={2}>
+      <PageAction>
+        <Chip label={pseConcreteCaseSession.stateLabel} />
 
+        <Button>
+          <Link
+            href={`/pse-concrete-case-session/${pseConcreteCaseSession.id}/edit`}
+          >
+            Éditer
+          </Link>
+        </Button>
+      </PageAction>
+
+      <Grid container spacing={2}>
         <Grid item md={8}>
           <Stack spacing={2}>
             {/* TODO:  list situations */}
             <Situations pseConcreteCaseSessionId={pseConcreteCaseSession.id} />
             {/* TODO:  list groups */}
-            <Groups pseFormationId={pseFormation.id} pseConcreteCaseSessionId={pseConcreteCaseSession.id} groups={pseConcreteCaseSession.groups} />
+            <Groups
+              pseFormationId={pseFormation.id}
+              pseConcreteCaseSessionId={pseConcreteCaseSession.id}
+              groups={pseConcreteCaseSession.groups}
+            />
           </Stack>
         </Grid>
-
       </Grid>
     </PageContainer>
   );

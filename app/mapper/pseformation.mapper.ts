@@ -4,6 +4,7 @@ import type { PseFormationApiObject, PseFormationPostApiObject, PseFormationPutA
 import type { PseFormationDto, PseFormationPostDto, PseFormationPutDto } from "~/dto/pseformation.dto";
 import { placeApiObjectToDto, placeEntityToApiObject } from "./place.mapper";
 import { userOnPseFormationApiObjectToDto, userOnPseFormationDataPutDtoToApiObject, userOnPseFormationDataToPutDto, userOnPseFormationEntityToApiObject } from "./useronpseformation.mapper";
+import { assertEnum } from "~/utils/enum";
 
 export function dataToPseFormationPostDto(data: any): PseFormationPostDto {
 	return {
@@ -90,6 +91,10 @@ export function pseFormationEntityToApiObject(entity: PseFormationEntity): PseFo
 }
 
 function pseFormationStateStringToApiEnum(state: string): PseFormationStateApiEnum {
-	// TODO: enforce validity
-	return state as PseFormationStateApiEnum
+	return assertEnum<PseFormationStateApiEnum>(state, [
+    "CREATED",
+    "ENABLED",
+    "DISABLED",
+		"ARCHIVED"
+  ]);
 }

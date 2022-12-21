@@ -11,6 +11,7 @@ export interface PseConcreteCaseSessionDto {
 
 	name: string;
 	state: PseConcreteCaseSessionStateDtoEnum;
+	stateLabel: string;
 
 	groups: Array<PseConcreteCaseGroupDto>;
 	situations: Array<PseConcreteCaseSituationDto>;
@@ -26,4 +27,9 @@ export interface PseConcreteCaseSessionDto {
 export interface PseConcreteCaseSessionPostDto {
 	formationId: string;
 	name: string;
+}
+
+export interface PseConcreteCaseSessionPutDto {
+	name: string;
+	state: PseConcreteCaseSessionStateDtoEnum;
 }

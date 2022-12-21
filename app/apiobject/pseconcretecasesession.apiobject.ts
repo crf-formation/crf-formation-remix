@@ -28,3 +28,8 @@ export interface PseConcreteCaseSessionPostApiObject {
 	state: PseConcreteCaseSessionStateApiEnum;
 	formationId: string;
 }
+
+export interface PseConcreteCaseSessionPutApiObject {
+	name: string;
+	state: PseConcreteCaseSessionStateApiEnum;
+}

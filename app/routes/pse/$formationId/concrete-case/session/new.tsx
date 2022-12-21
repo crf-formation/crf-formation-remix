@@ -108,11 +108,12 @@ export default function ConcreteCaseSessionsRoute() {
               variant="standard"
               margin="normal"
               type="string"
+              required
               autoFocus
               aria-invalid={actionData?.errors?.name ? true : undefined}
               aria-describedby="name-form-error"
             />
-            <FormErrorHelperText name="firstName" actionData={actionData} />
+            <FormErrorHelperText name="name" actionData={actionData} />
           </Box>
 
           <Box sx={{ mt: 3, display: "flex", justifyContent: "end" }}>

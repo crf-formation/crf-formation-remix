@@ -4,7 +4,10 @@ import { json } from "@remix-run/node";
 import type { Params} from '@remix-run/react';
 import { useLoaderData } from '@remix-run/react';
 import { z } from "zod";
+import type { UserApiObject } from "~/apiobject/user.apiobject";
 import PageContainer from "~/components/layout/PageContainer";
+import PageTitle from "~/components/layout/PageTitle";
+import Section from "~/components/layout/Section";
 import type { SecurityFunction } from "~/constants/remix";
 import { paginateApiObjectToDto } from "~/mapper/abstract.mapper";
 import { pseFormationApiObjectToDto } from "~/mapper/pseformation.mapper";
@@ -19,7 +22,7 @@ const URLSearchParamsSchema = z.object({
 	orderByDirection: z.enum([ 'asc', 'desc']).default("desc"),
 })
 
-export async function loader({ request }: LoaderArgs) {
+export async function loader({ request, params }: LoaderArgs) {
   const { userApiObject } = await security(request, params)
 
 
@@ -34,7 +37,7 @@ export async function loader({ request }: LoaderArgs) {
 }
 
 const security: SecurityFunction<{
-  userApiObject: UserApiObjectApiObject;
+  userApiObject: UserApiObject;
 }> = async (request: Request, params: Params) => {
 	const userApiObject = await requireUser(request)
 
@@ -55,25 +58,28 @@ export default function FromationPseRoute() {
 
   return (
     <PageContainer>
-      <Table size="small">
-        <TableHead>
-          <TableRow>
-            <TableCell>Nom</TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {formationsPaginateObject.data.map((formation) => (
-            <TableRow key={formation.id}>
-              <TableCell>
-                <Link href={`/pse/${formation.id}`}>
-                  {formation.title} {formation.place.title}
-                </Link>
-              </TableCell>
+      <PageTitle title="Formations PSE" />
+      <Section>
+        <Table size="small">
+          <TableHead>
+            <TableRow>
+              <TableCell>Nom</TableCell>
+              <TableCell>Lieu</TableCell>
             </TableRow>
-          ))}
-        </TableBody>
-        {/* TODO: paginaation */}
-      </Table>
+          </TableHead>
+          <TableBody>
+            {formationsPaginateObject.data.map((formation) => (
+              <TableRow key={formation.id}>
+                <TableCell>
+                  <Link href={`/pse/${formation.id}`}>{formation.title}</Link>
+                </TableCell>
+                <TableCell>{formation.place.title}</TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+          {/* TODO: paginaation */}
+        </Table>
+      </Section>
     </PageContainer>
   );
 }

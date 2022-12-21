@@ -27,7 +27,7 @@ describe("smoke tests", () => {
 
   it("should allow you to login", () => {
     const loginForm = {
-      email: `test@crf-formation.fr`,
+      email: `jon-doe@crf-formation.fr`,
       password: `bonjour1`,
     };
 

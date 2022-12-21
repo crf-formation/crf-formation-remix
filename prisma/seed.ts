@@ -125,7 +125,7 @@ async function seedPseModule() {
 
 
 async function seedDefaultUser() {
-  const email = "test@crf-formation.fr";
+  const email = "jon-doe@crf-formation.fr";
 
   // cleanup the existing database
   await prisma.user.delete({ where: { email } }).catch(() => {
