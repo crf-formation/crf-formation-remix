@@ -2,9 +2,11 @@ import type { ActionFunction, LoaderFunction } from "@remix-run/node";
 import { json } from "@remix-run/node";
 import type { Params } from "@remix-run/react";
 import { z } from "zod";
+import type { PseFormationApiObject } from "~/apiobject/pseformation.apiobject";
+import type { SecurityFunction } from "~/constants/remix";
 import type { PseFormationPutDto } from "~/dto/pseformation.dto";
 import { dataToPseFormationPutDto, pseFormationApiObjectToDto, pseFormationPutDtoToApiObject } from "~/mapper/pseformation.mapper";
-import { findPseFormationById, updatePseFormation } from "~/services/pseformation.server";
+import { findPseFormationById, getPseFormationById, updatePseFormation } from "~/services/pseformation.server";
 import { requireAdmin } from "~/services/session.server";
 import { getParamsOrFail } from "~/utils/remix.params";
 
@@ -17,26 +19,34 @@ export const loader: LoaderFunction = async ({
   request,
 	params
 }) => {
-	const { formationId } = getParamsOrFail(params, ParamsSchema)
-
-	await requireAdmin(request)
-
-	const pseFormationApiObject = await findPseFormationById(formationId)
-	
-	if (!pseFormationApiObject) {
-		throw new Error(`Formation not found: ${formationId}`);
-	}
+	const { pseFormationApiObject }  = await security(request, params)
 
   return json(pseFormationApiObjectToDto(pseFormationApiObject));
 };
 
 // PUT, PATCH, or DELETE
 export const action: ActionFunction = async ({ request, params }) => {
+	await security(request, params)
+
 	switch (request.method) {
     case "PUT":
       return await putAction(request, params);
   }
 };
+
+const security: SecurityFunction<{
+  pseFormationApiObject: PseFormationApiObject;
+}> = async (request: Request, params: Params) => {
+  const { formationId } = getParamsOrFail(params, ParamsSchema)
+
+	await requireAdmin(request)
+
+	const pseFormationApiObject = await getPseFormationById(formationId)
+
+  return {
+    pseFormationApiObject,
+  }
+}
 
 async function putAction(request: Request, params: Params<string>) {
 	const { formationId } = getParamsOrFail(params, ParamsSchema)

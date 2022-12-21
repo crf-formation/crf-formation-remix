@@ -2,6 +2,7 @@ import type { ActionFunction, LoaderFunction } from "@remix-run/node";
 import { json } from "@remix-run/node";
 import type { Params } from "@remix-run/react";
 import { z } from "zod";
+import type { SecurityFunction } from "~/constants/remix";
 import type { UserPutDto } from "~/dto/user.dto";
 import { dataToUserPutDto, userApiObjectToDto, userPutDtoToUserPutApiObject } from "~/mapper/user.mapper";
 import { requireAdmin } from "~/services/session.server";
@@ -17,9 +18,9 @@ export const loader: LoaderFunction = async ({
   request,
 	params
 }) => {
-	const { userId } = getParamsOrFail(params, ParamsSchema)
+	await security(request, params)
 
-	await requireAdmin(request)
+	const { userId } = getParamsOrFail(params, ParamsSchema)
 
 	const userApiObject = await findUserById(userId)
 	
@@ -37,6 +38,13 @@ export const action: ActionFunction = async ({ request, params }) => {
       return await putAction(request, params);
   }
 };
+
+const security: SecurityFunction<{}> = async (request: Request, params: Params) => {
+	await requireAdmin(request)
+
+	return {}
+}
+
 
 async function putAction(request: Request, params: Params<string>) {
 	const { userId } = getParamsOrFail(params, ParamsSchema)

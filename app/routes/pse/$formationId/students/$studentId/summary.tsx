@@ -1,11 +1,14 @@
 import { Box, Button, Stack, Table, TableBody, TableCell, TableHead, TableRow, TextField, Typography } from "@mui/material";
+import type { Params} from "@remix-run/react";
 import { useLoaderData } from "@remix-run/react";
 import type { LoaderArgs } from "@remix-run/server-runtime";
 import { json } from "@remix-run/server-runtime";
 import { z } from "zod";
+import type { PseFormationApiObject } from "~/apiobject/pseformation.apiobject";
 import Section from "~/components/layout/Section";
 import { BooleanText } from "~/components/typography/BooleanText";
 import Property from "~/components/typography/Property";
+import type { SecurityFunction } from "~/constants/remix";
 import type { PseCompetenceDto } from "~/dto/psecompetence.dto";
 import type {
   PseUserSummaryConcreteCaseDto,
@@ -13,15 +16,21 @@ import type {
   PseUserSummaryTechniqueDto,
 } from "~/dto/pseusesummary.dto";
 import { pseUserSummaryApiObjectToDto } from "~/mapper/pseusersummary.mapper";
+import { getPseFormationById } from "~/services/pseformation.server";
 import { getPseUserSummary } from "~/services/pseusesummary.server";
+import { assertUserHasAccessToFormationAsTeacher } from "~/services/security.server";
+import { requireUser } from "~/services/session.server";
+import { getParamsOrFail } from "~/utils/remix.params";
 
-const zparams = z.object({
+const ParamsSchema = z.object({
   formationId: z.string(),
   studentId: z.string(),
-});
+})
 
-export async function loader({ params }: LoaderArgs) {
-  const { formationId, studentId } = zparams.parse(params);
+export async function loader({ request, params }: LoaderArgs) {
+  await security(request, params)
+
+  const { formationId, studentId } = getParamsOrFail(params, ParamsSchema)
 
   const pseUserSummaryApiObject = await getPseUserSummary(
     formationId,
@@ -31,6 +40,23 @@ export async function loader({ params }: LoaderArgs) {
   return json({
     pseUserSummary: pseUserSummaryApiObjectToDto(pseUserSummaryApiObject),
   });
+}
+
+
+const security: SecurityFunction<{
+  pseFormationApiObject: PseFormationApiObject;
+}> = async (request: Request, params: Params) => {
+  const { formationId } = getParamsOrFail(params, ParamsSchema)
+
+	const userApiObject = await requireUser(request)
+
+	const pseFormationApiObject = await getPseFormationById(formationId)
+
+  await assertUserHasAccessToFormationAsTeacher(userApiObject.id, pseFormationApiObject.id)
+	
+  return {
+    pseFormationApiObject,
+  }
 }
 
 function PreparatoryWork({

@@ -13,21 +13,23 @@ export class ApiErrorException extends Error {
   errorCode: string;
   apiMessage: string;
   extra: any;
-	jsonResponse: any;
+	jsonResponse?: any;
 
   constructor(prefixMessage: any, jsonResponse: any, status: number) {
 		const messages = [
-			jsonResponse.localizedMessage,
-			(jsonResponse.errorCode && jsonResponse.message) && `${jsonResponse.errorCode}: ${jsonResponse.message}`,
-			jsonResponse.message && jsonResponse.message,
-			jsonResponse.errorCode && jsonResponse.errorCode,
-			jsonResponse.error,
-      JSON.stringify(jsonResponse)
+			jsonResponse?.localizedMessage,
+			(jsonResponse?.errorCode && jsonResponse?.message) && `${jsonResponse?.errorCode}: ${jsonResponse?.message}`,
+			jsonResponse?.message && jsonResponse?.message,
+			jsonResponse?.errorCode && jsonResponse?.errorCode,
+			jsonResponse?.error,
+      jsonResponse && JSON.stringify(jsonResponse)
 		].filter(Boolean)
 
     const responseMessage = messages[0]
 
-		const message = `${prefixMessage}: ${responseMessage}`;
+		const message = responseMessage
+      ? `${prefixMessage}: ${responseMessage}`
+      : prefixMessage;
 
 		console.log({
 			messages,
@@ -41,11 +43,11 @@ export class ApiErrorException extends Error {
   
     this.status = status
 
-    this.localizedMessage = jsonResponse.localizedMessage
-    this.errorCode = jsonResponse.errorCode
-    this.extra = jsonResponse.extra
+    this.localizedMessage = jsonResponse?.localizedMessage
+    this.errorCode = jsonResponse?.errorCode
+    this.extra = jsonResponse?.extra
 		// renamed to apiMessage to not override error.message
-    this.apiMessage = jsonResponse.message
+    this.apiMessage = jsonResponse?.message
 		this.jsonResponse = jsonResponse
   }
 

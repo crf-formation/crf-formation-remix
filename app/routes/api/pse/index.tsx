@@ -2,6 +2,7 @@ import type { ActionFunction, LoaderFunction } from "@remix-run/node";
 import { json } from "@remix-run/node";
 import type { Params } from "@remix-run/react";
 import { z } from "zod";
+import type { SecurityFunction } from "~/constants/remix";
 import type { PseFormationPostDto } from "~/dto/pseformation.dto";
 import { paginateEntityToApiObject } from "~/mapper/abstract.mapper";
 import { dataToPseFormationPostDto, pseFormationApiObjectToDto, pseFormationPostDtoToApiObject } from "~/mapper/pseformation.mapper";
@@ -19,8 +20,10 @@ const URLSearchParamsSchema = z.object({
 // GET list of formations
 export const loader: LoaderFunction = async ({
   request,
+	params,
 }) => {
-	await requireAdmin(request)
+	await security(request, params)
+
 
 	const { page, pageSize, orderBy, orderByDirection } = getSearchParamsOrFail(request, URLSearchParamsSchema)
 
@@ -31,15 +34,21 @@ export const loader: LoaderFunction = async ({
 
 // POST
 export const action: ActionFunction = async ({ request, params }) => {
+	await security(request, params)
+
 	switch (request.method) {
     case "POST":
       return await postAction(request, params);
   }
 };
 
-async function postAction(request: Request, params: Params<string>) {
+const security: SecurityFunction<{}> = async (request: Request, params: Params) => {
 	await requireAdmin(request)
 
+	return {}
+}
+
+async function postAction(request: Request, params: Params<string>) {
 	const data = await request.json();
 
 	// TODO: use zod to map data

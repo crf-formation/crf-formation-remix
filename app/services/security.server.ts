@@ -12,5 +12,6 @@ export async function assertUserHasAccessToFormationAsTeacher(userId: string, fo
 
 export async function userHasAccessToFormationAsTeacher(userId: string, formationId: string): Promise<boolean> {
 	const userOnPseFormationEntity: Optional<UserOnPseFormationEntity> = await findUserOnPseFormationEntityById(userId, formationId)
+	console.log({ userOnPseFormationEntity })
 	return userOnPseFormationEntity !== null && userOnPseFormationEntity?.role === 'TEACHER';
 }

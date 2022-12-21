@@ -1,6 +1,7 @@
 import { Grid, Link, Stack, Table, TableBody, TableCell, TableHead, TableRow } from "@mui/material";
 import type { LoaderFunction, MetaFunction } from "@remix-run/node";
 import { json } from "@remix-run/node";
+import type { Params} from "@remix-run/react";
 import { useLoaderData } from "@remix-run/react";
 import { z } from "zod";
 import PageContainer from "~/components/layout/PageContainer";
@@ -16,30 +17,50 @@ import PageTitle from "~/components/layout/PageTitle";
 import type { PseConcreteCaseGroupDto } from '../../../dto/pseconcretecasegroup.dto';
 import { getPseFormationByPseConcreteCaseSessionId } from '~/services/pseformation.server';
 import { assertUserHasAccessToFormationAsTeacher } from "~/services/security.server";
+import type { UserApiObject } from "~/apiobject/user.apiobject";
+import type { PseFormationApiObject } from "~/apiobject/pseformation.apiobject";
+import type { PseConcreteCaseSessionApiObject } from "~/apiobject/pseconcretecasesession.apiobject";
+import type { SecurityFunction } from "~/constants/remix";
 
 const ParamsSchema = z.object({
   pseConcreteCaseSessionId: z.string(),
 });
 
 // GET a formation
-export const loader: LoaderFunction = async ({
-  request,
-	params
-}) => {
-	const { pseConcreteCaseSessionId } = getParamsOrFail(params, ParamsSchema)
+export const loader: LoaderFunction = async ({ request, params }) => {
+  const {
+    pseFormationApiObject,
+    pseConcreteCaseSessionApiObject,
+  } = await security(request, params);
 
-	const user = await requireUser(request)
+  return json({
+    pseFormation: pseFormationApiObjectToDto(pseFormationApiObject),
+    pseConcreteCaseSession: pseConcreteCaseSessionApiObjectToDto(
+      pseConcreteCaseSessionApiObject
+    ),
+  });
+};
+
+const security: SecurityFunction<{
+  userApiObject: UserApiObject;
+  pseFormationApiObject: PseFormationApiObject;
+  pseConcreteCaseSessionApiObject: PseConcreteCaseSessionApiObject;
+}> = async (request: Request, params: Params) => {
+  const { pseConcreteCaseSessionId } = getParamsOrFail(params, ParamsSchema)
+
+	const userApiObject = await requireUser(request)
 
 	const pseConcreteCaseSessionApiObject = await getPseConcreteCaseSessionById(pseConcreteCaseSessionId)
   const pseFormationApiObject = await getPseFormationByPseConcreteCaseSessionId(pseConcreteCaseSessionApiObject.id)	
 
-	await assertUserHasAccessToFormationAsTeacher(user.id, pseConcreteCaseSessionApiObject.id)
+	await assertUserHasAccessToFormationAsTeacher(userApiObject.id, pseConcreteCaseSessionApiObject.id)
 
-  return json({
-    pseFormation: pseFormationApiObjectToDto(pseFormationApiObject),
-		pseConcreteCaseSession: pseConcreteCaseSessionApiObjectToDto(pseConcreteCaseSessionApiObject),
-	});
-};
+  return {
+    userApiObject,
+    pseFormationApiObject,
+    pseConcreteCaseSessionApiObject
+  }
+}
 
 export const meta: MetaFunction<typeof loader> = ({ data }) => {
   return {

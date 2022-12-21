@@ -1,19 +1,24 @@
 
 import { Button, Box, TextField } from "@mui/material";
+import type { Params} from "@remix-run/react";
 import { Form, useActionData, useLoaderData } from "@remix-run/react";
 import type { ActionArgs, LoaderArgs} from "@remix-run/server-runtime";
 import { redirect } from "@remix-run/server-runtime";
 import { json } from "@remix-run/server-runtime";
 import { useRef, useEffect } from "react";
 import { z } from "zod";
+import type { PseFormationApiObject } from "~/apiobject/pseformation.apiobject";
 import FormErrorHelperText from "~/components/form/FormErrorHelperText";
 import PageContainer from "~/components/layout/PageContainer";
 import PageTitle from "~/components/layout/PageTitle";
 import Section from "~/components/layout/Section";
 import Callout from "~/components/typography/Callout";
+import type { SecurityFunction } from "~/constants/remix";
 import type { PseConcreteCaseSessionPostDto } from "~/dto/pseconcretecasesession.dto";
 import { pseConcreteCaseSessionPostDtoToApiObject } from "~/mapper/pseconcretecasesession.mapper";
 import { createPseConcreteCaseSession } from "~/services/pseconcretecasesession.server";
+import { findPseFormationById } from "~/services/pseformation.server";
+import { assertUserHasAccessToFormationAsTeacher } from "~/services/security.server";
 import { requireUser } from "~/services/session.server";
 import { getFormData, getParamsOrFail } from "~/utils/remix.params";
 
@@ -22,13 +27,10 @@ const ParamsSchema = z.object({
 });
 
 export async function loader({ request, params }: LoaderArgs) {
-  await requireUser(request);
-	// TODO: has access to formation
-
-	const { formationId } = getParamsOrFail(params, ParamsSchema)
+	const { pseFormationApiObject } = await security(request, params)
 
   return json({
-    formationId,
+    formationId: pseFormationApiObject.id,
   })
 }
 
@@ -38,10 +40,7 @@ const PostSchema = z.object({
 });
 
 export async function action({ request, params }: ActionArgs) {
-  await requireUser(request);
-	// TODO: has access to formation
-
-	const { formationId } = getParamsOrFail(params, ParamsSchema)
+	const { pseFormationApiObject } = await security(request, params)
 
 	const result = await getFormData(request, PostSchema);
   if (!result.success) {
@@ -49,7 +48,7 @@ export async function action({ request, params }: ActionArgs) {
   }
 	const postDto = result.data as PseConcreteCaseSessionPostDto
 
-	if (formationId !== postDto.formationId) {
+	if (pseFormationApiObject.id !== postDto.formationId) {
 		// TODO: error
 	}
 
@@ -58,6 +57,26 @@ export async function action({ request, params }: ActionArgs) {
 	)
 
 	return redirect(`/pse-concrete-case-session/${concreteCaseSessionApiObject.id}`);
+}
+
+const security: SecurityFunction<{
+  pseFormationApiObject: PseFormationApiObject;
+}> = async (request: Request, params: Params) => {
+  const { formationId } = getParamsOrFail(params, ParamsSchema)
+
+	const userApiObject = await requireUser(request)
+
+	const pseFormationApiObject = await findPseFormationById(formationId)
+	
+	if (!pseFormationApiObject) {
+		throw new Error(`Formation not found: ${formationId}`);
+	}
+	
+	await assertUserHasAccessToFormationAsTeacher(userApiObject.id, pseFormationApiObject.id)
+
+  return {
+    pseFormationApiObject,
+  }
 }
 
 export default function ConcreteCaseSessionsRoute() {

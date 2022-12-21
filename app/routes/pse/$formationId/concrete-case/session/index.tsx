@@ -8,16 +8,21 @@ import {
   Link,
   TableContainer,
 } from "@mui/material";
+import type { Params} from "@remix-run/react";
 import { useLoaderData } from "@remix-run/react";
 import type { LoaderArgs, MetaFunction } from "@remix-run/server-runtime";
 import { json } from "@remix-run/server-runtime";
 import { z } from "zod";
+import type { PseFormationApiObject } from "~/apiobject/pseformation.apiobject";
 import PageContainer from "~/components/layout/PageContainer";
 import PageTitle from "~/components/layout/PageTitle";
 import Section from "~/components/layout/Section";
+import type { SecurityFunction } from "~/constants/remix";
 import { paginateApiObjectToDto } from "~/mapper/abstract.mapper";
 import { pseConcreteCaseSessionApiObjectToDto } from "~/mapper/pseconcretecasesession.mapper";
 import { getPseFormationConcreteCaseSessions } from "~/services/pseconcretecasesession.server";
+import { findPseFormationById } from "~/services/pseformation.server";
+import { assertUserHasAccessToFormationAsTeacher } from "~/services/security.server";
 import { requireUser } from "~/services/session.server";
 import { getParamsOrFail, getSearchParamsOrFail } from "~/utils/remix.params";
 
@@ -33,9 +38,8 @@ const URLSearchParamsSchema = z.object({
 });
 
 export async function loader({ request, params }: LoaderArgs) {
-  await requireUser(request);
+  const { pseFormationApiObject }  = await security(request, params);
 
-  const { formationId } = getParamsOrFail(params, ParamsSchema);
   const { page, pageSize, orderBy, orderByDirection } = getSearchParamsOrFail(
     request,
     URLSearchParamsSchema
@@ -43,7 +47,7 @@ export async function loader({ request, params }: LoaderArgs) {
 
   const concreteCaseSessionsPaginateObject =
     await getPseFormationConcreteCaseSessions(
-      formationId,
+      pseFormationApiObject.id,
       page,
       pageSize,
       orderBy,
@@ -51,12 +55,32 @@ export async function loader({ request, params }: LoaderArgs) {
     );
 
   return json({
-    formationId,
+    formationId: pseFormationApiObject.id,
     concreteCaseSessionsPaginateObject: paginateApiObjectToDto(
       concreteCaseSessionsPaginateObject,
       pseConcreteCaseSessionApiObjectToDto
     ),
   });
+}
+
+const security: SecurityFunction<{
+  pseFormationApiObject: PseFormationApiObject;
+}> = async (request: Request, params: Params) => {
+  const { formationId } = getParamsOrFail(params, ParamsSchema)
+
+	const userApiObject = await requireUser(request)
+
+	const pseFormationApiObject = await findPseFormationById(formationId)
+	
+	if (!pseFormationApiObject) {
+		throw new Error(`Formation not found: ${formationId}`);
+	}
+	
+	await assertUserHasAccessToFormationAsTeacher(userApiObject.id, pseFormationApiObject.id)
+
+  return {
+    pseFormationApiObject,
+  }
 }
 
 export const meta: MetaFunction<typeof loader> = () => {

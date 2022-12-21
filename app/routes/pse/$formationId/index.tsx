@@ -4,6 +4,7 @@ import PersonAddIcon from '@mui/icons-material/PersonAdd';
 import { Avatar, Button, Grid, Link, List, ListItem, ListItemAvatar, ListItemText, Stack } from "@mui/material";
 import type { LoaderFunction, MetaFunction } from "@remix-run/node";
 import { json } from "@remix-run/node";
+import type { Params} from "@remix-run/react";
 import { useLoaderData } from "@remix-run/react";
 import { z } from "zod";
 import FormationPseStatusChip from "~/components/formationpse/FormationPseStatusChip";
@@ -21,6 +22,8 @@ import { findPseFormationById } from "~/services/pseformation.server";
 import { assertUserHasAccessToFormationAsTeacher } from "~/services/security.server";
 import { requireUser } from "~/services/session.server";
 import { getParamsOrFail } from '~/utils/remix.params';
+import type { PseFormationApiObject } from '~/apiobject/pseformation.apiobject';
+import type { SecurityFunction } from '~/constants/remix';
 
 const ParamsSchema = z.object({
   formationId: z.string(),
@@ -31,9 +34,19 @@ export const loader: LoaderFunction = async ({
   request,
 	params
 }) => {
-	const { formationId } = getParamsOrFail(params, ParamsSchema)
+  const { pseFormationApiObject } = await security(request, params)
 
-	const user = await requireUser(request)
+  return json({
+		formation: pseFormationApiObjectToDto(pseFormationApiObject)
+	});
+};
+
+const security: SecurityFunction<{
+  pseFormationApiObject: PseFormationApiObject;
+}> = async (request: Request, params: Params) => {
+  const { formationId } = getParamsOrFail(params, ParamsSchema)
+
+	const userApiObject = await requireUser(request)
 
 	const pseFormationApiObject = await findPseFormationById(formationId)
 	
@@ -41,12 +54,12 @@ export const loader: LoaderFunction = async ({
 		throw new Error(`Formation not found: ${formationId}`);
 	}
 	
-	await assertUserHasAccessToFormationAsTeacher(user.id, pseFormationApiObject.id)
+	await assertUserHasAccessToFormationAsTeacher(userApiObject.id, pseFormationApiObject.id)
 
-  return json({
-		formation: pseFormationApiObjectToDto(pseFormationApiObject)
-	});
-};
+  return {
+    pseFormationApiObject,
+  }
+}
 
 export const meta: MetaFunction<typeof loader> = ({ data }) => {
   return {

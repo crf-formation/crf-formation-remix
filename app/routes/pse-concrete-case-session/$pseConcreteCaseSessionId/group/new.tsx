@@ -21,6 +21,7 @@ import PseConcreteCaseGroupForm from "~/components/pse-concrete-case-group/PseCo
 import type { PseFormationApiObject } from "~/apiobject/pseformation.apiobject";
 import type { PseConcreteCaseSessionApiObject } from "~/apiobject/pseconcretecasesession.apiobject";
 import type { UserApiObject } from "~/apiobject/user.apiobject";
+import type { SecurityFunction } from "~/constants/remix";
 
 const ParamsSchema = z.object({
   pseConcreteCaseSessionId: z.string(),
@@ -30,7 +31,7 @@ export const loader: LoaderFunction = async ({
   request,
 	params
 }) => {
-	const { pseFormationApiObject, pseConcreteCaseSessionApiObject } = await secure(request, params)
+	const { pseFormationApiObject, pseConcreteCaseSessionApiObject } = await security(request, params)
 
   return json({
     pseFormation: pseFormationApiObjectToDto(pseFormationApiObject),
@@ -45,7 +46,7 @@ const PostSchema = z.object({
 });
 
 export async function action({ request, params  }: ActionArgs) {
-	const { pseConcreteCaseSessionApiObject } = await secure(request, params)
+	const { pseConcreteCaseSessionApiObject } = await security(request, params)
 
   const result = await getFormData(request, PostSchema);
   if (!result.success) {
@@ -61,13 +62,11 @@ export async function action({ request, params  }: ActionArgs) {
   return redirect(`/pse-concrete-case-session/${pseConcreteCaseSessionApiObject.id}`)
 }
 
-interface SecureData {
+const security: SecurityFunction<{
   userApiObject: UserApiObject;
   pseFormationApiObject: PseFormationApiObject;
   pseConcreteCaseSessionApiObject: PseConcreteCaseSessionApiObject;
-}
-
-async function secure(request: Request, params: Params): Promise<SecureData> {
+}> = async (request: Request, params: Params) => {
   const { pseConcreteCaseSessionId } = getParamsOrFail(params, ParamsSchema)
 
   const userApiObject = await requireUser(request)

@@ -1,4 +1,5 @@
 import { Typography, Box, Stack, Checkbox, FormControlLabel } from "@mui/material";
+import type { Params} from "@remix-run/react";
 import { useLoaderData } from "@remix-run/react";
 import type { LoaderArgs} from "@remix-run/server-runtime";
 import { json } from "@remix-run/server-runtime";
@@ -12,15 +13,22 @@ import { getPseModules } from "~/services/psemodule.server";
 import { pseModuleApiObjectToDto } from "~/mapper/psemodule.mapper";
 import type { PseModuleDto } from "~/dto/psemodule.dto";
 import type { PseUserTechniqueDto } from "~/dto/pseusertechnique.dto";
+import type { PseFormationApiObject } from "~/apiobject/pseformation.apiobject";
+import type { SecurityFunction } from "~/constants/remix";
+import { getPseFormationById } from "~/services/pseformation.server";
+import { assertUserHasAccessToFormationAsTeacher } from "~/services/security.server";
+import { requireUser } from "~/services/session.server";
+import { getParamsOrFail } from "~/utils/remix.params";
 
-const zparams = z.object({
+const ParamsSchema = z.object({
   formationId: z.string(),
   studentId: z.string(),
 })
 
-export async function loader({ params }: LoaderArgs) {
-  const { formationId, studentId } = zparams.parse(params)
+export async function loader({ request, params }: LoaderArgs) {
+  await security(request, params)
 
+  const { formationId, studentId } = getParamsOrFail(params, ParamsSchema)
 
   const pseModuleApiObjects = await getPseModules()
   const pseUserTechniquesForUserApiObjects: Array<PseUserTechniqueApiObject> = await getPseUserTechniquesForUser(formationId, studentId)
@@ -29,6 +37,22 @@ export async function loader({ params }: LoaderArgs) {
     pseUserTechniques: pseUserTechniquesForUserApiObjects.map(pseUserTechniqueApiObjectToDto),
     pseModules: pseModuleApiObjects.map(pseModuleApiObjectToDto),
   })
+}
+
+const security: SecurityFunction<{
+  pseFormationApiObject: PseFormationApiObject;
+}> = async (request: Request, params: Params) => {
+  const { formationId } = getParamsOrFail(params, ParamsSchema)
+
+	const userApiObject = await requireUser(request)
+
+	const pseFormationApiObject = await getPseFormationById(formationId)
+
+  await assertUserHasAccessToFormationAsTeacher(userApiObject.id, pseFormationApiObject.id)
+	
+  return {
+    pseFormationApiObject,
+  }
 }
 
 function ModuleView({ pseModule, pseUserTechniques }: { pseModule?: PseModuleDto; pseUserTechniques: Array<PseUserTechniqueDto> }) {

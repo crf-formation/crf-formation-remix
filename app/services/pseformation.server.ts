@@ -42,6 +42,16 @@ export async function findPseFormationById(
   return pseFormationEntityToApiObject(pseFormationEntity);
 }
 
+export async function getPseFormationById(
+  id: string
+): Promise<PseFormationApiObject> {
+  const pseFormationEntity = await findPseFormationEntityById(id);
+  if (!pseFormationEntity) {
+    throw new NotFoundException("PseFormation", id)
+  }
+  return pseFormationEntityToApiObject(pseFormationEntity);
+}
+
 
 export async function eetPseFormationByPseConcreteCaseSessionId(pseConcreteCaseSessionId: string) : Promise<PseFormationApiObject> {
   const pseFormationEntity = await findPseFormationEntityByPseConcreteCaseSessionId(pseConcreteCaseSessionId);
