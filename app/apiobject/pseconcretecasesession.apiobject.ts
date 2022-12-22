@@ -1,5 +1,5 @@
-import type { PseConcreteCaseSituationApiObject } from './pseconcretecasesituation.apiobject';
 import type { PseConcreteCaseGroupApiObject } from './pseconcretecasegroup.apiobject';
+import type { PseConcreteCaseSituationApiObject } from './pseconcretecasesituation.apiobject';
 
 
 export type PseConcreteCaseSessionStateApiEnum = 'CREATED' | 'RUNNING' | 'CLOSED';
@@ -12,8 +12,8 @@ export interface PseConcreteCaseSessionApiObject {
 	name: string;
 	state: PseConcreteCaseSessionStateApiEnum;
 
-	groups: Array<PseConcreteCaseGroupApiObject>;
-	situations: Array<PseConcreteCaseSituationApiObject>;
+	pseConcreteCaseGroups: Array<PseConcreteCaseGroupApiObject>;
+	pseConcreteCaseSituations: Array<PseConcreteCaseSituationApiObject>;
 
 	// not on database
 
@@ -32,4 +32,25 @@ export interface PseConcreteCaseSessionPostApiObject {
 export interface PseConcreteCaseSessionPutApiObject {
 	name: string;
 	state: PseConcreteCaseSessionStateApiEnum;
+}
+
+//
+//
+//
+
+export interface PseConcreteCaseSessionGroupOrderApiObject {
+  pseConcreteCaseGroup: PseConcreteCaseGroupApiObject;
+
+  groupOrderSituations: Array<PseConcreteCaseSessionGroupOrderSituationApiObject>;
+
+  duplicatedPositions: Array<PseConcreteCaseSessionGroupOrderSituationApiObject>;
+  situationsWithoutPosition: Array<PseConcreteCaseSituationApiObject>;
+
+	hasNoPositions: boolean
+	hasSomeSituationsWithoutPosition: boolean
+}
+
+export interface PseConcreteCaseSessionGroupOrderSituationApiObject {
+  pseConcreteCaseSituation: PseConcreteCaseSituationApiObject;
+  position: number;
 }

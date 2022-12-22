@@ -261,7 +261,7 @@ model PseConcreteCaseSituation {
   pseConcreteCaseSessionId String
 
 	// contains
-  pseConcreteCaseGroups PseSituationConcreteCaseGroup[]
+  pseSituationConcreteCaseGroups PseSituationConcreteCaseGroup[]
 }
 
 model PseSituationConcreteCaseGroup {

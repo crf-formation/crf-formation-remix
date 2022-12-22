@@ -1,8 +1,11 @@
 import type { PseConcreteCaseSessionApiObject, PseConcreteCaseSessionPostApiObject, PseConcreteCaseSessionPutApiObject } from "~/apiobject/pseconcretecasesession.apiobject";
+import type { PseConcreteCaseSituationApiObject } from "~/apiobject/pseconcretecasesituation.apiobject";
 import type { OrderByDirection, PaginateObject } from "~/constants/types";
+import { buildPseConcreteCaseSituationsGroupsOrder } from "~/helper/pseconcretecasegrouporder.helper";
 import { paginateEntityToApiObject } from "~/mapper/abstract.mapper";
 import { pseConcreteCaseSessionEntityToApiObject } from "~/mapper/pseconcretecasesession.mapper";
 import { createPseConcreteCaseSessionsEntity, findPseConcreteCaseSessionsEntityById, getPseConcreteCaseSessionEntitiesByFormationId, updatePseConcreteCaseSessionsEntity } from "~/repository/pseconcretecasesession.repository";
+import { PseConcreteCaseGroupApiObject } from "./pseuserconcretecasegroup.server";
 
 export async function getPseFormationConcreteCaseSessions(
 	formationId: string,
@@ -25,8 +28,7 @@ export async function getPseFormationConcreteCaseSessions(
 export async function getPseConcreteCaseSessionById(
   id: string
 ): Promise<PseConcreteCaseSessionApiObject> {
-  const pseConcreteCaseSessionEntity =
-    await findPseConcreteCaseSessionsEntityById(id);
+  const pseConcreteCaseSessionEntity = await findPseConcreteCaseSessionsEntityById(id);
   if (!pseConcreteCaseSessionEntity) {
     throw new Error(`Session not found: ${id}`);
   }
@@ -53,4 +55,11 @@ export async function updatePseConcreteCaseSession(
 
   const pseConcreteCaseSessionEntity = await updatePseConcreteCaseSessionsEntity(id, pseConcreteCaseSessionPutApiObject);
   return pseConcreteCaseSessionEntityToApiObject(pseConcreteCaseSessionEntity);
+}
+
+export function getPseConcreteCaseSituationsGroupsOrder(
+	pseConcreteCaseGroups: Array<PseConcreteCaseGroupApiObject>, 
+	pseConcreteCaseSituations: Array<PseConcreteCaseSituationApiObject>
+): Array<PseConcreteCaseSessionGroupOrderApiObject> {
+	return buildPseConcreteCaseSituationsGroupsOrder(pseConcreteCaseGroups, pseConcreteCaseSituations)
 }

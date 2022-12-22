@@ -1,11 +1,11 @@
 import type { Prisma } from "@prisma/client";
-import type { PseConcreteCaseSituationPostApiObject, PseConcreteCaseSituationPutApiObject } from "~/apiobject/pseconcretecasesituation.apiobject";
+import type { PseConcreteCaseSituationPostApiObject, PseConcreteCaseSituationPutApiObject, PseSituationConcreteCaseGroupPutApiObject } from "~/apiobject/pseconcretecasesituation.apiobject";
 import { prisma } from "~/db.server";
 import type { PseConcreteCaseSituationEntity } from "~/entity";
 
 const includeForSingleItem = {
   pseConcreteCaseType: true,
-  pseConcreteCaseGroups: { include: { pseConcreteCaseGroup: true } },
+  pseSituationConcreteCaseGroups: { include: { pseConcreteCaseGroup: true } },
   teacher: true,
   pseConcreteCaseSession: { select: { id: true } }
 }
@@ -13,14 +13,14 @@ const includeForSingleItem = {
 export async function createPseConcreteCaseSituationEntity(
 	pseConcreteCaseSituationPostApiObject: PseConcreteCaseSituationPostApiObject
 ): Promise<PseConcreteCaseSituationEntity> {
-	const { pseConcreteCaseGroups, ...data } = pseConcreteCaseSituationPostApiObject;
+	const { pseSituationConcreteCaseGroups, ...data } = pseConcreteCaseSituationPostApiObject;
 
   return await prisma.$transaction<PseConcreteCaseSituationEntity>(async (tx) => {
     const entity = await tx.pseConcreteCaseSituation.create({
       data,
     });
 
-    // TODO: group order
+    // TODO: pseSituationConcreteCaseGroups
 
     return await findPseConcreteCaseSituationEntityOnTransaction(tx, entity.id)
   })
@@ -30,7 +30,7 @@ export async function updatePseConcreteCaseSituationEntity(
   id: string,
   pseConcreteCaseSituationPutApiObject: PseConcreteCaseSituationPutApiObject
 ): Promise<PseConcreteCaseSituationEntity> {
-  const { pseConcreteCaseGroups, ...data } = pseConcreteCaseSituationPutApiObject;
+  const { pseSituationConcreteCaseGroups, ...data } = pseConcreteCaseSituationPutApiObject;
 
   return await prisma.$transaction<PseConcreteCaseSituationEntity>(async (tx) => {
     const entity = await tx.pseConcreteCaseSituation.update({
@@ -40,7 +40,23 @@ export async function updatePseConcreteCaseSituationEntity(
       },
     });
 
-		// TODO: group order
+    // TODO: update or create
+    await tx.pseSituationConcreteCaseGroup.deleteMany({
+      where: {
+        pseConcreteCaseSituationId: id,
+      },
+    });
+    await Promise.all(
+      pseSituationConcreteCaseGroups.map(async (pseSituationConcreteCaseGroup: PseSituationConcreteCaseGroupPutApiObject) => {
+        return tx.pseSituationConcreteCaseGroup.create({
+          data: {
+            pseConcreteCaseSessionId: entity.pseConcreteCaseSessionId,
+            ...pseSituationConcreteCaseGroup,
+            pseConcreteCaseSituationId: entity.id,
+          },
+        });
+      })
+    );
 
     return await findPseConcreteCaseSituationEntityOnTransaction(tx, entity.id);
   });
@@ -57,5 +73,16 @@ export async function findPseConcreteCaseSituationEntity(id: string): Promise<Op
   return await prisma.pseConcreteCaseSituation.findUnique({
     where: { id },
     include: includeForSingleItem,
+  });
+}
+
+export async function getPseConcreteCaseSituationEntitiesForPseConcreteCaseSessionId(pseConcreteCaseSessionId: string): Promise<Array<PseConcreteCaseSituationEntity>> {
+  return await prisma.pseConcreteCaseSituation.findMany({
+    where: {
+      pseConcreteCaseSession: {
+        id: pseConcreteCaseSessionId,
+      },
+    },
+    include: includeForSingleItem, // TODO: list ?
   });
 }

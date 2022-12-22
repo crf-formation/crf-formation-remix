@@ -1,28 +1,34 @@
-import { Button, Chip, Grid, Link, Stack, Table, TableBody, TableCell, TableHead, TableRow } from "@mui/material";
+import AddIcon from '@mui/icons-material/Add';
+import ModeEditIcon from '@mui/icons-material/ModeEdit';
+import PersonAddIcon from '@mui/icons-material/PersonAdd';
+import { Box, Button, Chip, Divider, Grid, Link, Stack, Table, TableBody, TableCell, TableHead, TableRow, Typography } from '@mui/material';
 import type { LoaderFunction, MetaFunction } from "@remix-run/node";
 import { json } from "@remix-run/node";
-import type { Params} from "@remix-run/react";
+import type { Params } from "@remix-run/react";
 import { useLoaderData } from "@remix-run/react";
 import { z } from "zod";
+import type { PseConcreteCaseSessionApiObject } from "~/apiobject/pseconcretecasesession.apiobject";
+import type { PseFormationApiObject } from "~/apiobject/pseformation.apiobject";
+import type { UserApiObject } from "~/apiobject/user.apiobject";
+import PageAction from "~/components/layout/PageAction";
 import PageContainer from "~/components/layout/PageContainer";
-import Section from "~/components/layout/Section";
-import { pseConcreteCaseSessionApiObjectToDto } from "~/mapper/pseconcretecasesession.mapper";
-import { getPseConcreteCaseSessionById } from "~/services/pseconcretecasesession.server";
-import { requireUser } from "~/services/session.server";
-import { getParamsOrFail } from '~/utils/remix.params';
-import PersonAddIcon from '@mui/icons-material/PersonAdd';
-import AddIcon from '@mui/icons-material/Add';
-import { pseFormationApiObjectToDto } from "~/mapper/pseformation.mapper";
 import PageTitle from "~/components/layout/PageTitle";
-import type { PseConcreteCaseGroupDto } from '../../../dto/pseconcretecasegroup.dto';
+import Section from "~/components/layout/Section";
+import Callout from '~/components/typography/Callout';
+import type { SecurityFunction } from "~/constants/remix";
+import type { PseConcreteCaseGroupDto } from '~/dto/pseconcretecasegroup.dto';
+import type { PseConcreteCaseSessionGroupOrderDto } from '~/dto/pseconcretecasesession.dto';
+import type { PseConcreteCaseSituationDto, PseSituationConcreteCaseGroupDto } from '~/dto/pseconcretecasesituation.dto';
+import { pseConcreteCaseSessionApiObjectToDto, pseConcreteCaseSessionGroupOrderApiObjectToDto } from "~/mapper/pseconcretecasesession.mapper";
+import { pseConcreteCaseSituationApiObjectToDto } from '~/mapper/pseconcretecasesituation.mapper';
+import { pseFormationApiObjectToDto } from "~/mapper/pseformation.mapper";
+import { getPseConcreteCaseSessionById, getPseConcreteCaseSituationsGroupsOrder } from "~/services/pseconcretecasesession.server";
+import { getPseConcreteCaseSituationsForPseConcreteCaseSessionId } from '~/services/pseconcretecasesituation.server';
 import { getPseFormationByPseConcreteCaseSessionId } from '~/services/pseformation.server';
 import { assertUserHasAccessToFormationAsTeacher } from "~/services/security.server";
-import type { UserApiObject } from "~/apiobject/user.apiobject";
-import type { PseFormationApiObject } from "~/apiobject/pseformation.apiobject";
-import type { PseConcreteCaseSessionApiObject } from "~/apiobject/pseconcretecasesession.apiobject";
-import type { SecurityFunction } from "~/constants/remix";
-import PageAction from "~/components/layout/PageAction";
-import type { PseConcreteCaseSituationDto } from '../../../dto/pseconcretecasesituation.dto';
+import { requireUser } from "~/services/session.server";
+import { getParamsOrFail } from '~/utils/remix.params';
+
 
 // GET PSE concrete case sessions
 
@@ -36,11 +42,18 @@ export const loader: LoaderFunction = async ({ request, params }) => {
     pseConcreteCaseSessionApiObject,
   } = await security(request, params);
 
+  const pseConcreteCaseSituationApiObjects = await getPseConcreteCaseSituationsForPseConcreteCaseSessionId(pseConcreteCaseSessionApiObject.id)
+
+  const pseConcreteCaseSessionGroupOrderApiObjects = getPseConcreteCaseSituationsGroupsOrder(
+    pseConcreteCaseSessionApiObject.pseConcreteCaseGroups, 
+    pseConcreteCaseSituationApiObjects
+  )
+
   return json({
     pseFormation: pseFormationApiObjectToDto(pseFormationApiObject),
-    pseConcreteCaseSession: pseConcreteCaseSessionApiObjectToDto(
-      pseConcreteCaseSessionApiObject
-    ),
+    pseConcreteCaseSession: pseConcreteCaseSessionApiObjectToDto(pseConcreteCaseSessionApiObject),
+    pseConcreteCaseSituations: pseConcreteCaseSituationApiObjects.map(pseConcreteCaseSituationApiObjectToDto),
+    pseConcreteCaseSessionGroupOrders: pseConcreteCaseSessionGroupOrderApiObjects.map(pseConcreteCaseSessionGroupOrderApiObjectToDto)
   });
 };
 
@@ -71,7 +84,7 @@ export const meta: MetaFunction<typeof loader> = ({ data }) => {
   };
 };
 
-function Groups({ pseFormationId, pseConcreteCaseSessionId, groups }) {
+function PseConcreteCaseGroupsTable({ pseFormationId, pseConcreteCaseSessionId, pseConcreteCaseGroups }) {
   return (
     <Section
       title="Groupes"
@@ -93,7 +106,7 @@ function Groups({ pseFormationId, pseConcreteCaseSessionId, groups }) {
           </TableRow>
         </TableHead>
         <TableBody>
-          {groups.map((group: PseConcreteCaseGroupDto) => (
+          {pseConcreteCaseGroups.map((group: PseConcreteCaseGroupDto) => (
             <TableRow key={group.id}>
               <TableCell>
                 <Link href={`/pse-concrete-case-group/${group.id}`}>
@@ -116,7 +129,7 @@ function Groups({ pseFormationId, pseConcreteCaseSessionId, groups }) {
   );
 }
 
-function Situations({ pseConcreteCaseSessionId, situations }) {
+function PseConcreteCaseSituationsTable({ pseConcreteCaseSessionId, pseConcreteCaseSituations }) {
   return (
     <Section
       title="Situations"
@@ -138,14 +151,14 @@ function Situations({ pseConcreteCaseSessionId, situations }) {
           </TableRow>
         </TableHead>
         <TableBody>
-          {situations.map((situation: PseConcreteCaseSituationDto) => (
-            <TableRow key={situation.id}>
+          {pseConcreteCaseSituations.map((pseConcreteCaseSituation: PseConcreteCaseSituationDto) => (
+            <TableRow key={pseConcreteCaseSituation.id}>
               <TableCell>
-                <Link href={`/pse-concrete-case-situation/${situation.id}`}>
-                  {situation.pseConcreteCaseType.name}
+                <Link href={`/pse-concrete-case-situation/${pseConcreteCaseSituation.id}`}>
+                  {pseConcreteCaseSituation.name}
                 </Link>
               </TableCell>
-              <TableCell>{situation.teacher.fullName}</TableCell>
+              <TableCell>{pseConcreteCaseSituation.teacher.fullName}</TableCell>
             </TableRow>
           ))}
         </TableBody>
@@ -155,8 +168,139 @@ function Situations({ pseConcreteCaseSessionId, situations }) {
   );
 }
 
+
+function PseConcreteCaseSituationGroupOrder({ pseConcreteCaseSituation }: { pseConcreteCaseSituation: PseConcreteCaseSituationDto }) {
+  return (
+    <Grid item md={6}>
+      <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+        <Box>
+          <Typography variant="h4">
+            {pseConcreteCaseSituation.name}
+          </Typography>
+          <Typography variant="subtitle2">{pseConcreteCaseSituation.teacher.fullName}</Typography>
+        </Box>
+
+        <Button>
+          <Link
+            href={`/pse-concrete-case-situation/${pseConcreteCaseSituation.id}`}
+          >
+            <ModeEditIcon />
+          </Link>
+        </Button>
+      </Box>
+
+      <Box sx={{ flex: 1, display: "flex", flexDirection: "column" }}>
+        {pseConcreteCaseSituation.pseSituationConcreteCaseGroups.length === 0 && (
+          <Box mt={2}>
+            <p>L'ordre des groupes n'as pas encore été défini.</p>
+          </Box>
+        )}
+
+        <Box mt={2}>
+
+          {pseConcreteCaseSituation.pseSituationConcreteCaseGroups.map(
+            (pseSituationConcreteCaseGroup: PseSituationConcreteCaseGroupDto) => (
+              <div key={pseSituationConcreteCaseGroup.id}>
+                {pseSituationConcreteCaseGroup.position}.{" "}
+                {pseSituationConcreteCaseGroup.pseConcreteCaseGroup.name}
+              </div>
+            )
+          )}
+        </Box>
+      </Box> 
+      <Divider sx={{ my: 2 }} />
+    </Grid>
+  );
+}
+
+function PseConcreteCaseSituationGroupsOrder({ pseConcreteCaseSituations, noneHasPosition }: { pseConcreteCaseSituations: Array<PseConcreteCaseSituationDto>, noneHasPosition: boolean }) {
+  return (
+    <Section title="Situations - Ordre de passage">
+       {noneHasPosition && (
+        <Callout  severity="warning">
+          L'ordre des groupes n'as pas encore été défini.
+        </Callout>
+      )}
+
+      <Grid container spacing={2}>
+        {pseConcreteCaseSituations?.map((pseConcreteCaseSituation: PseConcreteCaseSituationDto) => (
+          <PseConcreteCaseSituationGroupOrder key={pseConcreteCaseSituation.id} pseConcreteCaseSituation={pseConcreteCaseSituation} />
+        ))}
+      </Grid>
+    </Section>
+  )
+}
+
+function PseConcreteGroupOrder({ groupOrder }: { groupOrder: PseConcreteCaseSessionGroupOrderDto }) {
+  return (
+    <Grid item md={6}>
+      <Typography variant="h4">
+        {groupOrder.pseConcreteCaseGroup.name}
+      </Typography>
+
+      <Box sx={{ flex: 1, display: "flex", flexDirection: "column" }}>
+        {groupOrder.hasNoPositions && (
+          <Callout severity="warning">L'ordre de passage n'as pas encore été défini.</Callout>
+        )}
+
+        {groupOrder.hasSomeSituationsWithoutPosition && (
+          <Box>
+            <Callout severity="warning">
+              L'ordre de passage n'a pas été défini sur certaines situations:
+              <ul>
+                {groupOrder.situationsWithoutPosition.map(situationWithoutPosition => (
+                  <li key={situationWithoutPosition.id}>{situationWithoutPosition.name}</li>
+                ))}
+              </ul>
+            </Callout>
+          </Box>
+        )}
+
+        {groupOrder.duplicatedPositions.length > 0 && (
+          <Callout severity="warning">
+            Le groupe a été placé dans la même position sur plusieurs situations.
+          </Callout>
+        )}
+
+        {/* Order */}
+        {groupOrder.groupOrderSituations?.map((groupOrderSituation) => (
+          <div key={groupOrderSituation.pseConcreteCaseSituation.id}>
+            {groupOrderSituation.position}.
+            {groupOrderSituation.pseConcreteCaseSituation.name}
+          </div>
+        ))}
+      </Box>
+
+      <Divider sx={{ my: 2 }} />
+    </Grid>
+  );
+}
+
+function PseConcreteGroupsOrder({ pseConcreteCaseSessionGroupOrders, noneHasPosition }: { pseConcreteCaseSessionGroupOrders: Array<PseConcreteCaseSessionGroupOrderDto>, noneHasPosition: boolean }) {
+  return (
+    <Section title="Groupes - Ordre de passage">
+      {noneHasPosition && (
+        <Callout severity="warning">
+          L'ordre des groupes n'as pas encore été défini.
+        </Callout>
+      )}
+
+      <Grid container spacing={2}>
+        {!noneHasPosition && pseConcreteCaseSessionGroupOrders?.map((groupOrder: PseConcreteCaseSessionGroupOrderDto) => (
+          <PseConcreteGroupOrder
+            key={groupOrder.pseConcreteCaseGroup.id}
+            groupOrder={groupOrder}
+          />
+        ))}
+      </Grid>
+    </Section>
+  );
+}
+
 export default function SessionPseRoute() {
-  const { pseFormation, pseConcreteCaseSession } = useLoaderData<typeof loader>();
+  const { pseFormation, pseConcreteCaseSessionGroupOrders, pseConcreteCaseSession, pseConcreteCaseSituations } = useLoaderData<typeof loader>();
+
+  const noneHasPosition = pseConcreteCaseSessionGroupOrders.every((groupOrder: PseConcreteCaseSessionGroupOrderDto) => groupOrder.hasNoPositions)
 
   return (
     <PageContainer>
@@ -177,13 +321,27 @@ export default function SessionPseRoute() {
       <Grid container spacing={2}>
         <Grid item md={8}>
           <Stack spacing={2}>
-            {/* TODO:  list situations */}
-            <Situations pseConcreteCaseSessionId={pseConcreteCaseSession.id} situations={pseConcreteCaseSession.situations} />
-            {/* TODO:  list groups */}
-            <Groups
+            <PseConcreteCaseSituationGroupsOrder
+              pseConcreteCaseSituations={pseConcreteCaseSituations}
+              noneHasPosition={noneHasPosition}
+            />
+            <PseConcreteGroupsOrder
+              pseConcreteCaseSessionGroupOrders={pseConcreteCaseSessionGroupOrders}
+              noneHasPosition={noneHasPosition}
+            />
+          </Stack>
+        </Grid>
+
+        <Grid item md={4}>
+          <Stack spacing={2}>
+            <PseConcreteCaseSituationsTable
+              pseConcreteCaseSessionId={pseConcreteCaseSession.id}
+              pseConcreteCaseSituations={pseConcreteCaseSituations}
+            />
+            <PseConcreteCaseGroupsTable
               pseFormationId={pseFormation.id}
               pseConcreteCaseSessionId={pseConcreteCaseSession.id}
-              groups={pseConcreteCaseSession.groups}
+              pseConcreteCaseGroups={pseConcreteCaseSession.pseConcreteCaseGroups}
             />
           </Stack>
         </Grid>

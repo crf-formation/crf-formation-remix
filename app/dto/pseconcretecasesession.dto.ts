@@ -13,8 +13,8 @@ export interface PseConcreteCaseSessionDto {
 	state: PseConcreteCaseSessionStateDtoEnum;
 	stateLabel: string;
 
-	groups: Array<PseConcreteCaseGroupDto>;
-	situations: Array<PseConcreteCaseSituationDto>;
+	pseConcreteCaseGroups: Array<PseConcreteCaseGroupDto>;
+	pseConcreteCaseSituations: Array<PseConcreteCaseSituationDto>;
 
 	// not on database
 
@@ -32,4 +32,25 @@ export interface PseConcreteCaseSessionPostDto {
 export interface PseConcreteCaseSessionPutDto {
 	name: string;
 	state: PseConcreteCaseSessionStateDtoEnum;
+}
+
+//
+//
+//
+
+export interface  PseConcreteCaseSessionGroupOrderSituationDto {
+  pseConcreteCaseSituation: PseConcreteCaseSituationDto;
+  position: number;
+}
+
+export interface  PseConcreteCaseSessionGroupOrderDto {
+  pseConcreteCaseGroup: PseConcreteCaseGroupDto;
+
+  groupOrderSituations: Array<PseConcreteCaseSessionGroupOrderSituationDto>;
+
+  duplicatedPositions: Array<PseConcreteCaseSessionGroupOrderSituationDto>;
+  situationsWithoutPosition: Array<PseConcreteCaseSituationDto>;
+
+	hasNoPositions: boolean
+	hasSomeSituationsWithoutPosition: boolean
 }

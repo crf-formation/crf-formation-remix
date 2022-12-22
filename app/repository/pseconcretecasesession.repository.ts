@@ -8,7 +8,7 @@ const includeForSingleItem = {
   groups: { include: { students: { include: { user: true } } } },
   situations: {
     include: {
-      pseConcreteCaseGroups: { include: { pseConcreteCaseGroup: true } },
+      pseSituationConcreteCaseGroups: { include: { pseConcreteCaseGroup: true } },
       teacher: true,
       pseConcreteCaseType: true,
     },

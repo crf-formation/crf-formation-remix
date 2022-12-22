@@ -16,7 +16,7 @@ export interface PseConcreteCaseSituationApiObject {
 
 	pseConcreteCaseType: PseConcreteCaseTypeApiObject;
 
-	pseConcreteCaseGroups: Array<PseSituationConcreteCaseGroupApiObject>
+	pseSituationConcreteCaseGroups: Array<PseSituationConcreteCaseGroupApiObject>
 }
 
 export interface PseSituationConcreteCaseGroupApiObject {
@@ -24,8 +24,8 @@ export interface PseSituationConcreteCaseGroupApiObject {
 	createdAt: Date;
 	updatedAt: Date;
 
-	groupId: string;
-	group: PseConcreteCaseGroupApiObject;
+	pseConcreteCaseGroupId: string;
+	pseConcreteCaseGroup: PseConcreteCaseGroupApiObject;
 
 	/**
 	 * Position of the group in the situation, to order them.
@@ -37,12 +37,18 @@ export interface PseConcreteCaseSituationPostApiObject {
 	pseConcreteCaseSessionId: string;
 	pseConcreteCaseTypeId: string;
 	teacherId: string;
-	pseConcreteCaseGroups: any // TODO:
+	pseSituationConcreteCaseGroups: Array<PseSituationConcreteCaseGroupPutApiObject>
 }
 
 export interface PseConcreteCaseSituationPutApiObject {
 	pseConcreteCaseSessionId: string;
 	pseConcreteCaseTypeId: string;
 	teacherId: string;
-	pseConcreteCaseGroups: any // TODO:
+	pseSituationConcreteCaseGroups: Array<PseSituationConcreteCaseGroupPutApiObject>
+}
+
+export interface PseSituationConcreteCaseGroupPutApiObject {
+	id?: string; // null if creation, non-null if already exists.
+	pseConcreteCaseGroupId: string;
+	position: number;
 }

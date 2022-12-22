@@ -1,6 +1,6 @@
-import type { PseUserConcreteCaseCompetenceEntity, PseUserConcreteCaseEntity } from "~/entity";
 import type { PseUserConcreteCaseApiObject, PseUserConcreteCaseCompetenceApiObject, PseUserConcreteCaseCompetenceGradeApiEnum, PseUserConcreteCaseRoleApiEnum, PseUserConcreteCaseStateApiEnum } from "~/apiobject/pseuserconcretecase.apiobject";
 import type { PseUserConcreteCaseCompetenceDto, PseUserConcreteCaseCompetenceGradeDtoEnum, PseUserConcreteCaseDto, PseUserConcreteCaseStateDtoEnum } from "~/dto/pseuserconcretecase.dto";
+import type { PseUserConcreteCaseCompetenceEntity, PseUserConcreteCaseEntity } from "~/entity";
 import { pseCompetenceApiObjectToDto, pseCompetenceEntityToApiObject } from "./psecompetence.mapper";
 import { pseConcreteCaseGroupApiObjectToDto, pseConcreteCaseGroupEntityToApiObject } from "./pseconcretecasegroup.mapper";
 import { pseConcreteCaseTypeApiObjectToDto, pseConcreteCaseTypeEntityToApiObject } from "./pseconcretecasetype.mapper";
@@ -14,7 +14,9 @@ export function PseUserConcreteCaseEntityToApiObject(entity: PseUserConcreteCase
 		userId: entity.userId,
 		user: entity.user && userEntityToApiObject(entity.user),
 
+		// TODO: rename pseConcreteCaseGroup
 		concreteCaseGroup: entity.concreteCaseGroup && pseConcreteCaseGroupEntityToApiObject(entity.concreteCaseGroup),
+				// TODO: rename pseConcreteCaseType
 		concreteCaseType: entity.concreteCaseType && pseConcreteCaseTypeEntityToApiObject(entity.concreteCaseType),
 
 		state: pseUserConcreteCaseStateStringToApiEnum(entity.state),

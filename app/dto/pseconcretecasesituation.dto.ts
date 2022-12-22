@@ -11,9 +11,11 @@ export interface PseConcreteCaseSituationDto {
 	teacherId: string;
 	teacher: UserDto;
 
+	name: string; // dto only
+
 	pseConcreteCaseType: PseConcreteCaseTypeDto;
 
-	pseConcreteCaseGroups: Array<PseSituationConcreteCaseGroupDto>
+	pseSituationConcreteCaseGroups: Array<PseSituationConcreteCaseGroupDto>
 }
 
 export interface PseSituationConcreteCaseGroupDto {
@@ -21,8 +23,8 @@ export interface PseSituationConcreteCaseGroupDto {
 	createdAt: DateISOString;
 	updatedAt: DateISOString;
 
-	groupId: string;
-	group: PseConcreteCaseGroupDto;
+	pseConcreteCaseGroupId: string;
+	pseConcreteCaseGroup: PseConcreteCaseGroupDto;
 
 	/**
 	 * Position of the group in the situation, to order them.
@@ -34,10 +36,22 @@ export interface PseConcreteCaseSituationPostDto {
 	pseConcreteCaseSessionId: string;
 	pseConcreteCaseTypeId: string;
 	teacherId: string;
+	pseSituationConcreteCaseGroups: Array<PseSituationConcreteCaseGroupPutDto>
 }
 
 export interface PseConcreteCaseSituationPutDto {
 	pseConcreteCaseTypeId: string;
 	teacherId: string;
-	pseConcreteCaseGroups: any[]; // TODO:
+	pseSituationConcreteCaseGroups: Array<PseSituationConcreteCaseGroupPutDto>
+}
+
+export interface PseSituationConcreteCaseGroupPutDto {
+	id?: string; // null if creation, non-null if already exists.
+	pseConcreteCaseGroupId: string;
+	position: number;
+}
+
+export interface PseSituationConcreteCaseGroupPostDto {
+	pseConcreteCaseGroupId: string;
+	position: number;
 }
