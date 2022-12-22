@@ -1,11 +1,11 @@
-import type { PseConcreteCaseSessionApiObject, PseConcreteCaseSessionPostApiObject, PseConcreteCaseSessionPutApiObject } from "~/apiobject/pseconcretecasesession.apiobject";
+import type { PseConcreteCaseGroupApiObject } from "~/apiobject/pseconcretecasegroup.apiobject";
+import type { PseConcreteCaseSessionApiObject, PseConcreteCaseSessionGroupOrderApiObject, PseConcreteCaseSessionPostApiObject, PseConcreteCaseSessionPutApiObject } from "~/apiobject/pseconcretecasesession.apiobject";
 import type { PseConcreteCaseSituationApiObject } from "~/apiobject/pseconcretecasesituation.apiobject";
 import type { OrderByDirection, PaginateObject } from "~/constants/types";
 import { buildPseConcreteCaseSituationsGroupsOrder } from "~/helper/pseconcretecasegrouporder.helper";
 import { paginateEntityToApiObject } from "~/mapper/abstract.mapper";
 import { pseConcreteCaseSessionEntityToApiObject } from "~/mapper/pseconcretecasesession.mapper";
 import { createPseConcreteCaseSessionsEntity, findPseConcreteCaseSessionsEntityById, getPseConcreteCaseSessionEntitiesByFormationId, updatePseConcreteCaseSessionsEntity } from "~/repository/pseconcretecasesession.repository";
-import { PseConcreteCaseGroupApiObject } from "./pseuserconcretecasegroup.server";
 
 export async function getPseFormationConcreteCaseSessions(
 	formationId: string,
