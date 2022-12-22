@@ -1,5 +1,5 @@
-import type { PseConcreteCaseTypeDto } from './pseconcretecasetype.dto';
 import type { PseConcreteCaseGroupDto } from './pseconcretecasegroup.dto';
+import type { PseConcreteCaseTypeDto } from './pseconcretecasetype.dto';
 import type { UserDto } from './user.dto';
 
 
@@ -34,4 +34,10 @@ export interface PseConcreteCaseSituationPostDto {
 	pseConcreteCaseSessionId: string;
 	pseConcreteCaseTypeId: string;
 	teacherId: string;
+}
+
+export interface PseConcreteCaseSituationPutDto {
+	pseConcreteCaseTypeId: string;
+	teacherId: string;
+	pseConcreteCaseGroups: any[]; // TODO:
 }

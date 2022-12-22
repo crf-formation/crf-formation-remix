@@ -1,8 +1,12 @@
-import { prisma } from "~/db.server";
-import type { PseConcreteCaseGroupPostApiObject, PseConcreteCaseGroupPutApiObject } from "~/apiobject/pseconcretecasegroup.apiobject";
-import type { PseConcreteCaseGroupEntity } from "~/entity";
 import type { Prisma } from "@prisma/client";
+import type { PseConcreteCaseGroupPostApiObject, PseConcreteCaseGroupPutApiObject } from "~/apiobject/pseconcretecasegroup.apiobject";
+import { prisma } from "~/db.server";
+import type { PseConcreteCaseGroupEntity } from "~/entity";
 
+const includeForSingleItem = {
+  students: { include: { user: true } },
+  pseConcreteCaseSession: { select: { id: true } }
+}
 
 export async function createPseConcreteCaseGroupEntity(
 	pseConcreteCaseGroupPostApiObject: PseConcreteCaseGroupPostApiObject
@@ -67,19 +71,13 @@ export async function updatePseConcreteCaseGroupEntity(
 async function findPseConcreteCaseGroupEntityOnTransaction(tx: Prisma.TransactionClient, id: string): Promise<PseConcreteCaseGroupEntity> {
   return await tx.pseConcreteCaseGroup.findUnique({
     where: { id },
-    include: {
-      students: { include: { user: true } },
-      pseConcreteCaseSession: { select: { id: true } }
-    },
+    include: includeForSingleItem,
   }) as PseConcreteCaseGroupEntity;
 }
 
 export async function findPseConcreteCaseGroupEntity(id: string): Promise<Optional<PseConcreteCaseGroupEntity>> {
   return await prisma.pseConcreteCaseGroup.findUnique({
     where: { id },
-    include: {
-      students: { include: { user: true } },
-      pseConcreteCaseSession: { select: { id: true } }
-    },
+    include: includeForSingleItem,
   });
 }

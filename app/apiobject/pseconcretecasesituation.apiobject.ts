@@ -1,5 +1,5 @@
-import type { PseConcreteCaseTypeApiObject } from './pseconcretecasetype.apiobject';
 import type { PseConcreteCaseGroupApiObject } from './pseconcretecasegroup.apiobject';
+import type { PseConcreteCaseTypeApiObject } from './pseconcretecasetype.apiobject';
 import type { UserApiObject } from './user.apiobject';
 
 
@@ -10,6 +10,9 @@ export interface PseConcreteCaseSituationApiObject {
 
 	teacherId: string;
 	teacher: UserApiObject;
+
+	pseConcreteCaseSessionId: string;
+	pseConcreteCaseTypeId: string;
 
 	pseConcreteCaseType: PseConcreteCaseTypeApiObject;
 

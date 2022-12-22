@@ -1,8 +1,31 @@
+import type { PseConcreteCaseSessionPostApiObject, PseConcreteCaseSessionPutApiObject } from "~/apiobject/pseconcretecasesession.apiobject";
+import type { OrderByDirection, PaginateObject } from "~/constants/types";
 import { prisma } from "~/db.server";
 import type { PseConcreteCaseSessionEntity } from "~/entity";
-import type { OrderByDirection, PaginateObject } from "~/constants/types";
 import { createPaginateObject } from "./abstract.repository";
-import type { PseConcreteCaseSessionPostApiObject, PseConcreteCaseSessionPutApiObject } from "~/apiobject/pseconcretecasesession.apiobject";
+
+const includeForSingleItem = {
+  groups: { include: { students: { include: { user: true } } } },
+  situations: {
+    include: {
+      pseConcreteCaseGroups: { include: { pseConcreteCaseGroup: true } },
+      teacher: true,
+      pseConcreteCaseType: true,
+    },
+  },
+}
+
+const includeForMultipleItem = {
+  groups: { include: { students: { include: { user: true } } } },
+  situations: {
+    include: {
+      teacher: true,
+      pseConcreteCaseType: true,
+    },
+  },
+}
+
+
 
 export async function getPseConcreteCaseSessionEntitiesByFormationId(
   formationId: string,
@@ -20,18 +43,7 @@ export async function getPseConcreteCaseSessionEntitiesByFormationId(
     where: {
       formationId,
     },
-    include: {
-      groups: { include: { 
-        students: { include: { user: true } } } 
-      },
-      situations: {
-        include: {
-          pseConcreteCaseGroups: { include: { pseConcreteCaseGroup: true } },
-          teacher: true,
-                    pseConcreteCaseType: true
-        },
-      },
-    },
+    include: includeForMultipleItem,
   });
 }
 
@@ -40,16 +52,7 @@ export async function findPseConcreteCaseSessionsEntityById(
 ): Promise<Optional<PseConcreteCaseSessionEntity>> {
   return await prisma.pseConcreteCaseSession.findUnique({
     where: { id },
-    include: {
-      groups: { include: { students: { include: { user: true } } } },
-      situations: {
-        include: {
-          pseConcreteCaseGroups: { include: { pseConcreteCaseGroup: true } },
-          teacher: true,
-          pseConcreteCaseType: true,
-        },
-      },
-    },
+    include: includeForSingleItem,
   });
 }
 
@@ -61,16 +64,7 @@ export async function createPseConcreteCaseSessionsEntity(
       ...pseConcreteCaseSessionApiObject,
     },
     // will be empty
-    include: {
-      groups: { include: { students: { include: { user: true } } } },
-      situations: {
-        include: {
-          pseConcreteCaseGroups: { include: { pseConcreteCaseGroup: true } },
-          teacher: true,
-          pseConcreteCaseType: true,
-        },
-      },
-    },
+    include: includeForSingleItem,
   });
 }
 
@@ -85,15 +79,6 @@ export async function updatePseConcreteCaseSessionsEntity(
     where: {
       id,
     },
-    include: {
-      groups: { include: { students: { include: { user: true } } } },
-      situations: {
-        include: {
-          pseConcreteCaseGroups: { include: { pseConcreteCaseGroup: true } },
-          teacher: true,
-          pseConcreteCaseType: true
-        },
-      },
-    },
+    include: includeForSingleItem,
   });
 }

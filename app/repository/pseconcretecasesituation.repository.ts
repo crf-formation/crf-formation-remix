@@ -1,8 +1,14 @@
-import { prisma } from "~/db.server";
-import type { PseConcreteCaseSituationPostApiObject, PseConcreteCaseSituationPutApiObject } from "~/apiobject/pseconcretecasesituation.apiobject";
-import type { PseConcreteCaseSituationEntity } from "~/entity";
 import type { Prisma } from "@prisma/client";
+import type { PseConcreteCaseSituationPostApiObject, PseConcreteCaseSituationPutApiObject } from "~/apiobject/pseconcretecasesituation.apiobject";
+import { prisma } from "~/db.server";
+import type { PseConcreteCaseSituationEntity } from "~/entity";
 
+const includeForSingleItem = {
+  pseConcreteCaseType: true,
+  pseConcreteCaseGroups: { include: { pseConcreteCaseGroup: true } },
+  teacher: true,
+  pseConcreteCaseSession: { select: { id: true } }
+}
 
 export async function createPseConcreteCaseSituationEntity(
 	pseConcreteCaseSituationPostApiObject: PseConcreteCaseSituationPostApiObject
@@ -43,21 +49,13 @@ export async function updatePseConcreteCaseSituationEntity(
 async function findPseConcreteCaseSituationEntityOnTransaction(tx: Prisma.TransactionClient, id: string): Promise<PseConcreteCaseSituationEntity> {
   return await tx.pseConcreteCaseSituation.findUnique({
     where: { id },
-    include: {
-      pseConcreteCaseGroups: { include: { pseConcreteCaseGroup: true } },
-			teacher: true,
-      pseConcreteCaseSession: { select: { id: true } }
-    },
+    include: includeForSingleItem,
   }) as PseConcreteCaseSituationEntity;
 }
 
 export async function findPseConcreteCaseSituationEntity(id: string): Promise<Optional<PseConcreteCaseSituationEntity>> {
   return await prisma.pseConcreteCaseSituation.findUnique({
     where: { id },
-    include: {
-      pseConcreteCaseGroups: { include: { pseConcreteCaseGroup: true } },
-			teacher: true,
-      pseConcreteCaseSession: { select: { id: true } }
-    },
+    include: includeForSingleItem,
   });
 }

@@ -1,12 +1,14 @@
 import { prisma } from "~/db.server";
 import type { PseTechniqueEntity } from "~/entity";
 
+const includeForSingleItem = {
+  pseModule: true
+}
+
 export async function findPseTechniqueEntityById(id: string): Promise<Optional<PseTechniqueEntity>> {
 	const pseTechniqueEntity = await prisma.pseTechnique.findUnique({
     where: { id },
-    include: {
-      pseModule: true
-    },
+    include: includeForSingleItem,
   });
   if (!pseTechniqueEntity) {
     return null;
@@ -18,8 +20,6 @@ export async function findPseTechniqueEntityById(id: string): Promise<Optional<P
 export async function findPseTechniques(): Promise<Array<PseTechniqueEntity>> {
 	return await prisma.pseTechnique.findMany({
     where: {},
-    include: {
-      pseModule: true
-    },
+    include: includeForSingleItem,
   });
 }

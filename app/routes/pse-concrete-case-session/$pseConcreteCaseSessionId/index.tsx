@@ -141,7 +141,7 @@ function Situations({ pseConcreteCaseSessionId, situations }) {
           {situations.map((situation: PseConcreteCaseSituationDto) => (
             <TableRow key={situation.id}>
               <TableCell>
-                <Link href={`/pse-concrete-case-group/${situation.id}`}>
+                <Link href={`/pse-concrete-case-situation/${situation.id}`}>
                   {situation.pseConcreteCaseType.name}
                 </Link>
               </TableCell>

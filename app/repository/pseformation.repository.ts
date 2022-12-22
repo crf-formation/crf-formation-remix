@@ -1,22 +1,28 @@
-import { prisma } from "~/db.server";
-import type { PseFormationEntity } from "~/entity";
 import type { PseFormationPostApiObject, PseFormationPutApiObject } from "~/apiobject/pseformation.apiobject";
 import type { OrderByDirection, PaginateObject } from "~/constants/types";
+import { prisma } from "~/db.server";
+import type { PseFormationEntity } from "~/entity";
 import { createPaginateObject } from "./abstract.repository";
+
+const includeForSingleItem = {
+  place: true,
+  userOnPseFormations: {
+    include: { 
+      user: true
+    }
+  }, 
+}
+
+const includeForMultipleItem = {
+  place: true,
+}
 
 export async function createPseFormationEntity(pseFormationPostApiObject: PseFormationPostApiObject): Promise<PseFormationEntity> {
   return await prisma.pseFormation.create({
     data: {
       ...pseFormationPostApiObject,
     },
-		include: {
-			place: true,
-      userOnPseFormations: {
-        include: { 
-          user: true
-        }
-      }, 
-		},
+		include: includeForSingleItem,
   });
 }
 
@@ -50,14 +56,7 @@ export async function updatePseFormationEntity(
       where: {
         id,
       },
-      include: {
-        place: true,
-        userOnPseFormations: {
-          include: {
-            user: true,
-          },
-        },
-      },
+      include: includeForSingleItem,
     });
   });
 }
@@ -65,14 +64,7 @@ export async function updatePseFormationEntity(
 export async function findPseFormationEntityById(id: string): Promise<Optional<PseFormationEntity>> {
   return await prisma.pseFormation.findUnique({
     where: { id },
-    include: {
-      place: true,
-      userOnPseFormations: {
-        include: {
-          user: true,
-        },
-      },
-    },
+    include: includeForSingleItem,
   });
 }
 
@@ -125,9 +117,7 @@ export async function findPseFormationEntities(
     orderBy,
     orderByDirection,
     where: {},
-		include: {
-      place: true,
-    },
+		include: includeForMultipleItem,
   });
 }
 
@@ -147,9 +137,7 @@ export async function findPseFormationForUserEntities(
     where: {
       userOnPseFormations: { some: { userId } }
     },
-		include: {
-      place: true,
-    },
+		include: includeForMultipleItem,
   });
 }
 

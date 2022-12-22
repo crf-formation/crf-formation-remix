@@ -1,7 +1,15 @@
+import type { OrderByDirection, PaginateObject } from "~/constants/types";
 import { prisma } from "~/db.server";
 import type { UserOnPseFormationEntity } from "~/entity";
-import type { OrderByDirection, PaginateObject } from "~/constants/types";
 import { createPaginateObject } from "./abstract.repository";
+
+const includeForSingleItem = {
+  user: true
+}
+
+const includeForMultipleItem = {
+  user: true
+}
 
 export async function findUserOnPseFormationEntityById(userId: string, formationId: string): Promise<Optional<UserOnPseFormationEntity>> {
 	const userOnPpseFormationEntity = await prisma.userOnPseFormation.findUnique({
@@ -11,7 +19,7 @@ export async function findUserOnPseFormationEntityById(userId: string, formation
         userId,
       }
     },
-		include: { user: true }
+		include: includeForSingleItem
   });
   if (!userOnPpseFormationEntity) {
     return null;
@@ -35,6 +43,6 @@ export async function findUserOnPseFormations(
     where: {
 			formationId
 		},
-		include: { user: true }
+		include: includeForMultipleItem
   });
 }
