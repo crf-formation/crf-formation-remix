@@ -1,7 +1,7 @@
 import AddIcon from '@mui/icons-material/Add';
 import ModeEditIcon from '@mui/icons-material/ModeEdit';
 import PersonAddIcon from '@mui/icons-material/PersonAdd';
-import { Box, Button, Chip, Divider, Grid, Link, Stack, Table, TableBody, TableCell, TableHead, TableRow, Typography } from '@mui/material';
+import { Box, Button, Chip, Divider, Grid, Link, List, ListItem, ListItemText, Stack, Table, TableBody, TableCell, TableHead, TableRow, Typography } from '@mui/material';
 import type { LoaderFunction, MetaFunction } from "@remix-run/node";
 import { json } from "@remix-run/node";
 import type { Params } from "@remix-run/react";
@@ -169,15 +169,21 @@ function PseConcreteCaseSituationsTable({ pseConcreteCaseSessionId, pseConcreteC
 }
 
 
-function PseConcreteCaseSituationGroupOrder({ pseConcreteCaseSituation }: { pseConcreteCaseSituation: PseConcreteCaseSituationDto }) {
+function PseConcreteCaseSituationGroupOrder({ pseConcreteCaseSessionId, pseConcreteCaseSituation }: { pseConcreteCaseSessionId: string, pseConcreteCaseSituation: PseConcreteCaseSituationDto }) {
   return (
     <Grid item md={6}>
-      <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+        }}
+      >
         <Box>
-          <Typography variant="h4">
-            {pseConcreteCaseSituation.name}
+          <Typography variant="h4">{pseConcreteCaseSituation.name}</Typography>
+          <Typography variant="subtitle2">
+            {pseConcreteCaseSituation.teacher.fullName}
           </Typography>
-          <Typography variant="subtitle2">{pseConcreteCaseSituation.teacher.fullName}</Typography>
         </Box>
 
         <Button>
@@ -190,45 +196,71 @@ function PseConcreteCaseSituationGroupOrder({ pseConcreteCaseSituation }: { pseC
       </Box>
 
       <Box sx={{ flex: 1, display: "flex", flexDirection: "column" }}>
-        {pseConcreteCaseSituation.pseSituationConcreteCaseGroups.length === 0 && (
+        {pseConcreteCaseSituation.pseSituationConcreteCaseGroups.length ===
+          0 && (
           <Box mt={2}>
             <p>L'ordre des groupes n'as pas encore été défini.</p>
           </Box>
         )}
 
-        <Box mt={2}>
-
+        <List sx={{ mt: 2 }}>
           {pseConcreteCaseSituation.pseSituationConcreteCaseGroups.map(
-            (pseSituationConcreteCaseGroup: PseSituationConcreteCaseGroupDto) => (
-              <div key={pseSituationConcreteCaseGroup.id}>
-                {pseSituationConcreteCaseGroup.position}.{" "}
-                {pseSituationConcreteCaseGroup.pseConcreteCaseGroup.name}
-              </div>
+            (
+              pseSituationConcreteCaseGroup: PseSituationConcreteCaseGroupDto
+            ) => (
+              <ListItem
+                key={pseSituationConcreteCaseGroup.id}
+                secondaryAction={
+                  <Button>
+                    <Link
+                      href={`/concrete-case-session/${pseConcreteCaseSessionId}/situation/${pseConcreteCaseSituation.id}`}
+                    >
+                      Évaluer
+                    </Link>
+                  </Button>
+                }
+              >
+                <ListItemText primary={<span>{pseSituationConcreteCaseGroup.position}.{" "}{pseSituationConcreteCaseGroup.pseConcreteCaseGroup.name}</span>} />
+              </ListItem>
             )
           )}
-        </Box>
-      </Box> 
+        </List>
+      </Box>
       <Divider sx={{ my: 2 }} />
     </Grid>
   );
 }
 
-function PseConcreteCaseSituationGroupsOrder({ pseConcreteCaseSituations, noneHasPosition }: { pseConcreteCaseSituations: Array<PseConcreteCaseSituationDto>, noneHasPosition: boolean }) {
+function PseConcreteCaseSituationGroupsOrder({
+  pseConcreteCaseSessionId,
+  pseConcreteCaseSituations,
+  noneHasPosition,
+}: {
+  pseConcreteCaseSessionId: string;
+  pseConcreteCaseSituations: Array<PseConcreteCaseSituationDto>;
+  noneHasPosition: boolean;
+}) {
   return (
     <Section title="Situations - Ordre de passage">
-       {noneHasPosition && (
-        <Callout  severity="warning">
+      {noneHasPosition && (
+        <Callout severity="warning">
           L'ordre des groupes n'as pas encore été défini.
         </Callout>
       )}
 
       <Grid container spacing={2}>
-        {pseConcreteCaseSituations?.map((pseConcreteCaseSituation: PseConcreteCaseSituationDto) => (
-          <PseConcreteCaseSituationGroupOrder key={pseConcreteCaseSituation.id} pseConcreteCaseSituation={pseConcreteCaseSituation} />
-        ))}
+        {pseConcreteCaseSituations?.map(
+          (pseConcreteCaseSituation: PseConcreteCaseSituationDto) => (
+            <PseConcreteCaseSituationGroupOrder
+              key={pseConcreteCaseSituation.id}
+              pseConcreteCaseSessionId={pseConcreteCaseSessionId}
+              pseConcreteCaseSituation={pseConcreteCaseSituation}
+            />
+          )
+        )}
       </Grid>
     </Section>
-  )
+  );
 }
 
 function PseConcreteGroupOrder({ groupOrder }: { groupOrder: PseConcreteCaseSessionGroupOrderDto }) {
@@ -322,6 +354,7 @@ export default function SessionPseRoute() {
         <Grid item md={8}>
           <Stack spacing={2}>
             <PseConcreteCaseSituationGroupsOrder
+              pseConcreteCaseSessionId={pseConcreteCaseSession.id}
               pseConcreteCaseSituations={pseConcreteCaseSituations}
               noneHasPosition={noneHasPosition}
             />
