@@ -5,18 +5,21 @@ import { useActionData, useLoaderData, useSearchParams } from "@remix-run/react"
 import { useRef } from "react";
 import { z } from "zod";
 import FormErrorHelperText from "~/components/form/FormErrorHelperText";
+import FormView from "~/components/form/FormView";
 import PageFullContentWithLogo from "~/components/layout/PageFullContentWithLogo";
+import type { PasswordAskResetDto } from "~/dto/user.dto";
+import { validateForm } from "~/form/abstract";
+import { passwordAskResetValidator } from "~/form/user.form";
+import useFormFocusError from "~/hooks/useFormFocusError";
 import { askForPasswordRecovery } from "~/services/passwordrecovery.server";
 import { getSession, getUserId } from "~/services/session.server";
 import { validateUserEmail } from "~/services/user.server";
-import { getSearchParamsOrFail } from "~/utils/remix.params";
-import { badRequest } from '../../utils/responses';
-import useFormFocusError from "~/hooks/useFormFocusError";
-import FormView from "~/components/form/FormView";
 import { generateAria } from "~/utils/form";
+import { getSearchParamsOrFail } from "~/utils/remix.params";
+import { invalidFormResponse } from "~/utils/responses";
 
 const URLSearchParamsSchema = z.object({
-  email: z.string(),
+  email: z.string().optional(),
   redirectTo: z.string().default("/dashboard"),
 });
 
@@ -35,17 +38,19 @@ export async function loader({ request }: LoaderArgs) {
 
 export async function action({ request }: ActionArgs) {
   await getSession(request);
-  const formData = await request.formData();
 
-  const email = formData.get('email')
-
-  if (!validateUserEmail(email)) {
-    throw badRequest(
-      { errors: { email: "Invalid email"}}
-    )
+  const result = await validateForm<PasswordAskResetDto>(request, passwordAskResetValidator)
+  if (result.errorResponse) {
+    return result.errorResponse
   }
 
-  await askForPasswordRecovery(email as string);
+  const passwordAskResetDto: PasswordAskResetDto = result.data
+
+  if (!validateUserEmail(passwordAskResetDto.email)) {
+    throw invalidFormResponse({ email: "Email invalide"})
+  }
+
+  await askForPasswordRecovery(passwordAskResetDto.email);
 
   return redirect("/reset-password/sent")
 }
@@ -80,7 +85,7 @@ export default function PasswordResetRoute() {
 
       <FormView
         submitText="Réinitialiser"
-        // TODO: validator
+        validator={passwordAskResetValidator}
       >
         <input type="hidden" name="redirectTo" value={redirectTo} />
 

@@ -50,3 +50,20 @@ export interface UserMeDto {
   hasAdminPermission: boolean;
 }
 
+export interface PasswordCreateDto {
+  email: string;
+  token: string;
+  password: string;
+  passwordVerification: string;
+}
+
+export interface PasswordResetDto {
+  email: string;
+  token: string;
+  password: string;
+  passwordVerification: string;
+}
+
+export interface PasswordAskResetDto {
+  email: string;
+}

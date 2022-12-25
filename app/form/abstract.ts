@@ -1,23 +1,21 @@
 import type { TypedResponse } from "@remix-run/server-runtime";
-import type { ValidationErrorResponseData, ValidatorError, Validator } from "remix-validated-form";
+import type { ValidationErrorResponseData, Validator, ValidatorError } from "remix-validated-form";
 import { validationError } from "remix-validated-form";
 
 type ValidatedForm<T> = {
 	data: T
 } | {
-	errorResponse?: TypedResponse<ValidationErrorResponseData>
+	errorResponse: TypedResponse<ValidationErrorResponseData>
 	error: Optional<ValidatorError>
 }
 
 export async function validateForm<T>(request: Request, validator: Validator<any>): Promise<ValidatedForm<T>> {
-	const result = await validator.validate(
-		await request.formData()
-	);
+	const result = await validator.validate(await request.formData());
 
 	if (result.error) {
 		const errorResult: ValidatedForm<T> = {
 			error: result.error,
-			errorResponse: result.error && validationError(result.error),	
+			errorResponse: validationError(result.error),	
 		}
 		return errorResult
 	}

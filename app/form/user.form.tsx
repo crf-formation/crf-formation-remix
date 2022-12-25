@@ -62,6 +62,28 @@ export const passwordModificationValidator = withZod(
 //
 
 
+const PasswordCreateSchema = z.object({
+  passwordVerification: z
+    .string()
+    .min(
+      USER_PASSWORD_MIN_LENGTH,
+      `Le mot de passe doit faire au moins ${USER_PASSWORD_MIN_LENGTH} caractères`
+    ),
+  password: z
+    .string()
+    .min(
+      USER_PASSWORD_MIN_LENGTH,
+      `Le mot de passe doit faire au moins ${USER_PASSWORD_MIN_LENGTH} caractères`
+    ),
+});
+
+export const passwordCreateValidator = withZod(PasswordCreateSchema)
+
+//
+//
+//
+
+
 const PasswordResetSchema = z.object({
   passwordVerification: z
     .string()
@@ -78,3 +100,15 @@ const PasswordResetSchema = z.object({
 });
 
 export const passwordResetValidator = withZod(PasswordResetSchema)
+
+//
+//
+//
+
+
+const PasswordAskResetSchema = z.object({
+  email: z.string().email().min(1),
+
+});
+
+export const passwordAskResetValidator = withZod(PasswordAskResetSchema)

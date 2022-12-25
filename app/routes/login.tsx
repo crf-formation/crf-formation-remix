@@ -64,7 +64,7 @@ export async function action({ request }: ActionArgs) {
   const userAuthToken = await verifyLogin(email, password);
   if (!userAuthToken) {
     return invalidFormResponse(
-      { email: "Invalid email or password" }
+      { email: "Email ou mot de passe invalide" }
     );
   }
 

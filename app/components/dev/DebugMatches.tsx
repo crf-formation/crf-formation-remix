@@ -1,10 +1,10 @@
-import { Box, Button, Dialog, DialogContent, DialogTitle, IconButton, Typography } from '@mui/material';
-import { useMemo, useState } from 'react';
 import BugReportIcon from '@mui/icons-material/BugReport';
 import CloseIcon from '@mui/icons-material/Close';
+import { Box, Button, Dialog, DialogContent, DialogTitle, IconButton, Typography } from '@mui/material';
 import { useActionData, useMatches } from "@remix-run/react";
+import isEmpty from "lodash/isEmpty";
+import { useMemo, useState } from 'react';
 import { ReactJson } from "../typography/Json";
-import isEmpty from "lodash/isEmpty"
 
 /**
  * 
@@ -39,7 +39,7 @@ function RouteDataView({ routeData }) {
       </Box>
       <Box mt={2}>
         {routeData.data ? (
-          <ReactJson src={routeData.data} />
+          <ReactJson src={routeData.data} collapsed displayDataTypes={false}	/>
         ) : (
           <span>No data</span>
         )}

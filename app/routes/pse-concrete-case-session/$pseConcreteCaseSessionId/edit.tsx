@@ -1,33 +1,32 @@
-import { TextField } from "@mui/material";
-import type { ActionArgs, LoaderFunction} from "@remix-run/node";
-import { redirect } from "@remix-run/node";
-import { json } from "@remix-run/node";
-import type { Params} from "@remix-run/react";
-import { useActionData} from "@remix-run/react";
-import { useLoaderData } from "@remix-run/react";
+import type { ActionArgs, LoaderFunction } from "@remix-run/node";
+import { json, redirect } from "@remix-run/node";
+import type { Params } from "@remix-run/react";
+import { useActionData, useLoaderData } from "@remix-run/react";
+import { useRef } from "react";
 import { z } from "zod";
+import type { PseConcreteCaseSessionApiObject } from "~/apiobject/pseconcretecasesession.apiobject";
+import type { PseFormationApiObject } from "~/apiobject/pseformation.apiobject";
+import type { UserApiObject } from "~/apiobject/user.apiobject";
+import FormErrorHelperText from "~/components/form/FormErrorHelperText";
+import FormTextField from "~/components/form/FormTextField";
+import FormView from "~/components/form/FormView";
 import PageContainer from "~/components/layout/PageContainer";
-import Section from "~/components/layout/Section";
-import { pseConcreteCaseSessionApiObjectToDto, pseConcreteCaseSessionPutDtoToApiObject } from "~/mapper/pseconcretecasesession.mapper";
-import { getPseConcreteCaseSessionById, updatePseConcreteCaseSession } from "~/services/pseconcretecasesession.server";
-import { requireUser } from "~/services/session.server";
-import { getFormData, getParamsOrFail } from '~/utils/remix.params';
-import { pseFormationApiObjectToDto } from "~/mapper/pseformation.mapper";
 import PageTitle from "~/components/layout/PageTitle";
+import Section from "~/components/layout/Section";
+import PseConcreteCaseSessionStateAutocomplete from "~/components/pse-concrete-case-session/PseConcreteCaseSessionStateAutocomplete";
+import type { SecurityFunction } from "~/constants/remix";
+import type { PseConcreteCaseSessionPutDto } from "~/dto/pseconcretecasesession.dto";
+import { validateForm } from '~/form/abstract';
+import { pseConcreteCaseSessionPutDtoValidator } from "~/form/pseconcretecasesession.form";
+import useFormFocusError from "~/hooks/useFormFocusError";
+import { pseConcreteCaseSessionApiObjectToDto, pseConcreteCaseSessionPutDtoToApiObject } from "~/mapper/pseconcretecasesession.mapper";
+import { pseFormationApiObjectToDto } from "~/mapper/pseformation.mapper";
+import { getPseConcreteCaseSessionById, updatePseConcreteCaseSession } from "~/services/pseconcretecasesession.server";
 import { getPseFormationByPseConcreteCaseSessionId } from '~/services/pseformation.server';
 import { assertUserHasAccessToFormationAsTeacher } from "~/services/security.server";
-import type { UserApiObject } from "~/apiobject/user.apiobject";
-import type { PseFormationApiObject } from "~/apiobject/pseformation.apiobject";
-import type { PseConcreteCaseSessionApiObject } from "~/apiobject/pseconcretecasesession.apiobject";
-import type { SecurityFunction } from "~/constants/remix";
-import FormErrorHelperText from "~/components/form/FormErrorHelperText";
-import { useRef } from "react";
-import type { PseConcreteCaseSessionPutDto} from "~/dto/pseconcretecasesession.dto";
-import { PseConcreteCaseSessionStateDtoZEnum } from "~/dto/pseconcretecasesession.dto";
-import PseConcreteCaseSessionStateAutocomplete from "~/components/pse-concrete-case-session/PseConcreteCaseSessionStateAutocomplete";
-import useFormFocusError from "~/hooks/useFormFocusError";
-import FormView from "~/components/form/FormView";
+import { requireUser } from "~/services/session.server";
 import { generateAria } from "~/utils/form";
+import { getParamsOrFail } from '~/utils/remix.params';
 
 // update PSE concrete case session
 
@@ -49,20 +48,14 @@ export const loader: LoaderFunction = async ({ request, params }) => {
   });
 };
 
-// PseConcreteCaseSessionPutDto
-const PutSchema = z.object({
-	name: z.string(),
-	state: PseConcreteCaseSessionStateDtoZEnum,
-});
-
 export async function action({ request, params }: ActionArgs) {
 	const { pseConcreteCaseSessionApiObject } = await security(request, params)
 
-	const result = await getFormData(request, PutSchema);
-  if (!result.success) {
-    return json(result, { status: 400 });
+	const result = await validateForm<PseConcreteCaseSessionPutDto>(request, pseConcreteCaseSessionPutDtoValidator);
+  if (result.errorResponse) {
+    return result.errorResponse
   }
-	const putDto = result.data as PseConcreteCaseSessionPutDto
+	const putDto = result.data 
 
 	const concreteCaseSessionApiObject = await updatePseConcreteCaseSession(
 		pseConcreteCaseSessionApiObject.id,
@@ -112,8 +105,9 @@ export default function SessionPseRoute() {
       <Section>
         <FormView
         	submitText="Valider"
+          validator={pseConcreteCaseSessionPutDtoValidator}
         >
-          <TextField
+          <FormTextField
             name="name"
             ref={nameRef}
             defaultValue={pseConcreteCaseSession.name}
@@ -122,9 +116,7 @@ export default function SessionPseRoute() {
             margin="normal"
             type="string"
             autoFocus
-						{...generateAria(actionData, 'name')}
           />
-          <FormErrorHelperText name="name" actionData={actionData} />
 
           <PseConcreteCaseSessionStateAutocomplete
             name="state"

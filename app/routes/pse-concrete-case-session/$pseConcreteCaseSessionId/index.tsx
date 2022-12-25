@@ -213,7 +213,7 @@ function PseConcreteCaseSituationGroupOrder({ pseConcreteCaseSessionId, pseConcr
                 secondaryAction={
                   <Button>
                     <Link
-                      href={`/concrete-case-session/${pseConcreteCaseSessionId}/situation/${pseConcreteCaseSituation.id}`}
+                      href={`/concrete-case-situation/${pseConcreteCaseSituation.id}/group/${pseSituationConcreteCaseGroup.id}`}
                     >
                       Évaluer
                     </Link>

@@ -1,11 +1,12 @@
 import { TextField } from "@mui/material";
-import FormErrorHelperText from "../form/FormErrorHelperText";
-import FormationStudentAutocomplete from "../formationpse/FormationStudentAutocomplete";
 import { useRef } from "react";
-import type { UserDto } from '../../dto/user.dto';
+import { pseConcreteCaseGroupPostDtoValidator, pseConcreteCaseGroupPutDtoValidator } from "~/form/pseconcretecasegroup.form";
 import useFormFocusError from "~/hooks/useFormFocusError";
-import FormView from "../form/FormView";
 import { generateAria } from "~/utils/form";
+import type { UserDto } from '../../dto/user.dto';
+import FormErrorHelperText from "../form/FormErrorHelperText";
+import FormView from "../form/FormView";
+import FormationStudentAutocomplete from "../formationpse/FormationStudentAutocomplete";
 
 interface Props<T> {
   pseFormationId: string;
@@ -35,7 +36,7 @@ export default function PseConcreteCaseGroupForm<T>({
   return (
     <FormView
       submitText={isEdit ? <span>Mettre à jour</span> : <span>Créer le groupe</span>}
-      // TODO: validator
+      validator={isEdit ? pseConcreteCaseGroupPutDtoValidator : pseConcreteCaseGroupPostDtoValidator}
     >
       <input
         type="hidden"

@@ -1,54 +1,54 @@
 import Brightness2Icon from "@mui/icons-material/Brightness2";
 import Brightness7Icon from "@mui/icons-material/Brightness7";
 import {
-  Box,
-  Button,
-  Grid,
-  IconButton,
-  Tooltip,
-  Typography,
+    Box,
+    Button,
+    Grid,
+    IconButton,
+    Tooltip,
+    Typography,
 } from "@mui/material";
 import type { Params } from "@remix-run/react";
 import {
-  Form,
-  useActionData,
-  useLoaderData,
-  useLocation,
+    Form,
+    useActionData,
+    useLoaderData,
+    useLocation,
 } from "@remix-run/react";
 import type {
-  ActionArgs,
-  LoaderArgs,
-  MetaFunction,
+    ActionArgs,
+    LoaderArgs,
+    MetaFunction,
 } from "@remix-run/server-runtime";
 import { json, redirect } from "@remix-run/server-runtime";
+import type { UserApiObject } from "~/apiobject/user.apiobject";
 import PasswordForm from "~/components/account/PasswordForm";
 import ProfileForm from "~/components/account/ProfileForm";
 import Section from "~/components/layout/Section";
+import type { SecurityFunction } from "~/constants/remix";
+import type { UserPutDto } from "~/dto/user.dto";
+import { validateForm } from '~/form/abstract';
 import useRootData from "~/hooks/useRootData";
-import {
-  updatePassword,
-  verifyLogin,
-  updateUser,
-} from "~/services/user.server";
 import { addFlashMessage } from "~/services/flash.server";
 import {
-  commitSession,
-  getSession,
-  requireUser,
+    commitSession,
+    getSession,
+    requireUser,
 } from "~/services/session.server";
+import {
+    updatePassword,
+    updateUser,
+    verifyLogin,
+} from "~/services/user.server";
 import { verifyAuthenticityToken } from "~/utils/csrf.server";
+import { namedActionWithFormType } from "~/utils/named-actions";
 import { badRequest } from "~/utils/responses";
 import PageContainer from "../components/layout/PageContainer";
-import { namedActionWithFormType } from "~/utils/named-actions";
-import type { UserPutDto } from "~/dto/user.dto";
-import {
-  userPutDtoToApiObject,
-  userApiObjectToDto,
-} from "../mapper/user.mapper";
-import type { SecurityFunction } from "~/constants/remix";
-import type { UserApiObject } from "~/apiobject/user.apiobject";
-import { validateForm } from '~/form/abstract';
 import { passwordModificationValidator, profileValidator } from '../form/user.form';
+import {
+    userApiObjectToDto,
+    userPutDtoToApiObject,
+} from "../mapper/user.mapper";
 
 export const meta: MetaFunction<typeof loader> = () => {
   return {
@@ -138,7 +138,7 @@ async function actionPassword(request: Request, params: Params) {
   if (passwordVerification !== password) {
     return badRequest({
       password: {
-        errors: { password: "Passwords does not match" },
+        errors: { password: "Les mots de passes ne correspondent pas" },
       },
     });
   }

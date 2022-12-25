@@ -1,22 +1,24 @@
-import { Box, TextField, Typography } from "@mui/material";
+import { Box, Typography } from "@mui/material";
 import type { ActionArgs, LoaderArgs, MetaFunction } from "@remix-run/node";
 import { json, redirect } from "@remix-run/node";
 import { useActionData, useLoaderData } from "@remix-run/react";
 import { useRef, useState } from "react";
 import { z } from "zod";
-import FormErrorHelperText from "~/components/form/FormErrorHelperText";
+import FormTextField from "~/components/form/FormTextField";
+import FormView from "~/components/form/FormView";
 import PasswordCheckView from "~/components/hibp/PasswordCheckView";
 import PageFullContentWithLogo from "~/components/layout/PageFullContentWithLogo";
+import type { PasswordResetDto } from "~/dto/user.dto";
+import { validateForm } from '~/form/abstract';
+import { passwordResetValidator } from "~/form/user.form";
+import useFormFocusError from "~/hooks/useFormFocusError";
+import type { ApiErrorException } from '~/services/api.error';
 import { addFlashMessage } from "~/services/flash.server";
 import { recoverPassword } from "~/services/passwordrecovery.server";
 import { commitSession, getSession, getUserId } from "~/services/session.server";
 import { getParamsOrFail, getSearchParamsOrFail } from "~/utils/remix.params";
-import { badRequest } from "~/utils/responses";
+import { invalidFormResponse } from "~/utils/responses";
 import { badRequestWithFlash } from "~/utils/responsesError";
-import type { ApiErrorException } from '../../services/api.error';
-import useFormFocusError from "~/hooks/useFormFocusError";
-import FormView from "~/components/form/FormView";
-import { generateAria } from "~/utils/form";
 
 const ParamsSchema = z.object({
   token: z.string(),
@@ -39,41 +41,22 @@ export async function loader({ request, }: LoaderArgs) {
 
 export async function action({ request, params  }: ActionArgs) {
   let session = await getSession(request);
-  const formData = await request.formData();
-
 	const { token } = getParamsOrFail(params, ParamsSchema)
 
-	const password = formData.get("password");
-	const passwordVerification = formData.get("passwordVerification");
-	const email = formData.get("email") as string;
-
-  // TODO: validate data using zod
-  if (typeof password !== "string" || password.length === 0) {
-    return badRequest({
-      errors: { password: "Password is required" }
-    });
-  }
-	
-  if (password.length < 8) {
-    return badRequest({
-      errors: { password: "Password is too short" },
-    });
+  const result = await validateForm<PasswordResetDto>(request, passwordResetValidator)
+  if (result.errorResponse) {
+    return result.errorResponse
   }
 
-	if (typeof passwordVerification !== "string" || passwordVerification.length === 0) {
-    return badRequest({
-        errors: { passwordVerification: "Password verification is required" },
-    });
-  }
-
-	if (passwordVerification !== password) {
-    return badRequest({
-        errors: { passwordVerification: "Passwords does not match" },
+  const passwordResetDto: PasswordResetDto = result.data
+	if (passwordResetDto.passwordVerification !== passwordResetDto.password) {
+    return invalidFormResponse({
+        passwordVerification: "Les mots de passes ne correspondent pas"
     });
   }
 
   try { 
-    await recoverPassword(email, token, password)
+    await recoverPassword(passwordResetDto.email, token, passwordResetDto.password)
   } catch (e) {
     return badRequestWithFlash(session, e as ApiErrorException)
   }
@@ -84,7 +67,7 @@ export async function action({ request, params  }: ActionArgs) {
     `Your password has been updated`
   );
 
-  return redirect(`/login?email=${email}`, {
+  return redirect(`/login?email=${passwordResetDto.email}`, {
     headers: {
       "Set-Cookie": await commitSession(session),
     },
@@ -93,7 +76,7 @@ export async function action({ request, params  }: ActionArgs) {
 
 export const meta: MetaFunction<typeof loader> = () => {
   return {
-    title: "Password modification",
+    title: "Modification du mot de passe",
   };
 };
 
@@ -123,11 +106,11 @@ export default function PasswordResetRoute() {
 
       <FormView
         submitText="Valider"
-        // TODO: validator
+        validator={passwordResetValidator}
       >
         <input type="hidden" name="email" value={email} />
 
-        <TextField
+        <FormTextField
           name="password"
           ref={passwordRef}
           label="New password"
@@ -135,13 +118,11 @@ export default function PasswordResetRoute() {
           margin="normal"
           type="password"
           autoComplete="new-password"
-          {...generateAria(actionData, "password")}
           value={password}
           onChange={(e) => setPassword(e.target.value)}
         />
-        <FormErrorHelperText name="password" actionData={actionData} />
 
-        <TextField
+        <FormTextField
           name="passwordVerification"
           ref={passwordVerificationRef}
           label="Ret-enter your new password"
@@ -149,11 +130,6 @@ export default function PasswordResetRoute() {
           margin="normal"
           type="password"
           autoComplete="new-password"
-          {...generateAria(actionData, "passwordVerification")}
-        />
-        <FormErrorHelperText
-          name="passwordVerification"
-          actionData={actionData}
         />
 
         <PasswordCheckView password={password} />

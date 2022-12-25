@@ -1,41 +1,40 @@
-import type { ActionArgs, LoaderFunction, MetaFunction} from "@remix-run/node";
-import { redirect } from "@remix-run/node";
-import { json } from "@remix-run/node";
-import type { Params} from "@remix-run/react";
+import type { ActionArgs, LoaderFunction, MetaFunction } from "@remix-run/node";
+import { json, redirect } from "@remix-run/node";
+import type { Params } from "@remix-run/react";
 import { useActionData, useLoaderData } from "@remix-run/react";
 import { z } from "zod";
-import PageContainer from "~/components/layout/PageContainer";
-import { getPseConcreteCaseSessionById } from "~/services/pseconcretecasesession.server";
-import { requireUser } from "~/services/session.server";
-import { getFormData, getParamsOrFail } from '~/utils/remix.params';
-import type { PseConcreteCaseGroupPutDto, PseUserConcreteCaseGroupStudentDto } from "~/dto/pseconcretecasegroup.dto";
-import Section from "~/components/layout/Section";
-import PageTitle from "~/components/layout/PageTitle";
-import { pseConcreteCaseGroupPutDtoToApiObject } from "~/mapper/pseconcretecasegroup.mapper";
-import { assertUserHasAccessToFormationAsTeacher } from "~/services/security.server";
-import { getPseConcreteCaseGroup, updatePseConcreteCaseGroup } from "~/services/pseconcretecasegroup.server";
-import { pseConcreteCaseGroupApiObjectToDto } from '../../mapper/pseconcretecasegroup.mapper';
-import { getPseFormationByPseConcreteCaseSessionId } from "~/services/pseformation.server";
-import PseConcreteCaseGroupForm from "~/components/pse-concrete-case-group/PseConcreteCaseGroupForm";
+import type { PseConcreteCaseGroupApiObject } from "~/apiobject/pseconcretecasegroup.apiobject";
 import type { PseConcreteCaseSessionApiObject } from "~/apiobject/pseconcretecasesession.apiobject";
 import type { PseFormationApiObject } from "~/apiobject/pseformation.apiobject";
 import type { UserApiObject } from "~/apiobject/user.apiobject";
-import { pseFormationApiObjectToDto } from "~/mapper/pseformation.mapper";
-import { pseConcreteCaseSessionApiObjectToDto } from "~/mapper/pseconcretecasesession.mapper";
-import type { PseConcreteCaseGroupApiObject } from "~/apiobject/pseconcretecasegroup.apiobject";
+import PageContainer from "~/components/layout/PageContainer";
+import PageTitle from "~/components/layout/PageTitle";
+import Section from "~/components/layout/Section";
+import PseConcreteCaseGroupForm from "~/components/pse-concrete-case-group/PseConcreteCaseGroupForm";
 import type { SecurityFunction } from "~/constants/remix";
+import type { PseConcreteCaseGroupPutDto, PseUserConcreteCaseGroupStudentDto } from "~/dto/pseconcretecasegroup.dto";
+import { validateForm } from "~/form/abstract";
+import { pseConcreteCaseGroupPutDtoValidator } from "~/form/pseconcretecasegroup.form";
+import { pseConcreteCaseGroupPutDtoToApiObject } from "~/mapper/pseconcretecasegroup.mapper";
+import { pseConcreteCaseSessionApiObjectToDto } from "~/mapper/pseconcretecasesession.mapper";
+import { pseFormationApiObjectToDto } from "~/mapper/pseformation.mapper";
+import { getPseConcreteCaseGroup, updatePseConcreteCaseGroup } from "~/services/pseconcretecasegroup.server";
+import { getPseConcreteCaseSessionById } from "~/services/pseconcretecasesession.server";
+import { getPseFormationByPseConcreteCaseSessionId } from "~/services/pseformation.server";
+import { assertUserHasAccessToFormationAsTeacher } from "~/services/security.server";
+import { requireUser } from "~/services/session.server";
+import { getParamsOrFail } from '~/utils/remix.params';
+import { pseConcreteCaseGroupApiObjectToDto } from '../../mapper/pseconcretecasegroup.mapper';
 
 const ParamsSchema = z.object({
   pseConcreteCaseGroupId: z.string(),
 });
 
-// GET a formation
 export const loader: LoaderFunction = async ({
   request,
 	params
 }) => {
   const { pseFormationApiObject, pseConcreteCaseSessionApiObject, pseConcreteCaseGroupApiObject } = await security(request, params)
-
 
   return json({
     pseFormation: pseFormationApiObjectToDto(pseFormationApiObject),
@@ -44,19 +43,14 @@ export const loader: LoaderFunction = async ({
 	});
 };
 
-const PutSchema = z.object({
-	name: z.string(),
-  students: z.array(z.string())
-});
-
 export async function action({ request, params  }: ActionArgs) {
   const { pseConcreteCaseGroupApiObject } = await security(request, params)
 
-  const result = await getFormData(request, PutSchema);
-  if (!result.success) {
-    return json(result, { status: 400 });
+  const result = await validateForm<PseConcreteCaseGroupPutDto>(request, pseConcreteCaseGroupPutDtoValidator);
+  if (result.errorResponse) {
+    return result.errorResponse
   }
-	const putDto = result.data as PseConcreteCaseGroupPutDto
+	const putDto = result.data
 
   const putApiObject = pseConcreteCaseGroupPutDtoToApiObject(putDto)
 
