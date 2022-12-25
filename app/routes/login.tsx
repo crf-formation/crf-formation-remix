@@ -1,25 +1,26 @@
-import { Box, Button, Link, TextField } from "@mui/material";
+import { Box, Link } from "@mui/material";
 import type { ActionArgs, LoaderArgs, MetaFunction } from "@remix-run/node";
 import { json, redirect } from "@remix-run/node";
 import { useActionData, useLoaderData, useSearchParams } from "@remix-run/react";
 import { useRef, useState } from "react";
 import { z } from "zod";
-import FormErrorHelperText from "~/components/form/FormErrorHelperText";
+import FormTextField from "~/components/form/FormTextField";
 import FormView from "~/components/form/FormView";
 import PasswordCheckView from "~/components/hibp/PasswordCheckView";
 import PageFullContentWithLogo from "~/components/layout/PageFullContentWithLogo";
-import { USER_PASSWORD_MIN_LENGTH } from "~/constants";
+import type { LoginDto } from "~/dto/login.dto";
+import { validateForm } from "~/form/abstract";
+import { loginValidator } from "~/form/login.form";
 import useFormFocusError from "~/hooks/useFormFocusError";
 import { createUserSession, getSession, getUserId } from "~/services/session.server";
-import { validateUserEmail, verifyLogin } from "~/services/user.server";
+import { verifyLogin } from "~/services/user.server";
 import { createAuthenticityToken } from "~/utils/csrf.server";
-import { generateAria } from "~/utils/form";
 import { getSearchParamsOrFail } from "~/utils/remix.params";
-import { safeRedirect } from "~/utils/routing";
+import { invalidFormResponse } from "~/utils/responses";
 
 const URLSearchParamsSchema = z.object({
   redirectTo: z.string().default("/dashboard"),
-  email: z.string().default("jon-doe@crf-formation.fr" || "" /* TODO: fixture - remove */),
+  email: z.string().default("jon-doe@crf-formation.fr"), // TODO: remove
 });
 
 export async function loader({ request }: LoaderArgs) {
@@ -36,7 +37,6 @@ export async function loader({ request }: LoaderArgs) {
 
 export async function action({ request }: ActionArgs) {
   const session = await getSession(request);
-  const formData = await request.formData();
 
   // logger.info('onAction: ' + session.get('csrf'))
 
@@ -51,38 +51,20 @@ export async function action({ request }: ActionArgs) {
   // TODO: make it on join too?
   createAuthenticityToken(session); // csrf: generate token
 
-  const email = formData.get("email");
-  const password = formData.get("password");
-  const redirectTo = safeRedirect(formData.get("redirectTo"), "/dashboard");
-  const remember = formData.get("remember");
+  const result = await validateForm<LoginDto>(request, loginValidator);
 
-  if (!validateUserEmail(email)) {
-    return json(
-      { errors: { email: "Email is invalid", password: null } },
-      { status: 400 }
-    );
+  console.log({result})
+  if (result.errorResponse) {
+    return result.errorResponse
   }
 
-  if (typeof password !== "string" || password.length === 0) {
-    return json(
-      { errors: { email: null, password: "Password is required" } },
-      { status: 400 }
-    );
-  }
+  const { email, password, redirectTo, remember, } = result.data
 
-  if (password.length < USER_PASSWORD_MIN_LENGTH) {
-    return json(
-      { errors: { email: null, password: "Password is too short" } },
-      { status: 400 }
-    );
-  }
 
   const userAuthToken = await verifyLogin(email, password);
-
   if (!userAuthToken) {
-    return json(
-      { errors: { email: "Invalid email or password", password: null } },
-      { status: 400 }
+    return invalidFormResponse(
+      { email: "Invalid email or password" }
     );
   }
 
@@ -120,12 +102,10 @@ export default function LoginRoute() {
 
   return (
     <PageFullContentWithLogo>
-      <FormView
-        submitText="Se connecter"
-      >
+      <FormView submitText="Se connecter" validator={loginValidator}>
         <input type="hidden" name="redirectTo" value={redirectTo} />
 
-        <TextField
+        <FormTextField
           name="email"
           label="Email"
           variant="standard"
@@ -133,24 +113,20 @@ export default function LoginRoute() {
           type="email"
           autoComplete="email"
           autoFocus
-          {...generateAria(actionData, "email")}
           value={email}
           onChange={(e) => setEmail(e.target.value)}
         />
-        <FormErrorHelperText name="email" actionData={actionData} />
 
-        <TextField
+        <FormTextField
           name="password"
           label="Mot de passe"
           variant="standard"
           margin="normal"
           type="password"
           autoComplete="password"
-          {...generateAria(actionData, "password")}
           value={password}
           onChange={(e) => setPassword(e.target.value)}
         />
-        <FormErrorHelperText name="password" actionData={actionData} />
         <PasswordCheckView password={password} />
       </FormView>
 

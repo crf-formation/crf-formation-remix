@@ -1,12 +1,11 @@
-import { Button, TextField } from "@mui/material";
 import { useRef } from "react";
 import type { FormResult } from "~/constants/types";
 import { AuthenticityTokenInput } from "../csrf";
-import FormErrorHelperText from "../form/FormErrorHelperText";
 import useFormFocusError from "~/hooks/useFormFocusError";
-import { generateAria } from "~/utils/form";
 import FormView from "../form/FormView";
 import type { UserMeDto } from "~/dto/user.dto";
+import { profileValidator } from "~/form/user.form";
+import FormTextField from "../form/FormTextField";
 
 interface ProfileFormProps {
   user: UserMeDto;
@@ -29,12 +28,13 @@ export default function ProfileForm({ user, actionData }: ProfileFormProps) {
 	return (
     <FormView
       submitText="Mettre à jour"
+      validator={profileValidator}
     >
       <input type="hidden" name="formType" value="profile" />
 
       <AuthenticityTokenInput />
 
-      <TextField
+      <FormTextField
         name="firstName"
         ref={firstNameRef}
         defaultValue={user.firstName}
@@ -44,11 +44,9 @@ export default function ProfileForm({ user, actionData }: ProfileFormProps) {
         type="string"
         autoComplete="firstName"
         autoFocus
-        {...generateAria(actionData, "firstName")}
       />
-      <FormErrorHelperText name="firstName" actionData={actionData} />
 
-      <TextField
+      <FormTextField
         name="lastName"
         ref={lastNameRef}
         defaultValue={user.lastName}
@@ -57,11 +55,9 @@ export default function ProfileForm({ user, actionData }: ProfileFormProps) {
         margin="normal"
         type="string"
         autoComplete="lastName"
-        {...generateAria(actionData, "lastName")}
       />
-      <FormErrorHelperText name="lastName" actionData={actionData} />
 
-      <TextField
+      <FormTextField
         name="email"
         defaultValue={user.email}
         ref={emailRef}
@@ -70,9 +66,7 @@ export default function ProfileForm({ user, actionData }: ProfileFormProps) {
         margin="normal"
         type="email"
         autoComplete="email"
-        {...generateAria(actionData, "email")}
       />
-      <FormErrorHelperText name="email" actionData={actionData} />
     </FormView>
   );
 }

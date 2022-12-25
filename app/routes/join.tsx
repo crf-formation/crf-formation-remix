@@ -1,9 +1,8 @@
 import { faker } from "@faker-js/faker";
-import { Box, Button, Link, TextField } from "@mui/material";
+import { Box, Link, TextField } from "@mui/material";
 import type { ActionArgs, LoaderArgs, MetaFunction } from "@remix-run/node";
 import { json, redirect } from "@remix-run/node";
 import { useActionData, useLoaderData, useSearchParams } from "@remix-run/react";
-import { isEmpty } from "lodash";
 import { useRef } from "react";
 import { z } from "zod";
 import type { UserPostApiObject } from "~/apiobject/user.apiobject";
@@ -11,14 +10,16 @@ import FormErrorHelperText from "~/components/form/FormErrorHelperText";
 import FormView from "~/components/form/FormView";
 import PageFullContentWithLogo from "~/components/layout/PageFullContentWithLogo";
 import type { UserPostDto } from "~/dto/user.dto";
+import { validateForm } from "~/form/abstract";
+import { joinValidator } from "~/form/user.form";
 import useFormFocusError from "~/hooks/useFormFocusError";
 import { userPostDtoToApiObject } from "~/mapper/user.mapper";
 import { askForPasswordCreation } from "~/services/passwordrecovery.server";
 import { getUserId } from "~/services/session.server";
-import { createUser, findUserByEmail, validateUserEmail } from "~/services/user.server";
+import { createUser, findUserByEmail } from "~/services/user.server";
 import { generateAria } from "~/utils/form";
 import { getSearchParamsOrFail } from "~/utils/remix.params";
-import { badRequest } from "~/utils/responses";
+import { invalidFormResponse } from "~/utils/responses";
 
 const URLSearchParamsSchema = z.object({
   redirectTo: z.string().optional(),
@@ -37,52 +38,21 @@ export async function loader({ request }: LoaderArgs) {
 }
 
 export async function action({ request }: ActionArgs) {
-  const formData = await request.formData();
+  const result = await validateForm<UserPostDto>(request, joinValidator)
 
-  // -- extract form data
-  const firstName = formData.get("firstName");
-  const lastName = formData.get("lastName");
-  const email = formData.get("email");
-  // const redirectTo = safeRedirect(formData.get("redirectTo"), "/");
-
-  // -- data validation
-  if (isEmpty(firstName)) {
-    return badRequest({
-      errors: { email: "Prénom requis" },
-    });
-  }
-
-  if (isEmpty(lastName)) {
-    return badRequest({
-      errors: { email: "Nom requis"},
-    });
-  }
-
-  if (!validateUserEmail(email)) {
-    return badRequest({
-      errors: { email: "Email invalide" },
-    });
+  if (result.errorResponse) {
+    return result.errorResponse
   }
 
   // -- create dto
-  const userPostDto: UserPostDto = {
-    firstName: firstName as string,
-    lastName: lastName as string,
-    email
-  }
+  const userPostDto: UserPostDto = result.data
 
   // -- check existing account with email
-  const existingUser = await findUserByEmail(email);
+  const existingUser = await findUserByEmail(userPostDto.email);
   if (existingUser) {
-    return json(
-      {
-        errors: {
-          email: "A user already exists with this email",
-          password: null,
-        },
-      },
-      { status: 400 }
-    );
+    return invalidFormResponse({
+      email: "A user already exists with this email",
+    });
   }
 
   // -- map to api object
@@ -133,6 +103,7 @@ export default function JoinRoute() {
     <PageFullContentWithLogo>
       <FormView
         submitText="Créer le compte"
+        validator={joinValidator}
       >
         <input type="hidden" name="redirectTo" value={redirectTo} />
 

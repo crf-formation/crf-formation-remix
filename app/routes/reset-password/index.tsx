@@ -1,4 +1,4 @@
-import { Box, Button, Link, TextField, Typography } from "@mui/material";
+import { Box, Link, TextField, Typography } from "@mui/material";
 import type { ActionArgs, LoaderArgs, MetaFunction } from "@remix-run/node";
 import { json, redirect } from "@remix-run/node";
 import { useActionData, useLoaderData, useSearchParams } from "@remix-run/react";
@@ -80,6 +80,7 @@ export default function PasswordResetRoute() {
 
       <FormView
         submitText="Réinitialiser"
+        // TODO: validator
       >
         <input type="hidden" name="redirectTo" value={redirectTo} />
 

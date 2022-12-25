@@ -193,6 +193,14 @@ export function serverError<Data = unknown>(
   return json<Data>(data, { ...init, status: 500 });
 }
 
+export function invalidFormResponse<Data = unknown>(
+  errors: Data,
+  init?: Omit<ExtendedResponseInit, "status">
+) {
+  return json<Data>({ errors }, { ...init, status: 400 });
+}
+
+
 /**
  * Create a response with only the status 304 and optional headers.
  * This is useful when trying to implement conditional responses based on Etags.

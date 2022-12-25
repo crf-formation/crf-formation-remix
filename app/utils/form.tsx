@@ -14,3 +14,10 @@ export function generateAria(actionData: FormResult | any, name: string) {
     "aria-describedby": ariaDescribedby(name),
   };
 }
+
+export function generateAria2(error?: any, name: string) {
+  return {
+    "aria-invalid": !!error,
+    "aria-describedby": ariaDescribedby(name),
+  };
+}

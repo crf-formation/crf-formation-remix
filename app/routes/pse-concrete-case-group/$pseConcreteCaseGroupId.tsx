@@ -60,7 +60,7 @@ export async function action({ request, params  }: ActionArgs) {
 
   const putApiObject = pseConcreteCaseGroupPutDtoToApiObject(putDto)
 
-  const updatedApiObject = await updatePseConcreteCaseGroup(pseConcreteCaseGroupApiObject.id, putApiObject)
+  await updatePseConcreteCaseGroup(pseConcreteCaseGroupApiObject.id, putApiObject)
 
   return redirect(`/pse-concrete-case-group/${pseConcreteCaseGroupApiObject.id}`)
 }

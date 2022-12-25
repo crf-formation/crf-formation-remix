@@ -1,4 +1,4 @@
-import { TextField, Button } from "@mui/material";
+import { TextField ,} from "@mui/material";
 import { useRef, useState } from "react";
 import FormErrorHelperText from "../form/FormErrorHelperText";
 import type { FormResult } from "~/constants/types";
@@ -7,6 +7,7 @@ import PasswordCheckView from "../hibp/PasswordCheckView";
 import useFormFocusError from "~/hooks/useFormFocusError";
 import FormView from "../form/FormView";
 import { generateAria } from "~/utils/form";
+import { passwordModificationValidator } from "~/form/user.form";
 
 interface PasswordFormProps {
   actionData: FormResult;
@@ -27,6 +28,7 @@ export default function PasswordForm({ actionData }: PasswordFormProps) {
   return (
     <FormView
       submitText="Mettre à jour"
+      validator={passwordModificationValidator}
     >
       <input type="hidden" name="formType" value="password" />
 

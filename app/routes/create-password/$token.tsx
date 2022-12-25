@@ -1,18 +1,18 @@
-import { Box, Button, TextField, Typography } from "@mui/material";
+import { Box, Typography } from "@mui/material";
 import type { ActionArgs, LoaderArgs, MetaFunction } from "@remix-run/node";
 import { json, redirect } from "@remix-run/node";
 import { useActionData, useLoaderData } from "@remix-run/react";
 import { useRef, useState } from "react";
 import { z } from "zod";
-import FormErrorHelperText from "~/components/form/FormErrorHelperText";
+import FormTextField from "~/components/form/FormTextField";
 import FormView from "~/components/form/FormView";
 import PasswordCheckView from "~/components/hibp/PasswordCheckView";
 import PageFullContentWithLogo from "~/components/layout/PageFullContentWithLogo";
+import { passwordResetValidator } from "~/form/user.form";
 import useFormFocusError from "~/hooks/useFormFocusError";
 import { createPassword, verifyTokenIsValid } from "~/services/passwordrecovery.server";
 import { createUserSession, getSession, getUserId } from "~/services/session.server";
 import { verifyLogin } from "~/services/user.server";
-import { generateAria } from "~/utils/form";
 import { getParamsOrFail, getSearchParamsOrFail } from "~/utils/remix.params";
 import { badRequest } from "~/utils/responses";
 import { badRequestWithFlash } from "~/utils/responsesError";
@@ -136,10 +136,11 @@ export default function PasswordResetRoute() {
 
       <FormView
       	submitText="Valider"
+        validator={passwordResetValidator}
       >
         <input type="hidden" name="email" value={email} />
 
-        <TextField
+        <FormTextField
           name="password"
           ref={passwordRef}
           label="New password"
@@ -147,13 +148,11 @@ export default function PasswordResetRoute() {
           margin="normal"
           type="password"
           autoComplete="new-password"
-          {...generateAria(actionData, "password")}
           value={password}
           onChange={(e) => setPassword(e.target.value)}
         />
-        <FormErrorHelperText name="password" actionData={actionData} />
 
-        <TextField
+        <FormTextField
           name="passwordVerification"
           ref={passwordVerificationRef}
           label="Ret-enter your new password"
@@ -161,12 +160,7 @@ export default function PasswordResetRoute() {
           margin="normal"
           type="password"
           autoComplete="new-password"
-          {...generateAria(actionData, "passwordVerification")}
           defaultValue="bonjour1"
-        />
-        <FormErrorHelperText
-          name="passwordVerification"
-          actionData={actionData}
         />
 
         <PasswordCheckView password={password} />

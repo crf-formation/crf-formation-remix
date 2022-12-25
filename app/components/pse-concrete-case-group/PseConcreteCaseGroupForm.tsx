@@ -35,6 +35,7 @@ export default function PseConcreteCaseGroupForm<T>({
   return (
     <FormView
       submitText={isEdit ? <span>Mettre à jour</span> : <span>Créer le groupe</span>}
+      // TODO: validator
     >
       <input
         type="hidden"

@@ -1,4 +1,4 @@
-import { Box, Button, TextField, Typography } from "@mui/material";
+import { Box, TextField, Typography } from "@mui/material";
 import type { ActionArgs, LoaderArgs, MetaFunction } from "@remix-run/node";
 import { json, redirect } from "@remix-run/node";
 import { useActionData, useLoaderData } from "@remix-run/react";
@@ -122,7 +122,8 @@ export default function PasswordResetRoute() {
       </Box>
 
       <FormView
-      	submitText="Valider"
+        submitText="Valider"
+        // TODO: validator
       >
         <input type="hidden" name="email" value={email} />
 

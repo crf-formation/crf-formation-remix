@@ -14,13 +14,17 @@ export async function validateForm<T>(request: Request, validator: Validator<any
 		await request.formData()
 	);
 
-	const validatedForm: ValidatedForm<T> = {
-		error: result.error,
-		errorResponse: result.error && validationError(result.error),
-		data: result.data as T,
+	if (result.error) {
+		const errorResult: ValidatedForm<T> = {
+			error: result.error,
+			errorResponse: result.error && validationError(result.error),	
+		}
+		return errorResult
 	}
 
-	console.log({ validatedForm })
+	const validatedForm: ValidatedForm<T> = {
+		data: result.data as T,
+	}
 
 	return validatedForm
 }

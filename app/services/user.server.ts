@@ -18,7 +18,6 @@ import {
   searchFormationTeachersEntities,
 } from "~/repository/user.repository";
 import { userEntityToApiObject } from "~/mapper/user.mapper";
-import { USER_PASSWORD_MIN_LENGTH } from "~/constants";
 import { paginateEntityToApiObject } from "~/mapper/abstract.mapper";
 import type { OrderByDirection, PaginateObject } from "~/constants/types";
 
@@ -77,9 +76,9 @@ export async function findUserByEmail(
 }
 
 export function validateUserEmail(email: unknown): email is string {
+  // TODO: remove, use zod
   return (
     typeof email === "string" &&
-    email.length >= USER_PASSWORD_MIN_LENGTH &&
     email.includes("@")
   );
 }
