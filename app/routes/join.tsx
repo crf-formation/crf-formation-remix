@@ -132,11 +132,7 @@ export default function JoinRoute() {
   return (
     <PageFullContentWithLogo>
       <FormView
-        action={
-          <Button type="submit" variant="contained" color="primary" fullWidth>
-            Créer le compte
-          </Button>
-        }
+        submitText="Créer le compte"
       >
         <input type="hidden" name="redirectTo" value={redirectTo} />
 

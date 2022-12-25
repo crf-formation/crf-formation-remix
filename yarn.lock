@@ -1808,6 +1808,11 @@
   dependencies:
     web-streams-polyfill "^3.1.1"
 
+"@remix-validated-form/with-zod@^2.0.5":
+  version "2.0.5"
+  resolved "https://registry.yarnpkg.com/@remix-validated-form/with-zod/-/with-zod-2.0.5.tgz#f26e8f7c697b89752952b9a2a0767a3481fe4774"
+  integrity sha512-HDKFlhtBbsVL1EWZkT9l8IVGg/yRgFEzLmNxk36gPBhCFLEZ0rIFlpJRC3lITD22Vm0SDDCG/iI0CqqaXzuRmw==
+
 "@rollup/pluginutils@^4.0.0":
   version "4.2.1"
   resolved "https://registry.npmjs.org/@rollup/pluginutils/-/pluginutils-4.2.1.tgz"
@@ -5892,6 +5897,11 @@ ignore@^5.1.1, ignore@^5.2.0:
   resolved "https://registry.npmjs.org/ignore/-/ignore-5.2.1.tgz"
   integrity sha512-d2qQLzTJ9WxQftPAuEQpSPmKqzxePjzVbpAVv62AQ64NTL+wR4JkrVqR/LqFsFEUsHDAiId52mJteHDFuDkElA==
 
+immer@^9.0.12:
+  version "9.0.16"
+  resolved "https://registry.yarnpkg.com/immer/-/immer-9.0.16.tgz#8e7caab80118c2b54b37ad43e05758cdefad0198"
+  integrity sha512-qenGE7CstVm1NrHQbMh8YaSzTZTFNP3zPqr3YU0S0UY441j4bJTg4A2Hh5KAhwgaiU6ZZ1Ar6y/2f4TblnMReQ==
+
 import-fresh@^3.0.0, import-fresh@^3.2.1:
   version "3.3.0"
   resolved "https://registry.npmjs.org/import-fresh/-/import-fresh-3.3.0.tgz"
@@ -9151,6 +9161,21 @@ remark-rehype@^9.0.0:
     mdast-util-to-hast "^11.0.0"
     unified "^10.0.0"
 
+remeda@^1.2.0:
+  version "1.3.0"
+  resolved "https://registry.yarnpkg.com/remeda/-/remeda-1.3.0.tgz#6dc642187e08ead2265e8c7f8517a16a69e325ce"
+  integrity sha512-DJkLBUzi0dEigDuyPtVe50aNzQq8EBQOintPaxvzwSNreXOGsRnvfGiK+cTsY+nUgGCBrcFxcvH8MIg2skfIZA==
+
+remix-validated-form@^4.6.5:
+  version "4.6.5"
+  resolved "https://registry.yarnpkg.com/remix-validated-form/-/remix-validated-form-4.6.5.tgz#0ce7943af82cf7dac67ac8688ef49ca92ac9e8b3"
+  integrity sha512-pf6048rqhsT0lJGDvK8vapAuCITz0L05SyjSvkPNu+2t5DZAlUQaZaR1NMPu7se9RbRh1WeEUa7JWvv8HE9NrQ==
+  dependencies:
+    immer "^9.0.12"
+    remeda "^1.2.0"
+    tiny-invariant "^1.2.0"
+    zustand "^4.0.0-rc.1"
+
 remove-accents@0.4.2, remove-accents@^0.4.2:
   version "0.4.2"
   resolved "https://registry.npmjs.org/remove-accents/-/remove-accents-0.4.2.tgz"
@@ -10611,6 +10636,11 @@ use-latest@^1.2.1:
   dependencies:
     use-isomorphic-layout-effect "^1.1.1"
 
+use-sync-external-store@1.2.0:
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/use-sync-external-store/-/use-sync-external-store-1.2.0.tgz#7dbefd6ef3fe4e767a0cf5d7287aacfb5846928a"
+  integrity sha512-eEgnFxGQ1Ife9bzYs6VLi8/4X6CObHMw9Qr9tPY43iKwsPw8xE8+EFsf/2cFZ5S3esXgpWgtSCtLNS41F+sKPA==
+
 use@^3.1.0:
   version "3.1.1"
   resolved "https://registry.npmjs.org/use/-/use-3.1.1.tgz"
@@ -11061,10 +11091,22 @@ yocto-queue@^0.1.0:
   resolved "https://registry.npmjs.org/yocto-queue/-/yocto-queue-0.1.0.tgz"
   integrity sha512-rVksvsnNCdJ/ohGc6xgPwyN8eheCxsiLM8mxuE/t/mOVqJewPuO1miLpTHQiRgTKCLexL4MeAFVagts7HmNZ2Q==
 
+zod-form-data@^1.2.4:
+  version "1.2.4"
+  resolved "https://registry.yarnpkg.com/zod-form-data/-/zod-form-data-1.2.4.tgz#161967a60d351cc4e5e6af248e074b93ac74ec94"
+  integrity sha512-mI/rgItfvYQpvzEqGuBda/nuTHrMNoFZJ5cpiGLC5O3ZaVwI0XVo3/yTY2RreVMu57wGcDrfQcTRe5aMq2ijYA==
+
 zod@^3.20.2:
   version "3.20.2"
   resolved "https://registry.npmjs.org/zod/-/zod-3.20.2.tgz"
   integrity sha512-1MzNQdAvO+54H+EaK5YpyEy0T+Ejo/7YLHS93G3RnYWh5gaotGHwGeN/ZO687qEDU2y4CdStQYXVHIgrUl5UVQ==
+
+zustand@^4.0.0-rc.1:
+  version "4.1.5"
+  resolved "https://registry.yarnpkg.com/zustand/-/zustand-4.1.5.tgz#7402b511f5b23ccb0f9ba6d20ae01ec817e16eb6"
+  integrity sha512-PsdRT8Bvq22Yyh1tvpgdHNE7OAeFKqJXUxtJvj1Ixw2B9O2YZ1M34ImQ+xyZah4wZrR4lENMoDUutKPpyXCQ/Q==
+  dependencies:
+    use-sync-external-store "1.2.0"
 
 zwitch@^2.0.0:
   version "2.0.4"

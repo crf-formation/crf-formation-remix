@@ -3,6 +3,7 @@ import { json, redirect } from "@remix-run/node";
 import type { Params } from "@remix-run/react";
 import { useActionData, useLoaderData } from "@remix-run/react";
 import { z } from "zod";
+import { validationError } from "remix-validated-form";
 import type { PseConcreteCaseSessionApiObject } from "~/apiobject/pseconcretecasesession.apiobject";
 import type { PseConcreteCaseSituationApiObject } from "~/apiobject/pseconcretecasesituation.apiobject";
 import type { PseFormationApiObject } from "~/apiobject/pseformation.apiobject";
@@ -21,8 +22,9 @@ import { getPseConcreteCaseSituation, updatePseConcreteCaseSituation } from "~/s
 import { getPseFormationByPseConcreteCaseSessionId } from "~/services/pseformation.server";
 import { assertUserHasAccessToFormationAsTeacher } from "~/services/security.server";
 import { requireUser } from "~/services/session.server";
-import { getFormData, getParamsOrFail } from '~/utils/remix.params';
-import { pseConcreteCaseSituationApiObjectToDto } from '../../mapper/pseconcretecasesituation.mapper';
+import { getParamsOrFail } from '~/utils/remix.params';
+import { pseConcreteCaseSituationApiObjectToDto } from '~/mapper/pseconcretecasesituation.mapper';
+import { pseConcreteCaseSituationPutDtoValidator } from "~/form/pseconcretecasesituation.form";
 
 const ParamsSchema = z.object({
   pseConcreteCaseSituationId: z.string(),
@@ -35,7 +37,6 @@ export const loader: LoaderFunction = async ({
 }) => {
   const { pseFormationApiObject, pseConcreteCaseSessionApiObject, pseConcreteCaseSituationApiObject } = await security(request, params)
 
-
   return json({
     pseFormation: pseFormationApiObjectToDto(pseFormationApiObject),
 		pseConcreteCaseSession: pseConcreteCaseSessionApiObjectToDto(pseConcreteCaseSessionApiObject),
@@ -43,29 +44,18 @@ export const loader: LoaderFunction = async ({
 	});
 };
 
-const PutSchema = z.object({
-	pseConcreteCaseTypeId: z.string(),
-	teacherId: z.string(),
-  pseSituationConcreteCaseGroups: z.array(z.object({
-    id: z.string().optional(),
-    pseConcreteCaseGroupId: z.string(),
-    position: z.number(),
-  }))
-});
-
 export async function action({ request, params  }: ActionArgs) {
   const { pseConcreteCaseSituationApiObject, pseConcreteCaseSessionApiObject } = await security(request, params)
 
-  const result = await getFormData(request, PutSchema);
-  if (!result.success) {
-    return json(result, { status: 400 });
+  const result = await pseConcreteCaseSituationPutDtoValidator.validate(
+    await request.formData()
+  );
+
+  if (result.error) {
+    return validationError(result.error);
   }
+
   const putDto = result.data as PseConcreteCaseSituationPutDto;
-	// const putDto = {
-  //   ...result.data,
-  //   // TODO: better way?
-  //   pseSituationConcreteCaseGroups: result.data.pseSituationConcreteCaseGroups.map((json) => JSON.parse(json) as PseSituationConcreteCaseGroupPutDto),
-  // } as PseConcreteCaseSituationPutDto;
 
   const putApiObject = pseConcreteCaseSituationPutDtoToApiObject(putDto, pseConcreteCaseSituationApiObject, pseConcreteCaseSessionApiObject.id)
 

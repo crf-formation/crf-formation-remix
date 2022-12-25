@@ -46,6 +46,7 @@
     "@remix-run/react": "*",
     "@remix-run/serve": "*",
     "@remix-run/server-runtime": "*",
+    "@remix-validated-form/with-zod": "^2.0.5",
     "@types/lodash": "^4.14.188",
     "bcryptjs": "^2.4.3",
     "date-fns": "^2.29.3",
@@ -63,10 +64,12 @@
     "react-admin": "4.4.3",
     "react-dom": "^18.2.0",
     "react-json-view": "^1.21.3",
+    "remix-validated-form": "^4.6.5",
     "tiny-invariant": "^1.2.0",
     "ua-parser-js": "^1.0.2",
     "uuid": "^9.0.0",
-    "zod": "^3.20.2"
+    "zod": "^3.20.2",
+    "zod-form-data": "^1.2.4"
   },
   "devDependencies": {
     "@faker-js/faker": "^7.4.0",

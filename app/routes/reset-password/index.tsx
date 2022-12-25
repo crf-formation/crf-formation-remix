@@ -79,11 +79,7 @@ export default function PasswordResetRoute() {
       </Box>
 
       <FormView
-        action={
-          <Button type="submit" variant="contained" color="primary" fullWidth>
-            Submit
-          </Button>
-        }
+        submitText="Réinitialiser"
       >
         <input type="hidden" name="redirectTo" value={redirectTo} />
 

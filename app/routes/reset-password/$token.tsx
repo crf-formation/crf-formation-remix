@@ -122,11 +122,7 @@ export default function PasswordResetRoute() {
       </Box>
 
       <FormView
-        action={
-          <Button type="submit" variant="contained" color="primary" fullWidth>
-            Submit
-          </Button>
-        }
+      	submitText="Valider"
       >
         <input type="hidden" name="email" value={email} />
 

@@ -1,4 +1,4 @@
-import { Button, TextField } from "@mui/material";
+import { TextField } from "@mui/material";
 import FormErrorHelperText from "../form/FormErrorHelperText";
 import FormationStudentAutocomplete from "../formationpse/FormationStudentAutocomplete";
 import { useRef } from "react";
@@ -34,11 +34,7 @@ export default function PseConcreteCaseGroupForm<T>({
 
   return (
     <FormView
-      action={
-        <Button type="submit" variant="contained" color="primary">
-          {isEdit ? <span>Mettre à jour</span> : <span>Créer le groupe</span>}
-        </Button>
-      }
+      submitText={isEdit ? <span>Mettre à jour</span> : <span>Créer le groupe</span>}
     >
       <input
         type="hidden"

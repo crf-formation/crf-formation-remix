@@ -26,11 +26,7 @@ export default function PasswordForm({ actionData }: PasswordFormProps) {
 
   return (
     <FormView
-      action={
-        <Button type="submit" variant="outlined" color="primary">
-          Update password
-        </Button>
-      }
+      submitText="Mettre à jour"
     >
       <input type="hidden" name="formType" value="password" />
 
@@ -44,7 +40,7 @@ export default function PasswordForm({ actionData }: PasswordFormProps) {
         margin="normal"
         type="password"
         autoComplete="password"
-        {...generateAria(actionData, 'currentPassword')}
+        {...generateAria(actionData, "currentPassword")}
       />
       <FormErrorHelperText name="currentPassword" actionData={actionData} />
 
@@ -56,7 +52,7 @@ export default function PasswordForm({ actionData }: PasswordFormProps) {
         margin="normal"
         type="password"
         autoComplete="new-password"
-        {...generateAria(actionData, 'password')}
+        {...generateAria(actionData, "password")}
         value={password}
         onChange={(e) => setPassword(e.target.value)}
       />
@@ -69,7 +65,7 @@ export default function PasswordForm({ actionData }: PasswordFormProps) {
         variant="standard"
         margin="normal"
         type="password"
-        {...generateAria(actionData, 'passwordVerification')}
+        {...generateAria(actionData, "passwordVerification")}
         aria-describedby="password-form-error"
       />
       <FormErrorHelperText
@@ -78,7 +74,6 @@ export default function PasswordForm({ actionData }: PasswordFormProps) {
       />
 
       <PasswordCheckView password={password} />
-
     </FormView>
   );
 }

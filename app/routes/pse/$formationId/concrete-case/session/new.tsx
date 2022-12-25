@@ -101,11 +101,7 @@ export default function ConcreteCaseSessionsRoute() {
         </Callout>
 
         <FormView
-          action={
-            <Button type="submit" variant="contained" color="primary" fullWidth>
-              Créer
-            </Button>
-          }
+          submitText="Créer"
         >
           <input type="hidden" name="formationId" value={formationId} />
 

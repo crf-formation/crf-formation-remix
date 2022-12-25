@@ -111,11 +111,7 @@ export default function SessionPseRoute() {
 
       <Section>
         <FormView
-          action={
-            <Button type="submit" variant="contained" color="primary" fullWidth>
-              Submit
-            </Button>
-          }
+        	submitText="Valider"
         >
           <TextField
             name="name"

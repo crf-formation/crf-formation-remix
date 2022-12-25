@@ -8,7 +8,7 @@ import type { UserDto } from "~/dto/user.dto";
 interface Props extends AutocompleteProps {
   formationId: string;
   name?: string;
-  defaultValue?: Array<any>;
+  defaultValue?: UserDto | Array<UserDto>;
 }
 
 function ContentMultiple({ usersPaginateObject, isLoading, name = "teachers", defaultValue, query, setQuery, ...otherProps }) {

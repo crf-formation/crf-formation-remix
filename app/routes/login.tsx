@@ -121,11 +121,7 @@ export default function LoginRoute() {
   return (
     <PageFullContentWithLogo>
       <FormView
-        action={
-          <Button type="submit" variant="contained" color="primary" fullWidth>
-            Se connecter
-          </Button>
-        }
+        submitText="Se connecter"
       >
         <input type="hidden" name="redirectTo" value={redirectTo} />
 

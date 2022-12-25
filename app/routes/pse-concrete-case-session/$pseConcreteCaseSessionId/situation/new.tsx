@@ -1,4 +1,4 @@
-import type { ActionArgs, LoaderFunction, MetaFunction } from "@remix-run/node";
+import type { ActionArgs, LoaderFunction, MetaFunction} from "@remix-run/node";
 import { json, redirect } from "@remix-run/node";
 import type { Params } from "@remix-run/react";
 import { useActionData, useLoaderData } from "@remix-run/react";
@@ -12,6 +12,8 @@ import Section from "~/components/layout/Section";
 import PseConcreteCaseSituationForm from "~/components/pse-concrete-case-situation/PseConcreteCaseSituationForm";
 import type { SecurityFunction } from "~/constants/remix";
 import type { PseConcreteCaseSituationPostDto } from "~/dto/pseconcretecasesituation.dto";
+import { validateForm } from "~/form/abstract";
+import { pseConcreteCaseSituationPostDtoValidator } from "~/form/pseconcretecasesituation.form";
 import { pseConcreteCaseSessionApiObjectToDto } from "~/mapper/pseconcretecasesession.mapper";
 import { pseConcreteCaseSituationPostDtoToApiObject } from "~/mapper/pseconcretecasesituation.mapper";
 import { pseFormationApiObjectToDto } from "~/mapper/pseformation.mapper";
@@ -20,7 +22,7 @@ import { createPseConcreteCaseSituation } from "~/services/pseconcretecasesituat
 import { getPseFormationByPseConcreteCaseSessionId } from "~/services/pseformation.server";
 import { assertUserHasAccessToFormationAsTeacher } from "~/services/security.server";
 import { requireUser } from "~/services/session.server";
-import { getFormData, getParamsOrFail } from '~/utils/remix.params';
+import { getParamsOrFail } from '~/utils/remix.params';
 
 const ParamsSchema = z.object({
   pseConcreteCaseSessionId: z.string(),
@@ -38,20 +40,14 @@ export const loader: LoaderFunction = async ({
 	});
 };
 
-const PostSchema = z.object({
-  pseConcreteCaseSessionId: z.string(),
-	pseConcreteCaseTypeId: z.string(),
-  teacherId: z.string(),
-});
-
 export async function action({ request, params  }: ActionArgs) {
 	const { pseConcreteCaseSessionApiObject } = await security(request, params)
 
-  const result = await getFormData(request, PostSchema);
-  if (!result.success) {
-    return json(result, { status: 400 });
+  const result = await validateForm<PseConcreteCaseSituationPostDto>(request, pseConcreteCaseSituationPostDtoValidator)
+  if (result.errorResponse) {
+    return result.errorResponse
   }
-	const postDto = result.data as PseConcreteCaseSituationPostDto
+	const postDto = result.data
 
   const postApiObject = pseConcreteCaseSituationPostDtoToApiObject(postDto)
 

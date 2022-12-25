@@ -28,11 +28,7 @@ export default function ProfileForm({ user, actionData }: ProfileFormProps) {
 
 	return (
     <FormView
-      action={
-        <Button type="submit" variant="outlined" color="primary">
-          Mettre à jour
-        </Button>
-      }
+      submitText="Mettre à jour"
     >
       <input type="hidden" name="formType" value="profile" />
 

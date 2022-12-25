@@ -8,6 +8,8 @@ import { v4 as uuid } from 'uuid';
 import type { PseConcreteCaseGroupDto } from "~/dto/pseconcretecasegroup.dto";
 import type { PseSituationConcreteCaseGroupDto } from "~/dto/pseconcretecasesituation.dto";
 import { deleteObjectOnArray, moveObjectAtIndexOnArray } from "~/utils/array";
+import FormErrorHelperText from '../form/FormErrorHelperText';
+import InputHiddenJsonArray from '../form/InputHiddenJsonArray';
 import Callout from "../typography/Callout";
 
 
@@ -49,19 +51,32 @@ export default function OrderPseConcreteCaseGroups({ name, pseConcreteCaseGroups
       <Box mt={2}>
         <Typography variant="h4">Order de passage des groupes</Typography>
 
+        <FormErrorHelperText name="pseSituationConcreteCaseGroups" />
+
         {ordered.length === 0 && (
           <Callout severity="info">
             Ajoutez des groupes pour définir un ordre de passage.
           </Callout>
         )}
 
+        <InputHiddenJsonArray
+          name="pseSituationConcreteCaseGroups"
+          array={ordered.map((group) => ({
+            id: group.id,
+            position: group.position,
+            pseConcreteCaseGroupId: group.pseConcreteCaseGroupId,
+          }))}
+        />
+
         <Stack spacing={2} mt={2}>
           {ordered.map(
             (
-              pseSituationConcreteCaseGroup: PseSituationConcreteCaseGroupDto
+              pseSituationConcreteCaseGroup: PseSituationConcreteCaseGroupDto,
+              index: number
             ) => (
               <OrderedGroupLine
                 key={pseSituationConcreteCaseGroup.pseConcreteCaseGroup.id}
+                index={index}
                 name={name}
                 pseSituationConcreteCaseGroup={pseSituationConcreteCaseGroup}
                 isFirst={pseSituationConcreteCaseGroup.position === 1}
@@ -196,25 +211,9 @@ export default function OrderPseConcreteCaseGroups({ name, pseConcreteCaseGroups
   );
 }
 
-function OrderedGroupLine({ name, pseSituationConcreteCaseGroup, isFirst, isLast, onUp, onDown, onRemove }) {
+function OrderedGroupLine({ index, name, pseSituationConcreteCaseGroup, isFirst, isLast, onUp, onDown, onRemove }) {
 	return (
     <>
-      <input
-        type="hidden"
-        name={`${name}.pseConcreteCaseGroupId`}
-        value={pseSituationConcreteCaseGroup.pseConcreteCaseGroupId}
-        // value={JSON.stringify({
-        //   pseConcreteCaseGroupId: pseSituationConcreteCaseGroup.pseConcreteCaseGroupId,
-        //   position: pseSituationConcreteCaseGroup.position,
-        // })}
-      />
-
-      <input
-        type="hidden"
-        name={`${name}.position`}
-        value={pseSituationConcreteCaseGroup.pseConcreteCaseGroupId}
-      />
-
       <Box display="flex" justifyContent="space-between" px={2}>
         <div>{pseSituationConcreteCaseGroup.pseConcreteCaseGroup.name}</div>
         <div>
