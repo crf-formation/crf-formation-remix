@@ -39,7 +39,7 @@ export function pseConcreteCaseSituationPostDtoToApiObject(postDto: PseConcreteC
 		pseConcreteCaseSessionId: postDto.pseConcreteCaseSessionId,
 		pseConcreteCaseTypeId: postDto.pseConcreteCaseTypeId,
 		teacherId: postDto.teacherId,
-		pseSituationConcreteCaseGroups: postDto.pseSituationConcreteCaseGroups.map(pseSituationConcreteCaseGroupPostDtoToApiObject),
+		pseSituationConcreteCaseGroups: (postDto.pseSituationConcreteCaseGroups || []).map(pseSituationConcreteCaseGroupPostDtoToApiObject),
 	}
 }
 

@@ -1,8 +1,10 @@
+import { z } from 'zod';
 import type { PseConcreteCaseGroupDto } from './pseconcretecasegroup.dto';
 import type { PseConcreteCaseSituationDto } from './pseconcretecasesituation.dto';
 
+export const PseConcreteCaseSessionStateDtoZEnum = z.enum([ 'CREATED', 'RUNNING', 'CLOSED' ]);
 
-export type PseConcreteCaseSessionStateDtoEnum = 'CREATED' | 'RUNNING' | 'CLOSED';
+export type PseConcreteCaseSessionStateDtoEnum = z.infer<typeof PseConcreteCaseSessionStateDtoZEnum>
 
 export interface PseConcreteCaseSessionDto {
 	id: string;

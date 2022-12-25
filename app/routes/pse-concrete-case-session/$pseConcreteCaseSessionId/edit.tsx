@@ -22,7 +22,8 @@ import type { PseConcreteCaseSessionApiObject } from "~/apiobject/pseconcretecas
 import type { SecurityFunction } from "~/constants/remix";
 import FormErrorHelperText from "~/components/form/FormErrorHelperText";
 import { useRef } from "react";
-import type { PseConcreteCaseSessionPutDto } from "~/dto/pseconcretecasesession.dto";
+import type { PseConcreteCaseSessionPutDto} from "~/dto/pseconcretecasesession.dto";
+import { PseConcreteCaseSessionStateDtoZEnum } from "~/dto/pseconcretecasesession.dto";
 import PseConcreteCaseSessionStateAutocomplete from "~/components/pse-concrete-case-session/PseConcreteCaseSessionStateAutocomplete";
 import useFormFocusError from "~/hooks/useFormFocusError";
 import FormView from "~/components/form/FormView";
@@ -51,7 +52,7 @@ export const loader: LoaderFunction = async ({ request, params }) => {
 // PseConcreteCaseSessionPutDto
 const PutSchema = z.object({
 	name: z.string(),
-	state: z.string(),
+	state: PseConcreteCaseSessionStateDtoZEnum,
 });
 
 export async function action({ request, params }: ActionArgs) {

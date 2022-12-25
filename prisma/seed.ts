@@ -165,7 +165,7 @@ async function seedDefaultUser() {
   const email = "jon-doe@crf-formation.fr";
 
   // cleanup the existing database
-  await prisma.user.delete({ where: { email } }).catch(() => {
+  const deletedUser = await prisma.user.delete({ where: { email } }).catch(() => {
     // no worries if it doesn't exist yet
   });
 
@@ -186,9 +186,18 @@ async function seedDefaultUser() {
     },
   });
 
+  const token = "1234"
+  if (deletedUser) {
+    await prisma.userPasswordToken.deleteMany({
+      where: { token }
+    }).catch(() => {
+      // no worries if it doesn't exist yet
+    });
+  }
+
   await prisma.userPasswordToken.create({
     data: {
-      token: "1234",
+      token,
       userId: user.id,
       tokenExpirationDate: new Date(Date.now())
     }

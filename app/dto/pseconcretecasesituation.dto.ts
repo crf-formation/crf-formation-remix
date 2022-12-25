@@ -36,7 +36,7 @@ export interface PseConcreteCaseSituationPostDto {
 	pseConcreteCaseSessionId: string;
 	pseConcreteCaseTypeId: string;
 	teacherId: string;
-	pseSituationConcreteCaseGroups: Array<PseSituationConcreteCaseGroupPutDto>
+	pseSituationConcreteCaseGroups?: Array<PseSituationConcreteCaseGroupPutDto>
 }
 
 export interface PseConcreteCaseSituationPutDto {

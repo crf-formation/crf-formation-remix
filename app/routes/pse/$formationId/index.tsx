@@ -63,7 +63,7 @@ const security: SecurityFunction<{
 
 export const meta: MetaFunction<typeof loader> = ({ data }) => {
   return {
-    title: `PSE - ${data.formation.title}`,
+    title: `PSE - ${data?.formation?.title}`,
   };
 };
 

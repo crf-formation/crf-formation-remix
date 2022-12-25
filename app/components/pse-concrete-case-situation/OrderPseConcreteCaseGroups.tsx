@@ -20,8 +20,6 @@ interface Props {
 export default function OrderPseConcreteCaseGroups({ name, pseConcreteCaseGroups, pseSituationConcreteCaseGroups }: Props) {
 	const [state, setState ] = useState<Array<PseSituationConcreteCaseGroupDto>>(pseSituationConcreteCaseGroups || [])
 
-	console.log({ name, pseConcreteCaseGroups, pseSituationConcreteCaseGroups })
-
 	const notOrdered: Array<PseSituationConcreteCaseGroupDto> = pseConcreteCaseGroups
 		.filter(pseConcreteCaseGroup => !state.find((pseSituationConcreteCaseGroup: PseSituationConcreteCaseGroupDto) => pseSituationConcreteCaseGroup.pseConcreteCaseGroupId === pseConcreteCaseGroup.id))
 		.map(pseConcreteCaseGroup => {
@@ -36,6 +34,16 @@ export default function OrderPseConcreteCaseGroups({ name, pseConcreteCaseGroups
 		state, 
 		(pseSituationConcreteCaseGroupDto: PseSituationConcreteCaseGroupDto) => pseSituationConcreteCaseGroupDto?.position)
 
+  if (pseConcreteCaseGroups?.length === 0) {
+    return (
+      <Box mt={2}>
+        <Callout severity="info">
+          Créez un groupe pour pouvoir définir un ordre de passage.
+        </Callout>
+      </Box>
+    );
+  }
+
 	return (
     <>
       <Box mt={2}>
@@ -43,7 +51,7 @@ export default function OrderPseConcreteCaseGroups({ name, pseConcreteCaseGroups
 
         {ordered.length === 0 && (
           <Callout severity="info">
-            L'ordre des groupes n'as pas encore été défini.
+            Ajoutez des groupes pour définir un ordre de passage.
           </Callout>
         )}
 
@@ -193,20 +201,33 @@ function OrderedGroupLine({ name, pseSituationConcreteCaseGroup, isFirst, isLast
     <>
       <input
         type="hidden"
-        name={name}
-        value={JSON.stringify({
-          pseConcreteCaseGroupId: pseSituationConcreteCaseGroup.pseConcreteCaseGroupId,
-          position: pseSituationConcreteCaseGroup.position,
-        })}
+        name={`${name}.pseConcreteCaseGroupId`}
+        value={pseSituationConcreteCaseGroup.pseConcreteCaseGroupId}
+        // value={JSON.stringify({
+        //   pseConcreteCaseGroupId: pseSituationConcreteCaseGroup.pseConcreteCaseGroupId,
+        //   position: pseSituationConcreteCaseGroup.position,
+        // })}
+      />
+
+      <input
+        type="hidden"
+        name={`${name}.position`}
+        value={pseSituationConcreteCaseGroup.pseConcreteCaseGroupId}
       />
 
       <Box display="flex" justifyContent="space-between" px={2}>
         <div>{pseSituationConcreteCaseGroup.pseConcreteCaseGroup.name}</div>
         <div>
-          <Button onClick={onRemove}><RemoveIcon /></Button>
+          <Button onClick={onRemove}>
+            <RemoveIcon />
+          </Button>
 
-          <Button onClick={onUp} disabled={isFirst}><ArrowDropUpIcon /></Button>
-          <Button onClick={onDown} disabled={isLast}><ArrowDropDownIcon /></Button>
+          <Button onClick={onUp} disabled={isFirst}>
+            <ArrowDropUpIcon />
+          </Button>
+          <Button onClick={onDown} disabled={isLast}>
+            <ArrowDropDownIcon />
+          </Button>
         </div>
       </Box>
     </>

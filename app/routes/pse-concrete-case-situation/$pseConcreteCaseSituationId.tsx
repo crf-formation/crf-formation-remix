@@ -46,7 +46,11 @@ export const loader: LoaderFunction = async ({
 const PutSchema = z.object({
 	pseConcreteCaseTypeId: z.string(),
 	teacherId: z.string(),
-  pseSituationConcreteCaseGroups: z.array(z.string())
+  pseSituationConcreteCaseGroups: z.array(z.object({
+    id: z.string().optional(),
+    pseConcreteCaseGroupId: z.string(),
+    position: z.number(),
+  }))
 });
 
 export async function action({ request, params  }: ActionArgs) {
@@ -56,11 +60,12 @@ export async function action({ request, params  }: ActionArgs) {
   if (!result.success) {
     return json(result, { status: 400 });
   }
-	const putDto = {
-    ...result.data,
-    // TODO: better way?
-    pseSituationConcreteCaseGroups: result.data.pseSituationConcreteCaseGroups.map((json) => JSON.parse(json) as PseSituationConcreteCaseGroupPutDto),
-  } as PseConcreteCaseSituationPutDto;
+  const putDto = result.data as PseConcreteCaseSituationPutDto;
+	// const putDto = {
+  //   ...result.data,
+  //   // TODO: better way?
+  //   pseSituationConcreteCaseGroups: result.data.pseSituationConcreteCaseGroups.map((json) => JSON.parse(json) as PseSituationConcreteCaseGroupPutDto),
+  // } as PseConcreteCaseSituationPutDto;
 
   const putApiObject = pseConcreteCaseSituationPutDtoToApiObject(putDto, pseConcreteCaseSituationApiObject, pseConcreteCaseSessionApiObject.id)
 
