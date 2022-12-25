@@ -1,23 +1,14 @@
 
 interface Props {
-	namePrefix: string;
+	name: string;
 	json: any;
 }
 
 /**
  * Display a json object as input hidden fields.
  */
-export default function InputHiddenJson({ namePrefix, json }: Props) {
+export default function InputHiddenJson({ name, json }: Props) {
   return (
-    <>
-      {Object.keys(json).map((key) => (
-        <input
-          type="hidden"
-          key={key}
-          name={`${namePrefix}${key}`}
-          value={json[key]}
-        />
-      ))}
-    </>
+    <input type="hidden" name={name} value={JSON.stringify(json)} />
   );
 }

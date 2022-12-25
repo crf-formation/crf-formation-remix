@@ -9,11 +9,11 @@ import { z } from "zod";
 export const PseConcreteCaseSituationPutSchema = z.object({
 	pseConcreteCaseTypeId: z.string(),
 	teacherId: z.string(),
-  // pseSituationConcreteCaseGroups: zfd.repeatable(z.object({
-  //   id: z.string().optional(),
-  //   pseConcreteCaseGroupId: z.string(),
-  //   position: z.number(),
-  // }))
+  pseSituationConcreteCaseGroups: zfd.json(z.array(z.object({
+    id: z.string().optional(),
+    pseConcreteCaseGroupId: z.string(),
+    position: z.number(),
+  })))
 });
 
 export const pseConcreteCaseSituationPutDtoValidator = withZod(PseConcreteCaseSituationPutSchema)

@@ -9,7 +9,7 @@ import type { PseConcreteCaseGroupDto } from "~/dto/pseconcretecasegroup.dto";
 import type { PseSituationConcreteCaseGroupDto } from "~/dto/pseconcretecasesituation.dto";
 import { deleteObjectOnArray, moveObjectAtIndexOnArray } from "~/utils/array";
 import FormErrorHelperText from '../form/FormErrorHelperText';
-import InputHiddenJsonArray from '../form/InputHiddenJsonArray';
+import InputHiddenJson from '../form/InputHiddenJson';
 import Callout from "../typography/Callout";
 
 
@@ -59,9 +59,9 @@ export default function OrderPseConcreteCaseGroups({ name, pseConcreteCaseGroups
           </Callout>
         )}
 
-        <InputHiddenJsonArray
+        <InputHiddenJson
           name="pseSituationConcreteCaseGroups"
-          array={ordered.map((group) => ({
+          json={ordered.map((group) => ({
             id: group.id,
             position: group.position,
             pseConcreteCaseGroupId: group.pseConcreteCaseGroupId,
