@@ -2,8 +2,8 @@ import type { ActionArgs, LoaderFunction, MetaFunction } from "@remix-run/node";
 import { json, redirect } from "@remix-run/node";
 import type { Params } from "@remix-run/react";
 import { useActionData, useLoaderData } from "@remix-run/react";
-import { z } from "zod";
 import { validationError } from "remix-validated-form";
+import { z } from "zod";
 import type { PseConcreteCaseSessionApiObject } from "~/apiobject/pseconcretecasesession.apiobject";
 import type { PseConcreteCaseSituationApiObject } from "~/apiobject/pseconcretecasesituation.apiobject";
 import type { PseFormationApiObject } from "~/apiobject/pseformation.apiobject";
@@ -14,8 +14,9 @@ import Section from "~/components/layout/Section";
 import PseConcreteCaseSituationForm from "~/components/pse-concrete-case-situation/PseConcreteCaseSituationForm";
 import type { SecurityFunction } from "~/constants/remix";
 import type { PseConcreteCaseSituationPutDto } from "~/dto/pseconcretecasesituation.dto";
+import { pseConcreteCaseSituationPutDtoValidator } from "~/form/pseconcretecasesituation.form";
 import { pseConcreteCaseSessionApiObjectToDto } from "~/mapper/pseconcretecasesession.mapper";
-import { pseConcreteCaseSituationPutDtoToApiObject } from "~/mapper/pseconcretecasesituation.mapper";
+import { pseConcreteCaseSituationApiObjectToDto, pseConcreteCaseSituationPutDtoToApiObject } from "~/mapper/pseconcretecasesituation.mapper";
 import { pseFormationApiObjectToDto } from "~/mapper/pseformation.mapper";
 import { getPseConcreteCaseSessionById } from "~/services/pseconcretecasesession.server";
 import { getPseConcreteCaseSituation, updatePseConcreteCaseSituation } from "~/services/pseconcretecasesituation.server";
@@ -23,8 +24,6 @@ import { getPseFormationByPseConcreteCaseSessionId } from "~/services/pseformati
 import { assertUserHasAccessToFormationAsTeacher } from "~/services/security.server";
 import { requireUser } from "~/services/session.server";
 import { getParamsOrFail } from '~/utils/remix.params';
-import { pseConcreteCaseSituationApiObjectToDto } from '~/mapper/pseconcretecasesituation.mapper';
-import { pseConcreteCaseSituationPutDtoValidator } from "~/form/pseconcretecasesituation.form";
 
 const ParamsSchema = z.object({
   pseConcreteCaseSituationId: z.string(),
@@ -59,8 +58,7 @@ export async function action({ request, params  }: ActionArgs) {
 
   const putApiObject = pseConcreteCaseSituationPutDtoToApiObject(putDto, pseConcreteCaseSituationApiObject, pseConcreteCaseSessionApiObject.id)
 
-  const updatedApiObject = await updatePseConcreteCaseSituation(pseConcreteCaseSituationApiObject.id, putApiObject)
-  console.log(JSON.stringify({ updatedApiObject }, null, 2))
+  await updatePseConcreteCaseSituation(pseConcreteCaseSituationApiObject.id, putApiObject)
 
   return redirect(`/pse-concrete-case-situation/${pseConcreteCaseSituationApiObject.id}`)
 }

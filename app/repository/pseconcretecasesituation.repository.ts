@@ -4,7 +4,7 @@ import { prisma } from "~/db.server";
 import type { PseConcreteCaseSituationEntity } from "~/entity";
 
 const includeForSingleItem = {
-  pseConcreteCaseType: true,
+  pseConcreteCaseType: { include: { competencesToEvaluate: { include: { pseCompetence: true }} } },
   pseSituationConcreteCaseGroups: { include: { pseConcreteCaseGroup: true } },
   teacher: true,
   pseConcreteCaseSession: { select: { id: true } }

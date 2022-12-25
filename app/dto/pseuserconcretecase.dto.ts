@@ -1,11 +1,14 @@
+import { z } from 'zod';
 import type { PseCompetenceDto } from './psecompetence.dto';
-import type { PseConcreteCaseTypeDto } from './pseconcretecasetype.dto';
 import type { PseConcreteCaseGroupDto } from './pseconcretecasegroup.dto';
+import type { PseConcreteCaseTypeDto } from './pseconcretecasetype.dto';
 import type { UserDto } from './user.dto';
 
 export type PseUserConcreteCaseStateDtoEnum = 'CREATED' | 'RUNNING' | 'CLOSED';
-export type PseUserConcreteCaseCompetenceGradeDtoEnum = 'A' | 'B' | 'C' | 'D' | 'NOT_EVALUATED';
 export type PseUserConcreteCaseRoleApi = 'LEADER' | 'MINION' | 'WATCHER'
+
+export const PseUserConcreteCaseCompetenceGradeZEnum = z.enum(['A', 'B', 'C', 'D', 'NOT_EVALUATED'])
+export type PseUserConcreteCaseCompetenceGradeDtoEnum = z.infer<typeof PseUserConcreteCaseCompetenceGradeZEnum>
 
 export interface PseUserConcreteCaseDto {
 	id: string;

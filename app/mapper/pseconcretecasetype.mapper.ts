@@ -1,16 +1,16 @@
-import type { PseConcreteCaseTypeEntity } from "~/entity";
 import type { PseConcreteCaseTypeApiObject } from "~/apiobject/pseconcretecasetype.apiobject";
 import type { PseConcreteCaseTypeDto } from "~/dto/pseconcretecasetype.dto";
-import { pseCompetenceApiObjectToDto } from "./psecompetence.mapper";
+import type { PseConcreteCaseTypeEntity } from "~/entity";
+import { pseCompetenceApiObjectToDto, pseCompetenceEntityToApiObject } from "./psecompetence.mapper";
 
 
 export function pseConcreteCaseTypeEntityToApiObject(entity: PseConcreteCaseTypeEntity): PseConcreteCaseTypeApiObject {
+	console.log({ entity: JSON.stringify(entity) })
 	return {
     id: entity.id,
     name: entity.name,
-    competencesToEvaluate: entity.competencesToEvaluate?.map(
-      pseConcreteCaseTypeEntityToApiObject
-    ),
+		// put directly the competence
+    competencesToEvaluate: entity.competencesToEvaluate?.map(competenceToEvaluate => pseCompetenceEntityToApiObject(competenceToEvaluate.pseCompetence)),
   };
 }
 

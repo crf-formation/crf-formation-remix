@@ -22,21 +22,24 @@ async function seedPseConcreteCaseTypes() {
       ...pseConcreteCaseType,
       competencesToEvaluate: undefined
     }
-    await prisma.pseConcreteCaseType.upsert({
+    const entity = await prisma.pseConcreteCaseType.upsert({
       where: { id: pseConcreteCaseType.id },
       update: data,
       create: data
     });
     
     // TODO: implementation - add competencesToEvaluate
-    // competencesToEvaluate: {
-    //   create: {
-    //     pseConcreteCaseType.competencesToEvaluate.map(competenceToEvaluate => {
-    //   return {
-    //     pseCompetenceId: competenceToEvaluate
-    //   }
-    // }
-    // })
+    pseConcreteCaseType.competencesToEvaluate.map(async competenceToEvaluate => {
+      const data = {
+        pseConcreteCaseTypeId: entity.id,
+        pseCompetenceId: competenceToEvaluate,
+      }
+      await prisma.pseCompetencesOnPseConcreteCaseTypes.upsert({
+        where: { pseCompetenceId_pseConcreteCaseTypeId: { pseConcreteCaseTypeId: entity.id, pseCompetenceId: competenceToEvaluate }},
+        update: data,
+        create: data
+      });
+    })
   })
 }
 
