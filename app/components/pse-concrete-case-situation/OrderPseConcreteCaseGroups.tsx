@@ -51,7 +51,7 @@ export default function OrderPseConcreteCaseGroups({ name, pseConcreteCaseGroups
       <Box mt={2}>
         <Typography variant="h4">Order de passage des groupes</Typography>
 
-        <FormErrorHelperText name="pseSituationConcreteCaseGroups" />
+        <FormErrorHelperText name={name} />
 
         {ordered.length === 0 && (
           <Callout severity="info">
@@ -60,7 +60,7 @@ export default function OrderPseConcreteCaseGroups({ name, pseConcreteCaseGroups
         )}
 
         <InputHiddenJson
-          name="pseSituationConcreteCaseGroups"
+          name={name}
           json={ordered.map((group) => ({
             id: group.id,
             position: group.position,

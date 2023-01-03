@@ -1,7 +1,7 @@
 import { Box, Stack } from "@mui/material";
-import type { Validator, FormProps } from "remix-validated-form";
-import { ValidatedForm } from "remix-validated-form";
 import type { ReactNode } from "react";
+import type { FormProps, Validator } from "remix-validated-form";
+import { ValidatedForm } from "remix-validated-form";
 import SubmitButton from "./SubmitButton";
 
 interface FormViewProps<DataType> extends FormProps<DataType> {

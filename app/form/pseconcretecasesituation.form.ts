@@ -1,6 +1,6 @@
 import { withZod } from "@remix-validated-form/with-zod";
-import { zfd } from "zod-form-data";
 import { z } from "zod";
+import { zfd } from "zod-form-data";
 
 //
 // Put
@@ -26,11 +26,11 @@ export const PseConcreteCaseSituationPostSchema = z.object({
   pseConcreteCaseSessionId: z.string(),
 	pseConcreteCaseTypeId: z.string(),
 	teacherId: z.string(),
-  pseSituationConcreteCaseGroups: zfd.repeatable(z.object({
+  pseSituationConcreteCaseGroups: zfd.json(z.array(z.object({
     id: z.string().optional(),
     pseConcreteCaseGroupId: z.string(),
     position: z.number(),
-  }))
+  })))
 });
 
 export const pseConcreteCaseSituationPostDtoValidator = withZod(PseConcreteCaseSituationPostSchema)

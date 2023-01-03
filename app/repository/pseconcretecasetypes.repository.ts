@@ -1,12 +1,14 @@
 import { prisma } from "~/db.server";
 import type { PseConcreteCaseTypeEntity } from "~/entity";
 
+const include = {
+  competencesToEvaluate: { include: { pseCompetence: true } }, 
+}
+
 export async function findPseConcreteCaseTypeEntityById(id: string): Promise<Optional<PseConcreteCaseTypeEntity>> {
 	const pseConcreteCaseTypeEntity = await prisma.pseConcreteCaseType.findUnique({
     where: { id },
-    include: {
-			competencesToEvaluate: true, 
-    },
+    include,
   });
   if (!pseConcreteCaseTypeEntity) {
     return null;
@@ -18,8 +20,6 @@ export async function findPseConcreteCaseTypeEntityById(id: string): Promise<Opt
 export async function findPseConcreteCaseTypes(): Promise<Array<PseConcreteCaseTypeEntity>> {
 	return await prisma.pseConcreteCaseType.findMany({
     where: {},
-    include: {
-			competencesToEvaluate: true, 
-    },
+    include,
   });
 }

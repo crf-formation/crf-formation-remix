@@ -43,10 +43,13 @@ export default function PseConcreteCaseSituationForm<T>({
 
   return (
     <FormView
-      submitText={isEdit ? <span>Mettre à jour</span> : <span>Créer la situation</span>}
-      validator={isEdit 
-        ? pseConcreteCaseSituationPutDtoValidator 
-        : pseConcreteCaseSituationPostDtoValidator
+      submitText={
+        isEdit ? <span>Mettre à jour</span> : <span>Créer la situation</span>
+      }
+      validator={
+        isEdit
+          ? pseConcreteCaseSituationPutDtoValidator
+          : pseConcreteCaseSituationPostDtoValidator
       }
     >
       <input
@@ -58,12 +61,10 @@ export default function PseConcreteCaseSituationForm<T>({
       <FormationTeacherAutocomplete
         formationId={pseFormationId}
         defaultValue={teacher}
-        multiple={false}
         name="teacherId"
         {...generateAria(actionData, "teacherId")}
       />
       <FormErrorHelperText name="teacherId" actionData={actionData} />
-
 
       <PseConcreteCaseTypeAutocomplete
         defaultValue={pseConcreteCaseType}
@@ -71,15 +72,16 @@ export default function PseConcreteCaseSituationForm<T>({
         name="pseConcreteCaseTypeId"
         {...generateAria(actionData, "pseConcreteCaseTypeId")}
       />
-      <FormErrorHelperText name="pseConcreteCaseTypeId" actionData={actionData} />
-
-
-      <OrderPseConcreteCaseGroups 
-        name="pseSituationConcreteCaseGroups" 
-        pseConcreteCaseGroups={pseConcreteCaseGroups} 
-        pseSituationConcreteCaseGroups={pseSituationConcreteCaseGroups} 
+      <FormErrorHelperText
+        name="pseConcreteCaseTypeId"
+        actionData={actionData}
       />
 
+      <OrderPseConcreteCaseGroups
+        name="pseSituationConcreteCaseGroups"
+        pseConcreteCaseGroups={pseConcreteCaseGroups}
+        pseSituationConcreteCaseGroups={pseSituationConcreteCaseGroups}
+      />
     </FormView>
   );
 }

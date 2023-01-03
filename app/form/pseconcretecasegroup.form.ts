@@ -1,5 +1,6 @@
 import { withZod } from "@remix-validated-form/with-zod";
 import { z } from "zod";
+import { zfd } from "zod-form-data";
 
 //
 // Put
@@ -7,7 +8,8 @@ import { z } from "zod";
 
 export const PseConcreteCaseGroupPutSchema = z.object({
 	name: z.string(),
-  students: z.array(z.string())
+  students: zfd.repeatableOfType(z.string())
+		.optional(), // optional to allow edit the students later
 });
 
 export const pseConcreteCaseGroupPutDtoValidator = withZod(PseConcreteCaseGroupPutSchema)
@@ -17,9 +19,10 @@ export const pseConcreteCaseGroupPutDtoValidator = withZod(PseConcreteCaseGroupP
 //
 
 export const PseConcreteCaseGroupPostSchema = z.object({
-	pseConcreteCaseSessionId: z.string(),
-	name: z.string(),
-  students: z.array(z.string()) 
+  pseConcreteCaseSessionId: z.string(),
+  name: z.string(),
+  students: zfd.repeatableOfType(z.string())
+		.optional(), // optional to allow edit the students later
 });
 
 export const pseConcreteCaseGroupPostDtoValidator = withZod(PseConcreteCaseGroupPostSchema)
