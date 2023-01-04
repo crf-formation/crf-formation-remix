@@ -1,5 +1,5 @@
 import type { LocalizedTexts } from '~/dto/localizedtext.dto';
-import { DEFAULT_LOCALE } from '../constants/index';
+import { DEFAULT_LOCALE } from '../constant/index';
 
 export function tr(localizedTexts: LocalizedTexts) {
 	return translate(DEFAULT_LOCALE, localizedTexts)

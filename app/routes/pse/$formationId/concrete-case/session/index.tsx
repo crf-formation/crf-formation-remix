@@ -17,7 +17,7 @@ import type { PseFormationApiObject } from "~/apiobject/pseformation.apiobject";
 import PageContainer from "~/component/layout/PageContainer";
 import PageTitle from "~/component/layout/PageTitle";
 import Section from "~/component/layout/Section";
-import type { SecurityFunction } from "~/constants/remix";
+import type { SecurityFunction } from "~/constant/remix";
 import { paginateApiObjectToDto } from "~/mapper/abstract.mapper";
 import { pseConcreteCaseSessionApiObjectToDto } from "~/mapper/pseconcretecasesession.mapper";
 import { getPseFormationConcreteCaseSessions } from "~/service/pseconcretecasesession.server";

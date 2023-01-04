@@ -8,7 +8,7 @@ import { z } from "zod";
 import type { PseFormationApiObject } from "~/apiobject/pseformation.apiobject";
 import type { PseUserTechniqueApiObject } from "~/apiobject/pseusertechnique.apiobject";
 import Section from "~/component/layout/Section";
-import type { SecurityFunction } from "~/constants/remix";
+import type { SecurityFunction } from "~/constant/remix";
 import type { PseModuleDto } from "~/dto/psemodule.dto";
 import type { PseUserTechniqueDto } from "~/dto/pseusertechnique.dto";
 import { pseModuleApiObjectToDto } from "~/mapper/psemodule.mapper";

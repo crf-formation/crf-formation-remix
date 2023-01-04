@@ -1,5 +1,5 @@
 import type { PlaceApiObject } from "~/apiobject/place.apiobject";
-import type { OrderByDirection, PaginateObject } from "~/constants/types";
+import type { OrderByDirection, PaginateObject } from "~/constant/types";
 import { paginateEntityToApiObject } from "~/mapper/abstract.mapper";
 import { placeEntityToApiObject } from "~/mapper/place.mapper";
 import { findPlaceEntityById, findPlaces } from "~/repository/place.repository";

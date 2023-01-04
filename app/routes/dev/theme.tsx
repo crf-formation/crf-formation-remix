@@ -5,9 +5,9 @@ import type { MetaFunction } from "@remix-run/server-runtime";
 import Section from "~/component/layout/Section";
 import SubHeaderBar from "~/component/layout/SubHeaderBar";
 import Callout from "~/component/typography/Callout";
-import useTheme from "~/hooks/useTheme";
-import AppTabs from '../../components/layout/AppTabs';
-import PageContainer from '../../components/layout/PageContainer';
+import useTheme from "~/hook/useTheme";
+import AppTabs from '../../component/layout/AppTabs';
+import PageContainer from '../../component/layout/PageContainer';
 
 export const meta: MetaFunction<typeof loader> = () => {
   return {

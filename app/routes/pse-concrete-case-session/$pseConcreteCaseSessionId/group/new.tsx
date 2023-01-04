@@ -10,7 +10,7 @@ import PageContainer from "~/component/layout/PageContainer";
 import PageTitle from "~/component/layout/PageTitle";
 import Section from "~/component/layout/Section";
 import PseConcreteCaseGroupForm from "~/component/pse-concrete-case-group/PseConcreteCaseGroupForm";
-import type { SecurityFunction } from "~/constants/remix";
+import type { SecurityFunction } from "~/constant/remix";
 import type { PseConcreteCaseGroupPostDto } from "~/dto/pseconcretecasegroup.dto";
 import { validateForm } from "~/form/abstract";
 import { pseConcreteCaseGroupPostDtoValidator } from "~/form/pseconcretecasegroup.form";

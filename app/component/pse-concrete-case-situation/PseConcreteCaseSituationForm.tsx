@@ -4,7 +4,7 @@ import type { PseSituationConcreteCaseGroupDto } from '~/dto/pseconcretecasesitu
 import type { PseConcreteCaseTypeDto } from '~/dto/pseconcretecasetype.dto';
 import type { UserDto } from "~/dto/user.dto";
 import { pseConcreteCaseSituationPostDtoValidator, pseConcreteCaseSituationPutDtoValidator } from "~/form/pseconcretecasesituation.form";
-import useFormFocusError from "~/hooks/useFormFocusError";
+import useFormFocusError from "~/hook/useFormFocusError";
 import { generateAria } from "~/util/form";
 import FormErrorHelperText from "../form/FormErrorHelperText";
 import FormView from "../form/FormView";

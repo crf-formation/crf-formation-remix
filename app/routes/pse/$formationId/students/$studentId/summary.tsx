@@ -8,7 +8,7 @@ import type { PseFormationApiObject } from "~/apiobject/pseformation.apiobject";
 import Section from "~/component/layout/Section";
 import { BooleanText } from "~/component/typography/BooleanText";
 import Property from "~/component/typography/Property";
-import type { SecurityFunction } from "~/constants/remix";
+import type { SecurityFunction } from "~/constant/remix";
 import type { PseCompetenceDto } from "~/dto/psecompetence.dto";
 import type {
     PseUserSummaryConcreteCaseDto,

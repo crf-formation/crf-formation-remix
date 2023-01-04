@@ -1,6 +1,6 @@
+import type { OrderByDirection, PaginateObject } from "~/constant/types";
 import { prisma } from "~/db.server";
 import type { PlaceEntity } from "~/entity";
-import type { OrderByDirection, PaginateObject } from "~/constants/types";
 import { createPaginateObject } from "./abstract.repository";
 
 export async function findPlaceEntityById(id: string): Promise<Optional<PlaceEntity>> {

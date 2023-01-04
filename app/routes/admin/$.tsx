@@ -13,7 +13,7 @@ import UserList from "~/component/admin/user/UserList";
 import UserShow from "~/component/admin/user/UserShow";
 import Main from "~/component/layout/Main";
 import Layout from "~/component/reactadmin/layout/Layout";
-import useTheme from "~/hooks/useTheme";
+import useTheme from "~/hook/useTheme";
 import { requireAdmin } from "~/service/session.server";
 import dataProvider from "~/util/dataProvider";
 

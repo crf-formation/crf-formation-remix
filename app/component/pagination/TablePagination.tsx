@@ -1,6 +1,6 @@
 import { TablePagination as MuiTablePagination } from '@mui/material';
-import type { PaginateObject } from '~/constants/types';
-import usePagination from '~/hooks/usePagination';
+import type { PaginateObject } from '~/constant/types';
+import usePagination from '~/hook/usePagination';
 
 interface Props<T> {
 	path: string;

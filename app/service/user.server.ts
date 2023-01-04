@@ -1,25 +1,25 @@
 import type {
-  UserApiObject,
-  UserAuthTokenApiObject,
-  UserPostApiObject,
-  UserPutApiObject,
+    UserApiObject,
+    UserAuthTokenApiObject,
+    UserPostApiObject,
+    UserPutApiObject,
 } from "~/apiobject/user.apiobject";
-import {
-  createUserEntity,
-  findUserEntityByEmail,
-  findUserEntityByEmailAndPassword,
-  findUserEntityById,
-  findUserEntities,
-  searchFormationStudentsEntities,
-  updateUserEntity,
-  updateUserEntityPassword,
-  getFormationStudentsEntities,
-  getFormationTeachersEntities,
-  searchFormationTeachersEntities,
-} from "~/repository/user.repository";
-import { userEntityToApiObject } from "~/mapper/user.mapper";
+import type { OrderByDirection, PaginateObject } from "~/constant/types";
 import { paginateEntityToApiObject } from "~/mapper/abstract.mapper";
-import type { OrderByDirection, PaginateObject } from "~/constants/types";
+import { userEntityToApiObject } from "~/mapper/user.mapper";
+import {
+    createUserEntity,
+    findUserEntities,
+    findUserEntityByEmail,
+    findUserEntityByEmailAndPassword,
+    findUserEntityById,
+    getFormationStudentsEntities,
+    getFormationTeachersEntities,
+    searchFormationStudentsEntities,
+    searchFormationTeachersEntities,
+    updateUserEntity,
+    updateUserEntityPassword,
+} from "~/repository/user.repository";
 
 export async function updateUser(
   userId: string,

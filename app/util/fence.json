@@ -1,3 +1,4 @@
 {
-	"tags": ["utils"]
+	"tags": ["util"],
+	"imports": ["constant"]
 }

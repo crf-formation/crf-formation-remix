@@ -1,6 +1,6 @@
 import type { RefObject } from "react";
 import { useEffect } from 'react';
-import type { FormResult } from "~/constants/types";
+import type { FormResult } from "~/constant/types";
 
 export default function useFormFocusError(actionData: FormResult | any, references: Array<[string, RefObject<any> ]>) {
 	useEffect(() => {

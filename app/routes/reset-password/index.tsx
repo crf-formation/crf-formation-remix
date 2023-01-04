@@ -10,7 +10,7 @@ import PageFullContentWithLogo from "~/component/layout/PageFullContentWithLogo"
 import type { PasswordAskResetDto } from "~/dto/user.dto";
 import { validateForm } from "~/form/abstract";
 import { passwordAskResetValidator } from "~/form/user.form";
-import useFormFocusError from "~/hooks/useFormFocusError";
+import useFormFocusError from "~/hook/useFormFocusError";
 import { askForPasswordRecovery } from "~/service/passwordrecovery.server";
 import { getSession, getUserId } from "~/service/session.server";
 import { validateUserEmail } from "~/service/user.server";

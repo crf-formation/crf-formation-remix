@@ -1,7 +1,7 @@
 import { Alert as MuiAlert, Snackbar } from "@mui/material";
 import type { AlertProps } from '@mui/material/Alert';
 import { forwardRef, useState } from "react";
-import useRootData from '~/hooks/useRootData';
+import useRootData from '~/hook/useRootData';
 import type { FlashMessage } from '~/service/flash.server';
 
 const Alert = forwardRef<HTMLDivElement, AlertProps>(function Alert(

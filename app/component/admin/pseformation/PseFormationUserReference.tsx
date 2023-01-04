@@ -1,19 +1,19 @@
 import { Add } from "@mui/icons-material";
-import {
-  Datagrid,
-  TextField,
-  ArrayInput,
-  SimpleFormIterator,
-  ArrayField,
-  BooleanField,
-} from "react-admin";
 import { Box, Button, Typography } from "@mui/material";
+import {
+  ArrayField,
+  ArrayInput,
+  BooleanField,
+  Datagrid,
+  SimpleFormIterator,
+  TextField,
+} from "react-admin";
+import type { UserOnPseFormationRoleDtoEnum } from "~/dto/useronpseformation.dto";
 import { UserReferenceInput } from "../UserReference";
-import type { UserOnPseFormationRoleApiEnum } from "~/apiobject/useronpseformation.apiobject";
 
 interface Props {
   source: string;
-  role: UserOnPseFormationRoleApiEnum;
+  role: UserOnPseFormationRoleDtoEnum;
   label: string;
 }
 

@@ -11,7 +11,7 @@ import PageFullContentWithLogo from "~/component/layout/PageFullContentWithLogo"
 import type { PasswordCreateDto } from "~/dto/user.dto";
 import { validateForm } from "~/form/abstract";
 import { passwordCreateValidator } from "~/form/user.form";
-import useFormFocusError from "~/hooks/useFormFocusError";
+import useFormFocusError from "~/hook/useFormFocusError";
 import { createPassword, verifyTokenIsValid } from "~/service/passwordrecovery.server";
 import { createUserSession, getSession, getUserId } from "~/service/session.server";
 import { verifyLogin } from "~/service/user.server";

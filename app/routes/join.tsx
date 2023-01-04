@@ -12,7 +12,7 @@ import PageFullContentWithLogo from "~/component/layout/PageFullContentWithLogo"
 import type { UserPostDto } from "~/dto/user.dto";
 import { validateForm } from "~/form/abstract";
 import { joinValidator } from "~/form/user.form";
-import useFormFocusError from "~/hooks/useFormFocusError";
+import useFormFocusError from "~/hook/useFormFocusError";
 import { userPostDtoToApiObject } from "~/mapper/user.mapper";
 import { askForPasswordCreation } from "~/service/passwordrecovery.server";
 import { getUserId } from "~/service/session.server";

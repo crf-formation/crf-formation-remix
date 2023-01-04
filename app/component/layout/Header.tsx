@@ -8,10 +8,10 @@ import IconButton from "@mui/material/IconButton";
 import Toolbar from "@mui/material/Toolbar";
 import Tooltip from "@mui/material/Tooltip";
 import Typography from "@mui/material/Typography";
-import { useState } from "react";
-import UserMenu from "./UserMenu";
-import useUser from "~/hooks/useUser";
 import { red } from "@mui/material/colors";
+import { useState } from "react";
+import useUser from "~/hook/useUser";
+import UserMenu from "./UserMenu";
 
 interface HeaderProps {
   sidebarIsOpen: boolean;

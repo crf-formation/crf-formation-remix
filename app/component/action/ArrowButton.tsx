@@ -1,9 +1,8 @@
-// https://github.com/mui/material-ui/blob/master/docs/src/components/action/ArrowButton.tsx
-import * as React from 'react';
-import type { IconButtonProps } from '@mui/material/IconButton';
-import IconButton from '@mui/material/IconButton';
+// https://github.com/mui/material-ui/blob/master/docs/src/component/action/ArrowButton.tsx
 import KeyboardArrowLeftRounded from '@mui/icons-material/KeyboardArrowLeftRounded';
 import KeyboardArrowRightRounded from '@mui/icons-material/KeyboardArrowRightRounded';
+import type { IconButtonProps } from '@mui/material/IconButton';
+import IconButton from '@mui/material/IconButton';
 
 export default function ArrowButton({
   direction,

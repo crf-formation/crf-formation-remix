@@ -1,7 +1,7 @@
 import { Grid, Pagination as MuiPagination } from '@mui/material';
 import PageCallout from '~/component/typography/PageCallout';
-import type { PaginateObject } from '~/constants/types';
-import usePagination from '~/hooks/usePagination';
+import type { PaginateObject } from '~/constant/types';
+import usePagination from '~/hook/usePagination';
 
 interface Props<T> {
 	path: string;

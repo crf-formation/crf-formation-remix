@@ -1,4 +1,4 @@
-import type { PaginateObject } from "~/constants/types";
+import type { PaginateObject } from "~/constant/types";
 
 export function paginateEntityToApiObject<Entity, ApiObject>(paginatedData: PaginateObject<Entity>, mapper: (entity: Entity) => ApiObject): PaginateObject<ApiObject> {
 	return {

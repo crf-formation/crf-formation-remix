@@ -1,3 +1,4 @@
 {
-	"tags": ["mapper"]
+	"tags": ["mapper"],
+	"imports": [ "dto", "apiobject" ]
 }

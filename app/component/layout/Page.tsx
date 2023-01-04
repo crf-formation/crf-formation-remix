@@ -1,9 +1,9 @@
 import { Box, GlobalStyles } from '@mui/material';
+import { useLocation } from "@remix-run/react";
 import type { ReactNode } from 'react';
 import { useState } from 'react';
-import { useLocation } from "@remix-run/react";
-import useIsDesktop from '~/hooks/useIsDesktop';
-import useRootData from "~/hooks/useRootData";
+import useIsDesktop from '~/hook/useIsDesktop';
+import useRootData from "~/hook/useRootData";
 import Header from './Header';
 import SidebarMenu from './SidebarMenu';
 

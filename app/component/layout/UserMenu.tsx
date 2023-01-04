@@ -1,12 +1,12 @@
 import Brightness2Icon from "@mui/icons-material/Brightness2";
 import Brightness7Icon from "@mui/icons-material/Brightness7";
 import {
-  Box, Button, Divider, IconButton, Link, List,
-  ListItem, Menu, Tooltip, Typography
+    Box, Button, Divider, IconButton, Link, List,
+    ListItem, Menu, Tooltip, Typography
 } from "@mui/material";
 import { Form, useLocation } from "@remix-run/react";
 import type { UserMeDto } from "~/dto/user.dto";
-import useRootData from "~/hooks/useRootData";
+import useRootData from "~/hook/useRootData";
 
 interface Props {
   open: boolean;

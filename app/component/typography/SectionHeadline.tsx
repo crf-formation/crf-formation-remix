@@ -1,7 +1,7 @@
-// https://github.com/mui/material-ui/blob/master/docs/src/components/typography/SectionHeadline.tsx
-import * as React from 'react';
-import { useTheme } from '@mui/material/styles';
+// https://github.com/mui/material-ui/blob/master/docs/src/component/typography/SectionHeadline.tsx
 import Typography from '@mui/material/Typography';
+import { useTheme } from '@mui/material/styles';
+import * as React from 'react';
 
 interface SectionHeadlineProps {
   description?: React.ReactNode;

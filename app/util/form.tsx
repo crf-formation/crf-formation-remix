@@ -1,4 +1,4 @@
-import type { FormResult } from "~/constants/types";
+import type { FormResult } from "~/constant/types";
 
 export function isAriaInvalid(actionData: FormResult | any, name: string): boolean | undefined {
 	return actionData && actionData.errors && actionData?.errors[name] ? true : undefined

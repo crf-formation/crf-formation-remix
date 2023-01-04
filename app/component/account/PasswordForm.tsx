@@ -1,8 +1,8 @@
 import { TextField, } from "@mui/material";
 import { useRef, useState } from "react";
-import type { FormResult } from "~/constants/types";
+import type { FormResult } from "~/constant/types";
 import { passwordModificationValidator } from "~/form/user.form";
-import useFormFocusError from "~/hooks/useFormFocusError";
+import useFormFocusError from "~/hook/useFormFocusError";
 import { generateAria } from "~/util/form";
 import { AuthenticityTokenInput } from "../csrf";
 import FormErrorHelperText from "../form/FormErrorHelperText";

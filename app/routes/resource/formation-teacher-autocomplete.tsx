@@ -10,7 +10,7 @@ import { userApiObjectToDto } from "~/mapper/user.mapper";
 import { requireUser } from "~/service/session.server";
 import { getFormationTeachers, searchFormationTeachers } from "~/service/user.server";
 import { getSearchParamsOrFail } from "~/util/remix.params";
-import type { PaginateObject } from '../../constants/types';
+import type { PaginateObject } from '../../constant/types';
 
 const URLSearchParamsSchema = z.object({
 	formationId: z.string(),

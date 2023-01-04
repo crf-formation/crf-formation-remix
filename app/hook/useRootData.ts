@@ -1,4 +1,4 @@
-import useRouteData from "~/hooks/useRouteData";
+import useRouteData from "~/hook/useRouteData";
 import type { RootLoaderData } from "~/root";
 
 export default function useRootData(): RootLoaderData {

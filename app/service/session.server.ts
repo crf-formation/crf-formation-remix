@@ -2,7 +2,7 @@ import { createCookieSessionStorage, redirect } from "@remix-run/node";
 import type { CookieSerializeOptions, Session } from '@remix-run/server-runtime';
 import invariant from "tiny-invariant";
 import type { UserApiObject } from "~/apiobject/user.apiobject";
-import { SESSION_KEY, SESSION_MAX_AGE } from "~/constants/index.server";
+import { SESSION_KEY, SESSION_MAX_AGE } from "~/constant/index.server";
 import type { UserDto, UserMeDto } from "~/dto/user.dto";
 import { userApiObjectToUserMeDto } from "~/mapper/user.mapper";
 import { getUserMe, } from "~/service/user.server";

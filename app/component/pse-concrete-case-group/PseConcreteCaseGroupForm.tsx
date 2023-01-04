@@ -1,7 +1,7 @@
 import { TextField } from "@mui/material";
 import { useRef } from "react";
 import { pseConcreteCaseGroupPostDtoValidator, pseConcreteCaseGroupPutDtoValidator } from "~/form/pseconcretecasegroup.form";
-import useFormFocusError from "~/hooks/useFormFocusError";
+import useFormFocusError from "~/hook/useFormFocusError";
 import { generateAria } from "~/util/form";
 import type { UserDto } from '../../dto/user.dto';
 import FormErrorHelperText from "../form/FormErrorHelperText";

@@ -1,3 +1,4 @@
 {
-	"tags": ["hooks"]
+	"tags": ["hook"],
+	"imports": ["constant"]
 }

@@ -1,12 +1,12 @@
-import { prisma } from "~/db.server";
-import type {
-  UserPostApiObject,
-  UserPutApiObject,
-} from "~/apiobject/user.apiobject";
 import bcrypt from "bcryptjs";
-import type { UserEntity, PasswordEntity } from "~/entity";
 import { v4 as uuid } from "uuid";
-import type { OrderByDirection, PaginateObject } from "~/constants/types";
+import type {
+    UserPostApiObject,
+    UserPutApiObject,
+} from "~/apiobject/user.apiobject";
+import type { OrderByDirection, PaginateObject } from "~/constant/types";
+import { prisma } from "~/db.server";
+import type { PasswordEntity, UserEntity } from "~/entity";
 import { createPaginateObject } from "./abstract.repository";
 
 export async function createUserEntity(
@@ -173,7 +173,7 @@ export async function searchFormationStudentsEntities(
         },
       },
 
-      // TODO: if not using sqlite anymore: https://www.prisma.io/docs/concepts/components/prisma-client/full-text-search
+      // TODO: if not using sqlite anymore: https://www.prisma.io/docs/concepts/component/prisma-client/full-text-search
 
       // TODO: real search
       OR: [
@@ -248,7 +248,7 @@ export async function searchFormationTeachersEntities(
         },
       },
 
-      // TODO: if not using sqlite anymore: https://www.prisma.io/docs/concepts/components/prisma-client/full-text-search
+      // TODO: if not using sqlite anymore: https://www.prisma.io/docs/concepts/component/prisma-client/full-text-search
 
       // TODO: real search
       OR: [

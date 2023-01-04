@@ -1,11 +1,11 @@
 import { useRef } from "react";
-import type { FormResult } from "~/constants/types";
-import { AuthenticityTokenInput } from "../csrf";
-import useFormFocusError from "~/hooks/useFormFocusError";
-import FormView from "../form/FormView";
+import type { FormResult } from "~/constant/types";
 import type { UserMeDto } from "~/dto/user.dto";
 import { profileValidator } from "~/form/user.form";
+import useFormFocusError from "~/hook/useFormFocusError";
+import { AuthenticityTokenInput } from "../csrf";
 import FormTextField from "../form/FormTextField";
+import FormView from "../form/FormView";
 
 interface ProfileFormProps {
   user: UserMeDto;

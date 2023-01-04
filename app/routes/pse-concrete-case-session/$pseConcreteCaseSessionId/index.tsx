@@ -15,7 +15,7 @@ import PageContainer from "~/component/layout/PageContainer";
 import PageTitle from "~/component/layout/PageTitle";
 import Section from "~/component/layout/Section";
 import Callout from '~/component/typography/Callout';
-import type { SecurityFunction } from "~/constants/remix";
+import type { SecurityFunction } from "~/constant/remix";
 import type { PseConcreteCaseGroupDto } from '~/dto/pseconcretecasegroup.dto';
 import type { PseConcreteCaseSessionGroupOrderDto } from '~/dto/pseconcretecasesession.dto';
 import type { PseConcreteCaseSituationDto, PseSituationConcreteCaseGroupDto } from '~/dto/pseconcretecasesituation.dto';

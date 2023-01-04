@@ -11,7 +11,7 @@ import PageFullContentWithLogo from "~/component/layout/PageFullContentWithLogo"
 import type { PasswordResetDto } from "~/dto/user.dto";
 import { validateForm } from '~/form/abstract';
 import { passwordResetValidator } from "~/form/user.form";
-import useFormFocusError from "~/hooks/useFormFocusError";
+import useFormFocusError from "~/hook/useFormFocusError";
 import type { ApiErrorException } from '~/service/api.error';
 import { addFlashMessage } from "~/service/flash.server";
 import { recoverPassword } from "~/service/passwordrecovery.server";

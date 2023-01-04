@@ -9,7 +9,7 @@ import { json } from "@remix-run/node";
 import { Form, Link as RmxLink, useLocation } from "@remix-run/react";
 import type { LoaderArgs, MetaFunction } from "@remix-run/server-runtime";
 import Main from "~/component/layout/Main";
-import useRootData from "~/hooks/useRootData";
+import useRootData from "~/hook/useRootData";
 import { addFlashMessage } from "~/service/flash.server";
 import { commitSession, requireUser } from "~/service/session.server";
 

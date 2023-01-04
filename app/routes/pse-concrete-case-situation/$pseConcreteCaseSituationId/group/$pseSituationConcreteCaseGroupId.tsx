@@ -13,7 +13,7 @@ import PageContainer from "~/component/layout/PageContainer";
 import PageTitle from "~/component/layout/PageTitle";
 import Section from "~/component/layout/Section";
 import PseConcreteCaseSituationEvaluateGroupForm from "~/component/pse-concrete-case-situation/PseConcreteCaseSituationEvaluateGroupForm";
-import type { SecurityFunction } from "~/constants/remix";
+import type { SecurityFunction } from "~/constant/remix";
 import { pseCompetenceApiObjectToDto } from "~/mapper/psecompetence.mapper";
 import { pseConcreteCaseGroupApiObjectToDto } from "~/mapper/pseconcretecasegroup.mapper";
 import { pseConcreteCaseSessionApiObjectToDto } from "~/mapper/pseconcretecasesession.mapper";

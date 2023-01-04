@@ -1,6 +1,6 @@
 import invariant from "tiny-invariant";
 import { z } from "zod";
-import type { OrderByDirection, PaginateObject } from "~/constants/types";
+import type { OrderByDirection, PaginateObject } from "~/constant/types";
 
 interface Props<T> {
   model: T;

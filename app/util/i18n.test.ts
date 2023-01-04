@@ -1,5 +1,5 @@
 
-import { DEFAULT_LOCALE } from '../constants/index';
+import { DEFAULT_LOCALE } from '../constant/index';
 import { translate } from "./i18n";
 
 describe("i18n", () => {

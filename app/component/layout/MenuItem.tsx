@@ -2,7 +2,7 @@ import type { SxProps } from "@mui/material";
 import { ListItemButton, ListItemIcon, ListItemText } from "@mui/material";
 import type { ReactEventHandler, ReactNode } from "react";
 import { forwardRef } from "react";
-import useLocationMatchPath from "~/hooks/useLocationMatchPath";
+import useLocationMatchPath from "~/hook/useLocationMatchPath";
 
 type PropsType = {
 	dense: boolean;
