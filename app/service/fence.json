@@ -1,4 +1,4 @@
 {
 	"tags": ["service"],
-	"imports": [ "apiobject", "repository", "helper" ]
+	"imports": [ "apiobject", "repository", "helper", "mapper", "entity", "constant"]
 }

@@ -1,4 +1,4 @@
 {
 	"tags": ["util"],
-	"imports": ["constant"]
+	"imports": ["constant", "service"]
 }

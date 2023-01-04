@@ -1,4 +1,4 @@
 {
 	"tags": ["hook"],
-	"imports": ["constant"]
+	"imports": ["root", "constant", "util", "theme", "dto"]
 }

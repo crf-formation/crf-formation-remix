@@ -1,14 +1,16 @@
 import type { Session } from "@remix-run/server-runtime";
-import { getSession as getServerSession } from "./session.server";
 import { v4 as uuid } from "uuid";
+import { getSession as getServerSession } from "./session.server";
 
-export interface FlashMessage {
+interface FlashMessage {
   id: string;
   message: string;
   severity: FlashMessageType;
 }
 
-export type FlashMessageType = "error" | "warning" | "info" | "success";
+type FlashMessageType = "error" | "warning" | "info" | "success";
+
+
 
 async function getSession(
   requestOrSession: Request | Session

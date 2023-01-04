@@ -1,11 +1,3 @@
-// process environment properties handling.
-// tutorial: https://remix.run/docs/en/v1/guides/envvars
-
-// list env property names (defined on root)
-export type EnvProperty = 'env' 
-
-export type Env = 'dev' | 'production'
-
 /**
  * List all the environment variables to share with the browser.
  *

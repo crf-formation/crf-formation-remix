@@ -1,4 +1,4 @@
 {
 	"tags": ["mapper"],
-	"imports": [ "dto", "apiobject" ]
+	"imports": [ "dto", "apiobject", "entity", "util", "constant" ]
 }

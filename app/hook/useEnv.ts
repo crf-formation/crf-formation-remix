@@ -1,4 +1,4 @@
-import type { EnvProperty } from "~/service/env.server"
+import type { EnvProperty } from "~/dto/env.dto"
 import useSsr from "./useSsr"
 
 export default function useEnv() {

@@ -3,8 +3,6 @@ import type { CookieSerializeOptions, Session } from '@remix-run/server-runtime'
 import invariant from "tiny-invariant";
 import type { UserApiObject } from "~/apiobject/user.apiobject";
 import { SESSION_KEY, SESSION_MAX_AGE } from "~/constant/index.server";
-import type { UserDto, UserMeDto } from "~/dto/user.dto";
-import { userApiObjectToUserMeDto } from "~/mapper/user.mapper";
 import { getUserMe, } from "~/service/user.server";
 import { ApiErrorException } from './api.error';
 import { findUserById } from "./user.server";
@@ -29,20 +27,18 @@ export async function getSession(request: Request) {
 
 export async function getUserId(
   request: Request
-): Promise<UserDto["id"] | undefined> {
+): Promise<UserApiObject["id"] | undefined> {
   const session = await getSession(request);
   return session.get(SESSION_KEY)?.userId;
 }
 
-
-
-export async function getMe(request: Request): Promise<Optional<UserMeDto>> {
+export async function getMe(request: Request): Promise<Optional<UserApiObject>> {
   const userId = await getUserId(request);
   if (userId === undefined) return null;
 
   try {
     const userApiObject = await getUserMe(userId);
-    return userApiObjectToUserMeDto(userApiObject)
+    return userApiObject
   } catch (e) {
     if (e instanceof ApiErrorException && e.status === 401) {
       throw await logout(request);

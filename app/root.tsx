@@ -23,13 +23,13 @@ import nProgressStyles from "nprogress/nprogress.css";
 import { useContext, useMemo } from "react";
 import { AuthenticityTokenProvider } from "~/component/csrf";
 import Layout from "~/component/layout/Layout";
-import ClientStyleContext from "~/contexts/ClientStyleContext";
-import type { ThemeNames } from "./constants";
-import { DEFAULT_THEME } from "./constants";
-import useEnhancedEffect from "./hooks/useEnhancedEffect";
-import { commitSession, getMe, getSession } from "./services/session.server";
+import ClientStyleContext from "~/context/ClientStyleContext";
+import type { ThemeNames } from "./constant";
+import { DEFAULT_THEME } from "./constant";
+import useEnhancedEffect from "./hook/useEnhancedEffect";
+import { commitSession, getMe, getSession } from "./service/session.server";
 import { getTheme } from "./theme";
-import { getUserTheme, themeCookie } from "./utils/theme.server";
+import { getUserTheme, themeCookie } from "./util/theme.server";
 // import { getClientIPAddress } from "~/service/clientip.server"
 import { json } from "@remix-run/node";
 import type { ActionArgs } from '@remix-run/server-runtime';
@@ -46,12 +46,13 @@ import type { PseFormationDto } from "./dto/pseformation.dto";
 import type { PublicPropertiesDto } from "./dto/publicproperties.dto";
 import type { UserMeDto } from "./dto/user.dto";
 import { pseFormationApiObjectToDto } from './mapper/pseformation.mapper';
-import { getBrowserEnv } from "./services/env.server";
-import type { FlashMessage } from "./services/flash.server";
-import { getFlashMessages } from "./services/flash.server";
-import { getCurrentPseFormationForUser } from "./services/pseformation.server";
-import type { Locales } from "./services/request.server";
-import { getClientLocales, isDesktop } from "./services/request.server";
+import { userApiObjectToUserMeDto } from "./mapper/user.mapper";
+import { getBrowserEnv } from "./service/env.server";
+import type { FlashMessage } from "./service/flash.server";
+import { getFlashMessages } from "./service/flash.server";
+import { getCurrentPseFormationForUser } from "./service/pseformation.server";
+import type { Locales } from "./service/request.server";
+import { getClientLocales, isDesktop } from "./service/request.server";
 
 export interface RootLoaderData {
   user: Optional<UserMeDto>;
@@ -83,7 +84,7 @@ export async function loader({ request }: LoaderArgs) {
     {
       // https://github.com/sergiodxa/remix-utils
       csrf, // csrf: pass token to browser
-      user,
+      user: userApiObjectToUserMeDto(userApiObject),
       themeName: await getUserTheme(request),
       locales: getClientLocales(request),
       // env properties to share with the browser side.

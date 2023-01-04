@@ -1,7 +1,7 @@
 import type { Session } from "@remix-run/server-runtime";
+import type { ApiErrorException } from '~/service/api.error';
 import { addFlashMessage } from "~/service/flash.server";
 import { commitSession } from "~/service/session.server";
-import type { ApiErrorException } from '../services/api.error';
 import { badRequest } from "./responses";
 
 /**
