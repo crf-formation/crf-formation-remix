@@ -1,7 +1,8 @@
 import { Box, Stack } from "@mui/material";
+import { isEmpty } from "lodash";
 import type { ReactNode } from "react";
 import type { FormProps, Validator } from "remix-validated-form";
-import { ValidatedForm } from "remix-validated-form";
+import { ValidatedForm, useFormContext } from "remix-validated-form";
 import SubmitButton from "./SubmitButton";
 
 interface FormViewProps<DataType> extends FormProps<DataType> {
@@ -12,6 +13,20 @@ interface FormViewProps<DataType> extends FormProps<DataType> {
    * Name of the validator to retrieve from the loader data.
    */
   validator: Validator<any>;
+}
+
+function DebugForm() {
+  const { fieldErrors } = useFormContext()
+
+  if (isEmpty(fieldErrors)) {
+    return null
+  }
+
+  return (
+    <Box>
+      <pre>{JSON.stringify(fieldErrors, null, 2)}</pre>
+    </Box>
+  );
 }
 
 export default function FormView<DataType>({
@@ -34,6 +49,8 @@ export default function FormView<DataType>({
       noValidate={true}
       {...props}
     >
+       {process.env.NODE_ENV === "development" && <DebugForm />}
+
       <Stack spacing={2} sx={{ display: "flex", flexDirection: "column" }}>
         {children}
       </Stack>

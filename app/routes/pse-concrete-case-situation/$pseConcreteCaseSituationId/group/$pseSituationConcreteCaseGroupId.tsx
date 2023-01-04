@@ -90,13 +90,14 @@ export const meta: MetaFunction<typeof loader> = ({ data }) => {
 };
 
 export default function PseConcreteCaseSituationRoute() {
-  const { pseCompetences, pseConcreteCaseSituation, pseConcreteCaseGroup } = useLoaderData<typeof loader>();
+  const { pseFormation, pseCompetences, pseConcreteCaseSituation, pseConcreteCaseGroup } = useLoaderData<typeof loader>();
 
   return (
     <PageContainer>
       <PageTitle title={`Évaluation ${pseConcreteCaseSituation?.pseConcreteCaseType?.name} - ${pseConcreteCaseGroup.name}`} />
       <Section>
 				<PseConcreteCaseSituationEvaluateGroupForm 
+          formationId={pseFormation.id}
           pseConcreteCaseGroup={pseConcreteCaseGroup} 
           pseConcreteCaseSituation={pseConcreteCaseSituation} 
           pseCompetences={pseCompetences} 

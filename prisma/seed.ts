@@ -77,14 +77,14 @@ async function seedPseTechniques() {
 
 async function seedPseCompetence() {
   const competences = [
-    { id: "C1" },
-    { id: "C2" },
-    { id: "C3" },
-    { id: "C4_1" },
-    { id: "C4_2" },
-    { id: "C4_3" },
-    { id: "C5" },
-    { id: "C6" },
+    { id: "C1", description: `Évoluer dans le cadre juridique applicable à son action de secours et dans le respect des procédures définies par son autorité d’emploi.` },
+    { id: "C2", description: `` }, // TODO:
+    { id: "C3", description: `` },
+    { id: "C4_1", description: `` },
+    { id: "C4_2", description: `` },
+    { id: "C4_3", description: `` },
+    { id: "C5", description: `` },
+    { id: "C6", description: `` },
   ]
 
   competences.forEach(async pseCompetence => {

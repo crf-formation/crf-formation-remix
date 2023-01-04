@@ -6,5 +6,6 @@ export async function getPseCompetenceEntites(): Promise<Array<PseCompetenceEnti
     where: {},
     // include: {
     // },
+    orderBy: { id: 'asc' }
   });
 }

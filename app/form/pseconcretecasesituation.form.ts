@@ -30,7 +30,7 @@ export const PseConcreteCaseSituationPostSchema = z.object({
     id: z.string().optional(),
     pseConcreteCaseGroupId: z.string(),
     position: z.number(),
-  })))
+  }))).optional()
 });
 
 export const pseConcreteCaseSituationPostDtoValidator = withZod(PseConcreteCaseSituationPostSchema)

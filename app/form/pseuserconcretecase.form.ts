@@ -12,7 +12,7 @@ export const UserConcreteCaseSchema = z.array(
 export const PseConcreteCaseSituationGroupEvaluatePostSchema = z.object({
   formationId: z.string(),
 	pseConcreteCaseSituationId: z.string(),
-	pseSituationConcreteCaseGroupId: z.string(),
+	pseSituationConcreteCaseId: z.string(),
 
 	users: z.array(z.object({
 		userId: z.string(),

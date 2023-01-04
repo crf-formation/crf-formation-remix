@@ -162,6 +162,8 @@ model PseUserTechnique {
 model PseCompetence {
   id String @id @default(cuid())
 
+  description String
+
   pseConcreteCaseTypes PseCompetencesOnPseConcreteCaseTypes[]
   pseUserConcreteCaseCompetence PseUserConcreteCaseCompetence[]
 }

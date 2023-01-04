@@ -1,6 +1,7 @@
 -- CreateTable
 CREATE TABLE "PseCompetence" (
-    "id" TEXT NOT NULL PRIMARY KEY
+    "id" TEXT NOT NULL PRIMARY KEY,
+    "description" TEXT NOT NULL
 );
 
 -- CreateTable

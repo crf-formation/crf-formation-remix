@@ -1,6 +1,6 @@
 import type { PseCompetenceApiObject } from './psecompetence.apiobject';
-import type { PseConcreteCaseTypeApiObject } from './pseconcretecasetype.apiobject';
 import type { PseConcreteCaseGroupApiObject } from './pseconcretecasegroup.apiobject';
+import type { PseConcreteCaseTypeApiObject } from './pseconcretecasetype.apiobject';
 import type { UserApiObject } from './user.apiobject';
 
 export type PseUserConcreteCaseStateApiEnum = 'CREATED' | 'RUNNING' | 'CLOSED';
