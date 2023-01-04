@@ -7,13 +7,13 @@ import { z } from "zod";
 import type { PseConcreteCaseSessionApiObject } from "~/apiobject/pseconcretecasesession.apiobject";
 import type { PseFormationApiObject } from "~/apiobject/pseformation.apiobject";
 import type { UserApiObject } from "~/apiobject/user.apiobject";
-import FormErrorHelperText from "~/components/form/FormErrorHelperText";
-import FormTextField from "~/components/form/FormTextField";
-import FormView from "~/components/form/FormView";
-import PageContainer from "~/components/layout/PageContainer";
-import PageTitle from "~/components/layout/PageTitle";
-import Section from "~/components/layout/Section";
-import PseConcreteCaseSessionStateAutocomplete from "~/components/pse-concrete-case-session/PseConcreteCaseSessionStateAutocomplete";
+import FormErrorHelperText from "~/component/form/FormErrorHelperText";
+import FormTextField from "~/component/form/FormTextField";
+import FormView from "~/component/form/FormView";
+import PageContainer from "~/component/layout/PageContainer";
+import PageTitle from "~/component/layout/PageTitle";
+import Section from "~/component/layout/Section";
+import PseConcreteCaseSessionStateAutocomplete from "~/component/pse-concrete-case-session/PseConcreteCaseSessionStateAutocomplete";
 import type { SecurityFunction } from "~/constants/remix";
 import type { PseConcreteCaseSessionPutDto } from "~/dto/pseconcretecasesession.dto";
 import { validateForm } from '~/form/abstract';
@@ -21,12 +21,12 @@ import { pseConcreteCaseSessionPutDtoValidator } from "~/form/pseconcretecaseses
 import useFormFocusError from "~/hooks/useFormFocusError";
 import { pseConcreteCaseSessionApiObjectToDto, pseConcreteCaseSessionPutDtoToApiObject } from "~/mapper/pseconcretecasesession.mapper";
 import { pseFormationApiObjectToDto } from "~/mapper/pseformation.mapper";
-import { getPseConcreteCaseSessionById, updatePseConcreteCaseSession } from "~/services/pseconcretecasesession.server";
-import { getPseFormationByPseConcreteCaseSessionId } from '~/services/pseformation.server';
-import { assertUserHasAccessToFormationAsTeacher } from "~/services/security.server";
-import { requireUser } from "~/services/session.server";
-import { generateAria } from "~/utils/form";
-import { getParamsOrFail } from '~/utils/remix.params';
+import { getPseConcreteCaseSessionById, updatePseConcreteCaseSession } from "~/service/pseconcretecasesession.server";
+import { getPseFormationByPseConcreteCaseSessionId } from '~/service/pseformation.server';
+import { assertUserHasAccessToFormationAsTeacher } from "~/service/security.server";
+import { requireUser } from "~/service/session.server";
+import { generateAria } from "~/util/form";
+import { getParamsOrFail } from '~/util/remix.params';
 
 // update PSE concrete case session
 

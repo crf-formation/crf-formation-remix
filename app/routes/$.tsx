@@ -3,7 +3,7 @@
 //
 import type { LoaderArgs, MetaFunction } from "@remix-run/node";
 import { json } from "@remix-run/node";
-import ErrorPageContainer from "~/components/layout/ErrorPageContainer";
+import ErrorPageContainer from "~/component/layout/ErrorPageContainer";
 
 export async function loader({ request }: LoaderArgs) {
   return json({})

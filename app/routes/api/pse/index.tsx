@@ -6,10 +6,10 @@ import type { SecurityFunction } from "~/constants/remix";
 import type { PseFormationPostDto } from "~/dto/pseformation.dto";
 import { paginateEntityToApiObject } from "~/mapper/abstract.mapper";
 import { dataToPseFormationPostDto, pseFormationApiObjectToDto, pseFormationPostDtoToApiObject } from "~/mapper/pseformation.mapper";
-import { createPseFormation, getPseFormations } from "~/services/pseformation.server";
-import { requireAdmin } from "~/services/session.server";
-import { namedAction } from "~/utils/named-actions";
-import { getSearchParamsOrFail } from "~/utils/remix.params";
+import { createPseFormation, getPseFormations } from "~/service/pseformation.server";
+import { requireAdmin } from "~/service/session.server";
+import { namedAction } from "~/util/named-actions";
+import { getSearchParamsOrFail } from "~/util/remix.params";
 
 const URLSearchParamsSchema = z.object({
   page: z.number().default(0),

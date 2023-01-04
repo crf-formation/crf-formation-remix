@@ -3,9 +3,9 @@ import { json } from "@remix-run/node";
 import { z } from "zod";
 import { paginateEntityToApiObject } from "~/mapper/abstract.mapper";
 import { placeApiObjectToDto } from "~/mapper/place.mapper";
-import { getPlaces } from "~/services/place.server";
-import { requireAdmin } from "~/services/session.server";
-import { getSearchParamsOrFail } from "~/utils/remix.params";
+import { getPlaces } from "~/service/place.server";
+import { requireAdmin } from "~/service/session.server";
+import { getSearchParamsOrFail } from "~/util/remix.params";
 
 const URLSearchParamsSchema = z.object({
   page: z.number().default(0),

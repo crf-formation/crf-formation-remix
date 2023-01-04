@@ -1,24 +1,24 @@
-import { Typography, Box, Stack, Checkbox, FormControlLabel } from "@mui/material";
-import type { Params} from "@remix-run/react";
+import { Box, Checkbox, FormControlLabel, Stack, Typography } from "@mui/material";
+import type { Params } from "@remix-run/react";
 import { useLoaderData } from "@remix-run/react";
-import type { LoaderArgs} from "@remix-run/server-runtime";
+import type { LoaderArgs } from "@remix-run/server-runtime";
 import { json } from "@remix-run/server-runtime";
+import { groupBy, map } from "lodash";
 import { z } from "zod";
-import { map, groupBy } from "lodash";
-import Section from "~/components/layout/Section";
-import { pseUserTechniqueApiObjectToDto } from "~/mapper/pseusertechnique.mapper";
-import { getPseUserTechniquesForUser } from "~/services/pseusertechniques.server";
+import type { PseFormationApiObject } from "~/apiobject/pseformation.apiobject";
 import type { PseUserTechniqueApiObject } from "~/apiobject/pseusertechnique.apiobject";
-import { getPseModules } from "~/services/psemodule.server";
-import { pseModuleApiObjectToDto } from "~/mapper/psemodule.mapper";
+import Section from "~/component/layout/Section";
+import type { SecurityFunction } from "~/constants/remix";
 import type { PseModuleDto } from "~/dto/psemodule.dto";
 import type { PseUserTechniqueDto } from "~/dto/pseusertechnique.dto";
-import type { PseFormationApiObject } from "~/apiobject/pseformation.apiobject";
-import type { SecurityFunction } from "~/constants/remix";
-import { getPseFormationById } from "~/services/pseformation.server";
-import { assertUserHasAccessToFormationAsTeacher } from "~/services/security.server";
-import { requireUser } from "~/services/session.server";
-import { getParamsOrFail } from "~/utils/remix.params";
+import { pseModuleApiObjectToDto } from "~/mapper/psemodule.mapper";
+import { pseUserTechniqueApiObjectToDto } from "~/mapper/pseusertechnique.mapper";
+import { getPseFormationById } from "~/service/pseformation.server";
+import { getPseModules } from "~/service/psemodule.server";
+import { getPseUserTechniquesForUser } from "~/service/pseusertechniques.server";
+import { assertUserHasAccessToFormationAsTeacher } from "~/service/security.server";
+import { requireUser } from "~/service/session.server";
+import { getParamsOrFail } from "~/util/remix.params";
 
 const ParamsSchema = z.object({
   formationId: z.string(),

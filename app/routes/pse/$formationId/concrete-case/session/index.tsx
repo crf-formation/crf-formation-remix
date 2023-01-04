@@ -1,30 +1,30 @@
 import {
-  Table,
-  TableHead,
-  TableRow,
-  TableCell,
-  TableBody,
-  Button,
-  Link,
-  TableContainer,
+    Button,
+    Link,
+    Table,
+    TableBody,
+    TableCell,
+    TableContainer,
+    TableHead,
+    TableRow,
 } from "@mui/material";
-import type { Params} from "@remix-run/react";
+import type { Params } from "@remix-run/react";
 import { useLoaderData } from "@remix-run/react";
 import type { LoaderArgs, MetaFunction } from "@remix-run/server-runtime";
 import { json } from "@remix-run/server-runtime";
 import { z } from "zod";
 import type { PseFormationApiObject } from "~/apiobject/pseformation.apiobject";
-import PageContainer from "~/components/layout/PageContainer";
-import PageTitle from "~/components/layout/PageTitle";
-import Section from "~/components/layout/Section";
+import PageContainer from "~/component/layout/PageContainer";
+import PageTitle from "~/component/layout/PageTitle";
+import Section from "~/component/layout/Section";
 import type { SecurityFunction } from "~/constants/remix";
 import { paginateApiObjectToDto } from "~/mapper/abstract.mapper";
 import { pseConcreteCaseSessionApiObjectToDto } from "~/mapper/pseconcretecasesession.mapper";
-import { getPseFormationConcreteCaseSessions } from "~/services/pseconcretecasesession.server";
-import { findPseFormationById } from "~/services/pseformation.server";
-import { assertUserHasAccessToFormationAsTeacher } from "~/services/security.server";
-import { requireUser } from "~/services/session.server";
-import { getParamsOrFail, getSearchParamsOrFail } from "~/utils/remix.params";
+import { getPseFormationConcreteCaseSessions } from "~/service/pseconcretecasesession.server";
+import { findPseFormationById } from "~/service/pseformation.server";
+import { assertUserHasAccessToFormationAsTeacher } from "~/service/security.server";
+import { requireUser } from "~/service/session.server";
+import { getParamsOrFail, getSearchParamsOrFail } from "~/util/remix.params";
 
 const ParamsSchema = z.object({
   formationId: z.string(),

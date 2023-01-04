@@ -1,20 +1,20 @@
 import type { User as UserEntity } from "@prisma/client";
 import type {
-  UserApiObject,
-  UserPostApiObject,
-  UserPutApiObject,
-  UserRoleApiEnum,
-  UserStateApiEnum,
+    UserApiObject,
+    UserPostApiObject,
+    UserPutApiObject,
+    UserRoleApiEnum,
+    UserStateApiEnum,
 } from "~/apiobject/user.apiobject";
 import type {
-  UserDto,
-  UserMeDto,
-  UserPostDto,
-  UserPutDto,
-  UserRoleDtoEnum,
-  UserStateDtoEnum,
+    UserDto,
+    UserMeDto,
+    UserPostDto,
+    UserPutDto,
+    UserRoleDtoEnum,
+    UserStateDtoEnum,
 } from "~/dto/user.dto";
-import { assertEnum } from "~/utils/enum";
+import { assertEnum } from "~/util/enum";
 
 export function userPostDtoToApiObject(
   dto: UserPostDto

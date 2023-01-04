@@ -1,19 +1,19 @@
 import { Link, Table, TableBody, TableCell, TableHead, TableRow } from "@mui/material";
 import type { LoaderArgs, MetaFunction } from "@remix-run/node";
 import { json } from "@remix-run/node";
-import type { Params} from '@remix-run/react';
+import type { Params } from '@remix-run/react';
 import { useLoaderData } from '@remix-run/react';
 import { z } from "zod";
 import type { UserApiObject } from "~/apiobject/user.apiobject";
-import PageContainer from "~/components/layout/PageContainer";
-import PageTitle from "~/components/layout/PageTitle";
-import Section from "~/components/layout/Section";
+import PageContainer from "~/component/layout/PageContainer";
+import PageTitle from "~/component/layout/PageTitle";
+import Section from "~/component/layout/Section";
 import type { SecurityFunction } from "~/constants/remix";
 import { paginateApiObjectToDto } from "~/mapper/abstract.mapper";
 import { pseFormationApiObjectToDto } from "~/mapper/pseformation.mapper";
-import { getUserPseFormations } from "~/services/pseformation.server";
-import { requireUser } from '~/services/session.server';
-import { getSearchParamsOrFail } from "~/utils/remix.params";
+import { getUserPseFormations } from "~/service/pseformation.server";
+import { requireUser } from '~/service/session.server';
+import { getSearchParamsOrFail } from "~/util/remix.params";
 
 const URLSearchParamsSchema = z.object({
   page: z.number().default(0),

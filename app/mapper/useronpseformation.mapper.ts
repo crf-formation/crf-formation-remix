@@ -1,16 +1,16 @@
-import type { UserOnPseFormationEntity } from "~/entity";
 import type {
-  UserOnPseFormationApiObject,
-  UserOnPseFormationPutApiObject,
-  UserOnPseFormationRoleApiEnum,
+    UserOnPseFormationApiObject,
+    UserOnPseFormationPutApiObject,
+    UserOnPseFormationRoleApiEnum,
 } from "~/apiobject/useronpseformation.apiobject";
 import type {
-  UserOnPseFormationDto,
-  UserOnPseFormationPutDto,
-  UserOnPseFormationRoleDtoEnum,
+    UserOnPseFormationDto,
+    UserOnPseFormationPutDto,
+    UserOnPseFormationRoleDtoEnum,
 } from "~/dto/useronpseformation.dto";
+import type { UserOnPseFormationEntity } from "~/entity";
+import { assertEnum } from "~/util/enum";
 import { userApiObjectToDto, userEntityToApiObject } from "./user.mapper";
-import { assertEnum } from "~/utils/enum";
 
 export function userOnPseFormationDataToPutDto(
   data: any,

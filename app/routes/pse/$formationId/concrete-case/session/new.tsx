@@ -7,23 +7,23 @@ import { json, redirect } from "@remix-run/server-runtime";
 import { useRef } from "react";
 import { z } from "zod";
 import type { PseFormationApiObject } from "~/apiobject/pseformation.apiobject";
-import FormTextField from "~/components/form/FormTextField";
-import FormView from "~/components/form/FormView";
-import PageContainer from "~/components/layout/PageContainer";
-import PageTitle from "~/components/layout/PageTitle";
-import Section from "~/components/layout/Section";
-import Callout from "~/components/typography/Callout";
+import FormTextField from "~/component/form/FormTextField";
+import FormView from "~/component/form/FormView";
+import PageContainer from "~/component/layout/PageContainer";
+import PageTitle from "~/component/layout/PageTitle";
+import Section from "~/component/layout/Section";
+import Callout from "~/component/typography/Callout";
 import type { SecurityFunction } from "~/constants/remix";
 import type { PseConcreteCaseSessionPostDto } from "~/dto/pseconcretecasesession.dto";
 import { validateForm } from "~/form/abstract";
 import { pseConcreteCaseSessionPostDtoValidator } from "~/form/pseconcretecasesession.form";
 import useFormFocusError from "~/hooks/useFormFocusError";
 import { pseConcreteCaseSessionPostDtoToApiObject } from "~/mapper/pseconcretecasesession.mapper";
-import { createPseConcreteCaseSession } from "~/services/pseconcretecasesession.server";
-import { findPseFormationById } from "~/services/pseformation.server";
-import { assertUserHasAccessToFormationAsTeacher } from "~/services/security.server";
-import { requireUser } from "~/services/session.server";
-import { getParamsOrFail } from "~/utils/remix.params";
+import { createPseConcreteCaseSession } from "~/service/pseconcretecasesession.server";
+import { findPseFormationById } from "~/service/pseformation.server";
+import { assertUserHasAccessToFormationAsTeacher } from "~/service/security.server";
+import { requireUser } from "~/service/session.server";
+import { getParamsOrFail } from "~/util/remix.params";
 
 const ParamsSchema = z.object({
   formationId: z.string(),

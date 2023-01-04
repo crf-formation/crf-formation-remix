@@ -10,11 +10,11 @@ import { z } from "zod";
 import type { PseConcreteCaseSessionApiObject } from "~/apiobject/pseconcretecasesession.apiobject";
 import type { PseFormationApiObject } from "~/apiobject/pseformation.apiobject";
 import type { UserApiObject } from "~/apiobject/user.apiobject";
-import PageAction from "~/components/layout/PageAction";
-import PageContainer from "~/components/layout/PageContainer";
-import PageTitle from "~/components/layout/PageTitle";
-import Section from "~/components/layout/Section";
-import Callout from '~/components/typography/Callout';
+import PageAction from "~/component/layout/PageAction";
+import PageContainer from "~/component/layout/PageContainer";
+import PageTitle from "~/component/layout/PageTitle";
+import Section from "~/component/layout/Section";
+import Callout from '~/component/typography/Callout';
 import type { SecurityFunction } from "~/constants/remix";
 import type { PseConcreteCaseGroupDto } from '~/dto/pseconcretecasegroup.dto';
 import type { PseConcreteCaseSessionGroupOrderDto } from '~/dto/pseconcretecasesession.dto';
@@ -22,12 +22,12 @@ import type { PseConcreteCaseSituationDto, PseSituationConcreteCaseGroupDto } fr
 import { pseConcreteCaseSessionApiObjectToDto, pseConcreteCaseSessionGroupOrderApiObjectToDto } from "~/mapper/pseconcretecasesession.mapper";
 import { pseConcreteCaseSituationApiObjectToDto } from '~/mapper/pseconcretecasesituation.mapper';
 import { pseFormationApiObjectToDto } from "~/mapper/pseformation.mapper";
-import { getPseConcreteCaseSessionById, getPseConcreteCaseSituationsGroupsOrder } from "~/services/pseconcretecasesession.server";
-import { getPseConcreteCaseSituationsForPseConcreteCaseSessionId } from '~/services/pseconcretecasesituation.server';
-import { getPseFormationByPseConcreteCaseSessionId } from '~/services/pseformation.server';
-import { assertUserHasAccessToFormationAsTeacher } from "~/services/security.server";
-import { requireUser } from "~/services/session.server";
-import { getParamsOrFail } from '~/utils/remix.params';
+import { getPseConcreteCaseSessionById, getPseConcreteCaseSituationsGroupsOrder } from "~/service/pseconcretecasesession.server";
+import { getPseConcreteCaseSituationsForPseConcreteCaseSessionId } from '~/service/pseconcretecasesituation.server';
+import { getPseFormationByPseConcreteCaseSessionId } from '~/service/pseformation.server';
+import { assertUserHasAccessToFormationAsTeacher } from "~/service/security.server";
+import { requireUser } from "~/service/session.server";
+import { getParamsOrFail } from '~/util/remix.params';
 
 
 // GET PSE concrete case sessions

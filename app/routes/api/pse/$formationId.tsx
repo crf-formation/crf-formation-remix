@@ -6,10 +6,10 @@ import type { PseFormationApiObject } from "~/apiobject/pseformation.apiobject";
 import type { SecurityFunction } from "~/constants/remix";
 import type { PseFormationPutDto } from "~/dto/pseformation.dto";
 import { dataToPseFormationPutDto, pseFormationApiObjectToDto, pseFormationPutDtoToApiObject } from "~/mapper/pseformation.mapper";
-import { findPseFormationById, getPseFormationById, updatePseFormation } from "~/services/pseformation.server";
-import { requireAdmin } from "~/services/session.server";
-import { namedAction } from "~/utils/named-actions";
-import { getParamsOrFail } from "~/utils/remix.params";
+import { findPseFormationById, getPseFormationById, updatePseFormation } from "~/service/pseformation.server";
+import { requireAdmin } from "~/service/session.server";
+import { namedAction } from "~/util/named-actions";
+import { getParamsOrFail } from "~/util/remix.params";
 
 const ParamsSchema = z.object({
   formationId: z.string(),

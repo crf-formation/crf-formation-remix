@@ -1,17 +1,17 @@
 import Brightness2Icon from "@mui/icons-material/Brightness2";
 import Brightness7Icon from "@mui/icons-material/Brightness7";
 import {
-	Box, IconButton,
-	Link as MuiLink, Tooltip,
-	Typography
+    Box, IconButton,
+    Link as MuiLink, Tooltip,
+    Typography
 } from "@mui/material";
 import { json } from "@remix-run/node";
 import { Form, Link as RmxLink, useLocation } from "@remix-run/react";
 import type { LoaderArgs, MetaFunction } from "@remix-run/server-runtime";
-import Main from "~/components/layout/Main";
+import Main from "~/component/layout/Main";
 import useRootData from "~/hooks/useRootData";
-import { addFlashMessage } from "~/services/flash.server";
-import { commitSession, requireUser } from "~/services/session.server";
+import { addFlashMessage } from "~/service/flash.server";
+import { commitSession, requireUser } from "~/service/session.server";
 
 export async function loader({ request }: LoaderArgs) {
   const user = await requireUser(request)

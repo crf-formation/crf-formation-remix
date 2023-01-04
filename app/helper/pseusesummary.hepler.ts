@@ -1,13 +1,13 @@
+import { sample } from 'lodash';
+import type { PseCompetenceApiObject } from '~/apiobject/psecompetence.apiobject';
 import type { PseUserPreparatoryWorkApiObject } from '~/apiobject/pseformationpreparatorywork.apiobject';
 import type { PseUserTechniqueApiObject } from '~/apiobject/pseusertechnique.apiobject';
-import { getPreparatoryWorksForUser } from '~/services/pseformationpreparatorywork.server';
-import { getPseUserTechniquesForUser } from '~/services/pseusertechniques.server';
-import type { PseUserSummaryApiObject, PseUserSummaryConcreteCaseApiObject, PseUserSummaryConcreteCaseModuleApiObject, ConcreteCaseCompetenceResultApiObject, PseUserSummaryPreparatoryWorkApiObject, PseUserSummaryTechniqueApiObject } from '../apiobject/pseusesummary.apiobject';
+import { getPseCompetences } from '~/service/psecompetence.server';
+import { getPreparatoryWorksForUser } from '~/service/pseformationpreparatorywork.server';
+import { getPseModules } from '~/service/psemodule.server';
+import { getPseUserTechniquesForUser } from '~/service/pseusertechniques.server';
 import type { PseModuleApiObject } from '../apiobject/psemodule.apiobject';
-import { getPseModules } from '~/services/psemodule.server';
-import type { PseCompetenceApiObject } from '~/apiobject/psecompetence.apiobject';
-import { getPseCompetences } from '~/services/psecompetence.server';
-import { sample } from 'lodash';
+import type { ConcreteCaseCompetenceResultApiObject, PseUserSummaryApiObject, PseUserSummaryConcreteCaseApiObject, PseUserSummaryConcreteCaseModuleApiObject, PseUserSummaryPreparatoryWorkApiObject, PseUserSummaryTechniqueApiObject } from '../apiobject/pseusesummary.apiobject';
 
 /**
  * Load the data and build the PseUserSummaryApiObject data.

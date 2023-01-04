@@ -3,19 +3,19 @@
 import type { LoaderArgs, MetaFunction } from "@remix-run/node";
 import { json } from "@remix-run/node";
 import { Admin, Resource } from "react-admin";
-import AdminMenu from "~/components/admin/AdminMenu";
-import PseFormationCreate from "~/components/admin/pseformation/PseFormationCreate";
-import PseFormationEdit from "~/components/admin/pseformation/PseFormationEdit";
-import PseFormationList from "~/components/admin/pseformation/PseFormationList";
-import PseFormationShow from "~/components/admin/pseformation/PseFormationShow";
-import UserEdit from "~/components/admin/user/UserEdit";
-import UserList from "~/components/admin/user/UserList";
-import UserShow from "~/components/admin/user/UserShow";
-import Main from "~/components/layout/Main";
-import Layout from "~/components/reactadmin/layout/Layout";
+import AdminMenu from "~/component/admin/AdminMenu";
+import PseFormationCreate from "~/component/admin/pseformation/PseFormationCreate";
+import PseFormationEdit from "~/component/admin/pseformation/PseFormationEdit";
+import PseFormationList from "~/component/admin/pseformation/PseFormationList";
+import PseFormationShow from "~/component/admin/pseformation/PseFormationShow";
+import UserEdit from "~/component/admin/user/UserEdit";
+import UserList from "~/component/admin/user/UserList";
+import UserShow from "~/component/admin/user/UserShow";
+import Main from "~/component/layout/Main";
+import Layout from "~/component/reactadmin/layout/Layout";
 import useTheme from "~/hooks/useTheme";
-import { requireAdmin } from "~/services/session.server";
-import dataProvider from "~/utils/dataProvider";
+import { requireAdmin } from "~/service/session.server";
+import dataProvider from "~/util/dataProvider";
 
 export async function loader({ request }: LoaderArgs) {
   await requireAdmin(request);

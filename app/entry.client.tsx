@@ -1,14 +1,14 @@
 // https://codesandbox.io/s/remix-mui-switch-theme-fixed-latest-mv73cj?file=/app/entry.client.tsx:1202-1221
+import { CacheProvider } from '@emotion/react';
 import { RemixBrowser } from "@remix-run/react";
-import { startTransition, StrictMode, useState } from "react";
+import { StrictMode, startTransition, useState } from "react";
 import { hydrateRoot } from "react-dom/client";
-import { CacheProvider  } from '@emotion/react';
-import { getCookie, getParsedCookie } from "~/utils/theme.client";
+import { getCookie, getParsedCookie } from "~/util/theme.client";
 
-import createEmotionCache from './utils/createEmotionCache';
-import { DEFAULT_THEME } from "~/constants";
 import type { ThemeNames } from "~/constants";
+import { DEFAULT_THEME } from "~/constants";
 import ClientStyleContext from "~/contexts/ClientStyleContext";
+import createEmotionCache from './utils/createEmotionCache';
 
 function ClientCacheProvider({ children }: React.PropsWithChildren<{}>) {
   const [cache, setCache] = useState(createEmotionCache());

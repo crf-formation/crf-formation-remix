@@ -2,7 +2,7 @@ import type { LoaderArgs, MetaFunction } from "@remix-run/node";
 
 import { Paper, Typography } from '@mui/material';
 import { json } from "@remix-run/node";
-import PageContainer from "~/components/layout/PageContainer";
+import PageContainer from "~/component/layout/PageContainer";
 
 export async function loader({ request }: LoaderArgs) {
   return json({

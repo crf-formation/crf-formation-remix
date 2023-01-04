@@ -1,4 +1,4 @@
-import type { ActionArgs, LoaderFunction, MetaFunction} from "@remix-run/node";
+import type { ActionArgs, LoaderFunction, MetaFunction } from "@remix-run/node";
 import { json, redirect } from "@remix-run/node";
 import type { Params } from "@remix-run/react";
 import { useActionData, useLoaderData } from "@remix-run/react";
@@ -6,10 +6,10 @@ import { z } from "zod";
 import type { PseConcreteCaseSessionApiObject } from "~/apiobject/pseconcretecasesession.apiobject";
 import type { PseFormationApiObject } from "~/apiobject/pseformation.apiobject";
 import type { UserApiObject } from "~/apiobject/user.apiobject";
-import PageContainer from "~/components/layout/PageContainer";
-import PageTitle from "~/components/layout/PageTitle";
-import Section from "~/components/layout/Section";
-import PseConcreteCaseSituationForm from "~/components/pse-concrete-case-situation/PseConcreteCaseSituationForm";
+import PageContainer from "~/component/layout/PageContainer";
+import PageTitle from "~/component/layout/PageTitle";
+import Section from "~/component/layout/Section";
+import PseConcreteCaseSituationForm from "~/component/pse-concrete-case-situation/PseConcreteCaseSituationForm";
 import type { SecurityFunction } from "~/constants/remix";
 import type { PseConcreteCaseSituationPostDto } from "~/dto/pseconcretecasesituation.dto";
 import { validateForm } from "~/form/abstract";
@@ -17,12 +17,12 @@ import { pseConcreteCaseSituationPostDtoValidator } from "~/form/pseconcretecase
 import { pseConcreteCaseSessionApiObjectToDto } from "~/mapper/pseconcretecasesession.mapper";
 import { pseConcreteCaseSituationPostDtoToApiObject } from "~/mapper/pseconcretecasesituation.mapper";
 import { pseFormationApiObjectToDto } from "~/mapper/pseformation.mapper";
-import { getPseConcreteCaseSessionById } from "~/services/pseconcretecasesession.server";
-import { createPseConcreteCaseSituation } from "~/services/pseconcretecasesituation.server";
-import { getPseFormationByPseConcreteCaseSessionId } from "~/services/pseformation.server";
-import { assertUserHasAccessToFormationAsTeacher } from "~/services/security.server";
-import { requireUser } from "~/services/session.server";
-import { getParamsOrFail } from '~/utils/remix.params';
+import { getPseConcreteCaseSessionById } from "~/service/pseconcretecasesession.server";
+import { createPseConcreteCaseSituation } from "~/service/pseconcretecasesituation.server";
+import { getPseFormationByPseConcreteCaseSessionId } from "~/service/pseformation.server";
+import { assertUserHasAccessToFormationAsTeacher } from "~/service/security.server";
+import { requireUser } from "~/service/session.server";
+import { getParamsOrFail } from '~/util/remix.params';
 
 const ParamsSchema = z.object({
   pseConcreteCaseSessionId: z.string(),

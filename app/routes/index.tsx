@@ -1,6 +1,6 @@
 import type { LoaderArgs, MetaFunction } from "@remix-run/node";
 import { redirect } from "@remix-run/node";
-import { requireUser } from "~/services/session.server";
+import { requireUser } from "~/service/session.server";
 
 // nothing yet on index redirect:
 // - loggedout: to login page

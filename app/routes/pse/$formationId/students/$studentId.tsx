@@ -1,23 +1,23 @@
 import { Grid, Link } from "@mui/material";
 import type { LoaderFunction, MetaFunction } from "@remix-run/node";
 import { json } from "@remix-run/node";
-import type { Params} from "@remix-run/react";
+import type { Params } from "@remix-run/react";
 import { Outlet, useLoaderData } from "@remix-run/react";
 import { z } from "zod";
 import type { PseFormationApiObject } from "~/apiobject/pseformation.apiobject";
-import AppTabsLink from "~/components/layout/AppTabsLink";
-import PageContainer from "~/components/layout/PageContainer";
-import PageTitle from "~/components/layout/PageTitle";
-import Section from "~/components/layout/Section";
+import AppTabsLink from "~/component/layout/AppTabsLink";
+import PageContainer from "~/component/layout/PageContainer";
+import PageTitle from "~/component/layout/PageTitle";
+import Section from "~/component/layout/Section";
 import type { SecurityFunction } from "~/constants/remix";
 import useUser from "~/hooks/useUser";
 import { pseFormationApiObjectToDto } from "~/mapper/pseformation.mapper";
 import { userOnPseFormationApiObjectToDto } from '~/mapper/useronpseformation.mapper';
-import { getPseFormationById } from "~/services/pseformation.server";
-import { assertUserHasAccessToFormationAsTeacher } from "~/services/security.server";
-import { requireUser } from "~/services/session.server";
-import { getUserOnPseFormationEntityById } from "~/services/useronpseformation.server";
-import { getParamsOrFail } from "~/utils/remix.params";
+import { getPseFormationById } from "~/service/pseformation.server";
+import { assertUserHasAccessToFormationAsTeacher } from "~/service/security.server";
+import { requireUser } from "~/service/session.server";
+import { getUserOnPseFormationEntityById } from "~/service/useronpseformation.server";
+import { getParamsOrFail } from "~/util/remix.params";
 
 // Note: not named index.tsx ont $studentId directory, because of the <Outlet />
 

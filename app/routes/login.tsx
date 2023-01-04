@@ -4,19 +4,19 @@ import { json, redirect } from "@remix-run/node";
 import { useActionData, useLoaderData, useSearchParams } from "@remix-run/react";
 import { useRef, useState } from "react";
 import { z } from "zod";
-import FormTextField from "~/components/form/FormTextField";
-import FormView from "~/components/form/FormView";
-import PasswordCheckView from "~/components/hibp/PasswordCheckView";
-import PageFullContentWithLogo from "~/components/layout/PageFullContentWithLogo";
+import FormTextField from "~/component/form/FormTextField";
+import FormView from "~/component/form/FormView";
+import PasswordCheckView from "~/component/hibp/PasswordCheckView";
+import PageFullContentWithLogo from "~/component/layout/PageFullContentWithLogo";
 import type { LoginDto } from "~/dto/login.dto";
 import { validateForm } from "~/form/abstract";
 import { loginValidator } from "~/form/login.form";
 import useFormFocusError from "~/hooks/useFormFocusError";
-import { createUserSession, getSession, getUserId } from "~/services/session.server";
-import { verifyLogin } from "~/services/user.server";
-import { createAuthenticityToken } from "~/utils/csrf.server";
-import { getSearchParamsOrFail } from "~/utils/remix.params";
-import { invalidFormResponse } from "~/utils/responses";
+import { createUserSession, getSession, getUserId } from "~/service/session.server";
+import { verifyLogin } from "~/service/user.server";
+import { createAuthenticityToken } from "~/util/csrf.server";
+import { getSearchParamsOrFail } from "~/util/remix.params";
+import { invalidFormResponse } from "~/util/responses";
 
 const URLSearchParamsSchema = z.object({
   redirectTo: z.string().default("/dashboard"),

@@ -1,26 +1,26 @@
 import { Box, Button, Stack, Table, TableBody, TableCell, TableHead, TableRow, TextField, Typography } from "@mui/material";
-import type { Params} from "@remix-run/react";
+import type { Params } from "@remix-run/react";
 import { useLoaderData } from "@remix-run/react";
 import type { LoaderArgs } from "@remix-run/server-runtime";
 import { json } from "@remix-run/server-runtime";
 import { z } from "zod";
 import type { PseFormationApiObject } from "~/apiobject/pseformation.apiobject";
-import Section from "~/components/layout/Section";
-import { BooleanText } from "~/components/typography/BooleanText";
-import Property from "~/components/typography/Property";
+import Section from "~/component/layout/Section";
+import { BooleanText } from "~/component/typography/BooleanText";
+import Property from "~/component/typography/Property";
 import type { SecurityFunction } from "~/constants/remix";
 import type { PseCompetenceDto } from "~/dto/psecompetence.dto";
 import type {
-  PseUserSummaryConcreteCaseDto,
-  PseUserSummaryPreparatoryWorkDto,
-  PseUserSummaryTechniqueDto,
+    PseUserSummaryConcreteCaseDto,
+    PseUserSummaryPreparatoryWorkDto,
+    PseUserSummaryTechniqueDto,
 } from "~/dto/pseusesummary.dto";
 import { pseUserSummaryApiObjectToDto } from "~/mapper/pseusersummary.mapper";
-import { getPseFormationById } from "~/services/pseformation.server";
-import { getPseUserSummary } from "~/services/pseusesummary.server";
-import { assertUserHasAccessToFormationAsTeacher } from "~/services/security.server";
-import { requireUser } from "~/services/session.server";
-import { getParamsOrFail } from "~/utils/remix.params";
+import { getPseFormationById } from "~/service/pseformation.server";
+import { getPseUserSummary } from "~/service/pseusesummary.server";
+import { assertUserHasAccessToFormationAsTeacher } from "~/service/security.server";
+import { requireUser } from "~/service/session.server";
+import { getParamsOrFail } from "~/util/remix.params";
 
 const ParamsSchema = z.object({
   formationId: z.string(),

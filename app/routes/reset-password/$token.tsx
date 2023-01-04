@@ -4,21 +4,21 @@ import { json, redirect } from "@remix-run/node";
 import { useActionData, useLoaderData } from "@remix-run/react";
 import { useRef, useState } from "react";
 import { z } from "zod";
-import FormTextField from "~/components/form/FormTextField";
-import FormView from "~/components/form/FormView";
-import PasswordCheckView from "~/components/hibp/PasswordCheckView";
-import PageFullContentWithLogo from "~/components/layout/PageFullContentWithLogo";
+import FormTextField from "~/component/form/FormTextField";
+import FormView from "~/component/form/FormView";
+import PasswordCheckView from "~/component/hibp/PasswordCheckView";
+import PageFullContentWithLogo from "~/component/layout/PageFullContentWithLogo";
 import type { PasswordResetDto } from "~/dto/user.dto";
 import { validateForm } from '~/form/abstract';
 import { passwordResetValidator } from "~/form/user.form";
 import useFormFocusError from "~/hooks/useFormFocusError";
-import type { ApiErrorException } from '~/services/api.error';
-import { addFlashMessage } from "~/services/flash.server";
-import { recoverPassword } from "~/services/passwordrecovery.server";
-import { commitSession, getSession, getUserId } from "~/services/session.server";
-import { getParamsOrFail, getSearchParamsOrFail } from "~/utils/remix.params";
-import { invalidFormResponse } from "~/utils/responses";
-import { badRequestWithFlash } from "~/utils/responsesError";
+import type { ApiErrorException } from '~/service/api.error';
+import { addFlashMessage } from "~/service/flash.server";
+import { recoverPassword } from "~/service/passwordrecovery.server";
+import { commitSession, getSession, getUserId } from "~/service/session.server";
+import { getParamsOrFail, getSearchParamsOrFail } from "~/util/remix.params";
+import { invalidFormResponse } from "~/util/responses";
+import { badRequestWithFlash } from "~/util/responsesError";
 
 const ParamsSchema = z.object({
   token: z.string(),

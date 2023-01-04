@@ -5,10 +5,10 @@ import { z } from "zod";
 import type { SecurityFunction } from "~/constants/remix";
 import type { UserPutDto } from "~/dto/user.dto";
 import { dataToUserPutDto, userApiObjectToDto, userPutDtoToApiObject } from "~/mapper/user.mapper";
-import { requireAdmin } from "~/services/session.server";
-import { findUserById, updateUser } from "~/services/user.server";
-import { namedAction } from "~/utils/named-actions";
-import { getParamsOrFail } from "~/utils/remix.params";
+import { requireAdmin } from "~/service/session.server";
+import { findUserById, updateUser } from "~/service/user.server";
+import { namedAction } from "~/util/named-actions";
+import { getParamsOrFail } from "~/util/remix.params";
 
 const ParamsSchema = z.object({
   userId: z.string(),

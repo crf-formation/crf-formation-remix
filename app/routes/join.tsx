@@ -6,20 +6,20 @@ import { useActionData, useLoaderData, useSearchParams } from "@remix-run/react"
 import { useRef } from "react";
 import { z } from "zod";
 import type { UserPostApiObject } from "~/apiobject/user.apiobject";
-import FormErrorHelperText from "~/components/form/FormErrorHelperText";
-import FormView from "~/components/form/FormView";
-import PageFullContentWithLogo from "~/components/layout/PageFullContentWithLogo";
+import FormErrorHelperText from "~/component/form/FormErrorHelperText";
+import FormView from "~/component/form/FormView";
+import PageFullContentWithLogo from "~/component/layout/PageFullContentWithLogo";
 import type { UserPostDto } from "~/dto/user.dto";
 import { validateForm } from "~/form/abstract";
 import { joinValidator } from "~/form/user.form";
 import useFormFocusError from "~/hooks/useFormFocusError";
 import { userPostDtoToApiObject } from "~/mapper/user.mapper";
-import { askForPasswordCreation } from "~/services/passwordrecovery.server";
-import { getUserId } from "~/services/session.server";
-import { createUser, findUserByEmail } from "~/services/user.server";
-import { generateAria } from "~/utils/form";
-import { getSearchParamsOrFail } from "~/utils/remix.params";
-import { invalidFormResponse } from "~/utils/responses";
+import { askForPasswordCreation } from "~/service/passwordrecovery.server";
+import { getUserId } from "~/service/session.server";
+import { createUser, findUserByEmail } from "~/service/user.server";
+import { generateAria } from "~/util/form";
+import { getSearchParamsOrFail } from "~/util/remix.params";
+import { invalidFormResponse } from "~/util/responses";
 
 const URLSearchParamsSchema = z.object({
   redirectTo: z.string().optional(),

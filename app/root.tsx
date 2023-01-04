@@ -10,19 +10,19 @@ import {
   redirect
 } from "@remix-run/node";
 import {
-  Link as RmxLink,
   Links,
   LiveReload,
   Meta,
   Outlet,
+  Link as RmxLink,
   Scripts,
   ScrollRestoration,
   useCatch, useLoaderData
 } from "@remix-run/react";
 import nProgressStyles from "nprogress/nprogress.css";
 import { useContext, useMemo } from "react";
-import { AuthenticityTokenProvider } from "~/components/csrf";
-import Layout from "~/components/layout/Layout";
+import { AuthenticityTokenProvider } from "~/component/csrf";
+import Layout from "~/component/layout/Layout";
 import ClientStyleContext from "~/contexts/ClientStyleContext";
 import type { ThemeNames } from "./constants";
 import { DEFAULT_THEME } from "./constants";
@@ -30,28 +30,28 @@ import useEnhancedEffect from "./hooks/useEnhancedEffect";
 import { commitSession, getMe, getSession } from "./services/session.server";
 import { getTheme } from "./themes";
 import { getUserTheme, themeCookie } from "./utils/theme.server";
-// import { getClientIPAddress } from "~/services/clientip.server"
+// import { getClientIPAddress } from "~/service/clientip.server"
 import { json } from "@remix-run/node";
 import type { ActionArgs } from '@remix-run/server-runtime';
-import { LoadingBar } from "~/components/layout/LoadingBar";
+import { LoadingBar } from "~/component/layout/LoadingBar";
 import useIsLoading from "~/hooks/useIsLoading";
-import { logger } from "~/services/logger";
+import { logger } from "~/service/logger";
+import { getPublicProperties } from '~/service/publicproperties.server';
+import DebugMatches from "./components/dev/DebugMatches";
 import ErrorPageContainer from "./components/layout/ErrorPageContainer";
 import FlashMessages from "./components/layout/FlashMessages";
 import { CSRF_SESSION_KEY } from "./constants/index.server";
 import type { Env } from "./constants/types";
+import type { PseFormationDto } from "./dto/pseformation.dto";
+import type { PublicPropertiesDto } from "./dto/publicproperties.dto";
 import type { UserMeDto } from "./dto/user.dto";
-import { getPublicProperties } from '~/services/publicproperties.server';
+import { pseFormationApiObjectToDto } from './mapper/pseformation.mapper';
 import { getBrowserEnv } from "./services/env.server";
 import type { FlashMessage } from "./services/flash.server";
 import { getFlashMessages } from "./services/flash.server";
+import { getCurrentPseFormationForUser } from "./services/pseformation.server";
 import type { Locales } from "./services/request.server";
 import { getClientLocales, isDesktop } from "./services/request.server";
-import DebugMatches from "./components/dev/DebugMatches";
-import type { PublicPropertiesDto } from "./dto/publicproperties.dto";
-import type { PseFormationDto } from "./dto/pseformation.dto";
-import { getCurrentPseFormationForUser } from "./services/pseformation.server";
-import { pseFormationApiObjectToDto } from './mapper/pseformation.mapper';
 
 export interface RootLoaderData {
   user: Optional<UserMeDto>;

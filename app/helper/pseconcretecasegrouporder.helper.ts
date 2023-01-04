@@ -2,7 +2,7 @@ import { find, sortBy } from "lodash";
 import type { PseConcreteCaseGroupApiObject } from "~/apiobject/pseconcretecasegroup.apiobject";
 import type { PseConcreteCaseSessionGroupOrderApiObject, PseConcreteCaseSessionGroupOrderSituationApiObject } from "~/apiobject/pseconcretecasesession.apiobject";
 import type { PseConcreteCaseSituationApiObject, PseSituationConcreteCaseGroupApiObject } from "~/apiobject/pseconcretecasesituation.apiobject";
-import { arrayGetDuplicates } from "~/utils/array";
+import { arrayGetDuplicates } from "~/util/array";
 
 
 export function buildPseConcreteCaseSituationsGroupsOrder(

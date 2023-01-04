@@ -1,11 +1,11 @@
 import { useFetcher } from "@remix-run/react";
-import type { LoaderArgs} from "@remix-run/server-runtime";
-import { json} from "@remix-run/server-runtime";
+import type { LoaderArgs } from "@remix-run/server-runtime";
+import { json } from "@remix-run/server-runtime";
 import { useEffect } from "react";
-import { requireUser } from "~/services/session.server";
-import { pseConcreteCaseTypeApiObjectToDto } from '../../mapper/pseconcretecasetype.mapper';
-import { getPseConcreteCaseTypes } from "~/services/pseconcretecasetypes.server";
 import type { PseConcreteCaseTypeDto } from "~/dto/pseconcretecasetype.dto";
+import { getPseConcreteCaseTypes } from "~/service/pseconcretecasetypes.server";
+import { requireUser } from "~/service/session.server";
+import { pseConcreteCaseTypeApiObjectToDto } from '../../mapper/pseconcretecasetype.mapper';
 
 export async function loader({ request }: LoaderArgs) {
   await requireUser(request);

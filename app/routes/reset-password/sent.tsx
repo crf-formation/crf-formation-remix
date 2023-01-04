@@ -1,8 +1,8 @@
 import { Box, Typography } from "@mui/material";
 import type { LoaderArgs, MetaFunction } from "@remix-run/node";
 import { json, redirect } from "@remix-run/node";
-import PageFullContentWithLogo from "~/components/layout/PageFullContentWithLogo";
-import { getUserId } from "~/services/session.server";
+import PageFullContentWithLogo from "~/component/layout/PageFullContentWithLogo";
+import { getUserId } from "~/service/session.server";
 
 export async function loader({ request }: LoaderArgs) {
   const userId = await getUserId(request);

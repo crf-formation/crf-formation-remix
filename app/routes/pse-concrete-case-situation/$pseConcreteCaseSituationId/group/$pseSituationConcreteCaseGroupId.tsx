@@ -9,24 +9,24 @@ import type { PseConcreteCaseSessionApiObject } from "~/apiobject/pseconcretecas
 import type { PseConcreteCaseSituationApiObject } from "~/apiobject/pseconcretecasesituation.apiobject";
 import type { PseFormationApiObject } from "~/apiobject/pseformation.apiobject";
 import type { UserApiObject } from "~/apiobject/user.apiobject";
-import PageContainer from "~/components/layout/PageContainer";
-import PageTitle from "~/components/layout/PageTitle";
-import Section from "~/components/layout/Section";
-import PseConcreteCaseSituationEvaluateGroupForm from "~/components/pse-concrete-case-situation/PseConcreteCaseSituationEvaluateGroupForm";
+import PageContainer from "~/component/layout/PageContainer";
+import PageTitle from "~/component/layout/PageTitle";
+import Section from "~/component/layout/Section";
+import PseConcreteCaseSituationEvaluateGroupForm from "~/component/pse-concrete-case-situation/PseConcreteCaseSituationEvaluateGroupForm";
 import type { SecurityFunction } from "~/constants/remix";
 import { pseCompetenceApiObjectToDto } from "~/mapper/psecompetence.mapper";
 import { pseConcreteCaseGroupApiObjectToDto } from "~/mapper/pseconcretecasegroup.mapper";
 import { pseConcreteCaseSessionApiObjectToDto } from "~/mapper/pseconcretecasesession.mapper";
 import { pseConcreteCaseSituationApiObjectToDto } from "~/mapper/pseconcretecasesituation.mapper";
 import { pseFormationApiObjectToDto } from "~/mapper/pseformation.mapper";
-import { getPseCompetences } from "~/services/psecompetence.server";
-import { getPseConcreteCaseGroup } from "~/services/pseconcretecasegroup.server";
-import { getPseConcreteCaseSessionById } from "~/services/pseconcretecasesession.server";
-import { getPseConcreteCaseSituation } from "~/services/pseconcretecasesituation.server";
-import { getPseFormationByPseConcreteCaseSessionId } from "~/services/pseformation.server";
-import { assertUserHasAccessToFormationAsTeacher } from "~/services/security.server";
-import { requireUser } from "~/services/session.server";
-import { getParamsOrFail } from '~/utils/remix.params';
+import { getPseCompetences } from "~/service/psecompetence.server";
+import { getPseConcreteCaseGroup } from "~/service/pseconcretecasegroup.server";
+import { getPseConcreteCaseSessionById } from "~/service/pseconcretecasesession.server";
+import { getPseConcreteCaseSituation } from "~/service/pseconcretecasesituation.server";
+import { getPseFormationByPseConcreteCaseSessionId } from "~/service/pseformation.server";
+import { assertUserHasAccessToFormationAsTeacher } from "~/service/security.server";
+import { requireUser } from "~/service/session.server";
+import { getParamsOrFail } from '~/util/remix.params';
 
 const ParamsSchema = z.object({
   pseConcreteCaseSituationId: z.string(),

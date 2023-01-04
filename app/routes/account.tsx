@@ -22,27 +22,27 @@ import type {
 } from "@remix-run/server-runtime";
 import { json, redirect } from "@remix-run/server-runtime";
 import type { UserApiObject } from "~/apiobject/user.apiobject";
-import PasswordForm from "~/components/account/PasswordForm";
-import ProfileForm from "~/components/account/ProfileForm";
-import Section from "~/components/layout/Section";
+import PasswordForm from "~/component/account/PasswordForm";
+import ProfileForm from "~/component/account/ProfileForm";
+import Section from "~/component/layout/Section";
 import type { SecurityFunction } from "~/constants/remix";
 import type { UserPutDto } from "~/dto/user.dto";
 import { validateForm } from '~/form/abstract';
 import useRootData from "~/hooks/useRootData";
-import { addFlashMessage } from "~/services/flash.server";
+import { addFlashMessage } from "~/service/flash.server";
 import {
     commitSession,
     getSession,
     requireUser,
-} from "~/services/session.server";
+} from "~/service/session.server";
 import {
     updatePassword,
     updateUser,
     verifyLogin,
-} from "~/services/user.server";
-import { verifyAuthenticityToken } from "~/utils/csrf.server";
-import { namedActionWithFormType } from "~/utils/named-actions";
-import { badRequest } from "~/utils/responses";
+} from "~/service/user.server";
+import { verifyAuthenticityToken } from "~/util/csrf.server";
+import { namedActionWithFormType } from "~/util/named-actions";
+import { badRequest } from "~/util/responses";
 import PageContainer from "../components/layout/PageContainer";
 import { passwordModificationValidator, profileValidator } from '../form/user.form';
 import {

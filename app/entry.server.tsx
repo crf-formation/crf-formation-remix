@@ -1,16 +1,15 @@
 // based on https://github.com/mui/material-ui/blob/master/examples/remix-with-typescript/app/entry.server.tsx
-import * as React from 'react';
-import { renderToString } from 'react-dom/server';
-import type { EntryContext } from "@remix-run/node"
-import { Response } from "@remix-run/node";
-import { RemixServer } from "@remix-run/react";
-import createEmotionCache from './utils/createEmotionCache';
-import CssBaseline from '@mui/material/CssBaseline';
-import { ThemeProvider } from '@mui/material/styles';
 import { CacheProvider } from '@emotion/react';
 import createEmotionServer from '@emotion/server/create-instance';
-import { getUserTheme, themeCookie } from '~/utils/theme.server';
+import CssBaseline from '@mui/material/CssBaseline';
+import { ThemeProvider } from '@mui/material/styles';
+import type { EntryContext } from "@remix-run/node";
+import { Response } from "@remix-run/node";
+import { RemixServer } from "@remix-run/react";
+import { renderToString } from 'react-dom/server';
 import { getTheme } from '~/themes';
+import { getUserTheme, themeCookie } from '~/util/theme.server';
+import createEmotionCache from './utils/createEmotionCache';
 
 // const ABORT_DELAY = 5000;
 

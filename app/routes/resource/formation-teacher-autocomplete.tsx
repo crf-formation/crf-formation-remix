@@ -1,16 +1,16 @@
 import { useFetcher } from "@remix-run/react";
-import type { LoaderArgs} from "@remix-run/server-runtime";
-import { json} from "@remix-run/server-runtime";
+import type { LoaderArgs } from "@remix-run/server-runtime";
+import { json } from "@remix-run/server-runtime";
+import { isEmpty } from "lodash";
 import { useEffect } from "react";
 import { z } from "zod";
 import type { UserDto } from "~/dto/user.dto";
 import { paginateEntityToApiObject } from "~/mapper/abstract.mapper";
 import { userApiObjectToDto } from "~/mapper/user.mapper";
-import { requireUser } from "~/services/session.server";
-import { getFormationTeachers, searchFormationTeachers } from "~/services/user.server";
-import { getSearchParamsOrFail } from "~/utils/remix.params";
+import { requireUser } from "~/service/session.server";
+import { getFormationTeachers, searchFormationTeachers } from "~/service/user.server";
+import { getSearchParamsOrFail } from "~/util/remix.params";
 import type { PaginateObject } from '../../constants/types';
-import { isEmpty } from "lodash";
 
 const URLSearchParamsSchema = z.object({
 	formationId: z.string(),

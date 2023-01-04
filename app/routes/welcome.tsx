@@ -2,9 +2,9 @@ import type { LoaderArgs, MetaFunction } from "@remix-run/node";
 
 import { Paper, Typography } from '@mui/material';
 import { json } from "@remix-run/node";
-import PageContainer from "~/components/layout/PageContainer";
+import PageContainer from "~/component/layout/PageContainer";
 import useUser from "~/hooks/useUser";
-import { requireUser } from "~/services/session.server";
+import { requireUser } from "~/service/session.server";
 
 export async function loader({ request }: LoaderArgs) {
   const user = await requireUser(request);

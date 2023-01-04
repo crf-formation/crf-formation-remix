@@ -1,23 +1,23 @@
-import type { Params} from "@remix-run/react";
-import { useLoaderData } from "@remix-run/react";
-import type { LoaderArgs } from "@remix-run/server-runtime";
-import { json } from "@remix-run/server-runtime";
-import { z } from "zod";
-import Section from "~/components/layout/Section";
-import { pseUserPreparatoryWorkApiObjectToDto } from "~/mapper/pseformationpreparatorywork.mapper";
-import { getPreparatoryWorksForUser } from "~/services/pseformationpreparatorywork.server";
+import { Checkbox, FormControlLabel } from "@mui/material";
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
-import { FormControlLabel, Checkbox } from "@mui/material";
-import { getParamsOrFail } from "~/utils/remix.params";
+import type { Params } from "@remix-run/react";
+import { useLoaderData } from "@remix-run/react";
+import type { LoaderArgs } from "@remix-run/server-runtime";
+import { json } from "@remix-run/server-runtime";
+import { z } from "zod";
 import type { PseFormationApiObject } from "~/apiobject/pseformation.apiobject";
+import Section from "~/component/layout/Section";
 import type { SecurityFunction } from "~/constants/remix";
-import { getPseFormationById } from "~/services/pseformation.server";
-import { requireUser } from "~/services/session.server";
-import { assertUserHasAccessToFormationAsTeacher } from "~/services/security.server";
+import { pseUserPreparatoryWorkApiObjectToDto } from "~/mapper/pseformationpreparatorywork.mapper";
+import { getPseFormationById } from "~/service/pseformation.server";
+import { getPreparatoryWorksForUser } from "~/service/pseformationpreparatorywork.server";
+import { assertUserHasAccessToFormationAsTeacher } from "~/service/security.server";
+import { requireUser } from "~/service/session.server";
+import { getParamsOrFail } from "~/util/remix.params";
 
 const ParamsSchema = z.object({
   formationId: z.string(),

@@ -7,8 +7,8 @@
 import { installGlobals } from "@remix-run/node";
 import { parse } from "cookie";
 
-import { createUser } from "~/services/user.server";
-import { createUserSession } from "~/services/session.server";
+import { createUserSession } from "~/service/session.server";
+import { createUser } from "~/service/user.server";
 
 installGlobals();
 
