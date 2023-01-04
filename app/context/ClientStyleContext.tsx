@@ -1,8 +1,8 @@
 import { createContext } from "react";
 
-import { DEFAULT_THEME } from "~/constants";
+import { DEFAULT_THEME } from "~/constant";
 
-import type { ThemeNames } from "~/constants";
+import type { ThemeNames } from "~/constant";
 
 export interface ClientStyleContextData {
   reset: () => void;

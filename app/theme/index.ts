@@ -1,9 +1,9 @@
-import darkTheme from "~/themes/dark";
-import lightTheme from "~/themes/light";
-import { DEFAULT_THEME, CLOSED_DRAWER_WIDTH, DRAWER_WIDTH } from '~/constants';
 import type { Theme, ThemeOptions } from '@mui/material/styles';
+import { CLOSED_DRAWER_WIDTH, DEFAULT_THEME, DRAWER_WIDTH } from '~/constant';
+import darkTheme from "~/theme/dark";
+import lightTheme from "~/theme/light";
 
-import type { ThemeNames } from "~/constants";
+import type { ThemeNames } from "~/constant";
 
 const themes: Record<ThemeNames, Theme> = {
   dark: darkTheme,

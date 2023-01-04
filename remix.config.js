@@ -4,7 +4,7 @@
 module.exports = {
   appDirectory: "app",
   cacheDirectory: "./node_modules/.cache/remix",
-  ignoredRouteFiles: ["**/.*", "**/*.css", "**/*.test.{js,jsx,ts,tsx}", "fence.json"],
+  ignoredRouteFiles: ["**/.*", "**/*.css", "**/*.test.{js,jsx,ts,tsx}", "**/fence.json"],
   devServerPort: 8002,
   // fix the "Error [ERR_REQUIRE_ESM]: require() of ES Module" errror
   // https://remix.run/docs/en/v1/pages/gotchas#importing-esm-packages

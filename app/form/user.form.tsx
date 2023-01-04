@@ -1,6 +1,6 @@
 import { withZod } from "@remix-validated-form/with-zod";
 import { z } from "zod";
-import { USER_PASSWORD_MIN_LENGTH } from "~/constants";
+import { USER_PASSWORD_MIN_LENGTH } from "~/constant";
 
 //
 // join

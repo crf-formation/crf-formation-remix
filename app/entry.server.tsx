@@ -7,9 +7,9 @@ import type { EntryContext } from "@remix-run/node";
 import { Response } from "@remix-run/node";
 import { RemixServer } from "@remix-run/react";
 import { renderToString } from 'react-dom/server';
-import { getTheme } from '~/themes';
+import { getTheme } from '~/theme';
 import { getUserTheme, themeCookie } from '~/util/theme.server';
-import createEmotionCache from './utils/createEmotionCache';
+import createEmotionCache from './util/createEmotionCache';
 
 // const ABORT_DELAY = 5000;
 

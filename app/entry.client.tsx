@@ -5,8 +5,8 @@ import { StrictMode, startTransition, useState } from "react";
 import { hydrateRoot } from "react-dom/client";
 import { getCookie, getParsedCookie } from "~/util/theme.client";
 
-import type { ThemeNames } from "~/constants";
-import { DEFAULT_THEME } from "~/constants";
+import type { ThemeNames } from "~/constant";
+import { DEFAULT_THEME } from "~/constant";
 import ClientStyleContext from "~/contexts/ClientStyleContext";
 import createEmotionCache from './utils/createEmotionCache';
 
