@@ -164,6 +164,9 @@ model PseCompetence {
 
   description String
 
+  requiredCountToValidatePseGlobal Int
+  requiredCountToValidatePse1 Int
+
   pseConcreteCaseTypes PseCompetencesOnPseConcreteCaseTypes[]
   pseUserConcreteCaseCompetence PseUserConcreteCaseCompetence[]
 }

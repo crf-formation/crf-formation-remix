@@ -76,15 +76,56 @@ async function seedPseTechniques() {
 }
 
 async function seedPseCompetence() {
+  // TODO: requiredCountToValidatePse1
   const competences = [
-    { id: "C1", description: `Évoluer dans le cadre juridique applicable à son action de secours et dans le respect des procédures définies par son autorité d’emploi.` },
-    { id: "C2", description: `` }, // TODO:
-    { id: "C3", description: `` },
-    { id: "C4_1", description: `` },
-    { id: "C4_2", description: `` },
-    { id: "C4_3", description: `` },
-    { id: "C5", description: `` },
-    { id: "C6", description: `` },
+    { 
+      id: "C1", 
+      requiredCountToValidatePseGlobal: 2, 
+      requiredCountToValidatePse1: -1,
+      description: `Évoluer dans le cadre juridique applicable à son action de secours et dans le respect des procédures définies par son autorité d’emploi.` 
+    },
+    { 
+      id: "C2", 
+      requiredCountToValidatePseGlobal: 2, 
+      requiredCountToValidatePse1: -1,
+      description: `` 
+    }, // TODO:
+    { 
+      id: "C3", 
+      requiredCountToValidatePseGlobal: 2, 
+      requiredCountToValidatePse1: -1,
+      description: `` 
+    },
+    { 
+      id: "C4_1", 
+      requiredCountToValidatePseGlobal: 1, 
+      requiredCountToValidatePse1: -1,
+      description: `` 
+    },
+    { 
+      id: "C4_2", 
+      requiredCountToValidatePseGlobal: 1, 
+      requiredCountToValidatePse1: -1,
+      description: `` 
+    },
+    { 
+      id: "C4_3", 
+      requiredCountToValidatePseGlobal: 1, 
+      requiredCountToValidatePse1: -1,
+      description: `` 
+    },
+    { 
+      id: "C5", 
+      requiredCountToValidatePseGlobal: 1, 
+      requiredCountToValidatePse1: -1,
+      description: `` 
+    },
+    { 
+      id: "C6", 
+      requiredCountToValidatePseGlobal: 2, 
+      requiredCountToValidatePse1: -1,
+      description: `` 
+    },
   ]
 
   competences.forEach(async pseCompetence => {
@@ -210,13 +251,13 @@ async function seedDefaultUser() {
 async function seed() {
   // await prisma.$queryRaw(Prisma.sql`ALTER TABLE PseConcreteCaseGroup DROP COLUMN state;`)
 
-  await seedPlaces()
-  await seedPseModule()
-  await seedPseTechniques()
+  // await seedPlaces()
+  // await seedPseModule()
+  // await seedPseTechniques()
   await seedPseCompetence()
-  await seedPseConcreteCaseTypes()
+  // await seedPseConcreteCaseTypes()
 
-  await seedDefaultUser()
+  // await seedDefaultUser()
 
   // nothing to seed yet
   console.log(`Database has been seeded. 🌱`);

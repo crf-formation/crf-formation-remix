@@ -1,7 +1,9 @@
 -- CreateTable
 CREATE TABLE "PseCompetence" (
     "id" TEXT NOT NULL PRIMARY KEY,
-    "description" TEXT NOT NULL
+    "description" TEXT NOT NULL,
+    "requiredCountToValidatePseGlobal" INTEGER NOT NULL,
+    "requiredCountToValidatePse1" INTEGER NOT NULL
 );
 
 -- CreateTable

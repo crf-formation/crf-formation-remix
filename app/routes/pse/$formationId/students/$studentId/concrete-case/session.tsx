@@ -50,11 +50,11 @@ const security: SecurityFunction<{
 }
 
 export default function SessionRoute() {
-  const { } = useLoaderData<typeof loader>();
+  const { pseUserConcreteCases } = useLoaderData<typeof loader>();
 
   return (
     <Stack spacing={2}>
-      
+      {/* TODO: */}
     </Stack>
   );
 }

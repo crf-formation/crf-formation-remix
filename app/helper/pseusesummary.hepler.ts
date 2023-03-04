@@ -120,13 +120,20 @@ function buildConcreteCaseCompetenceResultForAllModules(
 	pseConcreateCases: Array<PseUserConcreteCaseApiObject>
 ): Array<ConcreteCaseCompetenceResultApiObject> {
 	return pseCompetences.map((pseCompetence) => {
-		// TODO: build data
+		const nbAcquired = pseConcreateCases
+			.filter(pseConcreateCase => pseConcreateCase.competences.find(v => v.pseCompetence.id === pseCompetence.id && (v.grade === 'A' || v.grade === 'B')))
+			.length
+
+		const nbNotAcquired = pseConcreateCases
+			.filter(pseConcreateCase => pseConcreateCase.competences.find(v => v.pseCompetence.id === pseCompetence.id && (v.grade === 'C' || v.grade === 'D')))
+			.length
+			
 		return {
 			pseCompetenceId: pseCompetence.id,
 			pseCompetence: pseCompetence,
 
-			acquired: sample([true, false]) as boolean, // TODO:
-			acquiredForPse1: sample([true, false]) as boolean, // TODO:
+			acquired: nbAcquired >= pseCompetence.requiredCountToValidatePseGlobal,
+			acquiredForPse1: nbNotAcquired >= pseCompetence.requiredCountToValidatePse1,
 		};
 	});
 }
