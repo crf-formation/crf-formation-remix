@@ -11,6 +11,8 @@ import FormErrorHelperText from "~/component/form/FormErrorHelperText";
 import FormTextField from "~/component/form/FormTextField";
 import FormView from "~/component/form/FormView";
 import PageContainer from "~/component/layout/PageContainer";
+import PagePaperHeader from "~/component/layout/PagePaperHeader";
+import PageSpace from "~/component/layout/PageSpace";
 import PageTitle from "~/component/layout/PageTitle";
 import Section from "~/component/layout/Section";
 import PseConcreteCaseSessionStateAutocomplete from "~/component/pse-concrete-case-session/PseConcreteCaseSessionStateAutocomplete";
@@ -99,40 +101,46 @@ export default function SessionPseRoute() {
 	])
 
   return (
-    <PageContainer>
-      <PageTitle title={pseConcreteCaseSession.name} />
+    <>
+      <PagePaperHeader>
+        <PageTitle title={pseConcreteCaseSession.name} />
+      </PagePaperHeader>
 
-      <Section>
-        <FormView
-        	submitText="Valider"
-          validator={pseConcreteCaseSessionPutDtoValidator}
-        >
-          <FormTextField
-            name="name"
-            ref={nameRef}
-            defaultValue={pseConcreteCaseSession.name}
-            label="Nom de la session"
-            variant="standard"
-            margin="normal"
-            type="string"
-            autoFocus
-          />
+      <PageSpace variant="header" />
 
-          <PseConcreteCaseSessionStateAutocomplete
-            name="state"
-            ref={stateRef}
-            defaultValue={pseConcreteCaseSession.state}
-            label="Status"
-            variant="standard"
-            margin="normal"
-            type="string"
-            required
-            autoFocus
-						{...generateAria(actionData, 'state')}
-          />
-          <FormErrorHelperText name="state" actionData={actionData} />
-        </FormView>
-      </Section>
-    </PageContainer>
+      <PageContainer>
+        <Section>
+          <FormView
+            submitText="Valider"
+            validator={pseConcreteCaseSessionPutDtoValidator}
+          >
+            <FormTextField
+              name="name"
+              ref={nameRef}
+              defaultValue={pseConcreteCaseSession.name}
+              label="Nom de la session"
+              variant="standard"
+              margin="normal"
+              type="string"
+              autoFocus
+            />
+
+            <PseConcreteCaseSessionStateAutocomplete
+              name="state"
+              ref={stateRef}
+              defaultValue={pseConcreteCaseSession.state}
+              label="Status"
+              variant="standard"
+              margin="normal"
+              type="string"
+              required
+              autoFocus
+              {...generateAria(actionData, "state")}
+            />
+            <FormErrorHelperText name="state" actionData={actionData} />
+          </FormView>
+        </Section>
+      </PageContainer>
+    </>
   );
 }

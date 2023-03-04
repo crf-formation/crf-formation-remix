@@ -34,10 +34,7 @@ const ParamsSchema = z.object({
 });
 
 // GET a formation
-export const loader: LoaderFunction = async ({
-  request,
-	params
-}) => {
+export async function loader({ request, params }: LoaderArgs) {
   const { pseFormationApiObject, pseConcreteCaseSessionApiObject, pseConcreteCaseSituationApiObject, pseConcreteCaseGroupApiObject } = await security(request, params)
 	const pseCompetences: Array<PseCompetenceApiObject> = await getPseCompetences();
 

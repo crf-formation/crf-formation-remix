@@ -1,4 +1,4 @@
-import type { ActionArgs, LoaderFunction, MetaFunction } from "@remix-run/node";
+import type { ActionArgs, LoaderArgs, LoaderFunction, MetaFunction } from "@remix-run/node";
 import { json, redirect } from "@remix-run/node";
 import type { Params } from "@remix-run/react";
 import { useActionData, useLoaderData } from "@remix-run/react";
@@ -7,6 +7,9 @@ import type { PseConcreteCaseSessionApiObject } from "~/apiobject/pseconcretecas
 import type { PseFormationApiObject } from "~/apiobject/pseformation.apiobject";
 import type { UserApiObject } from "~/apiobject/user.apiobject";
 import PageContainer from "~/component/layout/PageContainer";
+import PagePaperHeader from "~/component/layout/PagePaperHeader";
+import PageSpace from "~/component/layout/PageSpace";
+import PageSubtitle from "~/component/layout/PageSubtitle";
 import PageTitle from "~/component/layout/PageTitle";
 import Section from "~/component/layout/Section";
 import PseConcreteCaseGroupForm from "~/component/pse-concrete-case-group/PseConcreteCaseGroupForm";
@@ -28,10 +31,7 @@ const ParamsSchema = z.object({
   pseConcreteCaseSessionId: z.string(),
 });
 
-export const loader: LoaderFunction = async ({
-  request,
-	params
-}) => {
+export async function loader({ request, params }: LoaderArgs) {
 	const { pseFormationApiObject, pseConcreteCaseSessionApiObject } = await security(request, params)
 
   return json({
@@ -88,15 +88,23 @@ export default function PseConcreteCaseSessionNewGroupRoute() {
 	const actionData = useActionData<typeof action>();
 
   return (
-    <PageContainer>
-      <PageTitle title="Créer un groupe" />
-      <Section>
-        <PseConcreteCaseGroupForm 
-          pseFormationId={pseFormation.id}
-          pseConcreteCaseSessionId={pseConcreteCaseSession.id}
-          actionData={actionData}
-        />
-      </Section>
-    </PageContainer>
+    <>
+      <PagePaperHeader>
+        <PageTitle title="Créer un groupe" />
+        <PageSubtitle subtitle={`Créez un groupe pour la session ${pseConcreteCaseSession.name}`} />
+      </PagePaperHeader>
+
+      <PageSpace variant="header" />
+
+      <PageContainer>
+        <Section>
+          <PseConcreteCaseGroupForm
+            pseFormationId={pseFormation.id}
+            pseConcreteCaseSessionId={pseConcreteCaseSession.id}
+            actionData={actionData}
+          />
+        </Section>
+      </PageContainer>
+    </>
   );
 }

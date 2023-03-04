@@ -1,4 +1,4 @@
-import type { ActionArgs, LoaderFunction, MetaFunction } from "@remix-run/node";
+import type { ActionArgs, LoaderArgs, LoaderFunction, MetaFunction } from "@remix-run/node";
 import { json, redirect } from "@remix-run/node";
 import type { Params } from "@remix-run/react";
 import { useActionData, useLoaderData } from "@remix-run/react";
@@ -25,15 +25,15 @@ import { assertUserHasAccessToFormationAsTeacher } from "~/service/security.serv
 import { requireUser } from "~/service/session.server";
 import { getParamsOrFail } from '~/util/remix.params';
 import { pseConcreteCaseGroupApiObjectToDto } from '../../mapper/pseconcretecasegroup.mapper';
+import PagePaperHeader from "~/component/layout/PagePaperHeader";
+import PageSpace from "~/component/layout/PageSpace";
+import PageSubtitle from "~/component/layout/PageSubtitle";
 
 const ParamsSchema = z.object({
   pseConcreteCaseGroupId: z.string(),
 });
 
-export const loader: LoaderFunction = async ({
-  request,
-	params
-}) => {
+export async function loader({ request, params }: LoaderArgs) {
   const { pseFormationApiObject, pseConcreteCaseSessionApiObject, pseConcreteCaseGroupApiObject } = await security(request, params)
 
   return json({
@@ -96,18 +96,28 @@ export default function PseConcreteCaseGroupRoute() {
 	const actionData = useActionData<typeof action>();
 
   return (
-    <PageContainer>
-      <PageTitle title={`Groupe ${pseConcreteCaseGroup?.name}`} />
-      <Section>
-        <PseConcreteCaseGroupForm
-					isEdit
-          name={pseConcreteCaseGroup.name}
-          students={pseConcreteCaseGroup.students?.map((student: PseUserConcreteCaseGroupStudentDto) => student.user)}
-          pseFormationId={pseFormation.id}
-          pseConcreteCaseSessionId={pseConcreteCaseSession.id}
-          actionData={actionData}
-        />
-      </Section>
-    </PageContainer>
+    <>
+      <PagePaperHeader>
+        <PageTitle title={`Groupe ${pseConcreteCaseGroup?.name}`} />
+        <PageSubtitle subtitle={`Détail du groupe pour la session ${pseConcreteCaseSession.name}`} />
+      </PagePaperHeader>
+
+      <PageSpace variant="header" />
+
+      <PageContainer>
+        <Section>
+          <PseConcreteCaseGroupForm
+            isEdit
+            name={pseConcreteCaseGroup.name}
+            students={pseConcreteCaseGroup.students?.map(
+              (student: PseUserConcreteCaseGroupStudentDto) => student.user
+            )}
+            pseFormationId={pseFormation.id}
+            pseConcreteCaseSessionId={pseConcreteCaseSession.id}
+            actionData={actionData}
+          />
+        </Section>
+      </PageContainer>
+    </>
   );
 }

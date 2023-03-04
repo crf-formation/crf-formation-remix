@@ -1,6 +1,6 @@
 import type { Prisma } from "@prisma/client";
 import type { PseConcreteCaseSituationPostApiObject, PseConcreteCaseSituationPutApiObject, PseSituationConcreteCaseGroupPutApiObject } from "~/apiobject/pseconcretecasesituation.apiobject";
-import { prisma } from "~/db.server";
+import { prisma } from "~/entity/db.server";
 import type { PseConcreteCaseSituationEntity } from "~/entity";
 
 const includeForSingleItem = {

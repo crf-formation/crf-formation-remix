@@ -2,6 +2,8 @@ import type { PseUserPreparatoryWorkApiObject } from "./pseformationpreparatoryw
 import type { PseModuleApiObject } from "./psemodule.apiobject";
 import type { PseUserTechniqueApiObject } from "./pseusertechnique.apiobject";
 import type { PseCompetenceApiObject } from '~/apiobject/psecompetence.apiobject';
+import { PseUserConcreteCaseDto } from '../dto/pseuserconcretecase.dto';
+import { PseUserConcreteCaseApiObject } from './pseuserconcretecase.apiobject';
 
 export interface PseUserSummaryApiObject {
   formationId: string;
@@ -47,25 +49,14 @@ export interface PseUserSummaryTechniqueApiObject {
 
 
 export interface PseUserSummaryConcreteCaseApiObject {
-  concreteCaseModules: Array<PseUserSummaryConcreteCaseModuleApiObject>;
+  userConcreteCases: Array<PseUserConcreteCaseApiObject>;
+
   // TODO: list of selected concreate cases
   hasAcquiredAllModules: boolean;
   hasAcquiredAllModulesForPse1: boolean;
 
   // result of the competence for each modules
   competenceResults: Array<ConcreteCaseCompetenceResultApiObject>;
-}
-
-export interface PseUserSummaryConcreteCaseModuleApiObject {
-  pseModuleId: string;
-  pseModule: PseModuleApiObject;
-
-  // result of the competence for the current module
-	competenceResults: Array<ConcreteCaseCompetenceResultApiObject>;
-
-  hasAcquiredAllCompetences: boolean;
-  hasAcquiredAllCompetencesForPse1: boolean;
-  // TODO: list of selected concreate cases for module
 }
 
 export interface ConcreteCaseCompetenceResultApiObject {

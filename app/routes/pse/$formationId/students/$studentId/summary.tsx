@@ -21,6 +21,8 @@ import { getPseUserSummary } from "~/service/pseusesummary.server";
 import { assertUserHasAccessToFormationAsTeacher } from "~/service/security.server";
 import { requireUser } from "~/service/session.server";
 import { getParamsOrFail } from "~/util/remix.params";
+import { Severity } from '../../../../../component/typography/Callout';
+import Callout from '~/component/typography/Callout';
 
 const ParamsSchema = z.object({
   formationId: z.string(),
@@ -174,8 +176,8 @@ function ConcreteCase({ pseCompetences, concreteCase }: { pseCompetences: Array<
           </TableRow>
         </TableHead>
         <TableBody>
-          {concreteCase.concreteCaseModules.map((concreteCaseModule, index) => (
-            <TableRow key={concreteCaseModule.pseModuleId}>
+          {concreteCase.userConcreteCases.map((userConcreteCase, index) => (
+            <TableRow key={userConcreteCase.id}>
               <TableCell>{index}</TableCell>
               <TableCell>{concreteCaseModule.pseModule.name}</TableCell>
               {pseCompetences.map((pseCompetenceResult) => {
@@ -227,6 +229,14 @@ function ConcreteCase({ pseCompetences, concreteCase }: { pseCompetences: Array<
 
 export default function SummaryRoute() {
   const { pseUserSummary } = useLoaderData<typeof loader>();
+
+  if (!pseUserSummary) {
+    return (
+      <Callout severity="warning">
+        Il n'y as pas encore de résumé pour ce participant.
+      </Callout>
+    )
+  }
 
   return (
     <Stack spacing={2} sx={{ "& .Property-name": { width: 360 } }}>

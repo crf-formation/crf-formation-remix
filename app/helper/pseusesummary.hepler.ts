@@ -7,7 +7,9 @@ import { getPreparatoryWorksForUser } from '~/service/pseformationpreparatorywor
 import { getPseModules } from '~/service/psemodule.server';
 import { getPseUserTechniquesForUser } from '~/service/pseusertechniques.server';
 import type { PseModuleApiObject } from '../apiobject/psemodule.apiobject';
-import type { ConcreteCaseCompetenceResultApiObject, PseUserSummaryApiObject, PseUserSummaryConcreteCaseApiObject, PseUserSummaryConcreteCaseModuleApiObject, PseUserSummaryPreparatoryWorkApiObject, PseUserSummaryTechniqueApiObject } from '../apiobject/pseusesummary.apiobject';
+import type { ConcreteCaseCompetenceResultApiObject, PseUserSummaryApiObject, PseUserSummaryConcreteCaseApiObject, PseUserSummaryPreparatoryWorkApiObject, PseUserSummaryTechniqueApiObject } from '../apiobject/pseusesummary.apiobject';
+import type { PseUserConcreteCaseApiObject } from '~/apiobject/pseuserconcretecase.apiobject';
+import { getSelectedPseUserConcreteCases } from '~/service/pseuserconcretecase.server';
 
 /**
  * Load the data and build the PseUserSummaryApiObject data.
@@ -20,6 +22,7 @@ export async function loadAndBuildPseUserSummary(
 	const userTechniques: Array<PseUserTechniqueApiObject> = await getPseUserTechniquesForUser(formationId, userId);
 	const pseModules: Array<PseModuleApiObject> = await getPseModules()
 	const pseCompetences: Array<PseCompetenceApiObject> = await getPseCompetences();
+	const pseConcreateCases: Array<PseUserConcreteCaseApiObject> = await getSelectedPseUserConcreteCases(formationId, userId)
 
 	return buildPseUserSummary(
 		formationId,
@@ -28,6 +31,7 @@ export async function loadAndBuildPseUserSummary(
 		userTechniques,
 		pseModules,
 		pseCompetences,
+		pseConcreateCases,
 	)
 }
 
@@ -40,13 +44,14 @@ export async function buildPseUserSummary(
 	preparatoryWorks: Array<PseUserPreparatoryWorkApiObject>,
 	userTechniques: Array<PseUserTechniqueApiObject>,
 	pseModules: Array<PseModuleApiObject>,
-	pseCompetences: Array<PseCompetenceApiObject>
+	pseCompetences: Array<PseCompetenceApiObject>,
+	pseConcreateCases: Array<PseUserConcreteCaseApiObject>
 ): Promise<PseUserSummaryApiObject> {
 	const technique: PseUserSummaryTechniqueApiObject = buildPseUserSummaryTechnique(userTechniques);
 
 	const preparatoryWork: PseUserSummaryPreparatoryWorkApiObject = buildPseUserPreparatoryWork(preparatoryWorks);
 
-	const concreteCase: PseUserSummaryConcreteCaseApiObject = buildPseUserSummaryConcreteCase(pseModules, pseCompetences)
+	const concreteCase: PseUserSummaryConcreteCaseApiObject = buildPseUserSummaryConcreteCase(pseModules, pseCompetences, pseConcreateCases)
 
 	return {
 		formationId,
@@ -93,42 +98,27 @@ function buildPseUserPreparatoryWork(
 	}
 }
 
-function buildPseUserSummaryConcreteCase(pseModules: Array<PseModuleApiObject>, pseCompetences: Array<PseCompetenceApiObject>): PseUserSummaryConcreteCaseApiObject {
-	const concreteCaseModules = pseModules.map(pseModule => buildPseUserSummaryConcreteCaseModule(pseModule, pseCompetences))
+function buildPseUserSummaryConcreteCase(
+	pseModules: Array<PseModuleApiObject>, 
+	pseCompetences: Array<PseCompetenceApiObject>, 
+	pseConcreateCases: Array<PseUserConcreteCaseApiObject>
+): PseUserSummaryConcreteCaseApiObject {
 	return {
-		concreteCaseModules,
+		userConcreteCases: pseConcreateCases,
 
-		hasAcquiredAllModules: concreteCaseModules.every(pseUserSummaryConcreteCaseModule => pseUserSummaryConcreteCaseModule.hasAcquiredAllCompetences),
-		hasAcquiredAllModulesForPse1: concreteCaseModules.every(pseUserSummaryConcreteCaseModule => pseUserSummaryConcreteCaseModule.hasAcquiredAllCompetencesForPse1),
+		// TODO:
+		hasAcquiredAllModules: false,
+		hasAcquiredAllModulesForPse1: false,
 
-		competenceResults: buildConcreteCaseCompetenceResultForAllModules(pseCompetences, concreteCaseModules),
+		competenceResults: buildConcreteCaseCompetenceResultForAllModules(pseModules, pseCompetences, pseConcreateCases),
 	}
 }
 
-function buildPseUserSummaryConcreteCaseModule(pseModule: PseModuleApiObject, pseCompetences: Array<PseCompetenceApiObject>): PseUserSummaryConcreteCaseModuleApiObject {
-	const competenceResults = pseCompetences.map(pseCompetence => buildConcreteCaseCompetenceResult(pseCompetence))
-	return {
-		pseModule,
-		pseModuleId: pseModule.id,
-
-		hasAcquiredAllCompetences: competenceResults.every(competence => competence.acquired),
-		hasAcquiredAllCompetencesForPse1: competenceResults.every(competence => competence.acquiredForPse1),
-
-		competenceResults,
-	}
-}
-
-function buildConcreteCaseCompetenceResult(pseCompetence: PseCompetenceApiObject): ConcreteCaseCompetenceResultApiObject {
-	return {
-		pseCompetenceId: pseCompetence.id,
-		pseCompetence: pseCompetence,
-
-		acquired: sample([true, false]) as boolean, // TODO:
-		acquiredForPse1: sample([true, false]) as boolean, // TODO:
-	}
-}
-
-function buildConcreteCaseCompetenceResultForAllModules(pseCompetences: Array<PseCompetenceApiObject>, concreteCaseModules: Array<PseUserSummaryConcreteCaseModuleApiObject>): Array<ConcreteCaseCompetenceResultApiObject> {
+function buildConcreteCaseCompetenceResultForAllModules(
+	pseModules: Array<PseModuleApiObject>, 
+	pseCompetences: Array<PseCompetenceApiObject>, 
+	pseConcreateCases: Array<PseUserConcreteCaseApiObject>
+): Array<ConcreteCaseCompetenceResultApiObject> {
 	return pseCompetences.map((pseCompetence) => {
 		// TODO: build data
 		return {

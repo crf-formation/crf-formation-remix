@@ -1,4 +1,4 @@
-import type { LoaderFunction } from "@remix-run/server-runtime";
+import type { LoaderArgs } from "@remix-run/server-runtime";
 import { json } from "@remix-run/server-runtime";
 import { z } from "zod";
 import { placeApiObjectToDto } from "~/mapper/place.mapper";
@@ -11,10 +11,7 @@ const ParamsSchema = z.object({
 })
 
 // GET a formation
-export const loader: LoaderFunction = async ({
-  request,
-	params
-}) => {
+export async function loader({ request, params }: LoaderArgs) {
 	const { placeId } = getParamsOrFail(params, ParamsSchema)
 
 	await requireAdmin(request)

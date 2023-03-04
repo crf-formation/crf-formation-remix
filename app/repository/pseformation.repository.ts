@@ -1,6 +1,6 @@
 import type { PseFormationPostApiObject, PseFormationPutApiObject } from "~/apiobject/pseformation.apiobject";
 import type { OrderByDirection, PaginateObject } from "~/constant/types";
-import { prisma } from "~/db.server";
+import { prisma } from "~/entity/db.server";
 import type { PseFormationEntity } from "~/entity";
 import { createPaginateObject } from "./abstract.repository";
 

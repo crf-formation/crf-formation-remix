@@ -10,6 +10,9 @@ import { z } from "zod";
 import type { PseFormationApiObject } from '~/apiobject/pseformation.apiobject';
 import FormationPseStatusChip from "~/component/formationpse/FormationPseStatusChip";
 import PageContainer from "~/component/layout/PageContainer";
+import PagePaperHeader from '~/component/layout/PagePaperHeader';
+import PageSpace from '~/component/layout/PageSpace';
+import PageSubtitle from '~/component/layout/PageSubtitle';
 import PageTitle from '~/component/layout/PageTitle';
 import Section from "~/component/layout/Section";
 import Callout from "~/component/typography/Callout";
@@ -30,10 +33,7 @@ const ParamsSchema = z.object({
 });
 
 // GET a formation
-export const loader: LoaderFunction = async ({
-  request,
-	params
-}) => {
+export async function loader({ request, params }: LoaderArgs) {
   const { pseFormationApiObject } = await security(request, params)
 
   return json({
@@ -173,34 +173,41 @@ export default function FromationPseRoute() {
   const user = useUser();
 
   return (
-    <PageContainer>
-      <PageTitle title={`PSE: ${formation.title}`} />
+    <>
+      <PagePaperHeader>
+        <PageTitle title={`PSE: ${formation.title}`} />
+        <PageSubtitle subtitle={`${formation.place.title}`} />
+      </PagePaperHeader>
 
-      <Grid container spacing={2}>
-        <Grid item md={8}>
-          <Stack spacing={2}>
-            <Formation
-              formation={formation}
-              hasAdminPermission={user.hasAdminPermission}
-            />
-            <StudentList
-              formationId={formation.id}
-              students={formation.students}
-              hasAdminPermission={user.hasAdminPermission}
-            />
-          </Stack>
-        </Grid>
+      <PageSpace variant="header" />
 
-        <Grid item md={4}>
-          <Stack spacing={2}>
-            <TeacherList
-              formationId={formation.id}
-              teachers={formation.teachers}
-              hasAdminPermission={user.hasAdminPermission}
-            />
-          </Stack>
+      <PageContainer>
+        <Grid container spacing={2}>
+          <Grid item md={8}>
+            <Stack spacing={2}>
+              <Formation
+                formation={formation}
+                hasAdminPermission={user.hasAdminPermission}
+              />
+              <StudentList
+                formationId={formation.id}
+                students={formation.students}
+                hasAdminPermission={user.hasAdminPermission}
+              />
+            </Stack>
+          </Grid>
+
+          <Grid item md={4}>
+            <Stack spacing={2}>
+              <TeacherList
+                formationId={formation.id}
+                teachers={formation.teachers}
+                hasAdminPermission={user.hasAdminPermission}
+              />
+            </Stack>
+          </Grid>
         </Grid>
-      </Grid>
-    </PageContainer>
+      </PageContainer>
+    </>
   );
 }

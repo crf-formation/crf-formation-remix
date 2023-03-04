@@ -1,6 +1,6 @@
 import type { PseConcreteCaseSessionPostApiObject, PseConcreteCaseSessionPutApiObject } from "~/apiobject/pseconcretecasesession.apiobject";
 import type { OrderByDirection, PaginateObject } from "~/constant/types";
-import { prisma } from "~/db.server";
+import { prisma } from "~/entity/db.server";
 import type { PseConcreteCaseSessionEntity } from "~/entity";
 import { createPaginateObject } from "./abstract.repository";
 

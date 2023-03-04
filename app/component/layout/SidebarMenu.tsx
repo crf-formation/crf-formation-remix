@@ -15,12 +15,15 @@ import useUser from '~/hook/useUser';
 import MenuItem from "./MenuItem";
 import SidebarDivider from "./SidebarDivider";
 import SubMenu from "./SubMenu";
+import useOptionalUser from '~/hook/useOptionalUser';
+import UserMenu from './UserMenu';
 
 type MenuProps = {
   openedMenu: MenuName;
 	dense: boolean;
   handleToggle: Function;
   menuItems: Array<Map<String, any[]>>;
+  isLoggedIn: boolean
 }
 
 export type MenuName = 'menuDevTools' | 'menuAdmin' | 'menuCurrentPseFormation' | undefined
@@ -75,24 +78,54 @@ const SecondaryListItems = ({ openedMenu, handleToggle, dense, menuItems }: Menu
           />
         </>
       )}
+
     </>
   );
 };
 
-const BottomListItems = ({ openedMenu, handleToggle, dense, menuItems }: MenuProps) => (
-  <>
-    <Category name="Dev tools" />
+const BottomListItems = ({
+  openedMenu,
+  handleToggle,
+  dense,
+  menuItems,
+  isLoggedIn,
+}: MenuProps) => {
+  const user = useOptionalUser()
 
-    <SubMenu
-      handleToggle={() => handleToggle("menuDevTools")}
-      open={openedMenu === "menuDevTools"}
-      name="Dev tools"
-      icon={<ConstructionIcon />}
-      dense={dense}    
-      items={menuItems.menuDevTools}
-     />
-  </>
-);
+  const [userMenuAnchorEl, setUserMenuAnchorEl] = useState<null | HTMLElement>(
+    null
+  );
+  const userMenuOpen = Boolean(userMenuAnchorEl);
+
+  return (
+    <>
+      <Category name="Dev tools" />
+
+      <SubMenu
+        handleToggle={() => handleToggle("menuDevTools")}
+        open={openedMenu === "menuDevTools"}
+        name="Dev tools"
+        icon={<ConstructionIcon />}
+        dense={dense}
+        items={menuItems.menuDevTools}
+      />
+
+      <List>
+        {isLoggedIn && user && (
+          <>
+            <UserMenu
+              open={userMenuOpen}
+              user={user}
+              anchorRef={userMenuAnchorEl}
+              handleClose={() => setUserMenuAnchorEl(null)}
+            />
+          </>
+        )}
+
+      </List>
+    </>
+  );
+};
 
 const Drawer = styled(MuiDrawer, {
   shouldForwardProp: (prop) => prop !== "open",
@@ -158,10 +191,10 @@ function Category({ name }: CategoryProps) {
 interface Props {
   open?: boolean;
   toggleDrawer: MouseEventHandler<any>;
-  isDesktop: boolean;
+  isLoggedIn: boolean;
 }
 
-export default function SidebarMenu({ open, isDesktop, toggleDrawer }: Props) {
+export default function SidebarMenu({ open, isLoggedIn, toggleDrawer }: Props) {
   const { getMatchingMenuName } = useMenuMatches()
   const currentPseFormation = useCurrentPseFormation()
 
@@ -289,6 +322,7 @@ export default function SidebarMenu({ open, isDesktop, toggleDrawer }: Props) {
             openedMenu={openedSubMenu}
             handleToggle={handleToggle}
             menuItems={menuItems}
+            isLoggedIn={isLoggedIn}
           />
         </List>
       </Drawer>

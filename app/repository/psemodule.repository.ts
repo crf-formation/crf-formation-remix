@@ -1,5 +1,5 @@
 import type { PseModuleEntity } from "~/entity";
-import { prisma } from "~/db.server";
+import { prisma } from "~/entity/db.server";
 
 export async function getPseModuleEntities(): Promise<Array<PseModuleEntity>> {
   return await prisma.pseModule.findMany({

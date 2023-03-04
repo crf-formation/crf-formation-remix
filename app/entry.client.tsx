@@ -7,8 +7,8 @@ import { getCookie, getParsedCookie } from "~/util/theme.client";
 
 import type { ThemeNames } from "~/constant";
 import { DEFAULT_THEME } from "~/constant";
-import ClientStyleContext from "~/contexts/ClientStyleContext";
-import createEmotionCache from './utils/createEmotionCache';
+import ClientStyleContext from "~/context/ClientStyleContext";
+import createEmotionCache from './util/createEmotionCache';
 
 function ClientCacheProvider({ children }: React.PropsWithChildren<{}>) {
   const [cache, setCache] = useState(createEmotionCache());

@@ -7,6 +7,8 @@ import { z } from "zod";
 import type { PseFormationApiObject } from "~/apiobject/pseformation.apiobject";
 import AppTabsLink from "~/component/layout/AppTabsLink";
 import PageContainer from "~/component/layout/PageContainer";
+import PagePaperHeader from "~/component/layout/PagePaperHeader";
+import PageSpace from "~/component/layout/PageSpace";
 import PageTitle from "~/component/layout/PageTitle";
 import Section from "~/component/layout/Section";
 import type { SecurityFunction } from "~/constant/remix";
@@ -27,10 +29,7 @@ const ParamsSchema = z.object({
 })
 
 // display the student summary for the formation
-export const loader: LoaderFunction = async ({
-  request,
-	params
-}) => {
+export async function loader({ request, params }: LoaderArgs) {
   const { pseFormationApiObject } = await security(request, params)
 
   const { formationId, studentId } = getParamsOrFail(params, ParamsSchema)
@@ -90,10 +89,15 @@ export default function UserPseFormationSummaryRoute() {
 
   return (
     <>
-      <AppTabsLink tabs={tabs} />
-      <PageContainer>
+      <PagePaperHeader>
         <PageTitle title={student.fullName} />
+      </PagePaperHeader>
 
+      <AppTabsLink tabs={tabs} />
+
+      <PageSpace variant="header" />
+
+      <PageContainer>
         <Grid container spacing={2}>
           <Grid item xs={9}>
             <Outlet />

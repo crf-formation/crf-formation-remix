@@ -15,10 +15,7 @@ const URLSearchParamsSchema = z.object({
 })
 
 // GET list of formations
-export const loader: LoaderFunction = async ({
-  request,
-	params
-}) => {
+export async function loader({ request, params }: LoaderArgs) {
 	await requireAdmin(request)
 
 	const { page, pageSize, orderBy, orderByDirection } = getSearchParamsOrFail(request, URLSearchParamsSchema)

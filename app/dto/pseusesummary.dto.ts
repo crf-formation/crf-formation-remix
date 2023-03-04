@@ -2,6 +2,7 @@ import type { PseUserPreparatoryWorkDto } from "./pseformationpreparatorywork.dt
 import type { PseModuleDto } from "./psemodule.dto";
 import type { PseUserTechniqueDto } from "./pseusertechnique.dto";
 import type { PseCompetenceDto } from './psecompetence.dto';
+import { PseUserConcreteCaseDto } from './pseuserconcretecase.dto';
 
 export interface PseUserSummaryDto {
   formationId: string;
@@ -37,7 +38,8 @@ export interface PseUserSummaryTechniqueDto {
 }
 
 export interface PseUserSummaryConcreteCaseDto {
-  concreteCaseModules: Array<PseUserSummaryConcreteCaseModuleDto>;
+  userConcreteCases: Array<PseUserConcreteCaseDto>;
+
   // TODO: list of selected concreate cases
   hasAcquiredAllModules: boolean;
   hasAcquiredAllModulesForPse1: boolean;

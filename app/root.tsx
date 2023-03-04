@@ -30,9 +30,8 @@ import useEnhancedEffect from "./hook/useEnhancedEffect";
 import { commitSession, getMe, getSession } from "./service/session.server";
 import { getTheme } from "./theme";
 import { getUserTheme, themeCookie } from "./util/theme.server";
-// import { getClientIPAddress } from "~/service/clientip.server"
-import { json } from "@remix-run/node";
-import type { ActionArgs } from '@remix-run/server-runtime';
+import type { ActionArgs} from '@remix-run/server-runtime';
+import { json } from '@remix-run/server-runtime';
 import { LoadingBar } from "~/component/layout/LoadingBar";
 import useIsLoading from "~/hook/useIsLoading";
 import { logger } from "~/service/logger";
@@ -48,11 +47,11 @@ import type { UserMeDto } from "./dto/user.dto";
 import { pseFormationApiObjectToDto } from './mapper/pseformation.mapper';
 import { userApiObjectToUserMeDto } from "./mapper/user.mapper";
 import { getBrowserEnv } from "./service/env.server";
-import type { FlashMessage } from "./service/flash.server";
 import { getFlashMessages } from "./service/flash.server";
 import { getCurrentPseFormationForUser } from "./service/pseformation.server";
 import type { Locales } from "./service/request.server";
 import { getClientLocales, isDesktop } from "./service/request.server";
+import type { FlashMessage } from "./dto/flash.dto";
 
 export interface RootLoaderData {
   user: Optional<UserMeDto>;
@@ -80,11 +79,11 @@ export async function loader({ request }: LoaderArgs) {
 
   const currentPseFormationApiObject = user ? await getCurrentPseFormationForUser(user.id) : null
 
-  return json<RootLoaderData>(
+  return json(
     {
       // https://github.com/sergiodxa/remix-utils
       csrf, // csrf: pass token to browser
-      user: userApiObjectToUserMeDto(userApiObject),
+      user: !user ? null : userApiObjectToUserMeDto(user),
       themeName: await getUserTheme(request),
       locales: getClientLocales(request),
       // env properties to share with the browser side.

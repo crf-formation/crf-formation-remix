@@ -1,5 +1,5 @@
 import type { OrderByDirection, PaginateObject } from "~/constant/types";
-import { prisma } from "~/db.server";
+import { prisma } from "~/entity/db.server";
 import type { UserOnPseFormationEntity } from "~/entity";
 import { createPaginateObject } from "./abstract.repository";
 

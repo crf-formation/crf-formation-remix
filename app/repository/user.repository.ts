@@ -5,7 +5,7 @@ import type {
     UserPutApiObject,
 } from "~/apiobject/user.apiobject";
 import type { OrderByDirection, PaginateObject } from "~/constant/types";
-import { prisma } from "~/db.server";
+import { prisma } from "~/entity/db.server";
 import type { PasswordEntity, UserEntity } from "~/entity";
 import { createPaginateObject } from "./abstract.repository";
 

@@ -18,6 +18,7 @@ export default function Section(props: SectionProps) {
         {...other}
         sx={{
           overflow: "hidden",
+          backgroundColor: '#FBF7FF',
         }}
       >
         {title && (
@@ -29,7 +30,7 @@ export default function Section(props: SectionProps) {
               >
                 {title}
               </Typography>
-              {action && action}
+              <>{action}</>
             </Box>
             <Divider />
           </Box>

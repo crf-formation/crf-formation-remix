@@ -15,10 +15,7 @@ const ParamsSchema = z.object({
 })
 
 // GET a user
-export const loader: LoaderFunction = async ({
-  request,
-	params
-}) => {
+export async function loader({ request, params }: LoaderArgs) {
 	await security(request, params)
 
 	const { userId } = getParamsOrFail(params, ParamsSchema)

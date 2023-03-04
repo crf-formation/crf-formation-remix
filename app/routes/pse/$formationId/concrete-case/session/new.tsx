@@ -10,6 +10,9 @@ import type { PseFormationApiObject } from "~/apiobject/pseformation.apiobject";
 import FormTextField from "~/component/form/FormTextField";
 import FormView from "~/component/form/FormView";
 import PageContainer from "~/component/layout/PageContainer";
+import PagePaperHeader from "~/component/layout/PagePaperHeader";
+import PageSpace from "~/component/layout/PageSpace";
+import PageSubtitle from "~/component/layout/PageSubtitle";
 import PageTitle from "~/component/layout/PageTitle";
 import Section from "~/component/layout/Section";
 import Callout from "~/component/typography/Callout";
@@ -89,34 +92,39 @@ export default function ConcreteCaseSessionsRoute() {
   ]);
 
   return (
-    <PageContainer>
-      <PageTitle title="Créer une session" />
-      <Section>
-        <Callout severity="info">
-          Créez une nouvelle session de cas concret
-        </Callout>
+    <>
+      <PagePaperHeader>
+        <PageTitle title="Créer une session" />
+        <PageSubtitle subtitle="Créez une nouvelle session de cas concret" />
+      </PagePaperHeader>
 
-        <FormView
-          submitText="Créer"
-          validator={pseConcreteCaseSessionPostDtoValidator}
-        >
-          <input type="hidden" name="formationId" value={formationId} />
+      <PageSpace variant="header" />
 
-          <Box sx={{ display: "flex", flexDirection: "column", mt: 2 }}>
-            <FormTextField
-              name="name"
-              ref={nameRef}
-              label="Nom de la session"
-              variant="standard"
-              margin="normal"
-              type="string"
-              required
-              autoFocus
-            />
-          </Box>
-        </FormView>
-      </Section>
-    </PageContainer>
+      <PageContainer>
+        <Section sx={{ maxWidth: 720 }}>
+
+          <FormView
+            submitText="Créer"
+            validator={pseConcreteCaseSessionPostDtoValidator}
+          >
+            <input type="hidden" name="formationId" value={formationId} />
+
+            <Box sx={{ display: "flex", flexDirection: "column", mt: 2 }}>
+              <FormTextField
+                name="name"
+                ref={nameRef}
+                label="Nom de la session"
+                variant="standard"
+                margin="normal"
+                type="string"
+                required
+                autoFocus
+              />
+            </Box>
+          </FormView>
+        </Section>
+      </PageContainer>
+    </>
   );
 }
 

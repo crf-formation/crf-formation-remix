@@ -1,4 +1,4 @@
-import { prisma } from "~/db.server";
+import { prisma } from "~/entity/db.server";
 import type { PseConcreteCaseTypeEntity } from "~/entity";
 
 const include = {

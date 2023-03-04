@@ -6,7 +6,7 @@ import { pseConcreteCaseGroupApiObjectToDto, pseConcreteCaseGroupEntityToApiObje
 import { pseConcreteCaseTypeApiObjectToDto, pseConcreteCaseTypeEntityToApiObject } from "./pseconcretecasetype.mapper";
 import { userApiObjectToDto, userEntityToApiObject } from "./user.mapper";
 
-export function PseUserConcreteCaseEntityToApiObject(entity: PseUserConcreteCaseEntity): PseUserConcreteCaseApiObject {
+export function pseUserConcreteCaseEntityToApiObject(entity: PseUserConcreteCaseEntity): PseUserConcreteCaseApiObject {
 	return {
 		id: entity.id,
 		createdAt: entity.createdAt,
@@ -51,7 +51,7 @@ function pseUserConcreteCaseCompetenceGradeStringToApiEnum(grade: string): PseUs
 	return grade as PseUserConcreteCaseCompetenceGradeApiEnum
 }
 
-export function PseUserConcreteCaseApiObjectToDto(apiObject: PseUserConcreteCaseApiObject): PseUserConcreteCaseDto {
+export function pseUserConcreteCaseApiObjectToDto(apiObject: PseUserConcreteCaseApiObject): PseUserConcreteCaseDto {
 	return {
 		id: apiObject.id,
 		createdAt: apiObject.createdAt.toISOString(),

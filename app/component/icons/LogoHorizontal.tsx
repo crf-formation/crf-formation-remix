@@ -17,7 +17,7 @@ export default function LogoHorizontal(props: SvgIconProps) {
         style={{ whiteSpace: "pre" }}
         x="189.86"
         y="258.772"
-        fill="white"
+        fill="#d32f2f"
         fontFamily="Arial, sans-serif"
         fontSize="66.5"
       >

@@ -59,11 +59,10 @@ export async function requireUserId(
   return userId;
 }
 
-export async function requireUser(request: Request): Promise<UserApiObject> { // TODO: return UserMeApiObject?
-  const userId = await requireUserId(request);
+export async function requireUser(request: Request): Promise<UserApiObject> {
+  const userMe = await getMe(request);
 
-  const userDto = await findUserById(userId);
-  if (userDto) return userDto;
+  if (userMe) return userMe
 
   throw await logout(request);
 }

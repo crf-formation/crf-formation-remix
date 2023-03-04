@@ -1,15 +1,12 @@
 import { Box, GlobalStyles } from '@mui/material';
-import { useLocation } from "@remix-run/react";
 import type { ReactNode } from 'react';
 import { useState } from 'react';
 import useIsDesktop from '~/hook/useIsDesktop';
 import useRootData from "~/hook/useRootData";
-import Header from './Header';
 import SidebarMenu from './SidebarMenu';
 
 export default function Layout({ isLoggedIn, children }: { isLoggedIn: boolean, children: ReactNode }) {
   const isDesktop = useIsDesktop()
-  const location = useLocation();
 	const { themeName } = useRootData()
 
   // since we have aa sidebar specific for the admin pages, we hide by default the layout here.
@@ -28,8 +25,6 @@ export default function Layout({ isLoggedIn, children }: { isLoggedIn: boolean, 
 
   const withSidebar = isLoggedIn;
 
-  const withHeader = isLoggedIn
-
   const toggleDrawer = () => {
     setSidebarOpen(!sidebarIsOpen);
   };
@@ -41,7 +36,7 @@ export default function Layout({ isLoggedIn, children }: { isLoggedIn: boolean, 
     <Box
       sx={(theme) => ({
         display: "flex",
-        backgroundColor,
+        // backgroundColor,
 
         // [theme.breakpoints.down("md")]: {
           minHeight: "100vh",
@@ -61,27 +56,15 @@ export default function Layout({ isLoggedIn, children }: { isLoggedIn: boolean, 
         }}
       />
 
-      {/* Header */}
-
       {/* Sidebar menu */}
       {withSidebar && (
         <SidebarMenu
           open={sidebarIsOpen}
-          isDesktop={isDesktop}
-          toggleDrawer={toggleDrawer}
+          isLoggedIn={isLoggedIn}
         />
       )}
 
       <Box sx={{ flex: 1, display: "flex", flexDirection: "column", }}>
-        {withHeader && (
-          <Header
-            sidebarIsOpen={sidebarIsOpen}
-            isLoggedIn={isLoggedIn}
-            toggleDrawer={toggleDrawer}
-            location={location}
-          />
-        )}
-
         {children}
       </Box>
     </Box>

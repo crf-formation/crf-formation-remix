@@ -12,6 +12,8 @@ import type { PseFormationApiObject } from "~/apiobject/pseformation.apiobject";
 import type { UserApiObject } from "~/apiobject/user.apiobject";
 import PageAction from "~/component/layout/PageAction";
 import PageContainer from "~/component/layout/PageContainer";
+import PagePaperHeader from '~/component/layout/PagePaperHeader';
+import PageSpace from '~/component/layout/PageSpace';
 import PageTitle from "~/component/layout/PageTitle";
 import Section from "~/component/layout/Section";
 import Callout from '~/component/typography/Callout';
@@ -335,50 +337,61 @@ export default function SessionPseRoute() {
   const noneHasPosition = pseConcreteCaseSessionGroupOrders.every((groupOrder: PseConcreteCaseSessionGroupOrderDto) => groupOrder.hasNoPositions)
 
   return (
-    <PageContainer>
-      <PageTitle title={pseConcreteCaseSession.name} />
+    <>
+      <PagePaperHeader>
+        <PageTitle title={pseConcreteCaseSession.name} />
+      </PagePaperHeader>
 
-      <PageAction>
-        <Chip label={pseConcreteCaseSession.stateLabel} />
+      <PageSpace variant="header" />
 
-        <Button>
-          <Link
-            href={`/pse-concrete-case-session/${pseConcreteCaseSession.id}/edit`}
-          >
-            Éditer
-          </Link>
-        </Button>
-      </PageAction>
+      <PageContainer>
 
-      <Grid container spacing={2}>
-        <Grid item md={8}>
-          <Stack spacing={2}>
-            <PseConcreteCaseSituationGroupsOrder
-              pseConcreteCaseSessionId={pseConcreteCaseSession.id}
-              pseConcreteCaseSituations={pseConcreteCaseSituations}
-              noneHasPosition={noneHasPosition}
-            />
-            <PseConcreteGroupsOrder
-              pseConcreteCaseSessionGroupOrders={pseConcreteCaseSessionGroupOrders}
-              noneHasPosition={noneHasPosition}
-            />
-          </Stack>
+        <PageAction>
+          <Chip label={pseConcreteCaseSession.stateLabel} />
+
+          <Button>
+            <Link
+              href={`/pse-concrete-case-session/${pseConcreteCaseSession.id}/edit`}
+            >
+              Éditer
+            </Link>
+          </Button>
+        </PageAction>
+
+        <Grid container spacing={2}>
+          <Grid item md={8}>
+            <Stack spacing={2}>
+              <PseConcreteCaseSituationGroupsOrder
+                pseConcreteCaseSessionId={pseConcreteCaseSession.id}
+                pseConcreteCaseSituations={pseConcreteCaseSituations}
+                noneHasPosition={noneHasPosition}
+              />
+              <PseConcreteGroupsOrder
+                pseConcreteCaseSessionGroupOrders={
+                  pseConcreteCaseSessionGroupOrders
+                }
+                noneHasPosition={noneHasPosition}
+              />
+            </Stack>
+          </Grid>
+
+          <Grid item md={4}>
+            <Stack spacing={2}>
+              <PseConcreteCaseSituationsTable
+                pseConcreteCaseSessionId={pseConcreteCaseSession.id}
+                pseConcreteCaseSituations={pseConcreteCaseSituations}
+              />
+              <PseConcreteCaseGroupsTable
+                pseFormationId={pseFormation.id}
+                pseConcreteCaseSessionId={pseConcreteCaseSession.id}
+                pseConcreteCaseGroups={
+                  pseConcreteCaseSession.pseConcreteCaseGroups
+                }
+              />
+            </Stack>
+          </Grid>
         </Grid>
-
-        <Grid item md={4}>
-          <Stack spacing={2}>
-            <PseConcreteCaseSituationsTable
-              pseConcreteCaseSessionId={pseConcreteCaseSession.id}
-              pseConcreteCaseSituations={pseConcreteCaseSituations}
-            />
-            <PseConcreteCaseGroupsTable
-              pseFormationId={pseFormation.id}
-              pseConcreteCaseSessionId={pseConcreteCaseSession.id}
-              pseConcreteCaseGroups={pseConcreteCaseSession.pseConcreteCaseGroups}
-            />
-          </Stack>
-        </Grid>
-      </Grid>
-    </PageContainer>
+      </PageContainer>
+    </>
   );
 }

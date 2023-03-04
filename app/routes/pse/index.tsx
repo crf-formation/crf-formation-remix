@@ -6,6 +6,9 @@ import { useLoaderData } from '@remix-run/react';
 import { z } from "zod";
 import type { UserApiObject } from "~/apiobject/user.apiobject";
 import PageContainer from "~/component/layout/PageContainer";
+import PagePaperHeader from "~/component/layout/PagePaperHeader";
+import PageSpace from "~/component/layout/PageSpace";
+import PageSubtitle from "~/component/layout/PageSubtitle";
 import PageTitle from "~/component/layout/PageTitle";
 import Section from "~/component/layout/Section";
 import type { SecurityFunction } from "~/constant/remix";
@@ -57,29 +60,37 @@ export default function FromationPseRoute() {
   const { formationsPaginateObject } = useLoaderData<typeof loader>();
 
   return (
-    <PageContainer>
-      <PageTitle title="Formations PSE" />
-      <Section>
-        <Table size="small">
-          <TableHead>
-            <TableRow>
-              <TableCell>Nom</TableCell>
-              <TableCell>Lieu</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {formationsPaginateObject.data.map((formation) => (
-              <TableRow key={formation.id}>
-                <TableCell>
-                  <Link href={`/pse/${formation.id}`}>{formation.title}</Link>
-                </TableCell>
-                <TableCell>{formation.place.title}</TableCell>
+    <>
+      <PagePaperHeader>
+        <PageTitle title="Formations PSE" />
+        <PageSubtitle subtitle={`Retrouvez la liste de vos formations`} />
+      </PagePaperHeader>
+
+      <PageSpace variant="header" />
+
+      <PageContainer>
+        <Section>
+          <Table size="small">
+            <TableHead>
+              <TableRow>
+                <TableCell>Nom</TableCell>
+                <TableCell>Lieu</TableCell>
               </TableRow>
-            ))}
-          </TableBody>
-          {/* TODO: paginaation */}
-        </Table>
-      </Section>
-    </PageContainer>
+            </TableHead>
+            <TableBody>
+              {formationsPaginateObject.data.map((formation) => (
+                <TableRow key={formation.id}>
+                  <TableCell>
+                    <Link href={`/pse/${formation.id}`}>{formation.title}</Link>
+                  </TableCell>
+                  <TableCell>{formation.place.title}</TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+            {/* TODO: paginaation */}
+          </Table>
+        </Section>
+      </PageContainer>
+    </>
   );
 }

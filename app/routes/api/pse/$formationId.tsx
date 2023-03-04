@@ -16,10 +16,7 @@ const ParamsSchema = z.object({
 })
 
 // GET a formation
-export const loader: LoaderFunction = async ({
-  request,
-	params
-}) => {
+export async function loader({ request, params }: LoaderArgs) {
 	const { pseFormationApiObject }  = await security(request, params)
 
   return json(pseFormationApiObjectToDto(pseFormationApiObject));
