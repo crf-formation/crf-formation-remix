@@ -10,6 +10,7 @@ import { z } from "zod";
 import type { PseConcreteCaseSessionApiObject } from "~/apiobject/pseconcretecasesession.apiobject";
 import type { PseFormationApiObject } from "~/apiobject/pseformation.apiobject";
 import type { UserApiObject } from "~/apiobject/user.apiobject";
+import { Ariane, ArianeItem } from '~/component/layout/Ariane';
 import PageAction from "~/component/layout/PageAction";
 import PageContainer from "~/component/layout/PageContainer";
 import PagePaperHeader from '~/component/layout/PagePaperHeader';
@@ -338,14 +339,28 @@ export default function SessionPseRoute() {
 
   return (
     <>
-      <PagePaperHeader>
+      <PagePaperHeader
+        ariane={
+          <Ariane>
+            <ArianeItem
+              label={pseFormation.title}
+              href={`/pse/${pseFormation.id}`}
+            />
+
+            <ArianeItem
+              label="Sessions"
+              href={`/pse/${pseFormation.id}/concrete-case/session`}
+            />
+
+          </Ariane>
+        }
+      >
         <PageTitle title={pseConcreteCaseSession.name} />
       </PagePaperHeader>
 
       <PageSpace variant="header" />
 
       <PageContainer>
-
         <PageAction>
           <Chip label={pseConcreteCaseSession.stateLabel} />
 
@@ -377,16 +392,17 @@ export default function SessionPseRoute() {
 
           <Grid item md={4}>
             <Stack spacing={2}>
-              <PseConcreteCaseSituationsTable
-                pseConcreteCaseSessionId={pseConcreteCaseSession.id}
-                pseConcreteCaseSituations={pseConcreteCaseSituations}
-              />
               <PseConcreteCaseGroupsTable
                 pseFormationId={pseFormation.id}
                 pseConcreteCaseSessionId={pseConcreteCaseSession.id}
                 pseConcreteCaseGroups={
                   pseConcreteCaseSession.pseConcreteCaseGroups
                 }
+              />
+
+              <PseConcreteCaseSituationsTable
+                pseConcreteCaseSessionId={pseConcreteCaseSession.id}
+                pseConcreteCaseSituations={pseConcreteCaseSituations}
               />
             </Stack>
           </Grid>

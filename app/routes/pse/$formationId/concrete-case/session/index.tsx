@@ -14,6 +14,7 @@ import type { LoaderArgs, MetaFunction } from "@remix-run/server-runtime";
 import { json } from "@remix-run/server-runtime";
 import { z } from "zod";
 import type { PseFormationApiObject } from "~/apiobject/pseformation.apiobject";
+import { Ariane, ArianeItem } from "~/component/layout/Ariane";
 import PageContainer from "~/component/layout/PageContainer";
 import PagePaperHeader from "~/component/layout/PagePaperHeader";
 import PageSpace from "~/component/layout/PageSpace";
@@ -22,6 +23,7 @@ import Section from "~/component/layout/Section";
 import type { SecurityFunction } from "~/constant/remix";
 import { paginateApiObjectToDto } from "~/mapper/abstract.mapper";
 import { pseConcreteCaseSessionApiObjectToDto } from "~/mapper/pseconcretecasesession.mapper";
+import { pseFormationApiObjectToDto } from "~/mapper/pseformation.mapper";
 import { getPseFormationConcreteCaseSessions } from "~/service/pseconcretecasesession.server";
 import { findPseFormationById } from "~/service/pseformation.server";
 import { assertUserHasAccessToFormationAsTeacher } from "~/service/security.server";
@@ -57,7 +59,7 @@ export async function loader({ request, params }: LoaderArgs) {
     );
 
   return json({
-    formationId: pseFormationApiObject.id,
+    pseFormation: pseFormationApiObjectToDto(pseFormationApiObject),
     concreteCaseSessionsPaginateObject: paginateApiObjectToDto(
       concreteCaseSessionsPaginateObject,
       pseConcreteCaseSessionApiObjectToDto
@@ -92,12 +94,22 @@ export const meta: MetaFunction<typeof loader> = () => {
 };
 
 export default function ConcreteCaseSessionsRoute() {
-  const { formationId, concreteCaseSessionsPaginateObject } =
-    useLoaderData<typeof loader>();
+  const { pseFormation, concreteCaseSessionsPaginateObject } = useLoaderData<typeof loader>();
 
   return (
     <>
-      <PagePaperHeader>
+      <PagePaperHeader
+        ariane={
+          <Ariane>
+            <ArianeItem label="PSE" href="pse" />
+
+            <ArianeItem
+              label={pseFormation.title}
+              href={`/pse/${pseFormation.id}`}
+            />
+          </Ariane>
+        }
+      >
         <PageTitle title="Sessions" />
       </PagePaperHeader>
 
@@ -107,7 +119,7 @@ export default function ConcreteCaseSessionsRoute() {
         <Section>
           <Button
             variant="outlined"
-            href={`/pse/${formationId}/concrete-case/session/new`}
+            href={`/pse/${pseFormation.id}/concrete-case/session/new`}
           >
             Créer une session
           </Button>

@@ -28,6 +28,7 @@ import { pseConcreteCaseGroupApiObjectToDto } from '../../mapper/pseconcretecase
 import PagePaperHeader from "~/component/layout/PagePaperHeader";
 import PageSpace from "~/component/layout/PageSpace";
 import PageSubtitle from "~/component/layout/PageSubtitle";
+import { Ariane, ArianeItem } from "~/component/layout/Ariane";
 
 const ParamsSchema = z.object({
   pseConcreteCaseGroupId: z.string(),
@@ -97,9 +98,30 @@ export default function PseConcreteCaseGroupRoute() {
 
   return (
     <>
-      <PagePaperHeader>
+      <PagePaperHeader
+        ariane={
+          <Ariane>
+            <ArianeItem
+              label={pseFormation.title}
+              href={`/pse/${pseFormation.id}`}
+            />
+
+            <ArianeItem
+              label="Sessions"
+              href={`/pse/${pseFormation.id}/concrete-case/session`}
+            />
+
+            <ArianeItem
+              label={pseConcreteCaseSession.name}
+              href={`/pse-concrete-case-session/${pseConcreteCaseSession.id}`}
+            />
+          </Ariane>
+        }
+      >
         <PageTitle title={`Groupe ${pseConcreteCaseGroup?.name}`} />
-        <PageSubtitle subtitle={`Détail du groupe pour la session ${pseConcreteCaseSession.name}`} />
+        <PageSubtitle
+          subtitle={`Détail du groupe pour la session ${pseConcreteCaseSession.name}`}
+        />
       </PagePaperHeader>
 
       <PageSpace variant="header" />

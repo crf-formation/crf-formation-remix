@@ -9,6 +9,7 @@ import { z } from "zod";
 import type { PseFormationApiObject } from "~/apiobject/pseformation.apiobject";
 import FormTextField from "~/component/form/FormTextField";
 import FormView from "~/component/form/FormView";
+import { Ariane, ArianeItem } from "~/component/layout/Ariane";
 import PageContainer from "~/component/layout/PageContainer";
 import PagePaperHeader from "~/component/layout/PagePaperHeader";
 import PageSpace from "~/component/layout/PageSpace";
@@ -22,6 +23,7 @@ import { validateForm } from "~/form/abstract";
 import { pseConcreteCaseSessionPostDtoValidator } from "~/form/pseconcretecasesession.form";
 import useFormFocusError from "~/hook/useFormFocusError";
 import { pseConcreteCaseSessionPostDtoToApiObject } from "~/mapper/pseconcretecasesession.mapper";
+import { pseFormationApiObjectToDto } from "~/mapper/pseformation.mapper";
 import { createPseConcreteCaseSession } from "~/service/pseconcretecasesession.server";
 import { findPseFormationById } from "~/service/pseformation.server";
 import { assertUserHasAccessToFormationAsTeacher } from "~/service/security.server";
@@ -36,7 +38,7 @@ export async function loader({ request, params }: LoaderArgs) {
 	const { pseFormationApiObject } = await security(request, params)
 
   return json({
-    formationId: pseFormationApiObject.id,
+    pseFormation: pseFormationApiObjectToDto(pseFormationApiObject),
   })
 }
 
@@ -82,7 +84,7 @@ const security: SecurityFunction<{
 }
 
 export default function ConcreteCaseSessionsRoute() {
-  const { formationId } = useLoaderData<typeof loader>();
+  const { pseFormation } = useLoaderData<typeof loader>();
   const actionData = useActionData<typeof action>();
 
   const nameRef = useRef<HTMLInputElement>(null);
@@ -93,7 +95,18 @@ export default function ConcreteCaseSessionsRoute() {
 
   return (
     <>
-      <PagePaperHeader>
+      <PagePaperHeader
+        ariane={
+          <Ariane>
+            <ArianeItem label="PSE" href="/pse" />
+
+            <ArianeItem
+              label={pseFormation.title}
+              href={`/pse/${pseFormation.id}`}
+            />
+          </Ariane>
+        }
+      >
         <PageTitle title="Créer une session" />
         <PageSubtitle subtitle="Créez une nouvelle session de cas concret" />
       </PagePaperHeader>
@@ -107,7 +120,7 @@ export default function ConcreteCaseSessionsRoute() {
             submitText="Créer"
             validator={pseConcreteCaseSessionPostDtoValidator}
           >
-            <input type="hidden" name="formationId" value={formationId} />
+            <input type="hidden" name="formationId" value={pseFormation.id} />
 
             <Box sx={{ display: "flex", flexDirection: "column", mt: 2 }}>
               <FormTextField

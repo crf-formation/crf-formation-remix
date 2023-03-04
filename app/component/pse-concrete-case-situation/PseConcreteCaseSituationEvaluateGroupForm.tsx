@@ -75,12 +75,6 @@ export default function PseConcreteCaseSituationEvaluateGroupForm({
       <input type="hidden" name="pseConcreteCaseSituationId" value={pseConcreteCaseSituation.id} />
       <input type="hidden" name="pseSituationConcreteCaseId" value={pseConcreteCaseGroup.id} />
 
-      {pseConcreteCaseGroup.students.map((student) => (
-        <div key={student.id}>
-          <Typography variant="h5">{student.user.fullName}</Typography>
-        </div>
-      ))}
-
       <Table>
         <TableHead>
           <TableRow>

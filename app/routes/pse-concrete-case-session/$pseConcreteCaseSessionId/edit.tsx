@@ -10,6 +10,7 @@ import type { UserApiObject } from "~/apiobject/user.apiobject";
 import FormErrorHelperText from "~/component/form/FormErrorHelperText";
 import FormTextField from "~/component/form/FormTextField";
 import FormView from "~/component/form/FormView";
+import { Ariane, ArianeItem } from "~/component/layout/Ariane";
 import PageContainer from "~/component/layout/PageContainer";
 import PagePaperHeader from "~/component/layout/PagePaperHeader";
 import PageSpace from "~/component/layout/PageSpace";
@@ -89,7 +90,7 @@ const security: SecurityFunction<{
 }
 
 export default function SessionPseRoute() {
-  const { pseConcreteCaseSession } = useLoaderData<typeof loader>();
+  const { pseFormation, pseConcreteCaseSession } = useLoaderData<typeof loader>();
   const actionData = useActionData<typeof action>();
 
   const nameRef = useRef<HTMLInputElement>(null);
@@ -102,7 +103,26 @@ export default function SessionPseRoute() {
 
   return (
     <>
-      <PagePaperHeader>
+      <PagePaperHeader
+        ariane={
+          <Ariane>
+            <ArianeItem
+              label={pseFormation.title}
+              href={`/pse/${pseFormation.id}`}
+            />
+
+            <ArianeItem
+              label="Sessions"
+              href={`/pse/${pseFormation.id}/concrete-case/session`}
+            />
+
+            <ArianeItem
+              label={pseConcreteCaseSession.name}
+              href={`/pse-concrete-case-session/${pseConcreteCaseSession.id}`}
+            />
+          </Ariane>
+        }
+      >
         <PageTitle title={pseConcreteCaseSession.name} />
       </PagePaperHeader>
 

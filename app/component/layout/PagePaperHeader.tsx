@@ -3,20 +3,26 @@ import type { ReactNode } from "react";
 
 interface Props {
 	children: ReactNode;
+	ariane?: ReactNode;
 }
 
-export default function PagePaperHeader({ children }: Props) {
-
+export default function PagePaperHeader({ ariane, children }: Props) {
 	return (
-		<Box
-			sx={{
-				px: 14,
-				pt: 6,
-				pb: 6,
-				backgroundColor: '#FBF7FF',
-			}}
-		>
-			{children}
-		</Box>
-	)
+    <Box
+      sx={{
+        backgroundColor: "#FBF7FF",
+      }}
+    >
+      <Box>{ariane}</Box>
+      <Box
+        sx={{
+          px: 14,
+          pt: 6,
+          pb: 6,
+        }}
+      >
+        {children}
+      </Box>
+    </Box>
+  );
 }

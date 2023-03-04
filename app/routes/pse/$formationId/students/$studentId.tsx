@@ -1,11 +1,12 @@
 import { Grid, Link } from "@mui/material";
-import type { LoaderFunction, MetaFunction } from "@remix-run/node";
+import type { LoaderArgs, LoaderFunction, MetaFunction } from "@remix-run/node";
 import { json } from "@remix-run/node";
 import type { Params } from "@remix-run/react";
 import { Outlet, useLoaderData } from "@remix-run/react";
 import { z } from "zod";
 import type { PseFormationApiObject } from "~/apiobject/pseformation.apiobject";
 import AppTabsLink from "~/component/layout/AppTabsLink";
+import { Ariane, ArianeItem } from "~/component/layout/Ariane";
 import PageContainer from "~/component/layout/PageContainer";
 import PagePaperHeader from "~/component/layout/PagePaperHeader";
 import PageSpace from "~/component/layout/PageSpace";
@@ -37,7 +38,7 @@ export async function loader({ request, params }: LoaderArgs) {
 	const userOnPseFormationApiObject = await getUserOnPseFormationEntityById(formationId, studentId)
 
   return json({
-    formation: pseFormationApiObjectToDto(pseFormationApiObject),
+    pseFormation: pseFormationApiObjectToDto(pseFormationApiObject),
     student: userOnPseFormationApiObjectToDto(userOnPseFormationApiObject).user,
   });
 };
@@ -65,31 +66,47 @@ export const meta: MetaFunction<typeof loader> = ({ data }) => {
 };
 
 export default function UserPseFormationSummaryRoute() {
-  const { formation, student } = useLoaderData<typeof loader>();
+  const { pseFormation, student } = useLoaderData<typeof loader>();
   const user = useUser();
 
   const tabs = [
     {
       label: 'Travail préparatoire',
-      href: `/pse/${formation.id}/students/${student.id}/preparatory-work`
+      href: `/pse/${pseFormation.id}/students/${student.id}/preparatory-work`
     },
     {
       label: 'Techniques',
-      href: `/pse/${formation.id}/students/${student.id}/technique`
+      href: `/pse/${pseFormation.id}/students/${student.id}/technique`
     },
     {
       label: 'Savoir de mise en oeuvre des procédures',
-      href: `/pse/${formation.id}/students/${student.id}/concrete-case/session`
+      href: `/pse/${pseFormation.id}/students/${student.id}/concrete-case/session`
     },
     {
       label: 'Suivi final',
-      href: `/pse/${formation.id}/students/${student.id}/summary`
+      href: `/pse/${pseFormation.id}/students/${student.id}/summary`
     }
   ]
 
   return (
     <>
-      <PagePaperHeader>
+      <PagePaperHeader
+        ariane={
+          <Ariane>
+            <ArianeItem label="PSE" href="pse" />
+
+            <ArianeItem
+              label={pseFormation.title}
+              href={`/pse/${pseFormation.id}`}
+            />
+
+            <ArianeItem
+              label="Participants"
+              href={`/pse/${pseFormation.id}`}
+            />
+          </Ariane>
+        }
+      >
         <PageTitle title={student.fullName} />
       </PagePaperHeader>
 

@@ -60,7 +60,6 @@ export default function Layout({ isLoggedIn, children }: { isLoggedIn: boolean, 
       {withSidebar && (
         <SidebarMenu
           open={sidebarIsOpen}
-          isLoggedIn={isLoggedIn}
         />
       )}
 

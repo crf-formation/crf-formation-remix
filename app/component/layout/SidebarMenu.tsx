@@ -23,7 +23,6 @@ type MenuProps = {
 	dense: boolean;
   handleToggle: Function;
   menuItems: Array<Map<String, any[]>>;
-  isLoggedIn: boolean
 }
 
 export type MenuName = 'menuDevTools' | 'menuAdmin' | 'menuCurrentPseFormation' | undefined
@@ -88,7 +87,6 @@ const BottomListItems = ({
   handleToggle,
   dense,
   menuItems,
-  isLoggedIn,
 }: MenuProps) => {
   const user = useOptionalUser()
 
@@ -111,7 +109,7 @@ const BottomListItems = ({
       />
 
       <List>
-        {isLoggedIn && user && (
+        {user && (
           <>
             <UserMenu
               open={userMenuOpen}
@@ -121,7 +119,6 @@ const BottomListItems = ({
             />
           </>
         )}
-
       </List>
     </>
   );
@@ -190,11 +187,10 @@ function Category({ name }: CategoryProps) {
 
 interface Props {
   open?: boolean;
-  toggleDrawer: MouseEventHandler<any>;
   isLoggedIn: boolean;
 }
 
-export default function SidebarMenu({ open, isLoggedIn, toggleDrawer }: Props) {
+export default function SidebarMenu({ open }: Props) {
   const { getMatchingMenuName } = useMenuMatches()
   const currentPseFormation = useCurrentPseFormation()
 
@@ -283,9 +279,6 @@ export default function SidebarMenu({ open, isLoggedIn, toggleDrawer }: Props) {
               // onClick={() => toggleDrawer()}
             />
           </Box>
-          <IconButton onClick={toggleDrawer}>
-            <ChevronLeftIcon sx={{ color: "var(--sidebar-color-title)" }} />
-          </IconButton>
         </Toolbar>
 
         <SidebarDivider />
@@ -322,7 +315,6 @@ export default function SidebarMenu({ open, isLoggedIn, toggleDrawer }: Props) {
             openedMenu={openedSubMenu}
             handleToggle={handleToggle}
             menuItems={menuItems}
-            isLoggedIn={isLoggedIn}
           />
         </List>
       </Drawer>

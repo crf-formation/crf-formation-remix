@@ -1,4 +1,4 @@
-import type { ActionArgs, LoaderArgs, LoaderFunction, MetaFunction } from "@remix-run/node";
+import type { ActionArgs, LoaderArgs, MetaFunction } from "@remix-run/node";
 import { json, redirect } from "@remix-run/node";
 import type { Params } from "@remix-run/react";
 import { useActionData, useLoaderData } from "@remix-run/react";
@@ -6,6 +6,7 @@ import { z } from "zod";
 import type { PseConcreteCaseSessionApiObject } from "~/apiobject/pseconcretecasesession.apiobject";
 import type { PseFormationApiObject } from "~/apiobject/pseformation.apiobject";
 import type { UserApiObject } from "~/apiobject/user.apiobject";
+import { Ariane, ArianeItem } from "~/component/layout/Ariane";
 import PageContainer from "~/component/layout/PageContainer";
 import PagePaperHeader from '~/component/layout/PagePaperHeader';
 import PageSpace from "~/component/layout/PageSpace";
@@ -89,9 +90,35 @@ export default function PseConcreteCaseSessionNewSituationRoute() {
 
   return (
     <>
-      <PagePaperHeader>
+      <PagePaperHeader
+        ariane={
+          <Ariane>
+            <ArianeItem
+              label={pseFormation.title}
+              href={`/pse/${pseFormation.id}`}
+            />
+
+            <ArianeItem
+              label="Sessions"
+              href={`/pse/${pseFormation.id}/concrete-case/session`}
+            />
+
+            <ArianeItem
+              label={pseConcreteCaseSession.name}
+              href={`/pse-concrete-case-session/${pseConcreteCaseSession.id}`}
+            />
+
+            <ArianeItem
+              label="Situations"
+              href={`/pse-concrete-case-session/${pseConcreteCaseSession.id}`}
+            />
+          </Ariane>
+        }
+      >
         <PageTitle title="Nouvelle situation" />
-        <PageSubtitle subtitle={`Créez une situation pour la session ${pseConcreteCaseSession.name}`} />
+        <PageSubtitle
+          subtitle={`Créez une situation pour la session ${pseConcreteCaseSession.name}`}
+        />
       </PagePaperHeader>
 
       <PageSpace variant="header" />

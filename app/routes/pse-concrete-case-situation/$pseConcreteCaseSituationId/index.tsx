@@ -24,6 +24,9 @@ import { getPseFormationByPseConcreteCaseSessionId } from "~/service/pseformatio
 import { assertUserHasAccessToFormationAsTeacher } from "~/service/security.server";
 import { requireUser } from "~/service/session.server";
 import { getParamsOrFail } from '~/util/remix.params';
+import PagePaperHeader from '~/component/layout/PagePaperHeader';
+import PageSpace from '~/component/layout/PageSpace';
+import { Ariane, ArianeItem } from "~/component/layout/Ariane";
 
 const ParamsSchema = z.object({
   pseConcreteCaseSituationId: z.string(),
@@ -97,21 +100,56 @@ export default function PseConcreteCaseSituationRoute() {
 	const actionData = useActionData<typeof action>();
 
   return (
-    <PageContainer>
-      <PageTitle title={`Situation ${pseConcreteCaseSituation?.pseConcreteCaseType?.name}`} />
-      <Section>
-        <PseConcreteCaseSituationForm
-          pseFormationId={pseFormation.id}
-          pseConcreteCaseSessionId={pseConcreteCaseSession.id}
-          pseConcreteCaseGroups={pseConcreteCaseSession.pseConcreteCaseGroups}
-          actionData={actionData}
-        	// edit data
-					isEdit
-          teacher={pseConcreteCaseSituation.teacher}
-          pseConcreteCaseType={pseConcreteCaseSituation.pseConcreteCaseType}
-          pseSituationConcreteCaseGroups={pseConcreteCaseSituation.pseSituationConcreteCaseGroups}
+    <>
+      <PagePaperHeader
+        ariane={
+          <Ariane>
+            <ArianeItem
+              label={pseFormation.title}
+              href={`/pse/${pseFormation.id}`}
+            />
+
+            <ArianeItem
+              label="Sessions"
+              href={`/pse/${pseFormation.id}/concrete-case/session`}
+            />
+
+            <ArianeItem
+              label={pseConcreteCaseSession.name}
+              href={`/pse-concrete-case-session/${pseConcreteCaseSession.id}`}
+            />
+
+            <ArianeItem
+              label="Situations"
+              href={`/pse-concrete-case-session/${pseConcreteCaseSession.id}`}
+            />
+          </Ariane>
+        }
+      >
+        <PageTitle
+          title={`Situation ${pseConcreteCaseSituation?.pseConcreteCaseType?.name}`}
         />
-      </Section>
-    </PageContainer>
+      </PagePaperHeader>
+
+      <PageSpace variant="header" />
+
+      <PageContainer>
+        <Section>
+          <PseConcreteCaseSituationForm
+            pseFormationId={pseFormation.id}
+            pseConcreteCaseSessionId={pseConcreteCaseSession.id}
+            pseConcreteCaseGroups={pseConcreteCaseSession.pseConcreteCaseGroups}
+            actionData={actionData}
+            // edit data
+            isEdit
+            teacher={pseConcreteCaseSituation.teacher}
+            pseConcreteCaseType={pseConcreteCaseSituation.pseConcreteCaseType}
+            pseSituationConcreteCaseGroups={
+              pseConcreteCaseSituation.pseSituationConcreteCaseGroups
+            }
+          />
+        </Section>
+      </PageContainer>
+    </>
   );
 }

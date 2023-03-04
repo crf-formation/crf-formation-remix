@@ -2,13 +2,13 @@ import EditIcon from '@mui/icons-material/Edit';
 import ImageIcon from '@mui/icons-material/Image';
 import PersonAddIcon from '@mui/icons-material/PersonAdd';
 import { Avatar, Button, Grid, Link, List, ListItem, ListItemAvatar, ListItemText, Stack } from "@mui/material";
-import type { LoaderFunction, MetaFunction } from "@remix-run/node";
 import { json } from "@remix-run/node";
 import type { Params } from "@remix-run/react";
 import { useLoaderData } from "@remix-run/react";
 import { z } from "zod";
 import type { PseFormationApiObject } from '~/apiobject/pseformation.apiobject';
 import FormationPseStatusChip from "~/component/formationpse/FormationPseStatusChip";
+import { Ariane, ArianeItem } from '~/component/layout/Ariane';
 import PageContainer from "~/component/layout/PageContainer";
 import PagePaperHeader from '~/component/layout/PagePaperHeader';
 import PageSpace from '~/component/layout/PageSpace';
@@ -174,7 +174,13 @@ export default function FromationPseRoute() {
 
   return (
     <>
-      <PagePaperHeader>
+      <PagePaperHeader
+        ariane={
+          <Ariane>
+            <ArianeItem label="PSE" href="pse" />
+          </Ariane>
+        }
+      >
         <PageTitle title={`PSE: ${formation.title}`} />
         <PageSubtitle subtitle={`${formation.place.title}`} />
       </PagePaperHeader>
