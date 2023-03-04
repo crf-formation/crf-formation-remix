@@ -93,6 +93,8 @@ export default function PseConcreteCaseSessionNewGroupRoute() {
       <PagePaperHeader
         ariane={
           <Ariane>
+            <ArianeItem label="PSE" href="pse" />
+
             <ArianeItem
               label={pseFormation.title}
               href={`/pse/${pseFormation.id}`}

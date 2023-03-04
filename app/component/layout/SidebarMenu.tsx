@@ -17,6 +17,7 @@ import SidebarDivider from "./SidebarDivider";
 import SubMenu from "./SubMenu";
 import useOptionalUser from '~/hook/useOptionalUser';
 import UserMenu from './UserMenu';
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 
 type MenuProps = {
   openedMenu: MenuName;
@@ -111,6 +112,16 @@ const BottomListItems = ({
       <List>
         {user && (
           <>
+           <MenuItem
+              name={user.fullName}
+              onClick={(e) => setUserMenuAnchorEl(e.currentTarget)}
+              aria-controls={userMenuOpen ? "account-menu" : undefined}
+              aria-haspopup="true"
+              aria-expanded={userMenuOpen ? "true" : undefined}
+              icon={<AccountCircleIcon color="inherit" />}
+              dense={dense}
+            />
+
             <UserMenu
               open={userMenuOpen}
               user={user}

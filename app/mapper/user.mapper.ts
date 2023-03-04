@@ -63,6 +63,9 @@ export function userApiObjectToUserMeDto(
     email: userApiObject.email,
     firstName: userApiObject.firstName,
     lastName: userApiObject.lastName,
+    fullName: [userApiObject.firstName, userApiObject.lastName]
+    .filter(Boolean)
+    .join(" "),
     createdAt: userApiObject.createdAt.toISOString(),
     updatedAt: userApiObject.updatedAt.toISOString(),
 

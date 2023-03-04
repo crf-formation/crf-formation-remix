@@ -25,8 +25,8 @@ export default function UserMenu({ open, user, anchorRef, handleClose }: Props) 
       anchorEl={anchorRef}
       id="user-menu"
       open={open}
-      transformOrigin={{ horizontal: "right", vertical: "top" }}
-      anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
+      transformOrigin={{ horizontal: "left", vertical: "bottom" }}
+      anchorOrigin={{ horizontal: "left", vertical: "bottom" }}
       onClose={handleClose}
       PaperProps={{
         elevation: 0, // custom drop-shadow filter below
@@ -42,12 +42,12 @@ export default function UserMenu({ open, user, anchorRef, handleClose }: Props) 
             content: '""',
             display: "block",
             position: "absolute",
-            top: 0,
-            right: 20,
+            bottom: 20,
+            left: -5,
             width: 10,
             height: 10,
             bgcolor: "background.paper",
-            transform: "translateY(-50%) rotate(45deg)",
+            transform: "translateY(-25%) rotate(45deg)",
             zIndex: 0,
           },
         },
@@ -61,7 +61,7 @@ export default function UserMenu({ open, user, anchorRef, handleClose }: Props) 
                 fontWeight: 600,
               }}
             >
-              {user.firstName} {user.lastName}
+              {user.fulleName}
             </Typography>
             <Typography
               sx={{

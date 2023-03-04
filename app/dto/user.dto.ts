@@ -40,6 +40,7 @@ export interface UserMeDto {
   role: UserRoleDtoEnum;
   firstName: string;
   lastName: string;
+  fullName: string;
   createdAt: DateISOString;
   updatedAt: DateISOString;
 
