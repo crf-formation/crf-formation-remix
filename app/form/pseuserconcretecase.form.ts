@@ -1,7 +1,7 @@
 import { withZod } from "@remix-validated-form/with-zod";
 import { z } from "zod";
 import { zfd } from "zod-form-data";
-import type { PseEvaluationCompetenceGradePostDto, PseUserConcreteCaseGroupEvaluationPostDto, PseUserGradesEvaluationPostDto } from "~/dto/pseuserconcretecase.dto";
+import type { PseEvaluationCompetenceGradePostDto, PseUserConcreteCaseGroupEvaluationPostDto, PseUserEvaluationPostDto } from "~/dto/pseuserconcretecase.dto";
 import { PseUserConcreteCaseCompetenceGradeZEnum } from "~/dto/pseuserconcretecase.dto";
 
 const PseUserConcreteCaseGradeSchema: z.ZodType<PseEvaluationCompetenceGradePostDto> = 
@@ -11,7 +11,7 @@ const PseUserConcreteCaseGradeSchema: z.ZodType<PseEvaluationCompetenceGradePost
 	}
 )
 
-const PseUserConcreteCaseSchema: z.ZodType<PseUserGradesEvaluationPostDto> =  z.object({
+const PseUserConcreteCaseSchema: z.ZodType<PseUserEvaluationPostDto> =  z.object({
 	userId: z.string(),
 	grades: z.array(PseUserConcreteCaseGradeSchema)
 })
@@ -21,6 +21,7 @@ export const PseUserConcreteCaseGroupEvaluationPostDtoPostSchema: z.ZodType<PseU
 	pseConcreteCaseSituationId: z.string(),
 	pseConcreteCaseGroupId: z.string(),
 	pseConcreteCaseSessionId: z.string(),
+	pseConcreteCaseTypeId: z.string(),
 
 	usersGrades: zfd.json(z.array(PseUserConcreteCaseSchema))
 });

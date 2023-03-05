@@ -1,7 +1,7 @@
 import type { Prisma } from "@prisma/client";
 import type { PseConcreteCaseSituationPostApiObject, PseConcreteCaseSituationPutApiObject, PseSituationConcreteCaseGroupPutApiObject } from "~/apiobject/pseconcretecasesituation.apiobject";
-import { prisma } from "~/entity/db.server";
 import type { PseConcreteCaseSituationEntity } from "~/entity";
+import { prisma } from "~/entity/db.server";
 
 const includeForSingleItem = {
   pseConcreteCaseType: { include: { competencesToEvaluate: { include: { pseCompetence: true }} } },
@@ -50,7 +50,6 @@ export async function updatePseConcreteCaseSituationEntity(
       pseSituationConcreteCaseGroups.map(async (pseSituationConcreteCaseGroup: PseSituationConcreteCaseGroupPutApiObject) => {
         return tx.pseSituationConcreteCaseGroup.create({
           data: {
-            pseConcreteCaseSessionId: entity.pseConcreteCaseSessionId,
             ...pseSituationConcreteCaseGroup,
             pseConcreteCaseSituationId: entity.id,
           },

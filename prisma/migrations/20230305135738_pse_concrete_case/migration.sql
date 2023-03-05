@@ -74,10 +74,8 @@ CREATE TABLE "PseSituationConcreteCaseGroup" (
     "createdAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "position" INTEGER NOT NULL DEFAULT -1,
-    "pseConcreteCaseSessionId" TEXT NOT NULL,
     "pseConcreteCaseGroupId" TEXT NOT NULL,
     "pseConcreteCaseSituationId" TEXT NOT NULL,
-    CONSTRAINT "PseSituationConcreteCaseGroup_pseConcreteCaseSessionId_fkey" FOREIGN KEY ("pseConcreteCaseSessionId") REFERENCES "PseConcreteCaseSession" ("id") ON DELETE CASCADE ON UPDATE CASCADE,
     CONSTRAINT "PseSituationConcreteCaseGroup_pseConcreteCaseGroupId_fkey" FOREIGN KEY ("pseConcreteCaseGroupId") REFERENCES "PseConcreteCaseGroup" ("id") ON DELETE CASCADE ON UPDATE CASCADE,
     CONSTRAINT "PseSituationConcreteCaseGroup_pseConcreteCaseSituationId_fkey" FOREIGN KEY ("pseConcreteCaseSituationId") REFERENCES "PseConcreteCaseSituation" ("id") ON DELETE CASCADE ON UPDATE CASCADE
 );
@@ -87,15 +85,12 @@ CREATE TABLE "PseUserConcreteCase" (
     "id" TEXT NOT NULL PRIMARY KEY,
     "createdAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "state" TEXT NOT NULL,
     "selected" BOOLEAN NOT NULL DEFAULT false,
     "role" TEXT NOT NULL,
     "userId" TEXT NOT NULL,
-    "concreteCaseGroupId" TEXT NOT NULL,
-    "concreteCaseTypeId" TEXT NOT NULL,
+    "pseSituationConcreteCaseGroupId" TEXT NOT NULL,
     CONSTRAINT "PseUserConcreteCase_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User" ("id") ON DELETE CASCADE ON UPDATE CASCADE,
-    CONSTRAINT "PseUserConcreteCase_concreteCaseGroupId_fkey" FOREIGN KEY ("concreteCaseGroupId") REFERENCES "PseConcreteCaseGroup" ("id") ON DELETE CASCADE ON UPDATE CASCADE,
-    CONSTRAINT "PseUserConcreteCase_concreteCaseTypeId_fkey" FOREIGN KEY ("concreteCaseTypeId") REFERENCES "PseConcreteCaseType" ("id") ON DELETE CASCADE ON UPDATE CASCADE
+    CONSTRAINT "PseUserConcreteCase_pseSituationConcreteCaseGroupId_fkey" FOREIGN KEY ("pseSituationConcreteCaseGroupId") REFERENCES "PseSituationConcreteCaseGroup" ("id") ON DELETE CASCADE ON UPDATE CASCADE
 );
 
 -- CreateTable
@@ -109,3 +104,12 @@ CREATE TABLE "PseUserConcreteCaseCompetence" (
     CONSTRAINT "PseUserConcreteCaseCompetence_pseUserConcreteCaseId_fkey" FOREIGN KEY ("pseUserConcreteCaseId") REFERENCES "PseUserConcreteCase" ("id") ON DELETE CASCADE ON UPDATE CASCADE,
     CONSTRAINT "PseUserConcreteCaseCompetence_pseCompetenceId_fkey" FOREIGN KEY ("pseCompetenceId") REFERENCES "PseCompetence" ("id") ON DELETE CASCADE ON UPDATE CASCADE
 );
+
+-- CreateIndex
+CREATE UNIQUE INDEX "PseConcreteCaseSession_name_formationId_key" ON "PseConcreteCaseSession"("name", "formationId");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "PseSituationConcreteCaseGroup_pseConcreteCaseGroupId_pseConcreteCaseSituationId_key" ON "PseSituationConcreteCaseGroup"("pseConcreteCaseGroupId", "pseConcreteCaseSituationId");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "PseUserConcreteCase_userId_pseSituationConcreteCaseGroupId_key" ON "PseUserConcreteCase"("userId", "pseSituationConcreteCaseGroupId");

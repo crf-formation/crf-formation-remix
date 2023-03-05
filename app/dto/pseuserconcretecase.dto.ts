@@ -43,15 +43,16 @@ export interface PseUserConcreteCaseGroupEvaluationDto {
 	pseConcreteCaseSituationId: string;
 	pseConcreteCaseGroupId: string;
 	pseConcreteCaseSessionId: string;
+	pseConcreteCaseTypeId: string;
 
-	usersGrades: Array<PseUserGradesEvaluationDto>;
+	usersGrades: Array<PseUserEvaluationDto>;
 
 	// utility data
 	competencesToEvaluate: Array<PseCompetenceDto>;
 	students: Array<UserDto>;
 }
 
-export interface PseUserGradesEvaluationDto {
+export interface PseUserEvaluationDto {
 	userId: string;
 	grades: Array<PseEvaluationCompetenceGradeDto>;
 }
@@ -69,11 +70,12 @@ export interface PseUserConcreteCaseGroupEvaluationPostDto {
 	pseConcreteCaseSituationId: string;
 	pseConcreteCaseGroupId: string;
 	pseConcreteCaseSessionId: string;
+	pseConcreteCaseTypeId: string;
 
-	usersGrades: Array<PseUserGradesEvaluationPostDto>;
+	usersGrades: Array<PseUserEvaluationPostDto>;
 }
 
-export interface PseUserGradesEvaluationPostDto {
+export interface PseUserEvaluationPostDto {
 	userId: string;
 	grades: Array<PseEvaluationCompetenceGradePostDto>;
 }

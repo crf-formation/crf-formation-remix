@@ -2,7 +2,7 @@ import { Box, Checkbox, Table, TableBody, TableCell, TableHead, TableRow, Typogr
 import { useImmer } from 'use-immer';
 import InputHiddenJson from "~/component/form/InputHiddenJson";
 import type { PseCompetenceDto } from "~/dto/psecompetence.dto";
-import PseUserGradesEvaluationDto, { PseUserConcreteCaseCompetenceGradeDtoEnum, PseUserConcreteCaseCompetenceGradeZEnum, PseUserConcreteCaseGroupEvaluationDto, } from '~/dto/pseuserconcretecase.dto';
+import PseUserEvaluationDto, { PseUserConcreteCaseCompetenceGradeDtoEnum, PseUserConcreteCaseCompetenceGradeZEnum, PseUserConcreteCaseGroupEvaluationDto, } from '~/dto/pseuserconcretecase.dto';
 import { pseUserConcreteCaseGroupEvaluationPostDtoValidator } from "~/form/pseuserconcretecase.form";
 import FormView from "../form/FormView";
 
@@ -69,7 +69,7 @@ export default function PseConcreteCaseSituationEvaluateGroupForm({
   pseUserConcreteCaseGroupEvaluation
 }: Props) {
   const [pseUserConcreteCaseUsersGrades, updatePseUserConcreteCaseUsersGrades] 
-    = useImmer<Array<PseUserGradesEvaluationDto>>(() => [...pseUserConcreteCaseGroupEvaluation.usersGrades])
+    = useImmer<Array<PseUserEvaluationDto>>(() => [...pseUserConcreteCaseGroupEvaluation.usersGrades])
 
 
   function onSetGradeForUser(
@@ -77,8 +77,8 @@ export default function PseConcreteCaseSituationEvaluateGroupForm({
     competenceId: string,
     grade: PseUserConcreteCaseCompetenceGradeDtoEnum
   ) {
-    updatePseUserConcreteCaseUsersGrades((draft: Array<PseUserGradesEvaluationDto>) => {
-      const studentGrades: PseUserGradesEvaluationDto | undefined = draft.find((studentGrades) => studentGrades.userId === userId);
+    updatePseUserConcreteCaseUsersGrades((draft: Array<PseUserEvaluationDto>) => {
+      const studentGrades: PseUserEvaluationDto | undefined = draft.find((studentGrades) => studentGrades.userId === userId);
       if (!studentGrades) {
         throw new Error(`User ${userId} does not exist`);
       }
@@ -105,6 +105,7 @@ export default function PseConcreteCaseSituationEvaluateGroupForm({
       <input type="hidden" name="pseConcreteCaseSituationId" value={pseUserConcreteCaseGroupEvaluation.pseConcreteCaseSituationId} />
       <input type="hidden" name="pseConcreteCaseGroupId" value={pseUserConcreteCaseGroupEvaluation.pseConcreteCaseGroupId} />
       <input type="hidden" name="pseConcreteCaseSessionId" value={pseUserConcreteCaseGroupEvaluation.pseConcreteCaseSessionId} />
+      <input type="hidden" name="pseConcreteCaseTypeId" value={pseUserConcreteCaseGroupEvaluation.pseConcreteCaseTypeId} />
       <InputHiddenJson name="usersGrades" json={pseUserConcreteCaseUsersGrades} />
 
       <Table>

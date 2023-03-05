@@ -134,7 +134,7 @@ export async function action({ request, params  }: ActionArgs) {
     throw new Error(`Forbidden`)
   }
 
-  await updatePseUserConcreteCaseGroupEvaluation\(
+  await updatePseUserConcreteCaseGroupEvaluation(
     pseUserConcreteCaseGroupEvaluationPostDtoToApiObject(pseUserConcreteCaseGroupEvaluationPostDto)
   )
 

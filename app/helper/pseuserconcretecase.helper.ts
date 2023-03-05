@@ -22,6 +22,7 @@ export function buildPseUserConcreteCaseGroupEvaluation(
 		pseConcreteCaseSessionId: pseConcreteCaseSession.id,
     pseConcreteCaseSituationId: pseConcreteCaseSituation.id,
     pseConcreteCaseGroupId: pseConcreteCaseGroup.id,
+    pseConcreteCaseTypeId: pseConcreteCaseSituation.pseConcreteCaseTypeId,
 
     students: pseConcreteCaseGroup.students
       .map(

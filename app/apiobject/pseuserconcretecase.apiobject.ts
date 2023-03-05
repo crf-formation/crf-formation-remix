@@ -42,12 +42,13 @@ export interface PseUserConcreteCaseGroupEvaluationApiObject {
 	pseConcreteCaseSituationId: string;
 	pseConcreteCaseGroupId: string;
 	pseConcreteCaseSessionId: string;
+	pseConcreteCaseTypeId: string;
 	competencesToEvaluate: Array<PseCompetenceApiObject>;
 	students: Array<UserApiObject>;
-	usersGrades: Array<PseUserGradesEvaluationApiObject>;
+	usersGrades: Array<PseUserEvaluationApiObject>;
 }
 
-export interface PseUserGradesEvaluationApiObject {
+export interface PseUserEvaluationApiObject {
 	userId: string;
 	grades: Array<PseEvaluationCompetenceGradeApiObject>;
 }
@@ -65,11 +66,13 @@ export interface PseUserConcreteCaseGroupEvaluationPostApiObject {
 	pseConcreteCaseSituationId: string;
 	pseConcreteCaseGroupId: string;
 	pseConcreteCaseSessionId: string;
-	usersGrades: Array<PseUserGradesEvaluationPostApiObject>;
+	pseConcreteCaseTypeId: string;
+	usersGrades: Array<PseUserEvaluationPostApiObject>;
 }
 
-export interface PseUserGradesEvaluationPostApiObject {
+export interface PseUserEvaluationPostApiObject {
 	userId: string;
+	role: string;
 	grades: Array<PseEvaluationCompetenceGradePostApiObject>;
 }
 
