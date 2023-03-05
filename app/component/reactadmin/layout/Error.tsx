@@ -3,20 +3,21 @@ import History from '@mui/icons-material/History';
 import ErrorIcon from '@mui/icons-material/Report';
 import { Paper } from "@mui/material";
 import Button from '@mui/material/Button';
-import { useEffect, useRef } from 'react';
-import { Title, useTranslate } from 'react-admin';
 import { useLocation } from "@remix-run/react";
+import { useEffect, useRef } from 'react';
+import type { ErrorProps } from 'react-admin';
+import { Title, useTranslate } from 'react-admin';
 import PageContainer from '../../layout/PageContainer';
 
-interface Props {
-	error: any // TODO: which type?
-	resetErrorBoundary: any
+interface Props extends ErrorProps {
+	error: Error;
+	resetErrorBoundary: () => void
 }
 
 export default function Error({
 	error, 
-	resetErrorBoundary, 
-	...rest
+	resetErrorBoundary,
+  errorInfo, 
 } : Props) {
 	const { pathname } = useLocation();
 	const originalPathname = useRef(pathname);
@@ -41,9 +42,9 @@ export default function Error({
           </div>
           {process.env.NODE_ENV !== "production" && (
             <div>
-              <h2>{translate(error.toString())}</h2>
-              <p>{error.componentStack}</p>
-            </div>
+            <h2>{translate(error?.toString())}</h2>
+            <p>{errorInfo?.componentStack}</p>
+          </div>
           )}
           <div>
             <Button

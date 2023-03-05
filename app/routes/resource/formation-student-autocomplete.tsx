@@ -9,8 +9,6 @@ import { paginateEntityToApiObject } from "~/mapper/abstract.mapper";
 import { userApiObjectToDto } from "~/mapper/user.mapper";
 import { requireUser } from "~/service/session.server";
 import { getFormationStudents, searchFormationStudents } from "~/service/user.server";
-import { getSearchParamsOrFail } from "~/util/remix.params";
-import type { PaginateObject } from '../../constant/types';
 
 const URLSearchParamsSchema = z.object({
 	formationId: z.string(),

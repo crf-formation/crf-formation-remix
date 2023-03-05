@@ -22,6 +22,7 @@ import type { SecurityFunction } from "~/constant/remix";
 import type { PseConcreteCaseGroupDto } from '~/dto/pseconcretecasegroup.dto';
 import type { PseConcreteCaseSessionGroupOrderDto } from '~/dto/pseconcretecasesession.dto';
 import type { PseConcreteCaseSituationDto, PseSituationConcreteCaseGroupDto } from '~/dto/pseconcretecasesituation.dto';
+import { getParamsOrFail } from '~/helper/remix.params.helper';
 import { pseConcreteCaseSessionApiObjectToDto, pseConcreteCaseSessionGroupOrderApiObjectToDto } from "~/mapper/pseconcretecasesession.mapper";
 import { pseConcreteCaseSituationApiObjectToDto } from '~/mapper/pseconcretecasesituation.mapper';
 import { pseFormationApiObjectToDto } from "~/mapper/pseformation.mapper";
@@ -30,7 +31,6 @@ import { getPseConcreteCaseSituationsForPseConcreteCaseSessionId } from '~/servi
 import { getPseFormationByPseConcreteCaseSessionId } from '~/service/pseformation.server';
 import { assertUserHasAccessToFormationAsTeacher } from "~/service/security.server";
 import { requireUser } from "~/service/session.server";
-import { getParamsOrFail } from '~/util/remix.params';
 
 
 // GET PSE concrete case sessions
@@ -38,27 +38,6 @@ import { getParamsOrFail } from '~/util/remix.params';
 const ParamsSchema = z.object({
   pseConcreteCaseSessionId: z.string(),
 });
-
-export const loader: LoaderFunction = async ({ request, params }) => {
-  const {
-    pseFormationApiObject,
-    pseConcreteCaseSessionApiObject,
-  } = await security(request, params);
-
-  const pseConcreteCaseSituationApiObjects = await getPseConcreteCaseSituationsForPseConcreteCaseSessionId(pseConcreteCaseSessionApiObject.id)
-
-  const pseConcreteCaseSessionGroupOrderApiObjects = getPseConcreteCaseSituationsGroupsOrder(
-    pseConcreteCaseSessionApiObject.pseConcreteCaseGroups, 
-    pseConcreteCaseSituationApiObjects
-  )
-
-  return json({
-    pseFormation: pseFormationApiObjectToDto(pseFormationApiObject),
-    pseConcreteCaseSession: pseConcreteCaseSessionApiObjectToDto(pseConcreteCaseSessionApiObject),
-    pseConcreteCaseSituations: pseConcreteCaseSituationApiObjects.map(pseConcreteCaseSituationApiObjectToDto),
-    pseConcreteCaseSessionGroupOrders: pseConcreteCaseSessionGroupOrderApiObjects.map(pseConcreteCaseSessionGroupOrderApiObjectToDto)
-  });
-};
 
 const security: SecurityFunction<{
   userApiObject: UserApiObject;
@@ -80,6 +59,27 @@ const security: SecurityFunction<{
     pseConcreteCaseSessionApiObject
   }
 }
+
+export const loader: LoaderFunction = async ({ request, params }) => {
+  const {
+    pseFormationApiObject,
+    pseConcreteCaseSessionApiObject,
+  } = await security(request, params);
+
+  const pseConcreteCaseSituationApiObjects = await getPseConcreteCaseSituationsForPseConcreteCaseSessionId(pseConcreteCaseSessionApiObject.id)
+
+  const pseConcreteCaseSessionGroupOrderApiObjects = getPseConcreteCaseSituationsGroupsOrder(
+    pseConcreteCaseSessionApiObject.pseConcreteCaseGroups, 
+    pseConcreteCaseSituationApiObjects
+  )
+
+  return json({
+    pseFormation: pseFormationApiObjectToDto(pseFormationApiObject),
+    pseConcreteCaseSession: pseConcreteCaseSessionApiObjectToDto(pseConcreteCaseSessionApiObject),
+    pseConcreteCaseSituations: pseConcreteCaseSituationApiObjects.map(pseConcreteCaseSituationApiObjectToDto),
+    pseConcreteCaseSessionGroupOrders: pseConcreteCaseSessionGroupOrderApiObjects.map(pseConcreteCaseSessionGroupOrderApiObjectToDto)
+  });
+};
 
 export const meta: MetaFunction<typeof loader> = ({ data }) => {
   return {

@@ -1,11 +1,10 @@
-import type { LoaderFunction } from "@remix-run/node";
 import { json } from "@remix-run/node";
 import { z } from "zod";
+import { getSearchParamsOrFail } from "~/helper/remix.params.helper";
 import { paginateEntityToApiObject } from "~/mapper/abstract.mapper";
 import { placeApiObjectToDto } from "~/mapper/place.mapper";
 import { getPlaces } from "~/service/place.server";
 import { requireAdmin } from "~/service/session.server";
-import { getSearchParamsOrFail } from "~/util/remix.params";
 
 const URLSearchParamsSchema = z.object({
   page: z.number().default(0),

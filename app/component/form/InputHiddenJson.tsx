@@ -6,6 +6,8 @@ interface Props {
 
 /**
  * Display a json object as input hidden fields.
+ * 
+ * Note: use zfd on your zod schema to describe the expected json data.
  */
 export default function InputHiddenJson({ name, json }: Props) {
   return (

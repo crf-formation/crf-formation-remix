@@ -1,6 +1,7 @@
 import { Box, Typography } from "@mui/material";
 import type { ActionArgs, LoaderArgs, MetaFunction } from "@remix-run/node";
 import { json, redirect } from "@remix-run/node";
+import type { Params } from "@remix-run/react";
 import { useActionData, useLoaderData } from "@remix-run/react";
 import { useRef, useState } from "react";
 import { z } from "zod";
@@ -11,14 +12,15 @@ import PageFullContentWithLogo from "~/component/layout/PageFullContentWithLogo"
 import type { PasswordResetDto } from "~/dto/user.dto";
 import { validateForm } from '~/form/abstract';
 import { passwordResetValidator } from "~/form/user.form";
+import type { SecurityFunction } from "~/helper/remix.helper";
+import { getParamsOrFail, getSearchParamsOrFail } from "~/helper/remix.params.helper";
+import { badRequestWithFlash } from "~/helper/responseerror.helper";
+import { invalidFormResponse } from "~/helper/responses.helper";
 import useFormFocusError from "~/hook/useFormFocusError";
 import type { ApiErrorException } from '~/service/api.error';
 import { addFlashMessage } from "~/service/flash.server";
 import { recoverPassword } from "~/service/passwordrecovery.server";
 import { commitSession, getSession, getUserId } from "~/service/session.server";
-import { getParamsOrFail, getSearchParamsOrFail } from "~/util/remix.params";
-import { invalidFormResponse } from "~/util/responses";
-import { badRequestWithFlash } from "~/util/responsesError";
 
 const ParamsSchema = z.object({
   token: z.string(),
@@ -28,9 +30,20 @@ const URLSearchParamsSchema = z.object({
   email: z.string()
 });
 
-export async function loader({ request, }: LoaderArgs) {
+const security: SecurityFunction<{
+  token: string;
+}> = async (request: Request, params: Params) => {
   const userId = await getUserId(request);
   if (userId) return redirect("/");
+
+	const { token } = getParamsOrFail(params, ParamsSchema)
+  return {
+    token
+  }
+}
+
+export async function loader({ request, params }: LoaderArgs) {
+  await security(request, params);
 
   const { email } = getSearchParamsOrFail(request, URLSearchParamsSchema);
 
@@ -39,9 +52,10 @@ export async function loader({ request, }: LoaderArgs) {
   });
 }
 
-export async function action({ request, params  }: ActionArgs) {
+export async function action({ request, params }: ActionArgs) {
+  const { token } = await security(request, params);
+
   let session = await getSession(request);
-	const { token } = getParamsOrFail(params, ParamsSchema)
 
   const result = await validateForm<PasswordResetDto>(request, passwordResetValidator)
   if (result.errorResponse) {
@@ -88,7 +102,6 @@ export default function PasswordResetRoute() {
 
   const passwordRef = useRef<HTMLInputElement>(null);
   const passwordVerificationRef = useRef<HTMLInputElement>(null);
-
   useFormFocusError(actionData, [
     ["password", passwordRef],
     ["passwordVerification", passwordVerificationRef],

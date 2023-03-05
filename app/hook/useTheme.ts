@@ -1,6 +1,6 @@
 import { useContext, useMemo } from "react";
+import ClientStyleContext from "~/component/layout/ClientStyleContext";
 import { DEFAULT_THEME } from "~/constant";
-import ClientStyleContext from "~/context/ClientStyleContext";
 import type { ThemeNames } from "~/theme";
 import { getTheme } from "~/theme";
 

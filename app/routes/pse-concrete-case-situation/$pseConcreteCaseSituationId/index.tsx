@@ -1,4 +1,4 @@
-import type { ActionArgs, LoaderFunction, MetaFunction } from "@remix-run/node";
+import type { ActionArgs, MetaFunction } from "@remix-run/node";
 import { json, redirect } from "@remix-run/node";
 import type { Params } from "@remix-run/react";
 import { useActionData, useLoaderData } from "@remix-run/react";
@@ -8,13 +8,17 @@ import type { PseConcreteCaseSessionApiObject } from "~/apiobject/pseconcretecas
 import type { PseConcreteCaseSituationApiObject } from "~/apiobject/pseconcretecasesituation.apiobject";
 import type { PseFormationApiObject } from "~/apiobject/pseformation.apiobject";
 import type { UserApiObject } from "~/apiobject/user.apiobject";
+import { Ariane, ArianeItem } from "~/component/layout/Ariane";
 import PageContainer from "~/component/layout/PageContainer";
+import PagePaperHeader from '~/component/layout/PagePaperHeader';
+import PageSpace from '~/component/layout/PageSpace';
 import PageTitle from "~/component/layout/PageTitle";
 import Section from "~/component/layout/Section";
 import PseConcreteCaseSituationForm from "~/component/pse-concrete-case-situation/PseConcreteCaseSituationForm";
 import type { SecurityFunction } from "~/constant/remix";
 import type { PseConcreteCaseSituationPutDto } from "~/dto/pseconcretecasesituation.dto";
 import { pseConcreteCaseSituationPutDtoValidator } from "~/form/pseconcretecasesituation.form";
+import { getParamsOrFail } from "~/helper/remix.params.helper";
 import { pseConcreteCaseSessionApiObjectToDto } from "~/mapper/pseconcretecasesession.mapper";
 import { pseConcreteCaseSituationApiObjectToDto, pseConcreteCaseSituationPutDtoToApiObject } from "~/mapper/pseconcretecasesituation.mapper";
 import { pseFormationApiObjectToDto } from "~/mapper/pseformation.mapper";
@@ -23,14 +27,35 @@ import { getPseConcreteCaseSituation, updatePseConcreteCaseSituation } from "~/s
 import { getPseFormationByPseConcreteCaseSessionId } from "~/service/pseformation.server";
 import { assertUserHasAccessToFormationAsTeacher } from "~/service/security.server";
 import { requireUser } from "~/service/session.server";
-import { getParamsOrFail } from '~/util/remix.params';
-import PagePaperHeader from '~/component/layout/PagePaperHeader';
-import PageSpace from '~/component/layout/PageSpace';
-import { Ariane, ArianeItem } from "~/component/layout/Ariane";
 
 const ParamsSchema = z.object({
   pseConcreteCaseSituationId: z.string(),
 });
+
+const security: SecurityFunction<{
+  userApiObject: UserApiObject;
+  pseFormationApiObject: PseFormationApiObject;
+  pseConcreteCaseSessionApiObject: PseConcreteCaseSessionApiObject;
+  pseConcreteCaseSituationApiObject: PseConcreteCaseSituationApiObject;
+}> = async (request: Request, params: Params) => {
+  const { pseConcreteCaseSituationId } = getParamsOrFail(params, ParamsSchema)
+
+  const userApiObject = await requireUser(request)
+
+  const pseConcreteCaseSituationApiObject = await getPseConcreteCaseSituation(pseConcreteCaseSituationId)
+
+	const pseConcreteCaseSessionApiObject = await getPseConcreteCaseSessionById(pseConcreteCaseSituationApiObject.pseConcreteCaseSessionId)
+
+  const pseFormationApiObject = await getPseFormationByPseConcreteCaseSessionId(pseConcreteCaseSessionApiObject.id)
+	await assertUserHasAccessToFormationAsTeacher(userApiObject.id, pseFormationApiObject.id)
+
+  return {
+    userApiObject,
+    pseFormationApiObject,
+    pseConcreteCaseSessionApiObject,
+    pseConcreteCaseSituationApiObject
+  }
+}
 
 // GET a formation
 export async function loader({ request, params }: LoaderArgs) {
@@ -61,31 +86,6 @@ export async function action({ request, params  }: ActionArgs) {
   await updatePseConcreteCaseSituation(pseConcreteCaseSituationApiObject.id, putApiObject)
 
   return redirect(`/pse-concrete-case-situation/${pseConcreteCaseSituationApiObject.id}`)
-}
-
-const security: SecurityFunction<{
-  userApiObject: UserApiObject;
-  pseFormationApiObject: PseFormationApiObject;
-  pseConcreteCaseSessionApiObject: PseConcreteCaseSessionApiObject;
-  pseConcreteCaseSituationApiObject: PseConcreteCaseSituationApiObject;
-}> = async (request: Request, params: Params) => {
-  const { pseConcreteCaseSituationId } = getParamsOrFail(params, ParamsSchema)
-
-  const userApiObject = await requireUser(request)
-
-  const pseConcreteCaseSituationApiObject = await getPseConcreteCaseSituation(pseConcreteCaseSituationId)
-
-	const pseConcreteCaseSessionApiObject = await getPseConcreteCaseSessionById(pseConcreteCaseSituationApiObject.pseConcreteCaseSessionId)
-
-  const pseFormationApiObject = await getPseFormationByPseConcreteCaseSessionId(pseConcreteCaseSessionApiObject.id)
-	await assertUserHasAccessToFormationAsTeacher(userApiObject.id, pseFormationApiObject.id)
-
-  return {
-    userApiObject,
-    pseFormationApiObject,
-    pseConcreteCaseSessionApiObject,
-    pseConcreteCaseSituationApiObject
-  }
 }
 
 export const meta: MetaFunction<typeof loader> = ({ data }) => {

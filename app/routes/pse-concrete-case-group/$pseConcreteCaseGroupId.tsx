@@ -11,10 +11,10 @@ import PageContainer from "~/component/layout/PageContainer";
 import PageTitle from "~/component/layout/PageTitle";
 import Section from "~/component/layout/Section";
 import PseConcreteCaseGroupForm from "~/component/pse-concrete-case-group/PseConcreteCaseGroupForm";
-import type { SecurityFunction } from "~/constant/remix";
 import type { PseConcreteCaseGroupPutDto, PseUserConcreteCaseGroupStudentDto } from "~/dto/pseconcretecasegroup.dto";
 import { validateForm } from "~/form/abstract";
 import { pseConcreteCaseGroupPutDtoValidator } from "~/form/pseconcretecasegroup.form";
+import type { SecurityFunction } from "~/helper/remix.helper";
 import { pseConcreteCaseGroupPutDtoToApiObject } from "~/mapper/pseconcretecasegroup.mapper";
 import { pseConcreteCaseSessionApiObjectToDto } from "~/mapper/pseconcretecasesession.mapper";
 import { pseFormationApiObjectToDto } from "~/mapper/pseformation.mapper";
@@ -23,7 +23,6 @@ import { getPseConcreteCaseSessionById } from "~/service/pseconcretecasesession.
 import { getPseFormationByPseConcreteCaseSessionId } from "~/service/pseformation.server";
 import { assertUserHasAccessToFormationAsTeacher } from "~/service/security.server";
 import { requireUser } from "~/service/session.server";
-import { getParamsOrFail } from '~/util/remix.params';
 import { pseConcreteCaseGroupApiObjectToDto } from '../../mapper/pseconcretecasegroup.mapper';
 import PagePaperHeader from "~/component/layout/PagePaperHeader";
 import PageSpace from "~/component/layout/PageSpace";
@@ -33,32 +32,6 @@ import { Ariane, ArianeItem } from "~/component/layout/Ariane";
 const ParamsSchema = z.object({
   pseConcreteCaseGroupId: z.string(),
 });
-
-export async function loader({ request, params }: LoaderArgs) {
-  const { pseFormationApiObject, pseConcreteCaseSessionApiObject, pseConcreteCaseGroupApiObject } = await security(request, params)
-
-  return json({
-    pseFormation: pseFormationApiObjectToDto(pseFormationApiObject),
-		pseConcreteCaseSession: pseConcreteCaseSessionApiObjectToDto(pseConcreteCaseSessionApiObject),
-		pseConcreteCaseGroup: pseConcreteCaseGroupApiObjectToDto(pseConcreteCaseGroupApiObject),
-	});
-};
-
-export async function action({ request, params  }: ActionArgs) {
-  const { pseConcreteCaseGroupApiObject } = await security(request, params)
-
-  const result = await validateForm<PseConcreteCaseGroupPutDto>(request, pseConcreteCaseGroupPutDtoValidator);
-  if (result.errorResponse) {
-    return result.errorResponse
-  }
-	const putDto = result.data
-
-  const putApiObject = pseConcreteCaseGroupPutDtoToApiObject(putDto)
-
-  await updatePseConcreteCaseGroup(pseConcreteCaseGroupApiObject.id, putApiObject)
-
-  return redirect(`/pse-concrete-case-group/${pseConcreteCaseGroupApiObject.id}`)
-}
 
 const security: SecurityFunction<{
   userApiObject: UserApiObject;
@@ -83,6 +56,35 @@ const security: SecurityFunction<{
     pseConcreteCaseSessionApiObject,
     pseConcreteCaseGroupApiObject
   }
+}
+
+export const loader: LoaderFunction = async ({
+  request,
+	params
+}) => {
+  const { pseFormationApiObject, pseConcreteCaseSessionApiObject, pseConcreteCaseGroupApiObject } = await security(request, params)
+
+  return json({
+    pseFormation: pseFormationApiObjectToDto(pseFormationApiObject),
+		pseConcreteCaseSession: pseConcreteCaseSessionApiObjectToDto(pseConcreteCaseSessionApiObject),
+		pseConcreteCaseGroup: pseConcreteCaseGroupApiObjectToDto(pseConcreteCaseGroupApiObject),
+	});
+};
+
+export async function action({ request, params  }: ActionArgs) {
+  const { pseConcreteCaseGroupApiObject } = await security(request, params)
+
+  const result = await validateForm<PseConcreteCaseGroupPutDto>(request, pseConcreteCaseGroupPutDtoValidator);
+  if (result.errorResponse) {
+    return result.errorResponse
+  }
+	const putDto = result.data
+
+  const putApiObject = pseConcreteCaseGroupPutDtoToApiObject(putDto)
+
+  await updatePseConcreteCaseGroup(pseConcreteCaseGroupApiObject.id, putApiObject)
+
+  return redirect(`/pse-concrete-case-group/${pseConcreteCaseGroupApiObject.id}`)
 }
 
 export const meta: MetaFunction<typeof loader> = ({ data }) => {

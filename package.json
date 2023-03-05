@@ -19,6 +19,7 @@
     "typecheck": "tsc -b && tsc -b cypress",
     "validate": "run-p \"test -- --run\" lint typecheck test:e2e:run",
     "gf:validate": "gf",
+    "test-typecheck": "tsc -b -v",
     "prisma:migrate": "prisma migrate dev --name "
   },
   "pre-commit": [

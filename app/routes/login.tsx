@@ -11,12 +11,12 @@ import PageFullContentWithLogo from "~/component/layout/PageFullContentWithLogo"
 import type { LoginDto } from "~/dto/login.dto";
 import { validateForm } from "~/form/abstract";
 import { loginValidator } from "~/form/login.form";
+import { getSearchParamsOrFail } from "~/helper/remix.params.helper";
+import { invalidFormResponse } from "~/helper/responses.helper";
 import useFormFocusError from "~/hook/useFormFocusError";
 import { createUserSession, getSession, getUserId } from "~/service/session.server";
 import { verifyLogin } from "~/service/user.server";
 import { createAuthenticityToken } from "~/util/csrf.server";
-import { getSearchParamsOrFail } from "~/util/remix.params";
-import { invalidFormResponse } from "~/util/responses";
 
 const URLSearchParamsSchema = z.object({
   redirectTo: z.string().default("/dashboard"),
@@ -53,7 +53,6 @@ export async function action({ request }: ActionArgs) {
 
   const result = await validateForm<LoginDto>(request, loginValidator);
 
-  console.log({result})
   if (result.errorResponse) {
     return result.errorResponse
   }
@@ -71,7 +70,7 @@ export async function action({ request }: ActionArgs) {
   return createUserSession({
     session,
     userId: userAuthToken.user.id,
-    remember: remember === "on" ? true : false,
+    remember,
     redirectTo,
   });
 
@@ -94,7 +93,6 @@ export default function LoginRoute() {
   const actionData = useActionData<typeof action>();
   const emailRef = useRef<HTMLInputElement>(null);
   const passwordRef = useRef<HTMLInputElement>(null);
-
   useFormFocusError(actionData, [
     [ "email", emailRef ],
     [ "password", passwordRef ],

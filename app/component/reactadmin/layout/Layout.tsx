@@ -5,11 +5,7 @@ import { Layout as MuiLayout, Menu as ReactAdminMenu } from 'react-admin';
 import AppBar from "./AppBar";
 import Error from "./Error";
 
-interface Props extends LayoutProps {
-  hideSidebar: boolean
-}
-
-export default function Layout(props: Props) {
+export default function Layout(props: LayoutProps) {
 	return (
     <MuiLayout
       sx={{

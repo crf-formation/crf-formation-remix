@@ -1,19 +1,24 @@
-import type { ReactElement, ReactNode , ReactEventHandler} from "react";
 import {
-  List,
-  ListItemText,
-  ListItemIcon,
   Box,
-  ListItemButton,
+  List,
   ListItem,
+  ListItemButton,
+  ListItemIcon,
+  ListItemText,
 } from "@mui/material";
-import MenuItem from "./MenuItem"
-import ChevronToggleIcon from "../icons/ChevronToggle";
 import Slide from '@mui/material/Collapse';
+import type { ReactElement, ReactEventHandler, ReactNode } from "react";
+import ChevronToggleIcon from "../icons/ChevronToggle";
+import MenuItem from "./MenuItem";
+import type { MenuName } from "./SidebarMenu";
 
 export type MenuItemDefinition = {
   name: string;
   href: string;
+};
+
+export type MenuItemDefinitions = {
+  [K in MenuName]: MenuItemDefinition[];
 };
 
 interface ItemsListProps {

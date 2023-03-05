@@ -33,6 +33,12 @@ export interface UserPutDto {
   lastName: string;
 }
 
+export interface UserPasswordPutDto {
+  passwordVerification: string
+  password: string
+  currentPassword: string
+}
+
 export interface UserMeDto {
   id: string;
   email: string;

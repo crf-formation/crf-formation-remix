@@ -16,11 +16,11 @@ import PageSpace from "~/component/layout/PageSpace";
 import PageSubtitle from "~/component/layout/PageSubtitle";
 import PageTitle from "~/component/layout/PageTitle";
 import Section from "~/component/layout/Section";
-import Callout from "~/component/typography/Callout";
 import type { SecurityFunction } from "~/constant/remix";
 import type { PseConcreteCaseSessionPostDto } from "~/dto/pseconcretecasesession.dto";
 import { validateForm } from "~/form/abstract";
 import { pseConcreteCaseSessionPostDtoValidator } from "~/form/pseconcretecasesession.form";
+import { getParamsOrFail } from "~/helper/remix.params.helper";
 import useFormFocusError from "~/hook/useFormFocusError";
 import { pseConcreteCaseSessionPostDtoToApiObject } from "~/mapper/pseconcretecasesession.mapper";
 import { pseFormationApiObjectToDto } from "~/mapper/pseformation.mapper";
@@ -28,11 +28,30 @@ import { createPseConcreteCaseSession } from "~/service/pseconcretecasesession.s
 import { findPseFormationById } from "~/service/pseformation.server";
 import { assertUserHasAccessToFormationAsTeacher } from "~/service/security.server";
 import { requireUser } from "~/service/session.server";
-import { getParamsOrFail } from "~/util/remix.params";
 
 const ParamsSchema = z.object({
   formationId: z.string(),
 });
+
+const security: SecurityFunction<{
+  pseFormationApiObject: PseFormationApiObject;
+}> = async (request: Request, params: Params) => {
+  const { formationId } = getParamsOrFail(params, ParamsSchema)
+
+	const userApiObject = await requireUser(request)
+
+	const pseFormationApiObject = await findPseFormationById(formationId)
+	
+	if (!pseFormationApiObject) {
+		throw new Error(`Formation not found: ${formationId}`);
+	}
+	
+	await assertUserHasAccessToFormationAsTeacher(userApiObject.id, pseFormationApiObject.id)
+
+  return {
+    pseFormationApiObject,
+  }
+}
 
 export async function loader({ request, params }: LoaderArgs) {
 	const { pseFormationApiObject } = await security(request, params)
@@ -61,26 +80,6 @@ export async function action({ request, params }: ActionArgs) {
 	)
 
 	return redirect(`/pse-concrete-case-session/${concreteCaseSessionApiObject.id}`);
-}
-
-const security: SecurityFunction<{
-  pseFormationApiObject: PseFormationApiObject;
-}> = async (request: Request, params: Params) => {
-  const { formationId } = getParamsOrFail(params, ParamsSchema)
-
-	const userApiObject = await requireUser(request)
-
-	const pseFormationApiObject = await findPseFormationById(formationId)
-	
-	if (!pseFormationApiObject) {
-		throw new Error(`Formation not found: ${formationId}`);
-	}
-	
-	await assertUserHasAccessToFormationAsTeacher(userApiObject.id, pseFormationApiObject.id)
-
-  return {
-    pseFormationApiObject,
-  }
 }
 
 export default function ConcreteCaseSessionsRoute() {

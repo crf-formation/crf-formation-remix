@@ -22,8 +22,8 @@ import {
 import nProgressStyles from "nprogress/nprogress.css";
 import { useContext, useMemo } from "react";
 import { AuthenticityTokenProvider } from "~/component/csrf";
+import ClientStyleContext from "~/component/layout/ClientStyleContext";
 import Layout from "~/component/layout/Layout";
-import ClientStyleContext from "~/context/ClientStyleContext";
 import type { ThemeNames } from "./constant";
 import { DEFAULT_THEME } from "./constant";
 import useEnhancedEffect from "./hook/useEnhancedEffect";

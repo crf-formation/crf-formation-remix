@@ -2,7 +2,7 @@
 import type { Session } from "@remix-run/server-runtime";
 import { v4 as uuid } from "uuid";
 import { CSRF_SESSION_KEY } from "~/constant/index.server";
-import { unprocessableEntity } from "./responses";
+import { unprocessableEntity } from "../helper/responses.helper";
 
 /**
  * Create a random string in Base64 to be used as an authenticity token for

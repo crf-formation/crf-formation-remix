@@ -31,7 +31,7 @@ export function getSearchParamNumber(request: Request, name: string): Optional<n
   return value ? parseInt(value) : null
 }
 
-export type Locales = string | string[] | undefined;
+export type Locales = string[] | undefined;
 
 /**
  * Get the client's locales from the Accept-Language header.

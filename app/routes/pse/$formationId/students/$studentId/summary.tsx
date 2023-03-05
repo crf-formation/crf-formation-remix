@@ -7,43 +7,26 @@ import { z } from "zod";
 import type { PseFormationApiObject } from "~/apiobject/pseformation.apiobject";
 import Section from "~/component/layout/Section";
 import { BooleanText } from "~/component/typography/BooleanText";
+import Callout from '~/component/typography/Callout';
 import Property from "~/component/typography/Property";
 import type { SecurityFunction } from "~/constant/remix";
 import type { PseCompetenceDto } from "~/dto/psecompetence.dto";
 import type {
-    PseUserSummaryConcreteCaseDto,
-    PseUserSummaryPreparatoryWorkDto,
-    PseUserSummaryTechniqueDto,
+  PseUserSummaryConcreteCaseDto,
+  PseUserSummaryPreparatoryWorkDto,
+  PseUserSummaryTechniqueDto,
 } from "~/dto/pseusesummary.dto";
+import { getParamsOrFail } from "~/helper/remix.params.helper";
 import { pseUserSummaryApiObjectToDto } from "~/mapper/pseusersummary.mapper";
 import { getPseFormationById } from "~/service/pseformation.server";
 import { getPseUserSummary } from "~/service/pseusesummary.server";
 import { assertUserHasAccessToFormationAsTeacher } from "~/service/security.server";
 import { requireUser } from "~/service/session.server";
-import { getParamsOrFail } from "~/util/remix.params";
-import { Severity } from '../../../../../component/typography/Callout';
-import Callout from '~/component/typography/Callout';
 
 const ParamsSchema = z.object({
   formationId: z.string(),
   studentId: z.string(),
 })
-
-export async function loader({ request, params }: LoaderArgs) {
-  await security(request, params)
-
-  const { formationId, studentId } = getParamsOrFail(params, ParamsSchema)
-
-  const pseUserSummaryApiObject = await getPseUserSummary(
-    formationId,
-    studentId
-  );
-
-  return json({
-    pseUserSummary: pseUserSummaryApiObjectToDto(pseUserSummaryApiObject),
-  });
-}
-
 
 const security: SecurityFunction<{
   pseFormationApiObject: PseFormationApiObject;
@@ -59,6 +42,21 @@ const security: SecurityFunction<{
   return {
     pseFormationApiObject,
   }
+}
+
+export async function loader({ request, params }: LoaderArgs) {
+  await security(request, params)
+
+  const { formationId, studentId } = getParamsOrFail(params, ParamsSchema)
+
+  const pseUserSummaryApiObject = await getPseUserSummary(
+    formationId,
+    studentId
+  );
+
+  return json({
+    pseUserSummary: pseUserSummaryApiObjectToDto(pseUserSummaryApiObject),
+  });
 }
 
 function PreparatoryWork({

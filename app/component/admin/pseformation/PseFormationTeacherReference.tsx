@@ -8,16 +8,14 @@ import {
   SimpleFormIterator,
   TextField,
 } from "react-admin";
-import type { UserOnPseFormationRoleDtoEnum } from "~/dto/useronpseformation.dto";
 import { TeacherReferenceInput } from "../TeacherReference";
 
 interface Props {
   source: string;
-  role: UserOnPseFormationRoleDtoEnum;
   label: string;
 }
 
-export function PseFormationTeacherReferenceField({ source, role }: Props) {
+export function PseFormationTeacherReferenceField({ source }: Props) {
   return (
     <Box component="section" sx={{ mt: 2 }}>
       <Typography variant="h4">Formateurs</Typography>
@@ -34,7 +32,7 @@ export function PseFormationTeacherReferenceField({ source, role }: Props) {
   );
 }
 
-export function PseFormationTeacherReferenceInput({ label, source, role }: Props) {
+export function PseFormationTeacherReferenceInput({ label, source }: Props) {
   return (
     <Box
       sx={{

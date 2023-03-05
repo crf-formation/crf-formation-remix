@@ -3,11 +3,10 @@ import { CacheProvider } from '@emotion/react';
 import { RemixBrowser } from "@remix-run/react";
 import { StrictMode, startTransition, useState } from "react";
 import { hydrateRoot } from "react-dom/client";
-import { getCookie, getParsedCookie } from "~/util/theme.client";
-
+import ClientStyleContext from "~/component/layout/ClientStyleContext";
 import type { ThemeNames } from "~/constant";
 import { DEFAULT_THEME } from "~/constant";
-import ClientStyleContext from "~/context/ClientStyleContext";
+import { getCookie, getParsedCookie } from "~/util/theme.client";
 import createEmotionCache from './util/createEmotionCache';
 
 function ClientCacheProvider({ children }: React.PropsWithChildren<{}>) {

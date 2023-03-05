@@ -2,6 +2,7 @@ import EditIcon from '@mui/icons-material/Edit';
 import ImageIcon from '@mui/icons-material/Image';
 import PersonAddIcon from '@mui/icons-material/PersonAdd';
 import { Avatar, Button, Grid, Link, List, ListItem, ListItemAvatar, ListItemText, Stack } from "@mui/material";
+import type { LoaderArgs } from "@remix-run/node";
 import { json } from "@remix-run/node";
 import type { Params } from "@remix-run/react";
 import { useLoaderData } from "@remix-run/react";
@@ -20,26 +21,17 @@ import Property from "~/component/typography/Property";
 import type { SecurityFunction } from '~/constant/remix';
 import type { PseFormationDto } from "~/dto/pseformation.dto";
 import type { UserDto } from "~/dto/user.dto";
+import { getParamsOrFail } from '~/helper/remix.params.helper';
 import useI18n from "~/hook/useI18n";
 import useUser from "~/hook/useUser";
 import { pseFormationApiObjectToDto } from "~/mapper/pseformation.mapper";
 import { findPseFormationById } from "~/service/pseformation.server";
 import { assertUserHasAccessToFormationAsTeacher } from "~/service/security.server";
 import { requireUser } from "~/service/session.server";
-import { getParamsOrFail } from '~/util/remix.params';
 
 const ParamsSchema = z.object({
   formationId: z.string(),
 });
-
-// GET a formation
-export async function loader({ request, params }: LoaderArgs) {
-  const { pseFormationApiObject } = await security(request, params)
-
-  return json({
-		formation: pseFormationApiObjectToDto(pseFormationApiObject)
-	});
-};
 
 const security: SecurityFunction<{
   pseFormationApiObject: PseFormationApiObject;
@@ -60,6 +52,15 @@ const security: SecurityFunction<{
     pseFormationApiObject,
   }
 }
+
+// GET a formation
+export async function loader({ request, params }: LoaderArgs) {
+  const { pseFormationApiObject } = await security(request, params)
+
+  return json({
+		formation: pseFormationApiObjectToDto(pseFormationApiObject)
+	});
+};
 
 export const meta: MetaFunction<typeof loader> = ({ data }) => {
   return {

@@ -23,6 +23,7 @@ const MenuItem = forwardRef<HTMLInputElement, PropsType>((props, ref) => {
     <ListItemButton
       ref={ref}
       dense={dense}
+      // @ts-ignore - typescript tells us href is not a prop, but it is
       href={href}
       onClick={onClick}
       sx={{

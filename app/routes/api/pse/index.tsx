@@ -4,12 +4,12 @@ import type { Params } from "@remix-run/react";
 import { z } from "zod";
 import type { SecurityFunction } from "~/constant/remix";
 import type { PseFormationPostDto } from "~/dto/pseformation.dto";
+import { getSearchParamsOrFail } from "~/helper/remix.params.helper";
 import { paginateEntityToApiObject } from "~/mapper/abstract.mapper";
 import { dataToPseFormationPostDto, pseFormationApiObjectToDto, pseFormationPostDtoToApiObject } from "~/mapper/pseformation.mapper";
 import { createPseFormation, getPseFormations } from "~/service/pseformation.server";
 import { requireAdmin } from "~/service/session.server";
 import { namedAction } from "~/util/named-actions";
-import { getSearchParamsOrFail } from "~/util/remix.params";
 
 const URLSearchParamsSchema = z.object({
   page: z.number().default(0),
@@ -17,6 +17,10 @@ const URLSearchParamsSchema = z.object({
 	orderBy: z.string().default("createdAt"),
 	orderByDirection: z.enum([ 'asc', 'desc']),
 })
+
+const security: SecurityFunction<void> = async (request: Request, params: Params) => {
+	await requireAdmin(request)
+}
 
 // GET list of formations
 export const loader: LoaderFunction = async ({
@@ -42,12 +46,6 @@ export const action: ActionFunction = async ({ request, params }) => {
 	})
 
 };
-
-const security: SecurityFunction<{}> = async (request: Request, params: Params) => {
-	await requireAdmin(request)
-
-	return {}
-}
 
 async function postAction(request: Request, params: Params<string>) {
 	const data = await request.json();

@@ -1,7 +1,6 @@
 import type { MenuName } from "~/component/layout/SidebarMenu";
-import type { MenuItemDefinition } from "~/component/layout/SubMenu";
+import type { MenuItemDefinition, MenuItemDefinitions } from "~/component/layout/SubMenu";
 import useLocationMatchPath from "./useLocationMatchPath";
-
 
 export default function useMenuMatches() {
   const locationMatchPath = useLocationMatchPath();
@@ -22,14 +21,12 @@ export default function useMenuMatches() {
    * 
    * @return menu name that has an item matching the current location, undefined otherwise.
    */
-  function getMatchingMenuName(menusItems: {
-    [key: MenuName]: MenuItemDefinition[];
-  }): MenuName | undefined {
+  function getMatchingMenuName(menusItems: MenuItemDefinitions): MenuName | undefined {
     for (const [menuName, items] of Object.entries(menusItems)) {
-      const match = isItemsMatches(items);
+      const match = isItemsMatches(items as MenuItemDefinition[]);
 
       if (match) {
-        return menuName;
+        return menuName as MenuName;
       }
     }
   }

@@ -1,18 +1,18 @@
 // from https://github.com/kiliman/remix-params-helper/blob/main/src/helper.ts
 import type { z, ZodType, ZodTypeAny } from "zod";
 import {
-    ZodArray,
-    ZodBoolean,
-    ZodDate,
-    ZodDefault,
-    ZodEffects,
-    ZodEnum,
-    ZodLiteral,
-    ZodNativeEnum,
-    ZodNumber,
-    ZodObject,
-    ZodOptional,
-    ZodString
+  ZodArray,
+  ZodBoolean,
+  ZodDate,
+  ZodDefault,
+  ZodEffects,
+  ZodEnum,
+  ZodLiteral,
+  ZodNativeEnum,
+  ZodNumber,
+  ZodObject,
+  ZodOptional,
+  ZodString
 } from "zod";
 import { BadRequestException } from "~/service/api.error";
 

@@ -7,10 +7,10 @@ export default function FormErrorHelperText({ name, actionData }: { name: string
   // if pass directly actionData
   if (actionData) {
     return (
-      actionData?.errors &&
-      actionData?.errors[name] && (
+      actionData?.fieldErrors &&
+      actionData?.fieldErrors[name] && (
         <FormHelperText error id={`${name}-form-error`}>
-          {actionData.errors[name]}
+          {actionData.fieldErrors[name]}
         </FormHelperText>
       )
     );

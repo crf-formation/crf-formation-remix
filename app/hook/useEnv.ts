@@ -4,7 +4,7 @@ import useSsr from "./useSsr"
 export default function useEnv() {
 	const { isServer } = useSsr()
 	
-	function getEnv(propertyName: EnvProperty): string | undefined {
+	function getEnv(propertyName: EnvProperty): Optional<string> {
 		if (isServer) {
 			return process.env[propertyName]
 		}

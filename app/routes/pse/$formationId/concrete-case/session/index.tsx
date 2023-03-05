@@ -21,6 +21,7 @@ import PageSpace from "~/component/layout/PageSpace";
 import PageTitle from "~/component/layout/PageTitle";
 import Section from "~/component/layout/Section";
 import type { SecurityFunction } from "~/constant/remix";
+import { getParamsOrFail, getSearchParamsOrFail } from "~/helper/remix.params.helper";
 import { paginateApiObjectToDto } from "~/mapper/abstract.mapper";
 import { pseConcreteCaseSessionApiObjectToDto } from "~/mapper/pseconcretecasesession.mapper";
 import { pseFormationApiObjectToDto } from "~/mapper/pseformation.mapper";
@@ -28,7 +29,6 @@ import { getPseFormationConcreteCaseSessions } from "~/service/pseconcretecasese
 import { findPseFormationById } from "~/service/pseformation.server";
 import { assertUserHasAccessToFormationAsTeacher } from "~/service/security.server";
 import { requireUser } from "~/service/session.server";
-import { getParamsOrFail, getSearchParamsOrFail } from "~/util/remix.params";
 
 const ParamsSchema = z.object({
   formationId: z.string(),
@@ -40,6 +40,26 @@ const URLSearchParamsSchema = z.object({
   orderBy: z.string().default("createdAt"),
   orderByDirection: z.enum(["asc", "desc"]).default("desc"),
 });
+
+const security: SecurityFunction<{
+  pseFormationApiObject: PseFormationApiObject;
+}> = async (request: Request, params: Params) => {
+  const { formationId } = getParamsOrFail(params, ParamsSchema)
+
+	const userApiObject = await requireUser(request)
+
+	const pseFormationApiObject = await findPseFormationById(formationId)
+	
+	if (!pseFormationApiObject) {
+		throw new Error(`Formation not found: ${formationId}`);
+	}
+	
+	await assertUserHasAccessToFormationAsTeacher(userApiObject.id, pseFormationApiObject.id)
+
+  return {
+    pseFormationApiObject,
+  }
+}
 
 export async function loader({ request, params }: LoaderArgs) {
   const { pseFormationApiObject }  = await security(request, params);
@@ -65,26 +85,6 @@ export async function loader({ request, params }: LoaderArgs) {
       pseConcreteCaseSessionApiObjectToDto
     ),
   });
-}
-
-const security: SecurityFunction<{
-  pseFormationApiObject: PseFormationApiObject;
-}> = async (request: Request, params: Params) => {
-  const { formationId } = getParamsOrFail(params, ParamsSchema)
-
-	const userApiObject = await requireUser(request)
-
-	const pseFormationApiObject = await findPseFormationById(formationId)
-	
-	if (!pseFormationApiObject) {
-		throw new Error(`Formation not found: ${formationId}`);
-	}
-	
-	await assertUserHasAccessToFormationAsTeacher(userApiObject.id, pseFormationApiObject.id)
-
-  return {
-    pseFormationApiObject,
-  }
 }
 
 export const meta: MetaFunction<typeof loader> = () => {

@@ -2,7 +2,7 @@ import { isEmpty } from "lodash";
 import type { PseConcreteCaseSessionApiObject, PseConcreteCaseSessionGroupOrderApiObject, PseConcreteCaseSessionGroupOrderSituationApiObject, PseConcreteCaseSessionPostApiObject, PseConcreteCaseSessionPutApiObject, PseConcreteCaseSessionStateApiEnum } from "~/apiobject/pseconcretecasesession.apiobject";
 import type { PseConcreteCaseSessionDto, PseConcreteCaseSessionGroupOrderDto, PseConcreteCaseSessionGroupOrderSituationDto, PseConcreteCaseSessionPostDto, PseConcreteCaseSessionPutDto, PseConcreteCaseSessionStateDtoEnum } from "~/dto/pseconcretecasesession.dto";
 import type { PseConcreteCaseSessionEntity } from "~/entity";
-import { assertEnum } from "~/util/enum";
+import { assertEnum } from "~/mapper/abstract.mapper";
 import { pseConcreteCaseGroupApiObjectToDto, pseConcreteCaseGroupEntityToApiObject } from "./pseconcretecasegroup.mapper";
 import { pseConcreteCaseSituationApiObjectToDto, pseConcreteCaseSituationEntityToApiObject } from "./pseconcretecasesituation.mapper";
 

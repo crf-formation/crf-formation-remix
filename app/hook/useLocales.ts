@@ -1,5 +1,5 @@
 import { useMatches } from "@remix-run/react";
-import type { Locales } from "../server/get-client-locales";
+import type { Locales } from "~/service/request.server";
 
 /**
  * Get the locales returned by the loader of the root route.
@@ -45,9 +45,6 @@ export function useLocales(): Locales {
 
   let { locales } = data;
 
-  // check the type of value of locales
-  // it could be a string
-  if (typeof locales === "string") return locales;
   // or it could be an array of strings
   if (
     Array.isArray(locales) &&

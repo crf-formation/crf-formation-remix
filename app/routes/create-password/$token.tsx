@@ -11,13 +11,13 @@ import PageFullContentWithLogo from "~/component/layout/PageFullContentWithLogo"
 import type { PasswordCreateDto } from "~/dto/user.dto";
 import { validateForm } from "~/form/abstract";
 import { passwordCreateValidator } from "~/form/user.form";
+import { getParamsOrFail, getSearchParamsOrFail } from "~/helper/remix.params.helper";
+import { badRequestWithFlash } from "~/helper/responseerror.helper";
+import { invalidFormResponse } from "~/helper/responses.helper";
 import useFormFocusError from "~/hook/useFormFocusError";
 import { createPassword, verifyTokenIsValid } from "~/service/passwordrecovery.server";
 import { createUserSession, getSession, getUserId } from "~/service/session.server";
 import { verifyLogin } from "~/service/user.server";
-import { getParamsOrFail, getSearchParamsOrFail } from "~/util/remix.params";
-import { invalidFormResponse } from "~/util/responses";
-import { badRequestWithFlash } from "~/util/responsesError";
 
 const ParamsSchema = z.object({
   token: z.string(),

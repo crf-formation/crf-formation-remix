@@ -11,6 +11,7 @@ import Section from "~/component/layout/Section";
 import type { SecurityFunction } from "~/constant/remix";
 import type { PseModuleDto } from "~/dto/psemodule.dto";
 import type { PseUserTechniqueDto } from "~/dto/pseusertechnique.dto";
+import { getParamsOrFail } from "~/helper/remix.params.helper";
 import { pseModuleApiObjectToDto } from "~/mapper/psemodule.mapper";
 import { pseUserTechniqueApiObjectToDto } from "~/mapper/pseusertechnique.mapper";
 import { getPseFormationById } from "~/service/pseformation.server";
@@ -18,26 +19,11 @@ import { getPseModules } from "~/service/psemodule.server";
 import { getPseUserTechniquesForUser } from "~/service/pseusertechniques.server";
 import { assertUserHasAccessToFormationAsTeacher } from "~/service/security.server";
 import { requireUser } from "~/service/session.server";
-import { getParamsOrFail } from "~/util/remix.params";
 
 const ParamsSchema = z.object({
   formationId: z.string(),
   studentId: z.string(),
 })
-
-export async function loader({ request, params }: LoaderArgs) {
-  await security(request, params)
-
-  const { formationId, studentId } = getParamsOrFail(params, ParamsSchema)
-
-  const pseModuleApiObjects = await getPseModules()
-  const pseUserTechniquesForUserApiObjects: Array<PseUserTechniqueApiObject> = await getPseUserTechniquesForUser(formationId, studentId)
-
-  return json({
-    pseUserTechniques: pseUserTechniquesForUserApiObjects.map(pseUserTechniqueApiObjectToDto),
-    pseModules: pseModuleApiObjects.map(pseModuleApiObjectToDto),
-  })
-}
 
 const security: SecurityFunction<{
   pseFormationApiObject: PseFormationApiObject;
@@ -53,6 +39,20 @@ const security: SecurityFunction<{
   return {
     pseFormationApiObject,
   }
+}
+
+export async function loader({ request, params }: LoaderArgs) {
+  await security(request, params)
+
+  const { formationId, studentId } = getParamsOrFail(params, ParamsSchema)
+
+  const pseModuleApiObjects = await getPseModules()
+  const pseUserTechniquesForUserApiObjects: Array<PseUserTechniqueApiObject> = await getPseUserTechniquesForUser(formationId, studentId)
+
+  return json({
+    pseUserTechniques: pseUserTechniquesForUserApiObjects.map(pseUserTechniqueApiObjectToDto),
+    pseModules: pseModuleApiObjects.map(pseModuleApiObjectToDto),
+  })
 }
 
 function ModuleView({ pseModule, pseUserTechniques }: { pseModule?: PseModuleDto; pseUserTechniques: Array<PseUserTechniqueDto> }) {

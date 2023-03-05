@@ -9,7 +9,7 @@ import type {
     UserOnPseFormationRoleDtoEnum,
 } from "~/dto/useronpseformation.dto";
 import type { UserOnPseFormationEntity } from "~/entity";
-import { assertEnum } from "~/util/enum";
+import { assertEnum } from "~/mapper/abstract.mapper";
 import { userApiObjectToDto, userEntityToApiObject } from "./user.mapper";
 
 export function userOnPseFormationDataToPutDto(

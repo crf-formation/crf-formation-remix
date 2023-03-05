@@ -108,7 +108,6 @@ export const passwordResetValidator = withZod(PasswordResetSchema)
 
 const PasswordAskResetSchema = z.object({
   email: z.string().email().min(1),
-
 });
 
 export const passwordAskResetValidator = withZod(PasswordAskResetSchema)

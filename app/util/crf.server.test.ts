@@ -1,16 +1,16 @@
 /* eslint jest/no-conditional-expect: 0 */  // --> OFF
 
-// https://github.com/sergiodxa/remix-utils/blob/46159a9cd9e6611a70dc412b876d588c500e5c98/test/server/csrf.test.ts
+// https://github.com/sergiodxa/remix-util/blob/46159a9cd9e6611a70dc412b876d588c500e5c98/test/server/csrf.test.ts
 import type { UploadHandler } from "@remix-run/node";
 import { createCookieSessionStorage, unstable_parseMultipartFormData } from "@remix-run/node";
-import { createAuthenticityToken, verifyAuthenticityToken } from "./csrf.server";
+import { createAuthenticityToken, verifyAuthenticityToken } from "./csrf.server.helper";
 
 describe("CSRF Server", () => {
   let sessionStorage = createCookieSessionStorage({
     cookie: { name: "session", secrets: ["s3cr3t"] },
   });
 
-  describe(createAuthenticityToken, () => {
+  describe("createAuthenticityToken", () => {
     test("should return a random string", async () => {
       let session = await sessionStorage.getSession();
       const token = createAuthenticityToken(session);
@@ -31,12 +31,12 @@ describe("CSRF Server", () => {
     });
   });
 
-  describe(verifyAuthenticityToken, () => {
+  describe("verifyAuthenticityToken", () => {
     test("should throw Unprocessable Entity if the csrf is not in the session", async () => {
       let session = await sessionStorage.getSession();
       let cookie = await sessionStorage.commitSession(session);
 
-      let request = new Request("/", {
+      let request = new Request("http://test.com/", {
         method: "POST",
         headers: { cookie },
         body: new FormData(),
@@ -62,7 +62,7 @@ describe("CSRF Server", () => {
 
       let cookie = await sessionStorage.commitSession(session);
 
-      let request = new Request("/", {
+      let request = new Request("http://test.com/", {
         method: "POST",
         headers: { cookie },
         body: new FormData(),
@@ -90,7 +90,7 @@ describe("CSRF Server", () => {
       let formData = new FormData();
       formData.set("csrf", "wrong token");
 
-      let request = new Request("/", {
+      let request = new Request("http://test.com/", {
         method: "POST",
         headers: { cookie },
         body: formData,
@@ -121,7 +121,7 @@ describe("CSRF Server", () => {
       let formData = new FormData();
       formData.set(expected, "token");
 
-      let request = new Request("/", {
+      let request = new Request("http://test.com/", {
         method: "POST",
         headers: { cookie },
         body: formData,
@@ -130,10 +130,10 @@ describe("CSRF Server", () => {
       await verifyAuthenticityToken(request, session, sessionKey);
     });
 
-    afterEach(() => jest.restoreAllMocks());
+    afterEach(() => vitest.restoreAllMocks());
 
     test("should validate request with File if session and body csrf match", async () => {
-      jest.spyOn(console, 'warn');
+      vitest.spyOn(console, 'warn');
       // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
       const uploadHandler = <UploadHandler>(part => Promise.resolve(`${part.filename} contents`));
 
@@ -146,7 +146,7 @@ describe("CSRF Server", () => {
       formData.set("csrf", "token");
       formData.set("upload", new Blob(["blob"]), "blob.ext");
 
-      let request = new Request("/", {
+      let request = new Request("http://test.com/", {
         method: "POST",
         headers: { cookie },
         body: formData,

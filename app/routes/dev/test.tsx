@@ -1,9 +1,9 @@
 import Brightness2Icon from "@mui/icons-material/Brightness2";
 import Brightness7Icon from "@mui/icons-material/Brightness7";
 import {
-    Box, IconButton,
-    Link as MuiLink, Tooltip,
-    Typography
+  Box, IconButton,
+  Link as MuiLink, Tooltip,
+  Typography
 } from "@mui/material";
 import { json } from "@remix-run/node";
 import { Form, Link as RmxLink, useLocation } from "@remix-run/react";

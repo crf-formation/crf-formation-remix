@@ -14,7 +14,7 @@ import type {
     UserRoleDtoEnum,
     UserStateDtoEnum,
 } from "~/dto/user.dto";
-import { assertEnum } from "~/util/enum";
+import { assertEnum } from "~/mapper/abstract.mapper";
 
 export function userPostDtoToApiObject(
   dto: UserPostDto

@@ -1,5 +1,5 @@
 import { Grid, Link } from "@mui/material";
-import type { LoaderArgs, LoaderFunction, MetaFunction } from "@remix-run/node";
+import type { LoaderArgs, MetaFunction } from "@remix-run/node";
 import { json } from "@remix-run/node";
 import type { Params } from "@remix-run/react";
 import { Outlet, useLoaderData } from "@remix-run/react";
@@ -13,6 +13,7 @@ import PageSpace from "~/component/layout/PageSpace";
 import PageTitle from "~/component/layout/PageTitle";
 import Section from "~/component/layout/Section";
 import type { SecurityFunction } from "~/constant/remix";
+import { getParamsOrFail } from "~/helper/remix.params.helper";
 import useUser from "~/hook/useUser";
 import { pseFormationApiObjectToDto } from "~/mapper/pseformation.mapper";
 import { userOnPseFormationApiObjectToDto } from '~/mapper/useronpseformation.mapper';
@@ -20,7 +21,6 @@ import { getPseFormationById } from "~/service/pseformation.server";
 import { assertUserHasAccessToFormationAsTeacher } from "~/service/security.server";
 import { requireUser } from "~/service/session.server";
 import { getUserOnPseFormationEntityById } from "~/service/useronpseformation.server";
-import { getParamsOrFail } from "~/util/remix.params";
 
 // Note: not named index.tsx ont $studentId directory, because of the <Outlet />
 
@@ -28,20 +28,6 @@ const ParamsSchema = z.object({
   formationId: z.string(),
   studentId: z.string(),
 })
-
-// display the student summary for the formation
-export async function loader({ request, params }: LoaderArgs) {
-  const { pseFormationApiObject } = await security(request, params)
-
-  const { formationId, studentId } = getParamsOrFail(params, ParamsSchema)
-
-	const userOnPseFormationApiObject = await getUserOnPseFormationEntityById(formationId, studentId)
-
-  return json({
-    pseFormation: pseFormationApiObjectToDto(pseFormationApiObject),
-    student: userOnPseFormationApiObjectToDto(userOnPseFormationApiObject).user,
-  });
-};
 
 const security: SecurityFunction<{
   pseFormationApiObject: PseFormationApiObject;
@@ -58,6 +44,20 @@ const security: SecurityFunction<{
     pseFormationApiObject,
   }
 }
+
+// display the student summary for the formation
+export async function loader({ request, params }: LoaderArgs) {
+  const { pseFormationApiObject } = await security(request, params)
+
+  const { formationId, studentId } = getParamsOrFail(params, ParamsSchema)
+
+	const userOnPseFormationApiObject = await getUserOnPseFormationEntityById(formationId, studentId)
+
+  return json({
+    pseFormation: pseFormationApiObjectToDto(pseFormationApiObject),
+    student: userOnPseFormationApiObjectToDto(userOnPseFormationApiObject).user,
+  });
+};
 
 export const meta: MetaFunction<typeof loader> = ({ data }) => {
   return {

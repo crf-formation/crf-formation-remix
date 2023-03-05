@@ -6,13 +6,13 @@ import { json } from "@remix-run/server-runtime";
 import { z } from "zod";
 import type { PseFormationApiObject } from "~/apiobject/pseformation.apiobject";
 import type { SecurityFunction } from "~/constant/remix";
+import { getParamsOrFail } from "~/helper/remix.params.helper";
 import { pseFormationApiObjectToDto } from "~/mapper/pseformation.mapper";
+import { pseUserConcreteCaseApiObjectToDto } from '~/mapper/pseuserconcretecase.mapper';
 import { getPseFormationById } from "~/service/pseformation.server";
+import { getPseUserConcreteCases } from '~/service/pseuserconcretecase.server';
 import { assertUserHasAccessToFormationAsTeacher } from "~/service/security.server";
 import { requireUser } from "~/service/session.server";
-import { getParamsOrFail } from "~/util/remix.params";
-import { getPseUserConcreteCases } from '~/service/pseuserconcretecase.server';
-import { pseUserConcreteCaseApiObjectToDto } from '~/mapper/pseuserconcretecase.mapper';
 
 const ParamsSchema = z.object({
   formationId: z.string(),

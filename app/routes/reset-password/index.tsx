@@ -10,13 +10,11 @@ import PageFullContentWithLogo from "~/component/layout/PageFullContentWithLogo"
 import type { PasswordAskResetDto } from "~/dto/user.dto";
 import { validateForm } from "~/form/abstract";
 import { passwordAskResetValidator } from "~/form/user.form";
+import { getSearchParamsOrFail } from "~/helper/remix.params.helper";
 import useFormFocusError from "~/hook/useFormFocusError";
 import { askForPasswordRecovery } from "~/service/passwordrecovery.server";
 import { getSession, getUserId } from "~/service/session.server";
-import { validateUserEmail } from "~/service/user.server";
 import { generateAria } from "~/util/form";
-import { getSearchParamsOrFail } from "~/util/remix.params";
-import { invalidFormResponse } from "~/util/responses";
 
 const URLSearchParamsSchema = z.object({
   email: z.string().optional(),
@@ -45,11 +43,6 @@ export async function action({ request }: ActionArgs) {
   }
 
   const passwordAskResetDto: PasswordAskResetDto = result.data
-
-  if (!validateUserEmail(passwordAskResetDto.email)) {
-    throw invalidFormResponse({ email: "Email invalide"})
-  }
-
   await askForPasswordRecovery(passwordAskResetDto.email);
 
   return redirect("/reset-password/sent")
@@ -68,7 +61,6 @@ export default function PasswordResetRoute() {
   const [searchParams] = useSearchParams();
 
   const emailRef = useRef<HTMLInputElement>(null);
-
   useFormFocusError(actionData, [
     ["email", emailRef],
   ]);

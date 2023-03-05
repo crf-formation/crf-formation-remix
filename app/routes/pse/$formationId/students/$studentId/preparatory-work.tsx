@@ -12,29 +12,17 @@ import { z } from "zod";
 import type { PseFormationApiObject } from "~/apiobject/pseformation.apiobject";
 import Section from "~/component/layout/Section";
 import type { SecurityFunction } from "~/constant/remix";
+import { getParamsOrFail } from "~/helper/remix.params.helper";
 import { pseUserPreparatoryWorkApiObjectToDto } from "~/mapper/pseformationpreparatorywork.mapper";
 import { getPseFormationById } from "~/service/pseformation.server";
 import { getPreparatoryWorksForUser } from "~/service/pseformationpreparatorywork.server";
 import { assertUserHasAccessToFormationAsTeacher } from "~/service/security.server";
 import { requireUser } from "~/service/session.server";
-import { getParamsOrFail } from "~/util/remix.params";
 
 const ParamsSchema = z.object({
   formationId: z.string(),
   studentId: z.string(),
 })
-
-export async function loader({ request, params }: LoaderArgs) {
-	await security(request, params)
-
-  const { formationId, studentId } = getParamsOrFail(params, ParamsSchema)
-
-  const preparatoryWorksApiObjects = await getPreparatoryWorksForUser(formationId, studentId)
-
-  return json({
-    preparatoryWorks: preparatoryWorksApiObjects.map(pseUserPreparatoryWorkApiObjectToDto)
-  })
-}
 
 const security: SecurityFunction<{
   pseFormationApiObject: PseFormationApiObject;
@@ -50,6 +38,18 @@ const security: SecurityFunction<{
   return {
     pseFormationApiObject,
   }
+}
+
+export async function loader({ request, params }: LoaderArgs) {
+	await security(request, params)
+
+  const { formationId, studentId } = getParamsOrFail(params, ParamsSchema)
+
+  const preparatoryWorksApiObjects = await getPreparatoryWorksForUser(formationId, studentId)
+
+  return json({
+    preparatoryWorks: preparatoryWorksApiObjects.map(pseUserPreparatoryWorkApiObjectToDto)
+  })
 }
 
 export default function PreparatoryWorkRoute() {

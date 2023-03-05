@@ -2,21 +2,23 @@ import type { ActionFunction, LoaderFunction } from "@remix-run/node";
 import { json } from "@remix-run/node";
 import type { Params } from "@remix-run/react";
 import { z } from "zod";
+import type { UserApiObject } from "~/apiobject/user.apiobject";
 import type { SecurityFunction } from "~/constant/remix";
 import type { UserPutDto } from "~/dto/user.dto";
+import { getParamsOrFail } from "~/helper/remix.params.helper";
 import { dataToUserPutDto, userApiObjectToDto, userPutDtoToApiObject } from "~/mapper/user.mapper";
 import { requireAdmin } from "~/service/session.server";
 import { findUserById, updateUser } from "~/service/user.server";
 import { namedAction } from "~/util/named-actions";
-import { getParamsOrFail } from "~/util/remix.params";
 
 const ParamsSchema = z.object({
   userId: z.string(),
 })
 
-// GET a user
-export async function loader({ request, params }: LoaderArgs) {
-	await security(request, params)
+const security: SecurityFunction<{
+	userApiObject: UserApiObject;
+}> = async (request: Request, params: Params) => {
+	await requireAdmin(request)
 
 	const { userId } = getParamsOrFail(params, ParamsSchema)
 
@@ -25,35 +27,37 @@ export async function loader({ request, params }: LoaderArgs) {
 	if (!userApiObject) {
 		throw new Error(`User not found: ${userId}`);
 	}
+	return {
+		userApiObject
+	}
+}
+
+// GET a user
+export const loader: LoaderFunction = async ({
+  request,
+	params
+}) => {
+	const { userApiObject } = await security(request, params)
 
   return json(userApiObjectToDto(userApiObject));
 };
 
 // POST, PUT, PATCH, or DELETE
 export const action: ActionFunction = async ({ request, params }) => {
-	await security(request, params)
-
 	return namedAction(request, params, {
 		putAction
 	})
 };
 
-const security: SecurityFunction<{}> = async (request: Request, params: Params) => {
-	await requireAdmin(request)
-
-	return {}
-}
-
 
 async function putAction(request: Request, params: Params<string>) {
-	const { userId } = getParamsOrFail(params, ParamsSchema)
+	const { userApiObject } = await security(request, params)
 
 	const data = await request.json();
-
 	// TODO: use zod to map data
 	const userPutDto: UserPutDto = dataToUserPutDto(data);
 
-	const updatedApiObject = await updateUser(userId, userPutDtoToApiObject(userPutDto));
+	const updatedApiObject = await updateUser(userApiObject.id, userPutDtoToApiObject(userPutDto));
 
   return json(userApiObjectToDto(updatedApiObject));
 }

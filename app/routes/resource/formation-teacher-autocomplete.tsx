@@ -5,12 +5,11 @@ import { isEmpty } from "lodash";
 import { useEffect } from "react";
 import { z } from "zod";
 import type { UserDto } from "~/dto/user.dto";
+import { getSearchParamsOrFail } from "~/helper/remix.params.helper";
 import { paginateEntityToApiObject } from "~/mapper/abstract.mapper";
 import { userApiObjectToDto } from "~/mapper/user.mapper";
 import { requireUser } from "~/service/session.server";
 import { getFormationTeachers, searchFormationTeachers } from "~/service/user.server";
-import { getSearchParamsOrFail } from "~/util/remix.params";
-import type { PaginateObject } from '../../constant/types';
 
 const URLSearchParamsSchema = z.object({
 	formationId: z.string(),

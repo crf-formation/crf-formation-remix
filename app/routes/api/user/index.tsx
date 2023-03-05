@@ -2,11 +2,11 @@ import type { LoaderFunction } from "@remix-run/node";
 import { json } from "@remix-run/node";
 import { z } from "zod";
 import type { SecurityFunction } from "~/constant/remix";
+import { getSearchParamsOrFail } from "~/helper/remix.params.helper";
 import { paginateEntityToApiObject } from "~/mapper/abstract.mapper";
 import { userApiObjectToDto } from "~/mapper/user.mapper";
 import { requireAdmin } from "~/service/session.server";
 import { getUsers } from "~/service/user.server";
-import { getSearchParamsOrFail } from "~/util/remix.params";
 
 const URLSearchParamsSchema = z.object({
   page: z.number().default(0),
@@ -14,6 +14,10 @@ const URLSearchParamsSchema = z.object({
 	orderBy: z.string().default("createdAt"),
 	orderByDirection: z.enum([ 'asc', 'desc']),
 })
+
+const security: SecurityFunction<void> = async (request: Request, params: Params) => {
+	await requireAdmin(request)
+}
 
 // GET list of users
 export const loader: LoaderFunction = async ({
@@ -28,11 +32,4 @@ export const loader: LoaderFunction = async ({
 
   return json(paginateEntityToApiObject(usersPaginatedObjectApiObject, userApiObjectToDto));
 };
-
-const security: SecurityFunction<{}> = async (request: Request, params: Params) => {
-	await requireAdmin(request)
-
-	return {}
-}
-
 // No POST, must use /join action

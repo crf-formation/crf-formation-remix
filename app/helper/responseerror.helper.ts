@@ -1,8 +1,8 @@
 import type { Session } from "@remix-run/server-runtime";
+import { badRequest } from "~/helper/responses.helper";
 import type { ApiErrorException } from '~/service/api.error';
 import { addFlashMessage } from "~/service/flash.server";
 import { commitSession } from "~/service/session.server";
-import { badRequest } from "./responses";
 
 /**
  * Create a response receiving a JSON object with the status code 400.

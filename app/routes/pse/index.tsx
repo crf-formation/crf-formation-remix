@@ -12,11 +12,11 @@ import PageSubtitle from "~/component/layout/PageSubtitle";
 import PageTitle from "~/component/layout/PageTitle";
 import Section from "~/component/layout/Section";
 import type { SecurityFunction } from "~/constant/remix";
+import { getSearchParamsOrFail } from "~/helper/remix.params.helper";
 import { paginateApiObjectToDto } from "~/mapper/abstract.mapper";
 import { pseFormationApiObjectToDto } from "~/mapper/pseformation.mapper";
 import { getUserPseFormations } from "~/service/pseformation.server";
 import { requireUser } from '~/service/session.server';
-import { getSearchParamsOrFail } from "~/util/remix.params";
 
 const URLSearchParamsSchema = z.object({
   page: z.number().default(0),
@@ -24,6 +24,16 @@ const URLSearchParamsSchema = z.object({
 	orderBy: z.string().default("createdAt"),
 	orderByDirection: z.enum([ 'asc', 'desc']).default("desc"),
 })
+
+const security: SecurityFunction<{
+  userApiObject: UserApiObject;
+}> = async (request: Request, params: Params) => {
+	const userApiObject = await requireUser(request)
+
+  return {
+    userApiObject,
+  }
+}
 
 export async function loader({ request, params }: LoaderArgs) {
   const { userApiObject } = await security(request, params)
@@ -38,17 +48,6 @@ export async function loader({ request, params }: LoaderArgs) {
     formationsPaginateObject: paginateApiObjectToDto(formationsPaginatedObjectApiObject, pseFormationApiObjectToDto)
   });
 }
-
-const security: SecurityFunction<{
-  userApiObject: UserApiObject;
-}> = async (request: Request, params: Params) => {
-	const userApiObject = await requireUser(request)
-
-  return {
-    userApiObject,
-  }
-}
-
 
 export const meta: MetaFunction<typeof loader> = () => {
   return {

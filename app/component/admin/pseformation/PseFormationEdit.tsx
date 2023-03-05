@@ -41,7 +41,6 @@ export default function PseFormationEdit() {
           <PseFormationUserReferenceInput
             label=""
             source="students"
-            role="STUDENT"
           />
         </FormTab>
 
@@ -49,7 +48,6 @@ export default function PseFormationEdit() {
           <PseFormationTeacherReferenceInput
             label=""
             source="teachers"
-            role="TEACHER"
           />
         </FormTab>
       </TabbedForm>

@@ -1,24 +1,24 @@
 import Brightness2Icon from "@mui/icons-material/Brightness2";
 import Brightness7Icon from "@mui/icons-material/Brightness7";
 import {
-    Box,
-    Button,
-    Grid,
-    IconButton,
-    Tooltip,
-    Typography,
+  Box,
+  Button,
+  Grid,
+  IconButton,
+  Tooltip,
+  Typography,
 } from "@mui/material";
 import type { Params } from "@remix-run/react";
 import {
-    Form,
-    useActionData,
-    useLoaderData,
-    useLocation,
+  Form,
+  useActionData,
+  useLoaderData,
+  useLocation,
 } from "@remix-run/react";
 import type {
-    ActionArgs,
-    LoaderArgs,
-    MetaFunction,
+  ActionArgs,
+  LoaderArgs,
+  MetaFunction,
 } from "@remix-run/server-runtime";
 import { json, redirect } from "@remix-run/server-runtime";
 import type { UserApiObject } from "~/apiobject/user.apiobject";
@@ -26,28 +26,28 @@ import PasswordForm from "~/component/account/PasswordForm";
 import ProfileForm from "~/component/account/ProfileForm";
 import Section from "~/component/layout/Section";
 import type { SecurityFunction } from "~/constant/remix";
-import type { UserPutDto } from "~/dto/user.dto";
+import type { UserPasswordPutDto, UserPutDto } from "~/dto/user.dto";
 import { validateForm } from '~/form/abstract';
+import { badRequest } from "~/helper/responses.helper";
 import useRootData from "~/hook/useRootData";
 import { addFlashMessage } from "~/service/flash.server";
 import {
-    commitSession,
-    getSession,
-    requireUser,
+  commitSession,
+  getSession,
+  requireUser,
 } from "~/service/session.server";
 import {
-    updatePassword,
-    updateUser,
-    verifyLogin,
+  updatePassword,
+  updateUser,
+  verifyLogin,
 } from "~/service/user.server";
 import { verifyAuthenticityToken } from "~/util/csrf.server";
 import { namedActionWithFormType } from "~/util/named-actions";
-import { badRequest } from "~/util/responses";
 import PageContainer from "../component/layout/PageContainer";
 import { passwordModificationValidator, profileValidator } from '../form/user.form';
 import {
-    userApiObjectToDto,
-    userPutDtoToApiObject,
+  userApiObjectToDto,
+  userPutDtoToApiObject,
 } from "../mapper/user.mapper";
 
 export const meta: MetaFunction<typeof loader> = () => {
@@ -55,6 +55,16 @@ export const meta: MetaFunction<typeof loader> = () => {
     title: "My account",
   };
 };
+
+const security: SecurityFunction<{
+  userApiObject: UserApiObject;
+}> = async (request: Request, params: Params) => {
+  const userApiObject = await requireUser(request);
+  return {
+    userApiObject,
+  };
+};
+
 
 export async function loader({ request, params }: LoaderArgs) {
   const { userApiObject } = await security(request, params);
@@ -71,15 +81,6 @@ export async function action({ request, params }: ActionArgs) {
   });
 }
 
-const security: SecurityFunction<{
-  userApiObject: UserApiObject;
-}> = async (request: Request, params: Params) => {
-  const userApiObject = await requireUser(request);
-  return {
-    userApiObject,
-  };
-};
-
 async function actionProfile(request: Request, params: Params) {
   const { userApiObject } = await security(request, params);
 
@@ -87,8 +88,8 @@ async function actionProfile(request: Request, params: Params) {
   await verifyAuthenticityToken(request, session);
 
   const result = await validateForm<UserPutDto>(request, profileValidator);
-  if (result.successResponse) {
-    return result.successResponse
+  if (result.errorResponse) {
+    return result.errorResponse
   }
 
   const userPutDto = result.data
@@ -114,7 +115,7 @@ async function actionPassword(request: Request, params: Params) {
   let session = await getSession(request);
   await verifyAuthenticityToken(request, session);
 
-  const result = await validateForm(request, passwordModificationValidator);
+  const result = await validateForm<UserPasswordPutDto>(request, passwordModificationValidator);
   if (result.errorResponse) {
     return result.errorResponse
   }
@@ -131,14 +132,14 @@ async function actionPassword(request: Request, params: Params) {
   );
   if (!isPasswordCorrect) {
     return badRequest({
-      password: { errors: { currentPassword: "Invalid password" } },
+      password: { fieldErrors: { currentPassword: "Invalid password" } },
     });
   }
 
   if (passwordVerification !== password) {
     return badRequest({
       password: {
-        errors: { password: "Les mots de passes ne correspondent pas" },
+        fieldErrors: { password: "Les mots de passes ne correspondent pas" },
       },
     });
   }
@@ -229,11 +230,10 @@ function EditProfile() {
 
 function EditPassword() {
   const actionData = useActionData<typeof action>();
-  const { user } = useLoaderData<typeof loader>();
 
   return (
     <Section title="Mot de passe">
-      <PasswordForm actionData={actionData?.password} user={user} />
+      <PasswordForm actionData={actionData?.password} />
     </Section>
   );
 }
