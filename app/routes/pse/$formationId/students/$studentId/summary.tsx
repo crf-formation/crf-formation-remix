@@ -126,19 +126,19 @@ function Techniques({ technique }: { technique: PseUserSummaryTechniqueDto }) {
 }
 
 function Summary(
-  { hasValidatePse, hasValidatePse1 }:
-  { hasValidatePse: boolean, hasValidatePse1: boolean }
+  { hasValidatedPse, hasValidatedPse1 }:
+  { hasValidatedPse: boolean, hasValidatedPse1: boolean }
 ) {
   return (
     <>
       <Property
         name="PSE Validé"
-        value={<BooleanText withColor checked={hasValidatePse} trueText="APTE" falseText="INAPTE" />}
+        value={<BooleanText withColor checked={hasValidatedPse} trueText="APTE" falseText="INAPTE" />}
       />
 
       <Property
         name="PSE 1 Validé"
-        value={<BooleanText withColor checked={hasValidatePse1} trueText="APTE" falseText="INAPTE" />}
+        value={<BooleanText withColor checked={hasValidatedPse1} trueText="APTE" falseText="INAPTE" />}
       />
     </>
   );
@@ -240,8 +240,8 @@ export default function SummaryRoute() {
     <Stack spacing={2} sx={{ "& .Property-name": { width: 360 } }}>
       <Section title="Summary">
         <Summary
-          hasValidatePse={pseUserSummary.hasValidatePse}
-          hasValidatePse1={pseUserSummary.hasValidatePse1}
+          hasValidatedPse={pseUserSummary.hasValidatedPse}
+          hasValidatedPse1={pseUserSummary.hasValidatedPse1}
         />
       </Section>
 

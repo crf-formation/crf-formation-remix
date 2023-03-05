@@ -15,6 +15,7 @@ import PageTitle from '~/component/layout/PageTitle';
 import Section from "~/component/layout/Section";
 import PseSummaryConcreteCaseSummary from "~/component/pse-summary/PseSummaryConcreteCaseSummary";
 import PseSummaryPreparatoryWorkSummary from "~/component/pse-summary/PseSummaryPreparatoryWorkSummary";
+import PseSummaryResult from "~/component/pse-summary/PseSummaryResult";
 import PseSummaryTechniqueSummary from "~/component/pse-summary/PseSummaryTechniqueSummary";
 import type { SecurityFunction } from '~/constant/remix';
 import { loadAndBuildPseSummary } from "~/helper/psesummary.helper";
@@ -89,7 +90,7 @@ export default function FromationPseRoute() {
         <Stack spacing={2}>
           <Section title="Résumé">
             <PseSummaryResult
-              pseSummary={pseSummary}
+              resultSummary={pseSummary.resultSummary}
             />
           </Section>
 

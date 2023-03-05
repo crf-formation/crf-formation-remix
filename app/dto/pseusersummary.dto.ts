@@ -15,8 +15,8 @@ export interface PseUserSummaryDto {
 
   pseCompetences: Array<PseCompetenceDto>;
 
-  hasValidatePse: boolean;
-  hasValidatePse1: boolean;
+  hasValidatedPse: boolean;
+  hasValidatedPse1: boolean;
 }
 
 export interface PseUserSummaryPreparatoryWorkDto {

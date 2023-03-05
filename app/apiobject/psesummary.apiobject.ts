@@ -2,9 +2,25 @@ import type { PseConcreteCaseCompetenceSummaryApiObject, PseUserSummaryPreparato
 import type { UserApiObject } from './user.apiobject';
 
 export interface PseSummaryApiObject {
+	resultSummary: PseResultSummaryApiObject;
 	concreteCaseSummary: PseConcreteCaseSummaryApiObject;
 	techniqueSummary: PseTechniqueSummaryApiObject,
 	preparatoryWorkSummary: PsePreparatoryWorkSummaryApiObject,
+}
+
+export interface PseResultSummaryApiObject {
+	usersSummary: Array<PseResultUserSummaryApiObject>
+}
+
+export interface PseResultUserSummaryApiObject {
+	user: UserApiObject;
+	hasValidatedPse: boolean;
+	hasValidatedPse1: boolean;
+	hasValidatedTechniquesPse: boolean;
+	hasValidatedTechniquesPse1: boolean;
+	hasValidatedConcreteCasePse: boolean;
+	hasValidatedConcreteCasePse1: boolean;
+	hasValidatedPrepratoryWork: boolean;
 }
 
 export interface PseTechniqueSummaryApiObject {

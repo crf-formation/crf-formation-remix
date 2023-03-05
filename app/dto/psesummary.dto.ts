@@ -2,9 +2,25 @@ import type { PseConcreteCaseCompetenceSummaryDto, PseUserSummaryPreparatoryWork
 import type { UserDto } from './user.dto';
 
 export interface PseSummaryDto {
+	resultSummary: PseResultSummaryDto;
 	concreteCaseSummary: PseConcreteCaseSummaryDto;
 	techniqueSummary: PseTechniqueSummaryDto,
 	preparatoryWorkSummary: PsePreparatoryWorkSummaryDto,
+}
+
+export interface PseResultSummaryDto {
+	usersSummary: Array<PseResultUserSummaryDto>
+}
+
+export interface PseResultUserSummaryDto {
+	user: UserDto;
+	hasValidatedPse: boolean;
+	hasValidatedPse1: boolean;
+	hasValidatedTechniquesPse: boolean;
+	hasValidatedTechniquesPse1: boolean;
+	hasValidatedConcreteCasePse: boolean;
+	hasValidatedConcreteCasePse1: boolean;
+	hasValidatedPrepratoryWork: boolean;
 }
 
 export interface PseTechniqueSummaryDto {

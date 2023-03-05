@@ -1,13 +1,33 @@
-import type { PseConcreteCaseSummaryApiObject, PseConcreteCaseUserSummaryApiObject, PsePreparatoryWorkSummaryApiObject, PsePreparatoryWorkUserSummaryApiObject, PseSummaryApiObject, PseTechniqueSummaryApiObject, PseTechniqueUserSummaryApiObject } from '~/apiobject/psesummary.apiobject';
-import type { PseConcreteCaseSummaryDto, PseConcreteCaseUserSummaryDto, PsePreparatoryWorkSummaryDto, PsePreparatoryWorkUserSummaryDto, PseSummaryDto, PseTechniqueSummaryDto, PseTechniqueUserSummaryDto } from '~/dto/psesummary.dto';
+import type { PseConcreteCaseSummaryApiObject, PseConcreteCaseUserSummaryApiObject, PsePreparatoryWorkSummaryApiObject, PsePreparatoryWorkUserSummaryApiObject, PseResultSummaryApiObject, PseResultUserSummaryApiObject, PseSummaryApiObject, PseTechniqueSummaryApiObject, PseTechniqueUserSummaryApiObject } from '~/apiobject/psesummary.apiobject';
+import type { PseConcreteCaseSummaryDto, PseConcreteCaseUserSummaryDto, PsePreparatoryWorkSummaryDto, PsePreparatoryWorkUserSummaryDto, PseResultSummaryDto, PseResultUserSummaryDto, PseSummaryDto, PseTechniqueSummaryDto, PseTechniqueUserSummaryDto } from '~/dto/psesummary.dto';
 import { pseConcreteCaseCompetenceSummaryDtoToApiObject, pseUserSummaryPreparatoryWorkApiObjectToDto, pseUserSummaryTechniqueApiObjectToDto } from '~/mapper/pseusersummary.mapper';
 import { userApiObjectToDto } from '~/mapper/user.mapper';
 
 export function pseSummaryApiObjectToDto(apiObject: PseSummaryApiObject): PseSummaryDto {
 	return {
+		resultSummary: pseResultSummaryApiObjectToDto(apiObject.resultSummary),
 		concreteCaseSummary: pseConcreteCaseSummaryApiObjectToDto(apiObject.concreteCaseSummary),
 		techniqueSummary: pseTechniqueSummaryApiObjectToDto(apiObject.techniqueSummary),
 		preparatoryWorkSummary: psePreparatoryWorkSummaryApiObjectToDto(apiObject.preparatoryWorkSummary),
+	}
+}
+
+function pseResultSummaryApiObjectToDto(apiObject: PseResultSummaryApiObject): PseResultSummaryDto {
+	return {
+		usersSummary: apiObject.usersSummary.map(pseResultUserSummaryApiObjectToDto)
+	}
+}
+
+function pseResultUserSummaryApiObjectToDto(apiObject: PseResultUserSummaryApiObject): PseResultUserSummaryDto {
+	return {
+		user: userApiObjectToDto(apiObject.user),
+		hasValidatedPse: apiObject.hasValidatedPse,
+		hasValidatedPse1: apiObject.hasValidatedPse1,
+		hasValidatedTechniquesPse: apiObject.hasValidatedTechniquesPse,
+		hasValidatedTechniquesPse1: apiObject.hasValidatedTechniquesPse1,
+		hasValidatedConcreteCasePse: apiObject.hasValidatedConcreteCasePse,
+		hasValidatedConcreteCasePse1: apiObject.hasValidatedConcreteCasePse1,
+		hasValidatedPrepratoryWork: apiObject.hasValidatedPrepratoryWork,
 	}
 }
 

@@ -13,8 +13,8 @@ export function pseUserSummaryApiObjectToDto(apiObject: PseUserSummaryApiObject)
 		preparatoryWork: pseUserSummaryPreparatoryWorkApiObjectToDto(apiObject.preparatoryWork),
 		concreteCase: pseUserSummaryConcreteCaseApiObjectToDto(apiObject.concreteCase),
 		pseCompetences: apiObject.pseCompetences.map(pseCompetenceApiObjectToDto),
-		hasValidatePse: apiObject.hasValidatePse,
-		hasValidatePse1: apiObject.hasValidatePse1,
+		hasValidatedPse: apiObject.hasValidatedPse,
+		hasValidatedPse1: apiObject.hasValidatedPse1,
 	}
 }
 

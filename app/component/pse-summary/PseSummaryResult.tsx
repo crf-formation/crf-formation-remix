@@ -1,23 +1,48 @@
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from "@mui/material";
 import PseAcquiredLabel from "~/component/pse-summary/PseAcquiredLabel";
-import type { PsePreparatoryWorkSummaryDto, PsePreparatoryWorkUserSummaryDto } from "~/dto/psesummary.dto";
+import type { PseResultSummaryDto, PseResultUserSummaryDto } from "~/dto/psesummary.dto";
 
 interface Props {
-	preparatoryWorkSummary: PsePreparatoryWorkSummaryDto
+	resultSummary: PseResultSummaryDto
 }
 
-function UserSummaryTableRow({ userSummary }: { userSummary: PsePreparatoryWorkUserSummaryDto }) {
+function UserSummaryTableRow({ userSummary }: { userSummary: PseResultUserSummaryDto }) {
 	return (
     <TableRow>
       <TableCell>{userSummary.user.fullName}</TableCell>
 
-      <TableCell><PseAcquiredLabel acquired={userSummary.preparatoryWork.hasRealisedAllModules} /></TableCell>
+      <TableCell>
+        <PseAcquiredLabel
+          acquired={userSummary.hasValidatedPrepratoryWork}
+        />
+      </TableCell>
 
+      <TableCell>
+        <PseAcquiredLabel
+          acquired={userSummary.hasValidatedTechniquesPse}
+          acquiredForPse1={userSummary.hasValidatedTechniquesPse1}
+        />
+      </TableCell>
+
+      <TableCell>
+        <PseAcquiredLabel
+          acquired={userSummary.hasValidatedConcreteCasePse}
+          acquiredForPse1={userSummary.hasValidatedConcreteCasePse1}
+        />
+      </TableCell>
+
+      <TableCell>
+        <PseAcquiredLabel
+          acquired={userSummary.hasValidatedPse}
+          acquiredForPse1={userSummary.hasValidatedPse1}
+        />
+      </TableCell>
+      
     </TableRow>
   );
 }
 
-export default function PseSummaryResult({ preparatoryWorkSummary }: Props) {
+export default function PseSummaryResult({ resultSummary }: Props) {
 	return (
     <TableContainer>
       <Table>
@@ -25,12 +50,15 @@ export default function PseSummaryResult({ preparatoryWorkSummary }: Props) {
           <TableRow>
             <TableCell>{/* user fullName */}</TableCell>
 
+            <TableCell>Travail préparatoire</TableCell>
+            <TableCell>Techniques</TableCell>
+            <TableCell>Pratique</TableCell>
             <TableCell>Validé</TableCell>
           </TableRow>
 
         </TableHead>
         <TableBody>
-          {preparatoryWorkSummary.usersSummary.map((userSummary) => (
+          {resultSummary.usersSummary.map((userSummary) => (
             <UserSummaryTableRow key={userSummary.user.id} userSummary={userSummary} />
           ))}
         </TableBody>

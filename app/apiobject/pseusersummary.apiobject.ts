@@ -13,8 +13,8 @@ export interface PseUserSummaryApiObject {
 
   pseCompetences: Array<PseCompetenceApiObject>;
 
-  hasValidatePse: boolean;
-  hasValidatePse1: boolean;
+  hasValidatedPse: boolean;
+  hasValidatedPse1: boolean;
 }
 
 export interface PseUserSummaryPreparatoryWorkApiObject {

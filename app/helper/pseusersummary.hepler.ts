@@ -60,8 +60,8 @@ export async function buildPseUserSummary(
 
 		pseCompetences,
 
-		hasValidatePse: sample([true, false]), // TODO:
-		hasValidatePse1: sample([true, false]), // TODO:
+		hasValidatedPse: sample([true, false]), // TODO:
+		hasValidatedPse1: sample([true, false]), // TODO:
 	}
 
 }

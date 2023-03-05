@@ -1,4 +1,4 @@
-import type { PseConcreteCaseSummaryApiObject, PseConcreteCaseUserSummaryApiObject, PsePreparatoryWorkSummaryApiObject, PsePreparatoryWorkUserSummaryApiObject, PseSummaryApiObject, PseTechniqueSummaryApiObject, PseTechniqueUserSummaryApiObject } from "~/apiobject/psesummary.apiobject";
+import type { PseConcreteCaseSummaryApiObject, PseConcreteCaseUserSummaryApiObject, PsePreparatoryWorkSummaryApiObject, PsePreparatoryWorkUserSummaryApiObject, PseResultSummaryApiObject, PseResultUserSummaryApiObject, PseSummaryApiObject, PseTechniqueSummaryApiObject, PseTechniqueUserSummaryApiObject } from "~/apiobject/psesummary.apiobject";
 import type { PseUserSummaryApiObject, PseUserSummaryConcreteCaseApiObject, PseUserSummaryPreparatoryWorkApiObject, PseUserSummaryTechniqueApiObject } from "~/apiobject/pseusersummary.apiobject";
 import type { UserApiObject } from "~/apiobject/user.apiobject";
 import { loadAndBuildPseUserSummary } from "~/helper/pseusersummary.hepler";
@@ -26,11 +26,54 @@ export async function loadAndBuildPseSummary(
 		pseUserSummaries
 	)
 	
+	const resultSummary = buildResultSummary(
+		formation.students, 
+		pseUserSummaries
+	)
+	
 	return {
+		resultSummary,
 		techniqueSummary,
 		preparatoryWorkSummary,
 		concreteCaseSummary,
 	}
+}
+
+function buildResultSummary(
+	students: Array<UserApiObject>,
+	pseUserSummaries: Array<PseUserSummaryApiObject>, 
+): PseResultSummaryApiObject {
+	const usersSummary = students.map((user) => {
+		const pseUserSummary = pseUserSummaries.find(pseUserSummary => pseUserSummary.userId === user.id)
+
+		if (!pseUserSummary ) {
+			throw new Error(`User summary not found for ${user.id}`)
+		}
+
+		return buildResultUserSummaryApiObject(
+      user,
+      pseUserSummary
+    );
+  });
+
+	return {
+		usersSummary
+	}
+}
+
+function buildResultUserSummaryApiObject(
+	user: UserApiObject,
+	pseUserSummary: PseUserSummaryApiObject
+): PseResultUserSummaryApiObject {
+	return {
+		user,
+		hasValidatedPse: pseUserSummary.hasValidatedPse,
+		hasValidatedPse1: pseUserSummary.hasValidatedPse1,
+		hasValidatedTechniquesPse: pseUserSummary.technique.hasAcquiredAllTechniques,
+		hasValidatedTechniquesPse1: pseUserSummary.technique.hasAcquiredAllTechniquesToValidatePse1,
+		hasValidatedPrepratoryWork: pseUserSummary.preparatoryWork.hasRealisedAllModules,
+	}
+
 }
 
 function buildTechniqueSummary(
