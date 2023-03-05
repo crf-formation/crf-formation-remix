@@ -5,7 +5,7 @@ import type { UserApiObject } from './user.apiobject';
 
 export type PseUserConcreteCaseStateApiEnum = 'CREATED' | 'RUNNING' | 'CLOSED';
 export type PseUserConcreteCaseCompetenceGradeApiEnum = 'A' | 'B' | 'C' | 'D' | 'NOT_EVALUATED';
-export type PseUserConcreteCaseRoleApiEnum = 'LEADER' | 'MINION' | 'WATCHER'
+export type PseUserConcreteCaseRoleApiEnum = 'LEADER' | 'MINION' | 'WATCHER' | 'UNKNOWN';
 
 export interface PseUserConcreteCaseApiObject {
 	id: string;
@@ -43,6 +43,7 @@ export interface PseUserConcreteCaseGroupEvaluationApiObject {
 	pseConcreteCaseGroupId: string;
 	pseConcreteCaseSessionId: string;
 	pseConcreteCaseTypeId: string;
+	pseSituationConcreteCaseGroupId: string;
 	competencesToEvaluate: Array<PseCompetenceApiObject>;
 	students: Array<UserApiObject>;
 	usersGrades: Array<PseUserEvaluationApiObject>;
@@ -50,12 +51,13 @@ export interface PseUserConcreteCaseGroupEvaluationApiObject {
 
 export interface PseUserEvaluationApiObject {
 	userId: string;
+	role: PseUserConcreteCaseRoleApiEnum; // should default to UNKNOWN
 	grades: Array<PseEvaluationCompetenceGradeApiObject>;
 }
 
 export interface PseEvaluationCompetenceGradeApiObject {
 	pseCompetenceId: string;
-	shouldEvaluate: boolean;
+	shouldEvaluate: boolean; // shortcut data: calculated using pseConcreteCaseType.competencesToEvaluate.
 	grade: PseUserConcreteCaseCompetenceGradeApiEnum // should default to NOT_EVALUATED
 }
 
@@ -67,12 +69,13 @@ export interface PseUserConcreteCaseGroupEvaluationPostApiObject {
 	pseConcreteCaseGroupId: string;
 	pseConcreteCaseSessionId: string;
 	pseConcreteCaseTypeId: string;
+	pseSituationConcreteCaseGroupId: string;
 	usersGrades: Array<PseUserEvaluationPostApiObject>;
 }
 
 export interface PseUserEvaluationPostApiObject {
 	userId: string;
-	role: string;
+	role: PseUserConcreteCaseRoleApiEnum;
 	grades: Array<PseEvaluationCompetenceGradePostApiObject>;
 }
 

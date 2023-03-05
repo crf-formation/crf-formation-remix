@@ -33,7 +33,7 @@ export async function updatePseConcreteCaseSituationEntity(
   const { pseSituationConcreteCaseGroups, ...data } = pseConcreteCaseSituationPutApiObject;
 
   return await prisma.$transaction<PseConcreteCaseSituationEntity>(async (tx) => {
-    const entity = await tx.pseConcreteCaseSituation.update({
+    const pseConcreteCaseSituationEntity = await tx.pseConcreteCaseSituation.update({
       data,
       where: {
         id,
@@ -46,18 +46,19 @@ export async function updatePseConcreteCaseSituationEntity(
         pseConcreteCaseSituationId: id,
       },
     });
+
     await Promise.all(
       pseSituationConcreteCaseGroups.map(async (pseSituationConcreteCaseGroup: PseSituationConcreteCaseGroupPutApiObject) => {
         return tx.pseSituationConcreteCaseGroup.create({
           data: {
             ...pseSituationConcreteCaseGroup,
-            pseConcreteCaseSituationId: entity.id,
+            pseConcreteCaseSituationId: pseConcreteCaseSituationEntity.id,
           },
         });
       })
     );
 
-    return await findPseConcreteCaseSituationEntityOnTransaction(tx, entity.id);
+    return await findPseConcreteCaseSituationEntityOnTransaction(tx, pseConcreteCaseSituationEntity.id);
   });
 }
 

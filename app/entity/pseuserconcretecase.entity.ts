@@ -2,8 +2,7 @@
 
 export interface PseUserConcreteCasePostEntity {
 	userId: string;
-	pseConcreteCaseTypeId: string;
-	pseConcreteCaseGroupId: string;
+	pseSituationConcreteCaseGroupId: string;
 	role: string;
 	grades: Array<{
 		pseCompetenceId: string;

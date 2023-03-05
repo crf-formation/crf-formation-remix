@@ -1,15 +1,18 @@
 import { z } from 'zod';
+import type { PseUserConcreteCaseRoleApiEnum } from '~/apiobject/pseuserconcretecase.apiobject';
 import type { PseCompetenceDto } from './psecompetence.dto';
 import type { PseConcreteCaseGroupDto } from './pseconcretecasegroup.dto';
 import type { PseConcreteCaseTypeDto } from './pseconcretecasetype.dto';
 import type { UserDto } from './user.dto';
 
 export type PseUserConcreteCaseStateDtoEnum = 'CREATED' | 'RUNNING' | 'CLOSED';
-export type PseUserConcreteCaseRoleApi = 'LEADER' | 'MINION' | 'WATCHER'
+export type PseUserConcreteCaseRoleApi = 'LEADER' | 'MINION' | 'WATCHER' | 'UNKNOWN';
 
 // TODO: no zod on dtos?
 export const PseUserConcreteCaseCompetenceGradeZEnum = z.enum(['A', 'B', 'C', 'D', 'NOT_EVALUATED'])
 export type PseUserConcreteCaseCompetenceGradeDtoEnum = z.infer<typeof PseUserConcreteCaseCompetenceGradeZEnum>
+
+export const PseUserConcreteCaseRoleZEnum: z.ZodType<PseUserConcreteCaseRoleApi> = z.enum([ 'LEADER', 'MINION', 'WATCHER', 'UNKNOWN' ])
 
 export interface PseUserConcreteCaseDto {
 	id: string;
@@ -44,6 +47,7 @@ export interface PseUserConcreteCaseGroupEvaluationDto {
 	pseConcreteCaseGroupId: string;
 	pseConcreteCaseSessionId: string;
 	pseConcreteCaseTypeId: string;
+	pseSituationConcreteCaseGroupId: string;
 
 	usersGrades: Array<PseUserEvaluationDto>;
 
@@ -54,6 +58,7 @@ export interface PseUserConcreteCaseGroupEvaluationDto {
 
 export interface PseUserEvaluationDto {
 	userId: string;
+	role: PseUserConcreteCaseRoleApiEnum;
 	grades: Array<PseEvaluationCompetenceGradeDto>;
 }
 
@@ -71,12 +76,14 @@ export interface PseUserConcreteCaseGroupEvaluationPostDto {
 	pseConcreteCaseGroupId: string;
 	pseConcreteCaseSessionId: string;
 	pseConcreteCaseTypeId: string;
+	pseSituationConcreteCaseGroupId: string;
 
 	usersGrades: Array<PseUserEvaluationPostDto>;
 }
 
 export interface PseUserEvaluationPostDto {
 	userId: string;
+	role: PseUserConcreteCaseRoleApiEnum;
 	grades: Array<PseEvaluationCompetenceGradePostDto>;
 }
 

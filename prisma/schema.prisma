@@ -323,4 +323,6 @@ model PseUserConcreteCaseCompetence {
   // linked to
   pseCompetence PseCompetence @relation(fields: [pseCompetenceId], references: [id], onDelete: Cascade, onUpdate: Cascade) 
   pseCompetenceId String
+
+  @@unique([ pseUserConcreteCaseId, pseCompetenceId ])
 }

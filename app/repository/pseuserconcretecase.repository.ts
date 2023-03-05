@@ -70,27 +70,56 @@ export async function getPseUserConcreteCasesForGroupAndSituation(
 export async function createOrUpdatePseUserConcreteCases(
 	userConcreteCases: Array<PseUserConcreteCasePostEntity>,
 ): Promise<PseUserConcreteCaseEntity> {
-
+	console.log({ userConcreteCases
+	})
   return await prisma.$transaction<PseUserConcreteCaseEntity>(async (tx) => {
 		return Promise.all(userConcreteCases.map(async userConcreteCase => {
-			const pseUserConcreteCase: PseUserConcreteCaseCompetenceEntity = {
+			const pseUserConcreteCaseData: PseUserConcreteCaseCompetenceEntity = {
 				role: userConcreteCase.role,
 				selected: true,
-				competences: userConcreteCase.grades.map(gradeEvaluation => ({
-					pseCompetenceId: gradeEvaluation.pseCompetenceId,
-					grade: gradeEvaluation.grade,
-				}))
+				
+				userId: userConcreteCase.userId,
+				pseSituationConcreteCaseGroupId : userConcreteCase.pseSituationConcreteCaseGroupId,
 			}
 
-			await tx.pseUserConcreteCase.upsert({
+			const pseUserConcreteCaseEntity = await tx.pseUserConcreteCase.upsert({
 				where: {
-					userId: userConcreteCase.userId,
-					concreteCaseTypeId: userConcreteCase.pseConcreteCaseTypeId,
-					concreteCaseGroupId: userConcreteCase.pseConcreteCaseGroupId,
+					userId_pseSituationConcreteCaseGroupId: {
+						userId: pseUserConcreteCaseData.userId,
+						pseSituationConcreteCaseGroupId: pseUserConcreteCaseData.pseSituationConcreteCaseGroupId,
+					}
 				},
-				update: pseUserConcreteCase,
-				create: pseUserConcreteCase,
+				update: pseUserConcreteCaseData,
+				create: pseUserConcreteCaseData,
 			});
+
+			// -- add competences
+			return Promise.all(userConcreteCase.grades.map(async gradeEvaluation => {
+				const pseUserConcreteCaseCompetenceData = {
+					pseUserConcreteCaseId: pseUserConcreteCaseEntity.id,
+					pseCompetenceId: gradeEvaluation.pseCompetenceId,
+					grade: gradeEvaluation.grade
+				}
+
+				console.log({
+					pseUserConcreteCaseCompetenceData
+				})
+
+				const pseUserConcreteCaseCompetenceEntity = await tx.pseUserConcreteCaseCompetence.upsert({
+					where: {
+						pseUserConcreteCaseId_pseCompetenceId: {
+							pseUserConcreteCaseId: pseUserConcreteCaseCompetenceData.pseUserConcreteCaseId,
+							pseCompetenceId: pseUserConcreteCaseCompetenceData.pseCompetenceId
+						}
+					},
+					update: pseUserConcreteCaseCompetenceData,
+					create: pseUserConcreteCaseCompetenceData,
+				})
+
+				console.log({ pseUserConcreteCaseCompetenceEntity })
+
+			}));
+			
 		}))
   })
 }

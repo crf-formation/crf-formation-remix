@@ -106,6 +106,7 @@ export default function PseConcreteCaseSituationEvaluateGroupForm({
       <input type="hidden" name="pseConcreteCaseGroupId" value={pseUserConcreteCaseGroupEvaluation.pseConcreteCaseGroupId} />
       <input type="hidden" name="pseConcreteCaseSessionId" value={pseUserConcreteCaseGroupEvaluation.pseConcreteCaseSessionId} />
       <input type="hidden" name="pseConcreteCaseTypeId" value={pseUserConcreteCaseGroupEvaluation.pseConcreteCaseTypeId} />
+      <input type="hidden" name="pseSituationConcreteCaseGroupId" value={pseUserConcreteCaseGroupEvaluation.pseSituationConcreteCaseGroupId} />
       <InputHiddenJson name="usersGrades" json={pseUserConcreteCaseUsersGrades} />
 
       <Table>

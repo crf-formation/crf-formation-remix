@@ -94,21 +94,24 @@ function pseUserConcreteCaseCompetenceGradeApiEnumToDto(grade: PseUserConcreteCa
 
 // --
 
-export function pseUserConcreteCaseGroupEvaluationApiObjectToDto(pseUserConcreteCaseGroupApiObject: PseUserConcreteCaseGroupEvaluationApiObject): PseUserConcreteCaseGroupEvaluationDto {
+export function pseUserConcreteCaseGroupEvaluationApiObjectToDto(pseUserConcreteCaseGroupEvaluationApiObject: PseUserConcreteCaseGroupEvaluationApiObject): PseUserConcreteCaseGroupEvaluationDto {
 	return {
-		formationId: pseUserConcreteCaseGroupApiObject.formationId,
-		pseConcreteCaseSituationId: pseUserConcreteCaseGroupApiObject.pseConcreteCaseSituationId,
-		pseConcreteCaseGroupId: pseUserConcreteCaseGroupApiObject.pseConcreteCaseGroupId,
-		pseConcreteCaseSessionId: pseUserConcreteCaseGroupApiObject.pseConcreteCaseSessionId,
-		competencesToEvaluate: pseUserConcreteCaseGroupApiObject.competencesToEvaluate,
-		usersGrades: pseUserConcreteCaseGroupApiObject.usersGrades.map(pseUserConcreteCaseUserGradesApiObjectToDto),
-		students: pseUserConcreteCaseGroupApiObject.students.map(userApiObjectToDto),
+		formationId: pseUserConcreteCaseGroupEvaluationApiObject.formationId,
+		pseConcreteCaseSituationId: pseUserConcreteCaseGroupEvaluationApiObject.pseConcreteCaseSituationId,
+		pseConcreteCaseGroupId: pseUserConcreteCaseGroupEvaluationApiObject.pseConcreteCaseGroupId,
+		pseConcreteCaseSessionId: pseUserConcreteCaseGroupEvaluationApiObject.pseConcreteCaseSessionId,
+		pseConcreteCaseTypeId: pseUserConcreteCaseGroupEvaluationApiObject.pseConcreteCaseTypeId,
+		pseSituationConcreteCaseGroupId: pseUserConcreteCaseGroupEvaluationApiObject.pseSituationConcreteCaseGroupId,
+		competencesToEvaluate: pseUserConcreteCaseGroupEvaluationApiObject.competencesToEvaluate,
+		usersGrades: pseUserConcreteCaseGroupEvaluationApiObject.usersGrades.map(pseUserConcreteCaseUserGradesApiObjectToDto),
+		students: pseUserConcreteCaseGroupEvaluationApiObject.students.map(userApiObjectToDto),
 	}
 }
 
 function pseUserConcreteCaseUserGradesApiObjectToDto(pseUserConcreteCaseUserGradesApiObject: PseUserEvaluationApiObject): PseUserEvaluationDto {
 	return {
 		userId: pseUserConcreteCaseUserGradesApiObject.userId,
+		role:  pseUserConcreteCaseUserGradesApiObject.role,
 		grades: pseUserConcreteCaseUserGradesApiObject.grades.map(pseUserConcreteCaseGradeApiObjectToDto),
 	}
 }
@@ -129,6 +132,8 @@ export function pseUserConcreteCaseGroupEvaluationPostDtoToApiObject(pseUserConc
 		pseConcreteCaseSituationId: pseUserConcreteCaseGroupEvaluationPostDto.pseConcreteCaseSituationId,
 		pseConcreteCaseGroupId: pseUserConcreteCaseGroupEvaluationPostDto.pseConcreteCaseGroupId,
 		pseConcreteCaseSessionId: pseUserConcreteCaseGroupEvaluationPostDto.pseConcreteCaseSessionId,
+		pseConcreteCaseTypeId: pseUserConcreteCaseGroupEvaluationPostDto.pseConcreteCaseTypeId,
+		pseSituationConcreteCaseGroupId: pseUserConcreteCaseGroupEvaluationPostDto.pseSituationConcreteCaseGroupId,
 		usersGrades: pseUserConcreteCaseGroupEvaluationPostDto.usersGrades.map(pseUserGradesEvaluationPostApiObjectToDto),
 	}
 
@@ -137,6 +142,7 @@ export function pseUserConcreteCaseGroupEvaluationPostDtoToApiObject(pseUserConc
 function pseUserGradesEvaluationPostApiObjectToDto(pseUserGradesEvaluationPostApiObject: PseUserEvaluationPostApiObject): PseUserEvaluationPostDto {
 	return {
 		userId: pseUserGradesEvaluationPostApiObject.userId,
+		role:  pseUserGradesEvaluationPostApiObject.role,
 		grades: pseUserGradesEvaluationPostApiObject.grades.map(PseEvaluationCompetenceGradePostApiObjectToDto),
 	}
 }
@@ -156,22 +162,19 @@ export function mapPseUserConcreteCaseGroupEvaluationPostApiObjectToPseUserConcr
 	return pseUserConcreteCaseGroupEvaluationPostApiObject.usersGrades.map(
 		(userGrades) =>
 			toPseUserConcreteCasePostEntity(
-				pseUserConcreteCaseGroupEvaluationPostApiObject.pseConcreteCaseGroupId,
-				pseUserConcreteCaseGroupEvaluationPostApiObject.pseConcreteCaseTypeId,
+				pseUserConcreteCaseGroupEvaluationPostApiObject.pseSituationConcreteCaseGroupId,
 				userGrades
 			)
 	)
 }
 
 function toPseUserConcreteCasePostEntity(
-	pseConcreteCaseGroupId: string,
-	pseConcreteCaseTypeId: string,
+	pseSituationConcreteCaseGroupId: string,
 	userEvaluation: PseUserEvaluationPostApiObject
 ): PseUserConcreteCasePostEntity {
 	return {
 		userId: userEvaluation.userId,
-		pseConcreteCaseTypeId: pseConcreteCaseTypeId,
-		pseConcreteCaseGroupId: pseConcreteCaseGroupId,
+		pseSituationConcreteCaseGroupId: pseSituationConcreteCaseGroupId,
 		role: userEvaluation.role,
 		grades: userEvaluation.grades.map(competenceGrade => ({
 			grade: competenceGrade.grade,

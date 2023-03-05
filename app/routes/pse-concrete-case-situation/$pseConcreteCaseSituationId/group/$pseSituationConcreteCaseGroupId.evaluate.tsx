@@ -20,7 +20,6 @@ import type { SecurityFunction } from "~/constant/remix";
 import type { PseUserConcreteCaseGroupEvaluationPostDto } from "~/dto/pseuserconcretecase.dto";
 import { validateForm } from "~/form/abstract";
 import { pseUserConcreteCaseGroupEvaluationPostDtoValidator } from "~/form/pseuserconcretecase.form";
-import { buildPseUserConcreteCaseGroupEvaluation } from "~/helper/pseuserconcretecase.helper";
 import { getParamsOrFail } from "~/helper/remix.params.helper";
 import { redirectActionToCurrentPage } from "~/helper/responses.helper";
 import { pseCompetenceApiObjectToDto } from "~/mapper/psecompetence.mapper";
@@ -34,7 +33,7 @@ import { getPseConcreteCaseGroup } from "~/service/pseconcretecasegroup.server";
 import { getPseConcreteCaseSessionById } from "~/service/pseconcretecasesession.server";
 import { getPseConcreteCaseSituation } from "~/service/pseconcretecasesituation.server";
 import { getPseFormationByPseConcreteCaseSessionId } from "~/service/pseformation.server";
-import { updatePseUserConcreteCaseGroupEvaluation } from "~/service/pseuserconcretecase.server";
+import { getPseUserConcreteCaseGroupEvaluation, updatePseUserConcreteCaseGroupEvaluation } from "~/service/pseuserconcretecase.server";
 import { assertUserHasAccessToFormationAsTeacher } from "~/service/security.server";
 import { requireUser } from "~/service/session.server";
 
@@ -83,7 +82,7 @@ export async function loader({ request, params }: LoaderArgs) {
 
 	const pseCompetenceApiObjects: Array<PseCompetenceApiObject> = await getPseCompetences();
 
-  const pseUserConcreteCaseGroupEvaluationApiObject = buildPseUserConcreteCaseGroupEvaluation(
+  const pseUserConcreteCaseGroupEvaluationApiObject = await getPseUserConcreteCaseGroupEvaluation(
     pseFormationApiObject,
     pseConcreteCaseSessionApiObject,
     pseConcreteCaseSituationApiObject,

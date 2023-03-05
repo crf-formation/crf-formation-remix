@@ -1,7 +1,7 @@
 import type { PseCompetenceApiObject } from "~/apiobject/psecompetence.apiobject";
 import type { PseConcreteCaseGroupApiObject } from "~/apiobject/pseconcretecasegroup.apiobject";
 import type { PseConcreteCaseSessionApiObject } from "~/apiobject/pseconcretecasesession.apiobject";
-import type { PseConcreteCaseSituationApiObject } from "~/apiobject/pseconcretecasesituation.apiobject";
+import type { PseConcreteCaseSituationApiObject, PseSituationConcreteCaseGroupApiObject } from "~/apiobject/pseconcretecasesituation.apiobject";
 import type { PseUserConcreteCaseGroupEvaluationApiObject } from "~/apiobject/pseuserconcretecase.apiobject";
 import type { UserApiObject } from "~/apiobject/user.apiobject";
 import type { PseFormationApiObject } from '../apiobject/pseformation.apiobject';
@@ -14,6 +14,7 @@ export function buildPseUserConcreteCaseGroupEvaluation(
 	pseConcreteCaseSession: PseConcreteCaseSessionApiObject,
   pseConcreteCaseSituation: PseConcreteCaseSituationApiObject,
   pseConcreteCaseGroup: PseConcreteCaseGroupApiObject,
+  pseSituationConcreteCaseGroup: PseSituationConcreteCaseGroupApiObject,
   pseCompetences: Array<PseCompetenceApiObject>
 ): PseUserConcreteCaseGroupEvaluationApiObject {
   return {
@@ -23,6 +24,7 @@ export function buildPseUserConcreteCaseGroupEvaluation(
     pseConcreteCaseSituationId: pseConcreteCaseSituation.id,
     pseConcreteCaseGroupId: pseConcreteCaseGroup.id,
     pseConcreteCaseTypeId: pseConcreteCaseSituation.pseConcreteCaseTypeId,
+    pseSituationConcreteCaseGroupId: pseSituationConcreteCaseGroup.id,
 
     students: pseConcreteCaseGroup.students
       .map(
@@ -30,12 +32,15 @@ export function buildPseUserConcreteCaseGroupEvaluation(
           pseUserConcreteCaseGroupStudentApiObject.user as UserApiObject
       ),
 
-    competencesToEvaluate:
-      pseConcreteCaseSituation.pseConcreteCaseType.competencesToEvaluate,
+    competencesToEvaluate: pseConcreteCaseSituation.pseConcreteCaseType.competencesToEvaluate,
 
     usersGrades: pseConcreteCaseGroup.students.map((student) => {
+      if (!student.user) {
+        throw new Error(`User not loaded on PseConcreteCaseGroup.students`)
+      }
       return {
-        userId: student.id,
+        userId: student.user.id,
+        role: 'UNKNOWN',
         grades: pseCompetences.map((pseCompetence) => {
           const shouldEvaluate =
             !!pseConcreteCaseSituation.pseConcreteCaseType.competencesToEvaluate.find(
