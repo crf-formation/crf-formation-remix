@@ -1,26 +1,28 @@
 import { Box, Checkbox, Table, TableBody, TableCell, TableHead, TableRow, Typography } from "@mui/material";
+import { useImmer } from 'use-immer';
+import InputHiddenJson from "~/component/form/InputHiddenJson";
 import type { PseCompetenceDto } from "~/dto/psecompetence.dto";
-import type { PseConcreteCaseGroupDto } from "~/dto/pseconcretecasegroup.dto";
-import type { PseConcreteCaseSituationDto } from "~/dto/pseconcretecasesituation.dto";
-import { PseUserConcreteCaseCompetenceGradeZEnum } from "~/dto/pseuserconcretecase.dto";
-import { pseConcreteCaseSituationGroupEvaluatePostDtoValidator } from "~/form/pseuserconcretecase.form";
+import PseUserGradesEvaluationDto, { PseUserConcreteCaseCompetenceGradeDtoEnum, PseUserConcreteCaseCompetenceGradeZEnum, PseUserConcreteCaseGroupEvaluationDto, } from '~/dto/pseuserconcretecase.dto';
+import { pseUserConcreteCaseGroupEvaluationPostDtoValidator } from "~/form/pseuserconcretecase.form";
 import FormView from "../form/FormView";
 
 interface Props {
-  formationId: string;
-  pseConcreteCaseSituation: PseConcreteCaseSituationDto;
-  pseConcreteCaseGroup: PseConcreteCaseGroupDto;
-  pseCompetences: Array<PseCompetenceDto>;
+  pseUserConcreteCaseGroupEvaluation: PseUserConcreteCaseGroupEvaluationDto;
 }
-
 
 interface PseCompetenceRowProps { 
   pseCompetence: PseCompetenceDto, 
   shouldBeEvaluated: boolean, 
-  pseConcreteCaseGroup: PseConcreteCaseGroupDto 
+  pseUserConcreteCaseUsersGrades: Array<PseUserConcreteCaseUsersGradesDto>
+  onSetGradeForUser: (userId: string, competenceId: string, grade: PseUserConcreteCaseCompetenceGradeDtoEnum) => void
 }
 
-function PseCompetenceRow({ pseCompetence, shouldBeEvaluated, pseConcreteCaseGroup }: PseCompetenceRowProps) {
+function PseCompetenceRow({ 
+  pseCompetence, 
+  shouldBeEvaluated, 
+  pseUserConcreteCaseUsersGrades,
+  onSetGradeForUser
+ }: PseCompetenceRowProps) {
   if (!shouldBeEvaluated) {
     return null
   }
@@ -31,8 +33,8 @@ function PseCompetenceRow({ pseCompetence, shouldBeEvaluated, pseConcreteCaseGro
         <Typography variant="subtitle2">{pseCompetence.id}</Typography>
         <Typography variant="subtitle2">{pseCompetence.description}</Typography>
       </TableCell>
-      {pseConcreteCaseGroup.students.map((student) => (
-        <TableCell key={student.id}>
+      {pseUserConcreteCaseUsersGrades.map((studentGrades) => (
+        <TableCell key={studentGrades.userId}>
           <Box
             sx={{
               display: "flex",
@@ -41,12 +43,21 @@ function PseCompetenceRow({ pseCompetence, shouldBeEvaluated, pseConcreteCaseGro
               flexDirection: "row",
             }}
           >
-            {PseUserConcreteCaseCompetenceGradeZEnum.options.map((option) => (
-              <Box key={option}>
-                {/* TODO: color */}
-                <Checkbox sx={{ padding: 0 }} />
-              </Box>
-            ))}
+            {PseUserConcreteCaseCompetenceGradeZEnum.options.map((grade) => {
+              const userGrade = studentGrades.grades.find(grade => grade.pseCompetenceId === pseCompetence.id)
+
+              return (
+                <Box key={grade}>
+                  <Checkbox
+                    sx={{ padding: 0 }}
+                    checked={userGrade?.grade === grade}
+                    onClick={() => {
+                      onSetGradeForUser(studentGrades.userId, pseCompetence.id, grade);
+                    }}
+                  />
+                </Box>
+              );
+            })}
           </Box>
         </TableCell>
       ))}
@@ -55,31 +66,52 @@ function PseCompetenceRow({ pseCompetence, shouldBeEvaluated, pseConcreteCaseGro
 }
 
 export default function PseConcreteCaseSituationEvaluateGroupForm({
-  formationId,
-  pseConcreteCaseGroup,
-  pseConcreteCaseSituation,
-  pseCompetences,
+  pseUserConcreteCaseGroupEvaluation
 }: Props) {
-  const pseCompetenceIdsToEvaluate = pseCompetences.filter((pseCompetence) =>
-    pseConcreteCaseSituation.pseConcreteCaseType.competencesToEvaluate.find(
-      (competenceToEvaluate) => competenceToEvaluate.id === pseCompetence.id
-    )
-  ).map(pseCompetence => pseCompetence.id);
+  const [pseUserConcreteCaseUsersGrades, updatePseUserConcreteCaseUsersGrades] 
+    = useImmer<Array<PseUserGradesEvaluationDto>>(() => [...pseUserConcreteCaseGroupEvaluation.usersGrades])
+
+
+  function onSetGradeForUser(
+    userId: string,
+    competenceId: string,
+    grade: PseUserConcreteCaseCompetenceGradeDtoEnum
+  ) {
+    updatePseUserConcreteCaseUsersGrades((draft: Array<PseUserGradesEvaluationDto>) => {
+      const studentGrades: PseUserGradesEvaluationDto | undefined = draft.find((studentGrades) => studentGrades.userId === userId);
+      if (!studentGrades) {
+        throw new Error(`User ${userId} does not exist`);
+      }
+
+      const userGradeToUpdate = studentGrades.grades.find(
+        (grade) => grade.pseCompetenceId === competenceId
+      );
+      if (!userGradeToUpdate) {
+        throw new Error(
+          `Grade not found for user ${studentGrades.userId} and competence ${competenceId}`
+        );
+      }
+
+      userGradeToUpdate.grade = grade;
+    });
+  }
 
   return (
     <FormView
       submitText="Sauvegarder"
-      validator={pseConcreteCaseSituationGroupEvaluatePostDtoValidator}
+      validator={pseUserConcreteCaseGroupEvaluationPostDtoValidator}
     >
-      <input type="hidden" name="formationId" value={formationId} />
-      <input type="hidden" name="pseConcreteCaseSituationId" value={pseConcreteCaseSituation.id} />
-      <input type="hidden" name="pseSituationConcreteCaseId" value={pseConcreteCaseGroup.id} />
+      <input type="hidden" name="formationId" value={pseUserConcreteCaseGroupEvaluation.formationId} />
+      <input type="hidden" name="pseConcreteCaseSituationId" value={pseUserConcreteCaseGroupEvaluation.pseConcreteCaseSituationId} />
+      <input type="hidden" name="pseConcreteCaseGroupId" value={pseUserConcreteCaseGroupEvaluation.pseConcreteCaseGroupId} />
+      <input type="hidden" name="pseConcreteCaseSessionId" value={pseUserConcreteCaseGroupEvaluation.pseConcreteCaseSessionId} />
+      <InputHiddenJson name="usersGrades" json={pseUserConcreteCaseUsersGrades} />
 
       <Table>
         <TableHead>
           <TableRow>
             <TableCell align="left">Compétences</TableCell>
-            {pseConcreteCaseGroup.students.map((student) => (
+            {pseUserConcreteCaseGroupEvaluation.students.map((student) => (
               <TableCell 
                 key={student.id} 
                 align="center"
@@ -88,7 +120,7 @@ export default function PseConcreteCaseSituationEvaluateGroupForm({
                 }}
               >
                 {/* TODO: user picture */}
-                {student.user.fullName}
+                {student.fullName}
                 <br />
                 {/* TODO: role */}
                 {/* <br /> */}
@@ -147,12 +179,13 @@ export default function PseConcreteCaseSituationEvaluateGroupForm({
           </TableRow>
         </TableHead>
         <TableBody>
-          {pseCompetences.map((pseCompetence) => (
+          {pseUserConcreteCaseGroupEvaluation.competencesToEvaluate.map((pseCompetence) => (
             <PseCompetenceRow 
               key={pseCompetence.id}
+              shouldBeEvaluated={!!pseUserConcreteCaseGroupEvaluation.competencesToEvaluate.find(c => c.id === pseCompetence.id)}
               pseCompetence={pseCompetence} 
-              pseConcreteCaseGroup={pseConcreteCaseGroup} 
-              shouldBeEvaluated={pseCompetenceIdsToEvaluate.includes(pseCompetence.id)} 
+              pseUserConcreteCaseUsersGrades={pseUserConcreteCaseUsersGrades}
+              onSetGradeForUser={onSetGradeForUser}
             />
           ))}
         </TableBody>

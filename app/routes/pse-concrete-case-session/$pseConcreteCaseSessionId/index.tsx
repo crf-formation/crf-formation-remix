@@ -216,7 +216,7 @@ function PseConcreteCaseSituationGroupOrder({ pseConcreteCaseSessionId, pseConcr
                 secondaryAction={
                   <Button>
                     <Link
-                      href={`/pse-concrete-case-situation/${pseConcreteCaseSituation.id}/group/${pseSituationConcreteCaseGroup.pseConcreteCaseGroupId}`}
+                      href={`/pse-concrete-case-situation/${pseConcreteCaseSituation.id}/group/${pseSituationConcreteCaseGroup.pseConcreteCaseGroupId}/evaluate`}
                     >
                       Évaluer
                     </Link>
@@ -406,6 +406,8 @@ export default function SessionPseRoute() {
                 pseConcreteCaseSessionId={pseConcreteCaseSession.id}
                 pseConcreteCaseSituations={pseConcreteCaseSituations}
               />
+
+              {/* TODO: list users without groups */}
             </Stack>
           </Grid>
         </Grid>

@@ -30,3 +30,50 @@ export interface PseUserConcreteCaseCompetenceApiObject {
 	pseCompetence: PseCompetenceApiObject;
 	grade: PseUserConcreteCaseCompetenceGradeApiEnum;
 }
+
+// --
+
+/**
+ * conveniant data to evaluate a group of students for a concrete case.
+ */
+
+export interface PseUserConcreteCaseGroupEvaluationApiObject {
+	formationId: string;
+	pseConcreteCaseSituationId: string;
+	pseConcreteCaseGroupId: string;
+	pseConcreteCaseSessionId: string;
+	competencesToEvaluate: Array<PseCompetenceApiObject>;
+	students: Array<UserApiObject>;
+	usersGrades: Array<PseUserGradesEvaluationApiObject>;
+}
+
+export interface PseUserGradesEvaluationApiObject {
+	userId: string;
+	grades: Array<PseEvaluationCompetenceGradeApiObject>;
+}
+
+export interface PseEvaluationCompetenceGradeApiObject {
+	pseCompetenceId: string;
+	shouldEvaluate: boolean;
+	grade: PseUserConcreteCaseCompetenceGradeApiEnum // should default to NOT_EVALUATED
+}
+
+// --
+
+export interface PseUserConcreteCaseGroupEvaluationPostApiObject {
+	formationId: string;
+	pseConcreteCaseSituationId: string;
+	pseConcreteCaseGroupId: string;
+	pseConcreteCaseSessionId: string;
+	usersGrades: Array<PseUserGradesEvaluationPostApiObject>;
+}
+
+export interface PseUserGradesEvaluationPostApiObject {
+	userId: string;
+	grades: Array<PseEvaluationCompetenceGradePostApiObject>;
+}
+
+export interface PseEvaluationCompetenceGradePostApiObject {
+	pseCompetenceId: string;
+	grade: PseUserConcreteCaseCompetenceGradeApiEnum // should default to NOT_EVALUATED
+}

@@ -1,10 +1,11 @@
-import type { PseUserConcreteCaseApiObject, PseUserConcreteCaseCompetenceApiObject, PseUserConcreteCaseCompetenceGradeApiEnum, PseUserConcreteCaseRoleApiEnum, PseUserConcreteCaseStateApiEnum } from "~/apiobject/pseuserconcretecase.apiobject";
-import type { PseUserConcreteCaseCompetenceDto, PseUserConcreteCaseCompetenceGradeDtoEnum, PseUserConcreteCaseDto, PseUserConcreteCaseStateDtoEnum } from "~/dto/pseuserconcretecase.dto";
+import type { PseEvaluationCompetenceGradeApiObject, PseEvaluationCompetenceGradePostApiObject, PseUserConcreteCaseApiObject, PseUserConcreteCaseCompetenceApiObject, PseUserConcreteCaseCompetenceGradeApiEnum, PseUserConcreteCaseGroupEvaluationApiObject, PseUserConcreteCaseRoleApiEnum, PseUserConcreteCaseStateApiEnum, PseUserGradesEvaluationApiObject, PseUserGradesEvaluationPostApiObject } from "~/apiobject/pseuserconcretecase.apiobject";
+import type { PseEvaluationCompetenceGradeDto, PseEvaluationCompetenceGradePostDto, PseUserConcreteCaseCompetenceDto, PseUserConcreteCaseCompetenceGradeDtoEnum, PseUserConcreteCaseDto, PseUserConcreteCaseGroupEvaluationDto, PseUserConcreteCaseGroupEvaluationPostDto, PseUserConcreteCaseStateDtoEnum, PseUserGradesEvaluationDto, PseUserGradesEvaluationPostDto } from "~/dto/pseuserconcretecase.dto";
 import type { PseUserConcreteCaseCompetenceEntity, PseUserConcreteCaseEntity } from "~/entity";
+import { PseUserConcreteCaseGroupEvaluationPostApiObject } from '../apiobject/pseuserconcretecase.apiobject';
 import { pseCompetenceApiObjectToDto, pseCompetenceEntityToApiObject } from "./psecompetence.mapper";
 import { pseConcreteCaseGroupApiObjectToDto, pseConcreteCaseGroupEntityToApiObject } from "./pseconcretecasegroup.mapper";
 import { pseConcreteCaseTypeApiObjectToDto, pseConcreteCaseTypeEntityToApiObject } from "./pseconcretecasetype.mapper";
-import { userApiObjectToDto, userEntityToApiObject } from "./user.mapper";
+import { userApiObjectToDto, userEntityToApiObject } from './user.mapper';
 
 export function pseUserConcreteCaseEntityToApiObject(entity: PseUserConcreteCaseEntity): PseUserConcreteCaseApiObject {
 	return {
@@ -63,11 +64,11 @@ export function pseUserConcreteCaseApiObjectToDto(apiObject: PseUserConcreteCase
 		state: pseUserConcreteCaseStateApiEnumToDto(apiObject.state),
 		selected: apiObject.selected,
 		competences: apiObject.competences.map(pseUserConcreteCaseCompetenceApiObjectToDto),
-		role: pseUserConcreteCaseRoleApiEnumToDtoEnum(apiObject.role),
+		role: PseUserConcreteCaseRoleDtoEnumEnumToDtoEnum(apiObject.role),
 	}
 }
 
-function pseUserConcreteCaseRoleApiEnumToDtoEnum(role: PseUserConcreteCaseRoleApiEnum): PseUserConcreteCaseRoleApiEnum {
+function PseUserConcreteCaseRoleDtoEnumEnumToDtoEnum(role: PseUserConcreteCaseRoleApiEnum): PseUserConcreteCaseRoleApiEnum {
 	return role as PseUserConcreteCaseRoleApiEnum
 }
 
@@ -88,4 +89,60 @@ function pseUserConcreteCaseCompetenceApiObjectToDto(dto: PseUserConcreteCaseCom
 
 function pseUserConcreteCaseCompetenceGradeApiEnumToDto(grade: PseUserConcreteCaseCompetenceGradeApiEnum): PseUserConcreteCaseCompetenceGradeDtoEnum {
 	return grade as PseUserConcreteCaseCompetenceGradeDtoEnum
+}
+
+// --
+
+export function pseUserConcreteCaseGroupEvaluationApiObjectToDto(pseUserConcreteCaseGroupApiObject: PseUserConcreteCaseGroupEvaluationApiObject): PseUserConcreteCaseGroupEvaluationDto {
+	return {
+		formationId: pseUserConcreteCaseGroupApiObject.formationId,
+		pseConcreteCaseSituationId: pseUserConcreteCaseGroupApiObject.pseConcreteCaseSituationId,
+		pseConcreteCaseGroupId: pseUserConcreteCaseGroupApiObject.pseConcreteCaseGroupId,
+		pseConcreteCaseSessionId: pseUserConcreteCaseGroupApiObject.pseConcreteCaseSessionId,
+		competencesToEvaluate: pseUserConcreteCaseGroupApiObject.competencesToEvaluate,
+		usersGrades: pseUserConcreteCaseGroupApiObject.usersGrades.map(pseUserConcreteCaseUserGradesApiObjectToDto),
+		students: pseUserConcreteCaseGroupApiObject.students.map(userApiObjectToDto),
+	}
+}
+
+function pseUserConcreteCaseUserGradesApiObjectToDto(pseUserConcreteCaseUserGradesApiObject: PseUserGradesEvaluationApiObject): PseUserGradesEvaluationDto {
+	return {
+		userId: pseUserConcreteCaseUserGradesApiObject.userId,
+		grades: pseUserConcreteCaseUserGradesApiObject.grades.map(pseUserConcreteCaseGradeApiObjectToDto),
+	}
+}
+
+function pseUserConcreteCaseGradeApiObjectToDto(pseUserConcreteCaseGradeApiObject: PseEvaluationCompetenceGradeApiObject): PseEvaluationCompetenceGradeDto {
+	return {
+		pseCompetenceId: pseUserConcreteCaseGradeApiObject.pseCompetenceId,
+		grade: pseUserConcreteCaseGradeApiObject.grade,
+		shouldEvaluate: pseUserConcreteCaseGradeApiObject.shouldEvaluate
+	}
+}
+
+// --
+
+export function pseUserConcreteCaseGroupEvaluationPostDtoToApiObject(pseUserConcreteCaseGroupEvaluationPostDto: PseUserConcreteCaseGroupEvaluationPostDto): PseUserConcreteCaseGroupEvaluationPostApiObject {
+	return {
+		formationId: pseUserConcreteCaseGroupEvaluationPostDto.formationId,
+		pseConcreteCaseSituationId: pseUserConcreteCaseGroupEvaluationPostDto.pseConcreteCaseSituationId,
+		pseConcreteCaseGroupId: pseUserConcreteCaseGroupEvaluationPostDto.pseConcreteCaseGroupId,
+		pseConcreteCaseSessionId: pseUserConcreteCaseGroupEvaluationPostDto.pseConcreteCaseSessionId,
+		usersGrades: pseUserConcreteCaseGroupEvaluationPostDto.usersGrades.map(pseUserGradesEvaluationPostApiObjectToDto),
+	}
+
+}
+
+function pseUserGradesEvaluationPostApiObjectToDto(pseUserGradesEvaluationPostApiObject: PseUserGradesEvaluationPostApiObject): PseUserGradesEvaluationPostDto {
+	return {
+		userId: pseUserGradesEvaluationPostApiObject.userId,
+		grades: pseUserGradesEvaluationPostApiObject.grades.map(PseEvaluationCompetenceGradePostApiObjectToDto),
+	}
+}
+
+function PseEvaluationCompetenceGradePostApiObjectToDto(pseEvaluationCompetenceGradePostApiObject: PseEvaluationCompetenceGradePostApiObject): PseEvaluationCompetenceGradePostDto {
+	return {
+		pseCompetenceId: pseEvaluationCompetenceGradePostApiObject.pseCompetenceId,
+		grade: pseEvaluationCompetenceGradePostApiObject.grade,
+	}
 }

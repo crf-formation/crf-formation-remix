@@ -1,23 +1,28 @@
 import { withZod } from "@remix-validated-form/with-zod";
 import { z } from "zod";
+import { zfd } from "zod-form-data";
+import type { PseEvaluationCompetenceGradePostDto, PseUserConcreteCaseGroupEvaluationPostDto, PseUserGradesEvaluationPostDto } from "~/dto/pseuserconcretecase.dto";
 import { PseUserConcreteCaseCompetenceGradeZEnum } from "~/dto/pseuserconcretecase.dto";
 
-export const UserConcreteCaseSchema = z.array(
-	z.object({ // PseUserConcreteCaseCompetence
+const PseUserConcreteCaseGradeSchema: z.ZodType<PseEvaluationCompetenceGradePostDto> = 
+	z.object({
 		pseCompetenceId: z.string(),
-		grade: PseUserConcreteCaseCompetenceGradeZEnum.default(PseUserConcreteCaseCompetenceGradeZEnum.Enum.NOT_EVALUATED)
-	})
+		grade: PseUserConcreteCaseCompetenceGradeZEnum
+	}
 )
 
-export const PseConcreteCaseSituationGroupEvaluatePostSchema = z.object({
-  formationId: z.string(),
-	pseConcreteCaseSituationId: z.string(),
-	pseSituationConcreteCaseId: z.string(),
+const PseUserConcreteCaseSchema: z.ZodType<PseUserGradesEvaluationPostDto> =  z.object({
+	userId: z.string(),
+	grades: z.array(PseUserConcreteCaseGradeSchema)
+})
 
-	users: z.array(z.object({
-		userId: z.string(),
-		grades: UserConcreteCaseSchema
-	}))
+export const PseUserConcreteCaseGroupEvaluationPostDtoPostSchema: z.ZodType<PseUserConcreteCaseGroupEvaluationPostDto> = z.object({
+	formationId: z.string(),
+	pseConcreteCaseSituationId: z.string(),
+	pseConcreteCaseGroupId: z.string(),
+	pseConcreteCaseSessionId: z.string(),
+
+	usersGrades: zfd.json(z.array(PseUserConcreteCaseSchema))
 });
 
-export const pseConcreteCaseSituationGroupEvaluatePostDtoValidator = withZod(PseConcreteCaseSituationGroupEvaluatePostSchema)
+export const pseUserConcreteCaseGroupEvaluationPostDtoValidator = withZod(PseUserConcreteCaseGroupEvaluationPostDtoPostSchema)

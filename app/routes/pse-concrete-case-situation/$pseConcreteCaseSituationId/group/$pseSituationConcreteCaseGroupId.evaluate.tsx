@@ -17,17 +17,24 @@ import PageTitle from "~/component/layout/PageTitle";
 import Section from "~/component/layout/Section";
 import PseConcreteCaseSituationEvaluateGroupForm from "~/component/pse-concrete-case-situation/PseConcreteCaseSituationEvaluateGroupForm";
 import type { SecurityFunction } from "~/constant/remix";
+import type { PseUserConcreteCaseGroupEvaluationPostDto } from "~/dto/pseuserconcretecase.dto";
+import { validateForm } from "~/form/abstract";
+import { pseUserConcreteCaseGroupEvaluationPostDtoValidator } from "~/form/pseuserconcretecase.form";
+import { buildPseUserConcreteCaseGroupEvaluation } from "~/helper/pseuserconcretecase.helper";
 import { getParamsOrFail } from "~/helper/remix.params.helper";
+import { redirectActionToCurrentPage } from "~/helper/responses.helper";
 import { pseCompetenceApiObjectToDto } from "~/mapper/psecompetence.mapper";
 import { pseConcreteCaseGroupApiObjectToDto } from "~/mapper/pseconcretecasegroup.mapper";
 import { pseConcreteCaseSessionApiObjectToDto } from "~/mapper/pseconcretecasesession.mapper";
 import { pseConcreteCaseSituationApiObjectToDto } from "~/mapper/pseconcretecasesituation.mapper";
 import { pseFormationApiObjectToDto } from "~/mapper/pseformation.mapper";
+import { pseUserConcreteCaseGroupEvaluationApiObjectToDto, pseUserConcreteCaseGroupEvaluationPostDtoToApiObject } from "~/mapper/pseuserconcretecase.mapper";
 import { getPseCompetences } from "~/service/psecompetence.server";
 import { getPseConcreteCaseGroup } from "~/service/pseconcretecasegroup.server";
 import { getPseConcreteCaseSessionById } from "~/service/pseconcretecasesession.server";
 import { getPseConcreteCaseSituation } from "~/service/pseconcretecasesituation.server";
 import { getPseFormationByPseConcreteCaseSessionId } from "~/service/pseformation.server";
+import { updatePseUserConcreteCaseGroupEvaluation } from "~/service/pseuserconcretecase.server";
 import { assertUserHasAccessToFormationAsTeacher } from "~/service/security.server";
 import { requireUser } from "~/service/session.server";
 
@@ -67,20 +74,71 @@ const security: SecurityFunction<{
 
 // GET a formation
 export async function loader({ request, params }: LoaderArgs) {
-  const { pseFormationApiObject, pseConcreteCaseSessionApiObject, pseConcreteCaseSituationApiObject, pseConcreteCaseGroupApiObject } = await security(request, params)
-	const pseCompetences: Array<PseCompetenceApiObject> = await getPseCompetences();
+  const {
+    pseFormationApiObject,
+    pseConcreteCaseSessionApiObject,
+    pseConcreteCaseSituationApiObject,
+    pseConcreteCaseGroupApiObject,
+  } = await security(request, params);
+
+	const pseCompetenceApiObjects: Array<PseCompetenceApiObject> = await getPseCompetences();
+
+  const pseUserConcreteCaseGroupEvaluationApiObject = buildPseUserConcreteCaseGroupEvaluation(
+    pseFormationApiObject,
+    pseConcreteCaseSessionApiObject,
+    pseConcreteCaseSituationApiObject,
+    pseConcreteCaseGroupApiObject,
+    pseCompetenceApiObjects
+  )
 
   return json({
     pseFormation: pseFormationApiObjectToDto(pseFormationApiObject),
 		pseConcreteCaseSession: pseConcreteCaseSessionApiObjectToDto(pseConcreteCaseSessionApiObject),
 		pseConcreteCaseSituation: pseConcreteCaseSituationApiObjectToDto(pseConcreteCaseSituationApiObject),
 		pseConcreteCaseGroup: pseConcreteCaseGroupApiObjectToDto(pseConcreteCaseGroupApiObject),
-    pseCompetences: pseCompetences.map(pseCompetenceApiObjectToDto),
+    pseCompetences: pseCompetenceApiObjects.map(pseCompetenceApiObjectToDto),
+    pseUserConcreteCaseGroupEvaluation: pseUserConcreteCaseGroupEvaluationApiObjectToDto(pseUserConcreteCaseGroupEvaluationApiObject)
 	});
 };
 
 export async function action({ request, params  }: ActionArgs) {
+  const {
+    pseFormationApiObject,
+    pseConcreteCaseSessionApiObject,
+    pseConcreteCaseSituationApiObject,
+    pseConcreteCaseGroupApiObject,
+  } = await security(request, params);
+
   // TODO: session must be RUNNING
+
+  const result = await validateForm<PseUserConcreteCaseGroupEvaluationPostDto>(request, pseUserConcreteCaseGroupEvaluationPostDtoValidator)
+  if (result.errorResponse) {
+    return result.errorResponse
+  }
+
+  const pseUserConcreteCaseGroupEvaluationPostDto: PseUserConcreteCaseGroupEvaluationPostDto = result.data
+
+  if (pseUserConcreteCaseGroupEvaluationPostDto.formationId !== pseFormationApiObject.id) {
+    throw new Error(`Forbidden`)
+  }
+
+  if (pseUserConcreteCaseGroupEvaluationPostDto.pseConcreteCaseSituationId !== pseConcreteCaseSituationApiObject.id) {
+    throw new Error(`Forbidden`)
+  }
+
+  if (pseUserConcreteCaseGroupEvaluationPostDto.pseConcreteCaseSessionId !== pseConcreteCaseSessionApiObject.id) {
+    throw new Error(`Forbidden`)
+  }
+
+  if (pseUserConcreteCaseGroupEvaluationPostDto.pseConcreteCaseGroupId !== pseConcreteCaseGroupApiObject.id) {
+    throw new Error(`Forbidden`)
+  }
+
+  await updatePseUserConcreteCaseGroupEvaluation\(
+    pseUserConcreteCaseGroupEvaluationPostDtoToApiObject(pseUserConcreteCaseGroupEvaluationPostDto)
+  )
+
+  return redirectActionToCurrentPage(request);
 }
 
 export const meta: MetaFunction<typeof loader> = ({ data }) => {
@@ -90,7 +148,13 @@ export const meta: MetaFunction<typeof loader> = ({ data }) => {
 };
 
 export default function PseConcreteCaseSituationRoute() {
-  const { pseFormation, pseCompetences, pseConcreteCaseSession, pseConcreteCaseSituation, pseConcreteCaseGroup } = useLoaderData<typeof loader>();
+  const {
+    pseFormation,
+    pseConcreteCaseSession,
+    pseConcreteCaseSituation,
+    pseConcreteCaseGroup,
+    pseUserConcreteCaseGroupEvaluation,
+  } = useLoaderData<typeof loader>();
 
   return (
     <>
@@ -136,10 +200,7 @@ export default function PseConcreteCaseSituationRoute() {
       <PageContainer>
         <Section>
           <PseConcreteCaseSituationEvaluateGroupForm
-            formationId={pseFormation.id}
-            pseConcreteCaseGroup={pseConcreteCaseGroup}
-            pseConcreteCaseSituation={pseConcreteCaseSituation}
-            pseCompetences={pseCompetences}
+            pseUserConcreteCaseGroupEvaluation={pseUserConcreteCaseGroupEvaluation}
           />
         </Section>
       </PageContainer>

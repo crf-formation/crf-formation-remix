@@ -64,6 +64,104 @@ async function seedPseTechniques() {
       pseModuleId: "M1",
       requiredForPse1: false
     },
+
+    {
+      id: "SAIGNEMENT_ABONDANT",
+      name: "Recherche un saignement abondant",
+      pseModuleId: "M2",
+      requiredForPse1: true,
+    },
+    {
+      id: "IDENTIFIER_OBVA",
+      name: "Identifier une OBVA",
+      pseModuleId: "M2",
+      requiredForPse1: true,
+    },
+    {
+      id: "EVALUER_CONSCIENCE",
+      name: "Evaluer la conscience",
+      pseModuleId: "M2",
+      requiredForPse1: true,
+    },
+    {
+      id: "RECHERCHE_ORIENTATION_VICTIME",
+      name: "Rechercher l'orientation d'une victime",
+      pseModuleId: "M2",
+      requiredForPse1: true,
+    },
+    {
+      id: "TROUBLE_MOTEUR",
+      name: "Rechercher un trouble moteur",
+      pseModuleId: "M2",
+      requiredForPse1: true,
+    },
+    {
+      id: "EXAMINE_PUPILLES",
+      name: "Examiner les pupilles",
+      pseModuleId: "M2",
+      requiredForPse1: true,
+    },
+    {
+      id: "RECHERCHE_RESPIRATION",
+      name: "Rechercher la respiration",
+      pseModuleId: "M2",
+      requiredForPse1: true,
+    },
+    {
+      id: "COMPTER_FREQUENCE_RESPI",
+      name: "Compter la fréquence respiratoire",
+      pseModuleId: "M2",
+      requiredForPse1: true,
+    },
+    {
+      id: "RECHERCHE_POULS_CAROTIDE",
+      name: "Rechercher le pouls carotidien",
+      pseModuleId: "M2",
+      requiredForPse1: true,
+    },
+    {
+      id: "RECHERCHE_POULS_RADIAL",
+      name: "Rechercher le pouls radial",
+      pseModuleId: "M2",
+      requiredForPse1: true,
+    },
+    {
+      id: "RECHERCHE_POULS_FEMORAL",
+      name: "Rechercher le pouls fémoral",
+      pseModuleId: "M2",
+      requiredForPse1: true,
+    },
+    {
+      id: "COMPTER_FREQUENCE_CARDIAQUE",
+      name: "Compter la fréquence cardiaque",
+      pseModuleId: "M2",
+      requiredForPse1: true,
+    },
+    {
+      id: "MESURE_TRC",
+      name: "Mesurer le TRC",
+      pseModuleId: "M2",
+      requiredForPse1: true,
+    },
+    {
+      id: "LVA_NON_TRAUMATISE",
+      name: "LVA (victime non traumatisée)",
+      pseModuleId: "M2",
+      requiredForPse1: true,
+    },
+    {
+      id: "LVA_TRAUMATISE",
+      name: "LVA (victime traumatisée)",
+      pseModuleId: "M2",
+      requiredForPse1: true,
+    },
+    {
+      id: "LVA_ASSISE",
+      name: "LVA (victime assise)",
+      pseModuleId: "M2",
+      requiredForPse1: true,
+    },
+
   ]
 
   techniques.forEach(async pseTechnique => {
@@ -251,13 +349,13 @@ async function seedDefaultUser() {
 async function seed() {
   // await prisma.$queryRaw(Prisma.sql`ALTER TABLE PseConcreteCaseGroup DROP COLUMN state;`)
 
-  // await seedPlaces()
-  // await seedPseModule()
-  // await seedPseTechniques()
+  await seedPlaces()
+  await seedPseModule()
+  await seedPseTechniques()
   await seedPseCompetence()
-  // await seedPseConcreteCaseTypes()
+  await seedPseConcreteCaseTypes()
 
-  // await seedDefaultUser()
+  await seedDefaultUser()
 
   // nothing to seed yet
   console.log(`Database has been seeded. 🌱`);

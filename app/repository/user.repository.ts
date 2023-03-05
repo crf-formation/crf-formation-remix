@@ -1,12 +1,12 @@
 import bcrypt from "bcryptjs";
 import { v4 as uuid } from "uuid";
 import type {
-    UserPostApiObject,
-    UserPutApiObject,
+  UserPostApiObject,
+  UserPutApiObject,
 } from "~/apiobject/user.apiobject";
 import type { OrderByDirection, PaginateObject } from "~/constant/types";
-import { prisma } from "~/entity/db.server";
 import type { PasswordEntity, UserEntity } from "~/entity";
+import { prisma } from "~/entity/db.server";
 import { createPaginateObject } from "./abstract.repository";
 
 export async function createUserEntity(
@@ -133,6 +133,7 @@ export async function getFormationStudentsEntities(
   orderBy: string,
   orderByDirection: OrderByDirection
 ): Promise<PaginateObject<UserEntity>> {
+  // TODO: fix?
   return await createPaginateObject<UserEntity>({
     model: prisma.user,
     page,

@@ -1,10 +1,11 @@
 import { useFetcher } from "@remix-run/react";
 import type { LoaderArgs } from "@remix-run/server-runtime";
 import { json } from "@remix-run/server-runtime";
-import { isEmpty } from "lodash";
 import { useEffect } from "react";
 import { z } from "zod";
+import type PaginateObject from '~/constant/types';
 import type { UserDto } from "~/dto/user.dto";
+import { getSearchParamsOrFail } from "~/helper/remix.params.helper";
 import { paginateEntityToApiObject } from "~/mapper/abstract.mapper";
 import { userApiObjectToDto } from "~/mapper/user.mapper";
 import { requireUser } from "~/service/session.server";
@@ -24,7 +25,7 @@ export async function loader({ request }: LoaderArgs) {
 
 	const { formationId, query, page, pageSize, orderBy, orderByDirection } = getSearchParamsOrFail(request, URLSearchParamsSchema)
 
-  if (isEmpty(query)) {
+  if (!query || query.length === 0) {
     const usersPaginatedObjectApiObject = await getFormationStudents(formationId, page, pageSize, orderBy, orderByDirection)
     return json({
       formationId,
@@ -37,7 +38,7 @@ export async function loader({ request }: LoaderArgs) {
     });
   }
 
-	const usersPaginatedObjectApiObject = await searchFormationStudents(formationId, query, page, pageSize, orderBy, orderByDirection)
+	const usersPaginatedObjectApiObject = await searchFormationStudents(formationId, query as string, page, pageSize, orderBy, orderByDirection)
   return json({
     formationId,
     query, 

@@ -1,5 +1,6 @@
 // https://github.com/sergiodxa/remix-utils/blob/main/src/server/responses.ts
 import { redirect, json as remixJson } from "@remix-run/server-runtime";
+import { ApiError } from "~/service/api.error";
 
 export type ReplacerFunction = (key: string, value: unknown) => unknown;
 
@@ -94,6 +95,17 @@ export async function success(data: any, init?: Omit<ExtendedResponseInit, "stat
   { fallback, ...init }: ResponseInit & { fallback: string }
 ): Response {
   return redirect(request.headers.get("Referer") ?? fallback, init);
+}
+
+export function redirectActionToCurrentPage(
+  request: Request,
+  init?: ResponseInit
+): Response {
+  const referer = request.headers.get("Referer")
+  if (!referer) {
+    throw new Error("No referer to redirect to")
+  }
+  return redirect(referer, init);
 }
 
 export function failureResponse(error: ApiError, init?: ExtendedResponseInit): Response {

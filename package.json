@@ -10,6 +10,7 @@
     "format": "prettier --write .",
     "lint": "eslint --cache --cache-location ./node_modules/.cache/eslint .",
     "prisma:setup": "prisma generate && prisma migrate deploy && prisma db seed",
+    "prisma:migrate": "prisma migrate dev --name ",
     "start": "remix-serve build",
     "start:mocks": "binode --require ./mocks -- @remix-run/serve:remix-serve build",
     "test": "vitest",
@@ -19,14 +20,8 @@
     "typecheck": "tsc -b && tsc -b cypress",
     "validate": "run-p \"test -- --run\" lint typecheck test:e2e:run",
     "gf:validate": "gf",
-    "test-typecheck": "tsc -b -v",
-    "prisma:migrate": "prisma migrate dev --name "
+    "test-typecheck": "tsc -b -v"
   },
-  "pre-commit": [
-    "lint",
-    "validate-good-fence",
-    "test"
-  ],
   "prettier": {},
   "eslintIgnore": [
     "/node_modules",
@@ -61,6 +56,7 @@
     "express": "^4.17.1",
     "hibp": "^11.1.0",
     "history": "^5.1.0",
+    "immer": "^9.0.19",
     "intl-parse-accept-language": "^1.0.0",
     "ip-regex": "^5.0.0",
     "is-ip": "^5.0.0",
@@ -82,6 +78,7 @@
     "remix-validated-form": "^4.6.5",
     "tiny-invariant": "^1.2.0",
     "ua-parser-js": "^1.0.2",
+    "use-immer": "^0.8.1",
     "uuid": "^9.0.0",
     "zod": "^3.20.2",
     "zod-form-data": "^1.2.4"
