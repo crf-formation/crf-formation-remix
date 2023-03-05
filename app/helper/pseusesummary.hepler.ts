@@ -1,15 +1,15 @@
 import { sample } from 'lodash';
 import type { PseCompetenceApiObject } from '~/apiobject/psecompetence.apiobject';
 import type { PseUserPreparatoryWorkApiObject } from '~/apiobject/pseformationpreparatorywork.apiobject';
+import type { PseUserConcreteCaseApiObject } from '~/apiobject/pseuserconcretecase.apiobject';
 import type { PseUserTechniqueApiObject } from '~/apiobject/pseusertechnique.apiobject';
 import { getPseCompetences } from '~/service/psecompetence.server';
 import { getPreparatoryWorksForUser } from '~/service/pseformationpreparatorywork.server';
 import { getPseModules } from '~/service/psemodule.server';
+import { getSelectedPseUserConcreteCases } from '~/service/pseuserconcretecase.server';
 import { getPseUserTechniquesForUser } from '~/service/pseusertechniques.server';
 import type { PseModuleApiObject } from '../apiobject/psemodule.apiobject';
 import type { ConcreteCaseCompetenceResultApiObject, PseUserSummaryApiObject, PseUserSummaryConcreteCaseApiObject, PseUserSummaryPreparatoryWorkApiObject, PseUserSummaryTechniqueApiObject } from '../apiobject/pseusesummary.apiobject';
-import type { PseUserConcreteCaseApiObject } from '~/apiobject/pseuserconcretecase.apiobject';
-import { getSelectedPseUserConcreteCases } from '~/service/pseuserconcretecase.server';
 
 /**
  * Load the data and build the PseUserSummaryApiObject data.
@@ -98,7 +98,7 @@ function buildPseUserPreparatoryWork(
 	}
 }
 
-function buildPseUserSummaryConcreteCase(
+export function buildPseUserSummaryConcreteCase(
 	pseModules: Array<PseModuleApiObject>, 
 	pseCompetences: Array<PseCompetenceApiObject>, 
 	pseConcreateCases: Array<PseUserConcreteCaseApiObject>

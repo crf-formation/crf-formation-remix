@@ -5,7 +5,7 @@ import type { PseUserConcreteCasePostEntity } from "~/entity/pseuserconcretecase
 import type { PseUserConcreteCaseGroupEvaluationPostApiObject } from '../apiobject/pseuserconcretecase.apiobject';
 import { pseCompetenceApiObjectToDto, pseCompetenceEntityToApiObject } from "./psecompetence.mapper";
 import { pseConcreteCaseGroupApiObjectToDto, pseConcreteCaseGroupEntityToApiObject } from "./pseconcretecasegroup.mapper";
-import { pseConcreteCaseTypeApiObjectToDto, pseConcreteCaseTypeEntityToApiObject } from "./pseconcretecasetype.mapper";
+import { pseConcreteCaseSituationApiObjectToDto, pseConcreteCaseSituationEntityToApiObject } from './pseconcretecasesituation.mapper';
 import { userApiObjectToDto, userEntityToApiObject } from './user.mapper';
 
 export function pseUserConcreteCaseEntityToApiObject(entity: PseUserConcreteCaseEntity): PseUserConcreteCaseApiObject {
@@ -16,10 +16,10 @@ export function pseUserConcreteCaseEntityToApiObject(entity: PseUserConcreteCase
 		userId: entity.userId,
 		user: entity.user && userEntityToApiObject(entity.user),
 
-		// TODO: rename pseConcreteCaseGroup
-		concreteCaseGroup: entity.concreteCaseGroup && pseConcreteCaseGroupEntityToApiObject(entity.concreteCaseGroup),
-				// TODO: rename pseConcreteCaseType
-		concreteCaseType: entity.concreteCaseType && pseConcreteCaseTypeEntityToApiObject(entity.concreteCaseType),
+		// we do not want to keep pseSituationConcreteCaseGroup that is juste here to link
+		// with the group and situation
+		pseConcreteCaseGroup: entity.pseSituationConcreteCaseGroup?.pseConcreteCaseGroup && pseConcreteCaseGroupEntityToApiObject(entity.pseSituationConcreteCaseGroup.pseConcreteCaseGroup),
+		pseConcreteCaseSituation: entity.pseSituationConcreteCaseGroup?.pseConcreteCaseSituation && pseConcreteCaseSituationEntityToApiObject(entity.pseSituationConcreteCaseGroup.pseConcreteCaseSituation),
 
 		state: pseUserConcreteCaseStateStringToApiEnum(entity.state),
 		selected: entity.selected,
@@ -54,14 +54,15 @@ function pseUserConcreteCaseCompetenceGradeStringToApiEnum(grade: string): PseUs
 }
 
 export function pseUserConcreteCaseApiObjectToDto(apiObject: PseUserConcreteCaseApiObject): PseUserConcreteCaseDto {
+	console.log({ apiObject })
 	return {
 		id: apiObject.id,
 		createdAt: apiObject.createdAt.toISOString(),
 		updatedAt: apiObject.updatedAt.toISOString(),
 		userId: apiObject.userId,
 		user: apiObject.user && userApiObjectToDto(apiObject.user),
-		concreteCaseGroup: pseConcreteCaseGroupApiObjectToDto(apiObject.concreteCaseGroup),
-		concreteCaseType: pseConcreteCaseTypeApiObjectToDto(apiObject.concreteCaseType),
+		pseConcreteCaseGroup: pseConcreteCaseGroupApiObjectToDto(apiObject.pseConcreteCaseGroup),
+		pseConcreteCaseSituation: pseConcreteCaseSituationApiObjectToDto(apiObject.pseConcreteCaseSituation),
 		state: pseUserConcreteCaseStateApiEnumToDto(apiObject.state),
 		selected: apiObject.selected,
 		competences: apiObject.competences.map(pseUserConcreteCaseCompetenceApiObjectToDto),
@@ -156,7 +157,7 @@ function PseEvaluationCompetenceGradePostApiObjectToDto(pseEvaluationCompetenceG
 
 // -- 
 
-export function mapPseUserConcreteCaseGroupEvaluationPostApiObjectToPseUserConcreteCasePostEntities(
+export function pseUserConcreteCaseGroupEvaluationPostApiObjectToPseUserConcreteCasePostEntities(
 	pseUserConcreteCaseGroupEvaluationPostApiObject: PseUserConcreteCaseGroupEvaluationPostApiObject
 ) {
 	return pseUserConcreteCaseGroupEvaluationPostApiObject.usersGrades.map(

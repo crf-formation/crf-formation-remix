@@ -5,7 +5,6 @@ import { pseCompetenceApiObjectToDto, pseCompetenceEntityToApiObject } from "./p
 
 
 export function pseConcreteCaseTypeEntityToApiObject(entity: PseConcreteCaseTypeEntity): PseConcreteCaseTypeApiObject {
-	console.log({ entity: JSON.stringify(entity) })
 	return {
     id: entity.id,
     name: entity.name,

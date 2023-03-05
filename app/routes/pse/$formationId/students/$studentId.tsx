@@ -80,7 +80,7 @@ export default function UserPseFormationSummaryRoute() {
     },
     {
       label: 'Savoir de mise en oeuvre des procédures',
-      href: `/pse/${pseFormation.id}/students/${student.id}/concrete-case/session`
+      href: `/pse/${pseFormation.id}/students/${student.id}/concrete-case-evaluations`
     },
     {
       label: 'Suivi final',

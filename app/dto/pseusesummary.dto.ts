@@ -1,8 +1,8 @@
+import type { PseCompetenceDto } from './psecompetence.dto';
 import type { PseUserPreparatoryWorkDto } from "./pseformationpreparatorywork.dto";
 import type { PseModuleDto } from "./psemodule.dto";
+import type { PseUserConcreteCaseDto } from './pseuserconcretecase.dto';
 import type { PseUserTechniqueDto } from "./pseusertechnique.dto";
-import type { PseCompetenceDto } from './psecompetence.dto';
-import { PseUserConcreteCaseDto } from './pseuserconcretecase.dto';
 
 export interface PseUserSummaryDto {
   formationId: string;

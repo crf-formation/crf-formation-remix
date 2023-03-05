@@ -3,12 +3,17 @@ import { prisma } from '~/entity/db.server';
 import type { PseUserConcreteCasePostEntity } from '~/entity/pseuserconcretecase.entity';
 
 const includeForUser = {
-	user: false,
-	pseSituationConcreteCaseGroup: true,
-	competences: {
-		include: { pseCompetence: true }
-	},
-}
+  user: false,
+  pseSituationConcreteCaseGroup: {
+    include: {
+      pseConcreteCaseSituation: { include: { pseConcreteCaseType: true } },
+      pseConcreteCaseGroup: true,
+    },
+  },
+  competences: {
+    include: { pseCompetence: true },
+  },
+};
 
 const includeForGroup = {
 	user: false,
@@ -25,8 +30,10 @@ export async function getPseUserConcreteCasesEntities(formationId: string, userI
     where: {
       userId,
       pseSituationConcreteCaseGroup: {
-        pseConcreteCaseSession: {
-          formationId,
+        pseConcreteCaseSituation: {
+          pseConcreteCaseSession: {
+            formationId,
+          },
         },
       },
     },

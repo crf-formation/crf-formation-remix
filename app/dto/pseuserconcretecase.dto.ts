@@ -1,8 +1,8 @@
 import { z } from 'zod';
 import type { PseUserConcreteCaseRoleApiEnum } from '~/apiobject/pseuserconcretecase.apiobject';
+import { PseConcreteCaseSituationDto } from '~/dto/pseconcretecasesituation.dto';
 import type { PseCompetenceDto } from './psecompetence.dto';
 import type { PseConcreteCaseGroupDto } from './pseconcretecasegroup.dto';
-import type { PseConcreteCaseTypeDto } from './pseconcretecasetype.dto';
 import type { UserDto } from './user.dto';
 
 export type PseUserConcreteCaseStateDtoEnum = 'CREATED' | 'RUNNING' | 'CLOSED';
@@ -21,8 +21,8 @@ export interface PseUserConcreteCaseDto {
 	userId: string;
 	// optionally loaded
 	user?: UserDto;
-	concreteCaseGroup: PseConcreteCaseGroupDto;
-	concreteCaseType: PseConcreteCaseTypeDto;
+	pseConcreteCaseGroup: PseConcreteCaseGroupDto;
+	pseConcreteCaseSituation: PseConcreteCaseSituationDto;
 	state: PseUserConcreteCaseStateDtoEnum;
 	selected: boolean;
 	competences: Array<PseUserConcreteCaseCompetenceDto>

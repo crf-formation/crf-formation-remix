@@ -1,6 +1,6 @@
+import type { PseConcreteCaseSituationApiObject } from '~/apiobject/pseconcretecasesituation.apiobject';
 import type { PseCompetenceApiObject } from './psecompetence.apiobject';
 import type { PseConcreteCaseGroupApiObject } from './pseconcretecasegroup.apiobject';
-import type { PseConcreteCaseTypeApiObject } from './pseconcretecasetype.apiobject';
 import type { UserApiObject } from './user.apiobject';
 
 export type PseUserConcreteCaseStateApiEnum = 'CREATED' | 'RUNNING' | 'CLOSED';
@@ -14,8 +14,8 @@ export interface PseUserConcreteCaseApiObject {
 	userId: string;
 	// optionally loaded
 	user?: UserApiObject;
-	concreteCaseGroup: PseConcreteCaseGroupApiObject;
-	concreteCaseType: PseConcreteCaseTypeApiObject;
+	pseConcreteCaseGroup: PseConcreteCaseGroupApiObject;
+	pseConcreteCaseSituation: PseConcreteCaseSituationApiObject;
 	state: PseUserConcreteCaseStateApiEnum;
 	selected: boolean;
 	competences: Array<PseUserConcreteCaseCompetenceApiObject>
