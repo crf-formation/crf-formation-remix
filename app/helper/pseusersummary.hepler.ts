@@ -5,22 +5,20 @@ import type { PseUserConcreteCaseApiObject, PseUserConcreteCaseCompetenceApiObje
 import type { PseUserTechniqueApiObject } from '~/apiobject/pseusertechnique.apiobject';
 import { getPseCompetences } from '~/service/psecompetence.server';
 import { getPreparatoryWorksForUser } from '~/service/pseformationpreparatorywork.server';
-import { getPseModules } from '~/service/psemodule.server';
 import { getSelectedPseUserConcreteCases } from '~/service/pseuserconcretecase.server';
 import { getPseUserTechniquesForUser } from '~/service/pseusertechniques.server';
-import type { PseModuleApiObject } from '../apiobject/psemodule.apiobject';
 import type { PseConcreteCaseCompetenceSummaryApiObject, PseUserSummaryApiObject, PseUserSummaryConcreteCaseApiObject, PseUserSummaryPreparatoryWorkApiObject, PseUserSummaryTechniqueApiObject } from '../apiobject/pseusersummary.apiobject';
+
 
 /**
  * Load the data and build the PseUserSummaryApiObject data.
  */
 export async function loadAndBuildPseUserSummary(
 	formationId: string,
-	userId: string
+	userId: string,
 ): Promise<PseUserSummaryApiObject> {
 	const preparatoryWorks: Array<PseUserPreparatoryWorkApiObject> = await getPreparatoryWorksForUser(formationId, userId);
 	const userTechniques: Array<PseUserTechniqueApiObject> = await getPseUserTechniquesForUser(formationId, userId);
-	const pseModules: Array<PseModuleApiObject> = await getPseModules()
 	const pseCompetences: Array<PseCompetenceApiObject> = await getPseCompetences();
 	const pseConcreateCases: Array<PseUserConcreteCaseApiObject> = await getSelectedPseUserConcreteCases(formationId, userId)
 
@@ -29,11 +27,11 @@ export async function loadAndBuildPseUserSummary(
 		userId,
 		preparatoryWorks,
 		userTechniques,
-		pseModules,
 		pseCompetences,
 		pseConcreateCases,
 	)
 }
+
 
 /**
  * Build the PseUserSummaryApiObject data.
@@ -43,7 +41,6 @@ export async function buildPseUserSummary(
 	userId: string,
 	preparatoryWorks: Array<PseUserPreparatoryWorkApiObject>,
 	userTechniques: Array<PseUserTechniqueApiObject>,
-	pseModules: Array<PseModuleApiObject>,
 	pseCompetences: Array<PseCompetenceApiObject>,
 	pseConcreateCases: Array<PseUserConcreteCaseApiObject>
 ): Promise<PseUserSummaryApiObject> {

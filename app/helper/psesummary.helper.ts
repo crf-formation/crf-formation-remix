@@ -1,53 +1,128 @@
-import type { PseCompetenceApiObject } from "~/apiobject/psecompetence.apiobject";
-import type { PseConcreteCaseSummaryApiObject, PseConcreteCaseUserSummaryApiObject, PseSummaryApiObject } from "~/apiobject/psesummary.apiobject";
-import type { PseUserConcreteCaseApiObject } from "~/apiobject/pseuserconcretecase.apiobject";
+import type { PseConcreteCaseSummaryApiObject, PseConcreteCaseUserSummaryApiObject, PsePreparatoryWorkSummaryApiObject, PsePreparatoryWorkUserSummaryApiObject, PseSummaryApiObject, PseTechniqueSummaryApiObject, PseTechniqueUserSummaryApiObject } from "~/apiobject/psesummary.apiobject";
+import type { PseUserSummaryApiObject, PseUserSummaryConcreteCaseApiObject, PseUserSummaryPreparatoryWorkApiObject, PseUserSummaryTechniqueApiObject } from "~/apiobject/pseusersummary.apiobject";
 import type { UserApiObject } from "~/apiobject/user.apiobject";
-import { buildPseUserSummaryConcreteCase } from "~/helper/pseusersummary.hepler";
-import { getPseCompetences } from "~/service/psecompetence.server";
-import { getPseUserConcreteCases } from "~/service/pseuserconcretecase.server";
+import { loadAndBuildPseUserSummary } from "~/helper/pseusersummary.hepler";
 import type { PseFormationApiObject } from '../apiobject/pseformation.apiobject';
 
 export async function loadAndBuildPseSummary(
 	formation: PseFormationApiObject,
 ): Promise<PseSummaryApiObject> {
-	const pseCompetences: Array<PseCompetenceApiObject> = await getPseCompetences();
+	const pseUserSummaries: Array<PseUserSummaryApiObject> = await Promise.all(formation.students.map(student => 
+		loadAndBuildPseUserSummary(formation.id, student.id)
+	))
 	
-	const concreteCaseSummary = await buildPseConcreteCaseSummary(
-		formation.id, 
+	const concreteCaseSummary = buildPseConcreteCaseSummary(
 		formation.students, 
-		pseCompetences
+		pseUserSummaries
+	)
+	
+	const techniqueSummary = buildTechniqueSummary(
+		formation.students, 
+		pseUserSummaries
+	)
+
+	const preparatoryWorkSummary = buildPeparatoryWorkSummary(
+		formation.students, 
+		pseUserSummaries
 	)
 	
 	return {
-		concreteCaseSummary
+		techniqueSummary,
+		preparatoryWorkSummary,
+		concreteCaseSummary,
 	}
 }
 
-async function buildPseConcreteCaseSummary(
-	formationId: string,
-	users: Array<UserApiObject>,
-	pseCompetences: Array<PseCompetenceApiObject>, 
-): Promise<PseConcreteCaseSummaryApiObject> {
+function buildTechniqueSummary(
+	students: Array<UserApiObject>,
+	pseUserSummaries: Array<PseUserSummaryApiObject>, 
+): PseTechniqueSummaryApiObject {
+	const usersSummary = students.map((user) => {
+		const pseUserSummary = pseUserSummaries.find(pseUserSummary => pseUserSummary.userId === user.id)
 
-	const usersSummary = await Promise.all(users.map(async (user) => {
-		return buildPseConcreteCaseUserSummaryApiObject(formationId, user, pseCompetences)
-  }));
+		if (!pseUserSummary ) {
+			throw new Error(`User summary not found for ${user.id}`)
+		}
+
+		return buildPseTechniqueUserSummaryApiObject(
+      user,
+      pseUserSummary.technique
+    );
+  });
 
 	return {
 		usersSummary
 	}
 }
 
-async function buildPseConcreteCaseUserSummaryApiObject(
-  formationId: string,
+function buildPseTechniqueUserSummaryApiObject(
   user: UserApiObject,
-	pseCompetences: Array<PseCompetenceApiObject>, 
-): Promise<PseConcreteCaseUserSummaryApiObject> {
-  // TODO: or getSelectedPseUserConcreteCases?
-  const pseUserConcreateCases: Array<PseUserConcreteCaseApiObject> =await getPseUserConcreteCases(formationId, user.id);
+	technique: PseUserSummaryTechniqueApiObject,
+): PseTechniqueUserSummaryApiObject {
+	return {
+		user,
+		technique: technique,
+	}
+}
 
-  const pseUserSummaryConcreteCase = buildPseUserSummaryConcreteCase(pseCompetences, pseUserConcreateCases);
+function buildPeparatoryWorkSummary(
+	students: Array<UserApiObject>,
+	pseUserSummaries: Array<PseUserSummaryApiObject>, 
+): PsePreparatoryWorkSummaryApiObject {
+	const usersSummary = students.map((user) => {
+		const pseUserSummary = pseUserSummaries.find(pseUserSummary => pseUserSummary.userId === user.id)
 
+		if (!pseUserSummary ) {
+			throw new Error(`User summary not found for ${user.id}`)
+		}
+
+		return buildPsePreparatoryWorkUserSummaryApiObject(
+      user,
+      pseUserSummary.preparatoryWork
+    );
+  });
+
+	return {
+		usersSummary
+	}
+}
+
+function buildPsePreparatoryWorkUserSummaryApiObject(
+  user: UserApiObject,
+	preparatoryWork: PseUserSummaryPreparatoryWorkApiObject,
+): PsePreparatoryWorkUserSummaryApiObject {
+	return {
+		user,
+		preparatoryWork: preparatoryWork,
+	}
+}
+
+function buildPseConcreteCaseSummary(
+	students: Array<UserApiObject>,
+	pseUserSummaries: Array<PseUserSummaryApiObject>, 
+): PseConcreteCaseSummaryApiObject {
+	const usersSummary = students.map((user) => {
+		const pseUserSummary = pseUserSummaries.find(pseUserSummary => pseUserSummary.userId === user.id)
+
+		if (!pseUserSummary ) {
+			throw new Error(`User summary not found for ${user.id}`)
+		}
+
+		return buildPseConcreteCaseUserSummaryApiObject(
+      user,
+      pseUserSummary.concreteCase
+    );
+  });
+
+	return {
+		usersSummary
+	}
+}
+
+function buildPseConcreteCaseUserSummaryApiObject(
+  user: UserApiObject,
+	pseUserSummaryConcreteCase: PseUserSummaryConcreteCaseApiObject
+): PseConcreteCaseUserSummaryApiObject {
   return {
     user,
     competencesSummary: pseUserSummaryConcreteCase.competencesSummary,

@@ -9,8 +9,8 @@ export function pseUserSummaryApiObjectToDto(apiObject: PseUserSummaryApiObject)
 	return {
 		formationId: apiObject.formationId,
 		userId: apiObject.userId,
-		technique: techniqueApiObjectToDto(apiObject.technique),
-		preparatoryWork: preparatoryWorkApiObjectToDto(apiObject.preparatoryWork),
+		technique: pseUserSummaryTechniqueApiObjectToDto(apiObject.technique),
+		preparatoryWork: pseUserSummaryPreparatoryWorkApiObjectToDto(apiObject.preparatoryWork),
 		concreteCase: pseUserSummaryConcreteCaseApiObjectToDto(apiObject.concreteCase),
 		pseCompetences: apiObject.pseCompetences.map(pseCompetenceApiObjectToDto),
 		hasValidatePse: apiObject.hasValidatePse,
@@ -18,7 +18,7 @@ export function pseUserSummaryApiObjectToDto(apiObject: PseUserSummaryApiObject)
 	}
 }
 
-function techniqueApiObjectToDto(apiObject: PseUserSummaryTechniqueApiObject): PseUserSummaryTechniqueDto {
+export function pseUserSummaryTechniqueApiObjectToDto(apiObject: PseUserSummaryTechniqueApiObject): PseUserSummaryTechniqueDto {
 	return {
 		hasAcquiredAllTechniques: apiObject.hasAcquiredAllTechniques,
 		hasAcquiredAllTechniquesToValidatePse1: apiObject.hasAcquiredAllTechniquesToValidatePse1,
@@ -30,7 +30,7 @@ function techniqueApiObjectToDto(apiObject: PseUserSummaryTechniqueApiObject): P
 	}
 }
 
-function preparatoryWorkApiObjectToDto(apiObject: PseUserSummaryPreparatoryWorkApiObject): PseUserSummaryPreparatoryWorkDto {
+export function pseUserSummaryPreparatoryWorkApiObjectToDto(apiObject: PseUserSummaryPreparatoryWorkApiObject): PseUserSummaryPreparatoryWorkDto {
 	const preparatoryWorks = apiObject.preparatoryWorks.map(pseUserPreparatoryWorkApiObjectToDto)
 	return {
     hasRealisedAllModules: apiObject.hasRealisedAllModules,

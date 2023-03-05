@@ -45,17 +45,19 @@ export async function getPseUserConcreteCasesEntities(formationId: string, userI
 export async function getSelectedPseUserConcreteCaseEntities(formationId: string, userId: string): Promise<PseUserConcreteCaseEntity[]>  {
 
 	return await prisma.pseUserConcreteCase.findMany({
-		where: {
-			userId,
-			selected: true,
-			pseSituationConcreteCaseGroup: {
-        pseConcreteCaseSession: {
-          formationId,
+    where: {
+      userId,
+      selected: true,
+      pseSituationConcreteCaseGroup: {
+        pseConcreteCaseSituation: {
+          pseConcreteCaseSession: {
+            formationId,
+          },
         },
       },
-		},
-		include: includeForUser
-	})
+    },
+    include: includeForUser,
+  });
 }
 
 

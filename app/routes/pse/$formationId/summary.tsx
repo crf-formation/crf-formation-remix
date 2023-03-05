@@ -1,3 +1,4 @@
+import { Stack } from "@mui/material";
 import type { LoaderArgs, MetaFunction } from "@remix-run/node";
 import { json } from "@remix-run/node";
 import type { Params } from "@remix-run/react";
@@ -13,6 +14,8 @@ import PageSubtitle from '~/component/layout/PageSubtitle';
 import PageTitle from '~/component/layout/PageTitle';
 import Section from "~/component/layout/Section";
 import PseSummaryConcreteCaseSummary from "~/component/pse-summary/PseSummaryConcreteCaseSummary";
+import PseSummaryPreparatoryWorkSummary from "~/component/pse-summary/PseSummaryPreparatoryWorkSummary";
+import PseSummaryTechniqueSummary from "~/component/pse-summary/PseSummaryTechniqueSummary";
 import type { SecurityFunction } from '~/constant/remix';
 import { loadAndBuildPseSummary } from "~/helper/psesummary.helper";
 import { getParamsOrFail } from '~/helper/remix.params.helper';
@@ -77,17 +80,37 @@ export default function FromationPseRoute() {
         }
       >
         <PageTitle title={`PSE: ${formation.title} - Résumé de formation`} />
-        <PageSubtitle subtitle={`${formation.place.title}`} />
+        <PageSubtitle subtitle="Résumé de la formation pour tous les participants" />
       </PagePaperHeader>
 
       <PageSpace variant="header" />
 
       <PageContainer>
-        <Section>
-          <PseSummaryConcreteCaseSummary
-            concreteCaseSummary={pseSummary.concreteCaseSummary}
-          />
-        </Section>
+        <Stack spacing={2}>
+          <Section title="Résumé">
+            <PseSummaryResult
+              pseSummary={pseSummary}
+            />
+          </Section>
+
+          <Section title="Cas concrets">
+            <PseSummaryConcreteCaseSummary
+              concreteCaseSummary={pseSummary.concreteCaseSummary}
+            />
+          </Section>
+
+          <Section title="Techniques">
+            <PseSummaryTechniqueSummary
+              techniqueSummary={pseSummary.techniqueSummary}
+            />
+          </Section>
+
+          <Section title="Travail préparatoire">
+            <PseSummaryPreparatoryWorkSummary
+              preparatoryWorkSummary={pseSummary.preparatoryWorkSummary}
+            />
+          </Section>
+        </Stack>
       </PageContainer>
     </>
   );

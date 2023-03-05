@@ -1,7 +1,7 @@
 import { Box } from "@mui/material"
 
 
-export default function PseAcquiredLabel({ acquired, acquiredForPse1 }: { acquired: boolean, acquiredForPse1: boolean }) {
+export default function PseAcquiredLabel({ acquired, acquiredForPse1 }: { acquired: boolean, acquiredForPse1?: boolean }) {
 	const sx = {
 		fontWeight: 500,
 	}

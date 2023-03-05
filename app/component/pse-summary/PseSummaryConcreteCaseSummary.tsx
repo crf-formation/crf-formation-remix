@@ -33,7 +33,6 @@ function UserSummaryTableRow({ userSummary }: { userSummary: PseConcreteCaseUser
     <TableRow>
       <TableCell>{userSummary.user.fullName}</TableCell>
 
-      {/* TODO: isInDifficulty */}
       {userSummary.competencesSummary.map((competenceSummary) => (
         <TableCell key={competenceSummary.pseCompetenceId}>
 					<CompetenceAcquiredLabel
@@ -60,6 +59,8 @@ export default function PseSummaryConcreteCaseSummary({ concreteCaseSummary }: P
 	return (
     <TableContainer>
       <Table>
+
+        {/* TODO: row isInDifficulty? */}
         <TableHead>
           <TableRow>
             <TableCell>{/* user fullName */}</TableCell>
@@ -70,7 +71,7 @@ export default function PseSummaryConcreteCaseSummary({ concreteCaseSummary }: P
               </TableCell>
             ))}
 
-						<TableCell>Validation</TableCell>
+						<TableCell>Validé</TableCell>
 
           </TableRow>
 
