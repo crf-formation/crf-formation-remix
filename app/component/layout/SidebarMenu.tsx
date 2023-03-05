@@ -1,23 +1,21 @@
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import AssignmentIcon from '@mui/icons-material/Assignment';
 import BubbleChartIcon from '@mui/icons-material/BubbleChart';
-import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import ConstructionIcon from '@mui/icons-material/Construction';
 import DashboardIcon from '@mui/icons-material/Dashboard';
 import ShieldIcon from '@mui/icons-material/Shield';
-import { Box, GlobalStyles, IconButton, List, ListItem, ListItemText, Drawer as MuiDrawer, Toolbar } from "@mui/material";
+import { Box, GlobalStyles, List, ListItem, ListItemText, Drawer as MuiDrawer, Toolbar } from "@mui/material";
 import { styled } from '@mui/material/styles';
-import type { MouseEventHandler } from "react";
 import { useState } from "react";
 import LogoIcon from "~/component/icons/LogoHorizontal";
 import useCurrentPseFormation from '~/hook/useCurrentPseFormation';
 import useMenuMatches from "~/hook/useMenuMatches";
+import useOptionalUser from '~/hook/useOptionalUser';
 import useUser from '~/hook/useUser';
 import MenuItem from "./MenuItem";
 import SidebarDivider from "./SidebarDivider";
 import SubMenu from "./SubMenu";
-import useOptionalUser from '~/hook/useOptionalUser';
 import UserMenu from './UserMenu';
-import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 
 type MenuProps = {
   openedMenu: MenuName;
@@ -240,7 +238,7 @@ export default function SidebarMenu({ open }: Props) {
       },
       {
         name: "Suivi",
-        href: `/pse/${currentPseFormation.id}/resume`,
+        href: `/pse/${currentPseFormation.id}/summary`,
       },
     ].filter(Boolean)
   };

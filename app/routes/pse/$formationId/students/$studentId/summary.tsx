@@ -15,7 +15,7 @@ import type {
   PseUserSummaryConcreteCaseDto,
   PseUserSummaryPreparatoryWorkDto,
   PseUserSummaryTechniqueDto,
-} from "~/dto/pseusesummary.dto";
+} from "~/dto/pseusersummary.dto";
 import { getParamsOrFail } from "~/helper/remix.params.helper";
 import { pseUserSummaryApiObjectToDto } from "~/mapper/pseusersummary.mapper";
 import { getPseFormationById } from "~/service/pseformation.server";
@@ -179,7 +179,7 @@ function ConcreteCase({ pseCompetences, concreteCase }: { pseCompetences: Array<
               <TableCell>{index}</TableCell>
               <TableCell>{concreteCaseModule.pseModule.name}</TableCell>
               {pseCompetences.map((pseCompetenceResult) => {
-                const c = concreteCaseModule.competenceResults.find(
+                const c = concreteCaseModule.competencesSummary.find(
                   (c) => c.pseCompetenceId === pseCompetenceResult.id
                 );
                 if (!c) return null;
@@ -204,7 +204,7 @@ function ConcreteCase({ pseCompetences, concreteCase }: { pseCompetences: Array<
           <TableRow>
             <TableCell></TableCell>
             <TableCell><Typography fontWeight={500}>RESULTAT</Typography></TableCell>
-            {concreteCase.competenceResults.map((pseCompetenceResult) => (
+            {concreteCase.competencesSummary.map((pseCompetenceResult) => (
               <TableCell key={pseCompetenceResult.pseCompetenceId} align="center">
                 {pseCompetenceResult.acquired ? (
                   <BooleanText withColor checked={pseCompetenceResult.acquired} />

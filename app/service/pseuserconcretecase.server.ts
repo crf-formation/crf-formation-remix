@@ -3,13 +3,11 @@ import type { PseConcreteCaseGroupApiObject } from '~/apiobject/pseconcretecaseg
 import type { PseConcreteCaseSessionApiObject } from '~/apiobject/pseconcretecasesession.apiobject';
 import type { PseConcreteCaseSituationApiObject, PseSituationConcreteCaseGroupApiObject } from '~/apiobject/pseconcretecasesituation.apiobject';
 import type { PseFormationApiObject } from '~/apiobject/pseformation.apiobject';
-import type { PseModuleApiObject } from '~/apiobject/psemodule.apiobject';
-import type { PseUserSummaryConcreteCaseApiObject } from '~/apiobject/pseusesummary.apiobject';
+import type { PseUserSummaryConcreteCaseApiObject } from '~/apiobject/pseusersummary.apiobject';
 import { buildPseUserConcreteCaseGroupEvaluation } from '~/helper/pseuserconcretecase.helper';
-import { buildPseUserSummaryConcreteCase } from '~/helper/pseusesummary.hepler';
+import { buildPseUserSummaryConcreteCase } from '~/helper/pseusersummary.hepler';
 import { createOrUpdatePseUserConcreteCases, getPseUserConcreteCasesEntities, getPseUserConcreteCasesForGroupAndSituationEntities, getSelectedPseUserConcreteCaseEntities } from '~/repository/pseuserconcretecase.repository';
 import { getPseCompetences } from '~/service/psecompetence.server';
-import { getPseModules } from '~/service/psemodule.server';
 import type { PseUserConcreteCaseApiObject, PseUserConcreteCaseGroupEvaluationPostApiObject } from '../apiobject/pseuserconcretecase.apiobject';
 import { pseUserConcreteCaseEntityToApiObject, pseUserConcreteCaseGroupEvaluationPostApiObjectToPseUserConcreteCasePostEntities } from '../mapper/pseuserconcretecase.mapper';
 
@@ -25,11 +23,9 @@ export async function getPseUserConcreteCases(formationId: string, userId: strin
 
 export async function getPseUserConcreteCasesResume(formationId: string, userId: string): Promise<PseUserSummaryConcreteCaseApiObject> {
 	const pseUserConcreteCasesApiObject = await getPseUserConcreteCases(formationId, userId)
-	const pseModules: Array<PseModuleApiObject> = await getPseModules()
 	const pseCompetences: Array<PseCompetenceApiObject> = await getPseCompetences();
 
 	return buildPseUserSummaryConcreteCase(
-		pseModules,
 		pseCompetences,
 		pseUserConcreteCasesApiObject
 	)

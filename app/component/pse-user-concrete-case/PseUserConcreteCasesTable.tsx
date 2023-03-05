@@ -1,6 +1,7 @@
 import { Box, Checkbox, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material';
+import PseAcquiredLabel from '~/component/pse-summary/PseAcquiredLabel';
 import type { PseUserConcreteCaseCompetenceGradeDtoEnum, PseUserConcreteCaseDto } from "~/dto/pseuserconcretecase.dto";
-import type { PseUserSummaryConcreteCaseDto } from "~/dto/pseusesummary.dto";
+import type { PseUserSummaryConcreteCaseDto } from "~/dto/pseusersummary.dto";
 
 interface Props {
 	pseUserSummaryConcreteCase: PseUserSummaryConcreteCaseDto;
@@ -14,22 +15,6 @@ function Grade({ grade }: { grade: PseUserConcreteCaseCompetenceGradeDtoEnum }) 
 			{label}
 		</Box>
 	)
-}
-
-function Acquired({ acquired, acquiredForPse1 }: { acquired: boolean, acquiredForPse1: boolean }) {
-	const sx = {
-		fontWeight: 500,
-	}
-	
-	if (acquired) {
-		return <Box sx={{ ...sx, color: 'success.main' }}>OUI</Box>
-	}
-
-	if (acquiredForPse1) {
-		return <Box sx={{ ...sx, color: 'warning.main' }}>PSE1</Box>
-	}
-
-	return <Box sx={{ ...sx, color: 'error.main' }}>NON</Box>
 }
 
 function UserConcreteCaseRow({ pseUserConcreteCase }: { pseUserConcreteCase: PseUserConcreteCaseDto }) {
@@ -61,7 +46,7 @@ export default function PseUserConcreteCasesTable({ pseUserSummaryConcreteCase }
         <TableHead>
           <TableRow>
             <TableCell>{/* empty name : */}</TableCell>
-            {pseUserSummaryConcreteCase.competenceResults.map(
+            {pseUserSummaryConcreteCase.competencesSummary.map(
               (competenceResult) => (
                 <TableCell key={competenceResult.pseCompetence.id}>
                   {competenceResult.pseCompetence.id}
@@ -91,10 +76,10 @@ export default function PseUserConcreteCasesTable({ pseUserSummaryConcreteCase }
                 RÉSULTAT
               </Box>
             </TableCell>
-            {pseUserSummaryConcreteCase.competenceResults.map(
+            {pseUserSummaryConcreteCase.competencesSummary.map(
               (competenceResult) => (
                 <TableCell key={competenceResult.pseCompetence.id}>
-                  <Acquired
+                  <PseAcquiredLabel
                     acquired={competenceResult.acquired}
                     acquiredForPse1={competenceResult.acquiredForPse1}
                   />

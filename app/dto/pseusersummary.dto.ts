@@ -1,3 +1,4 @@
+import type { PseCompetenceApiObject } from '~/apiobject/psecompetence.apiobject';
 import type { PseCompetenceDto } from './psecompetence.dto';
 import type { PseUserPreparatoryWorkDto } from "./pseformationpreparatorywork.dto";
 import type { PseModuleDto } from "./psemodule.dto";
@@ -41,26 +42,39 @@ export interface PseUserSummaryConcreteCaseDto {
   userConcreteCases: Array<PseUserConcreteCaseDto>;
 
   // TODO: list of selected concreate cases
-  hasAcquiredAllModules: boolean;
-  hasAcquiredAllModulesForPse1: boolean;
+  hasAcquiredAll: boolean;
+  hasAcquiredAllForPse1: boolean;
 
-  competenceResults: Array<ConcreteCaseCompetenceResultDto>;
+  competencesSummary: Array<PseConcreteCaseCompetenceSummaryDto>;
 }
 
 export interface PseUserSummaryConcreteCaseModuleDto {
   pseModuleId: string;
   pseModule: PseModuleDto;
 
-	competenceResults: Array<ConcreteCaseCompetenceResultDto>;
+	competencesSummary: Array<PseConcreteCaseCompetenceSummaryDto>;
 
   hasAcquiredAllCompetences: boolean;
   hasAcquiredAllCompetencesForPse1: boolean;
   // TODO: list of selected concreate cases for module
 }
 
-export interface ConcreteCaseCompetenceResultDto {
+export interface PseConcreteCaseCompetenceSummaryDto {
   pseCompetenceId: string;
-  pseCompetence: PseCompetenceDto;
+  pseCompetence: PseCompetenceApiObject;
+
   acquired: boolean
   acquiredForPse1: boolean
+
+	nbA: number;
+	nbB: number;
+	nbC: number;
+	nbD: number;
+	nbNotEvalued: number;
+	
+	nbAcquired: number; // nbA + nbB
+	nbNotAcquired: number; // nbC + nbD
+	nbTotal: number; // nbSucceed + nbFailed, we do not take nbNotEvalued
+
+	isInDifficulty: boolean;
 }

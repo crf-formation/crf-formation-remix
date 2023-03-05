@@ -1,5 +1,5 @@
-import type { PseUserSummaryApiObject } from "~/apiobject/pseusesummary.apiobject";
-import { loadAndBuildPseUserSummary } from "~/helper/pseusesummary.hepler";
+import type { PseUserSummaryApiObject } from "~/apiobject/pseusersummary.apiobject";
+import { loadAndBuildPseUserSummary } from "~/helper/pseusersummary.hepler";
 
 
 export async function getPseUserSummary(formationId: string, userId: string): Promise<PseUserSummaryApiObject> {

@@ -1,7 +1,7 @@
 import { sample } from 'lodash';
 import type { PseCompetenceApiObject } from '~/apiobject/psecompetence.apiobject';
 import type { PseUserPreparatoryWorkApiObject } from '~/apiobject/pseformationpreparatorywork.apiobject';
-import type { PseUserConcreteCaseApiObject } from '~/apiobject/pseuserconcretecase.apiobject';
+import type { PseUserConcreteCaseApiObject, PseUserConcreteCaseCompetenceApiObject } from '~/apiobject/pseuserconcretecase.apiobject';
 import type { PseUserTechniqueApiObject } from '~/apiobject/pseusertechnique.apiobject';
 import { getPseCompetences } from '~/service/psecompetence.server';
 import { getPreparatoryWorksForUser } from '~/service/pseformationpreparatorywork.server';
@@ -9,7 +9,7 @@ import { getPseModules } from '~/service/psemodule.server';
 import { getSelectedPseUserConcreteCases } from '~/service/pseuserconcretecase.server';
 import { getPseUserTechniquesForUser } from '~/service/pseusertechniques.server';
 import type { PseModuleApiObject } from '../apiobject/psemodule.apiobject';
-import type { ConcreteCaseCompetenceResultApiObject, PseUserSummaryApiObject, PseUserSummaryConcreteCaseApiObject, PseUserSummaryPreparatoryWorkApiObject, PseUserSummaryTechniqueApiObject } from '../apiobject/pseusesummary.apiobject';
+import type { PseConcreteCaseCompetenceSummaryApiObject, PseUserSummaryApiObject, PseUserSummaryConcreteCaseApiObject, PseUserSummaryPreparatoryWorkApiObject, PseUserSummaryTechniqueApiObject } from '../apiobject/pseusersummary.apiobject';
 
 /**
  * Load the data and build the PseUserSummaryApiObject data.
@@ -51,7 +51,7 @@ export async function buildPseUserSummary(
 
 	const preparatoryWork: PseUserSummaryPreparatoryWorkApiObject = buildPseUserPreparatoryWork(preparatoryWorks);
 
-	const concreteCase: PseUserSummaryConcreteCaseApiObject = buildPseUserSummaryConcreteCase(pseModules, pseCompetences, pseConcreateCases)
+	const concreteCase: PseUserSummaryConcreteCaseApiObject = buildPseUserSummaryConcreteCase(pseCompetences, pseConcreateCases)
 
 	return {
 		formationId,
@@ -99,7 +99,6 @@ function buildPseUserPreparatoryWork(
 }
 
 export function buildPseUserSummaryConcreteCase(
-	pseModules: Array<PseModuleApiObject>, 
 	pseCompetences: Array<PseCompetenceApiObject>, 
 	pseConcreateCases: Array<PseUserConcreteCaseApiObject>
 ): PseUserSummaryConcreteCaseApiObject {
@@ -107,33 +106,72 @@ export function buildPseUserSummaryConcreteCase(
 		userConcreteCases: pseConcreateCases,
 
 		// TODO:
-		hasAcquiredAllModules: false,
-		hasAcquiredAllModulesForPse1: false,
+		hasAcquiredAll: false,
+		hasAcquiredAllForPse1: false,
 
-		competenceResults: buildConcreteCaseCompetenceResultForAllModules(pseModules, pseCompetences, pseConcreateCases),
+		competencesSummary: buildConcreteCaseCompetenceSummaryForAllModules(pseCompetences, pseConcreateCases),
 	}
 }
 
-function buildConcreteCaseCompetenceResultForAllModules(
-	pseModules: Array<PseModuleApiObject>, 
+function buildConcreteCaseCompetenceSummaryForAllModules(
 	pseCompetences: Array<PseCompetenceApiObject>, 
-	pseConcreateCases: Array<PseUserConcreteCaseApiObject>
-): Array<ConcreteCaseCompetenceResultApiObject> {
+	pseUserConcreateCases: Array<PseUserConcreteCaseApiObject>
+): Array<PseConcreteCaseCompetenceSummaryApiObject> {
+	const pseUserConcreteCaseCompetences = pseUserConcreateCases
+		.map((userConcreteCase) => userConcreteCase.competences)
+		.flat();
+
 	return pseCompetences.map((pseCompetence) => {
-		const nbAcquired = pseConcreateCases
-			.filter(pseConcreateCase => pseConcreateCase.competences.find(v => v.pseCompetence.id === pseCompetence.id && (v.grade === 'A' || v.grade === 'B')))
-			.length
-
-		const nbNotAcquired = pseConcreateCases
-			.filter(pseConcreateCase => pseConcreateCase.competences.find(v => v.pseCompetence.id === pseCompetence.id && (v.grade === 'C' || v.grade === 'D')))
-			.length
-			
-		return {
-			pseCompetenceId: pseCompetence.id,
-			pseCompetence: pseCompetence,
-
-			acquired: nbAcquired >= pseCompetence.requiredCountToValidatePseGlobal,
-			acquiredForPse1: nbNotAcquired >= pseCompetence.requiredCountToValidatePse1,
-		};
+		return buildConcreteCaseCompetenceSummaryApiObject(
+			pseCompetence,
+			pseUserConcreteCaseCompetences.filter(
+				(pseUserConcreteCaseCompetence) =>
+					pseUserConcreteCaseCompetence.pseCompetenceId === pseCompetence.id
+			)
+		)
 	});
+}
+
+function buildConcreteCaseCompetenceSummaryApiObject(
+	pseCompetence: PseCompetenceApiObject,
+	pseUserConcreteCaseCompetences: Array<PseUserConcreteCaseCompetenceApiObject>,
+): PseConcreteCaseCompetenceSummaryApiObject {
+	const nbA = pseUserConcreteCaseCompetences.filter(c => c.grade === 'A').length
+	const nbB = pseUserConcreteCaseCompetences.filter(c => c.grade === 'B').length
+	const nbC = pseUserConcreteCaseCompetences.filter(c => c.grade === 'C').length
+	const nbD = pseUserConcreteCaseCompetences.filter(c => c.grade === 'D').length
+	const nbNotEvalued = pseUserConcreteCaseCompetences.filter(c => c.grade === 'NOT_EVALUATED').length
+	const nbAcquired = nbA + nbB;
+	const nbNotAcquired = nbC + nbD;
+	const nbTotal = nbAcquired + nbNotAcquired
+
+	const isInDifficulty = checkIsInDifficulty(nbAcquired, nbNotAcquired)
+		
+	return {
+		pseCompetenceId: pseCompetence.id,
+		pseCompetence: pseCompetence,
+
+		acquired: nbAcquired >= pseCompetence.requiredCountToValidatePseGlobal,
+		acquiredForPse1: nbNotAcquired >= pseCompetence.requiredCountToValidatePse1,
+
+		nbA,
+		nbB,
+		nbC,
+		nbD,
+		nbNotEvalued,
+		
+		nbAcquired,
+		nbNotAcquired,
+		nbTotal,
+		
+		isInDifficulty,
+	};
+}
+
+
+/**
+ * Very simple for the moment. We consider it is in difficulty if he did not succeed yet and has failed more than once.
+ */
+function checkIsInDifficulty(nbAcquired: number, nbNotAcquired: number) {
+	return nbNotAcquired > 1 && nbAcquired === 0
 }

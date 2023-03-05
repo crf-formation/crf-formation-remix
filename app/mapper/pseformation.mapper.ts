@@ -1,10 +1,12 @@
 import { parse, parseISO } from "date-fns";
 import type { PseFormationApiObject, PseFormationPostApiObject, PseFormationPutApiObject, PseFormationStateApiEnum } from "~/apiobject/pseformation.apiobject";
+import { UserOnPseFormationApiObject } from "~/apiobject/useronpseformation.apiobject";
 import type { PseFormationDto, PseFormationPostDto, PseFormationPutDto } from "~/dto/pseformation.dto";
 import type { PseFormationEntity } from "~/entity";
 import { assertEnum } from "~/mapper/abstract.mapper";
+import { userApiObjectToDto } from "~/mapper/user.mapper";
 import { placeApiObjectToDto, placeEntityToApiObject } from "./place.mapper";
-import { userOnPseFormationApiObjectToDto, userOnPseFormationDataPutDtoToApiObject, userOnPseFormationDataToPutDto, userOnPseFormationEntityToApiObject } from "./useronpseformation.mapper";
+import { userOnPseFormationDataPutDtoToApiObject, userOnPseFormationDataToPutDto, userOnPseFormationEntityToApiObject } from "./useronpseformation.mapper";
 
 export function dataToPseFormationPostDto(data: any): PseFormationPostDto {
 	return {
@@ -36,7 +38,6 @@ export function dataToPseFormationPutDto(data: any): PseFormationPutDto {
 }
 
 export function pseFormationApiObjectToDto(apiObject: PseFormationApiObject): PseFormationDto {
-	const users = apiObject.users?.map(userOnPseFormationApiObjectToDto)
 	return {
 		id: apiObject.id,
 		createdAt: apiObject.createdAt,
@@ -48,8 +49,8 @@ export function pseFormationApiObjectToDto(apiObject: PseFormationApiObject): Ps
 		place: placeApiObjectToDto(apiObject.place),
 		placeId: apiObject.place?.id,
 		// /!\ is not loaded for lists.
-		teachers: users.filter(user => user.role === 'TEACHER').map(user => user.user),
-		students: users.filter(user => user.role === 'STUDENT').map(user => user.user),
+		teachers: apiObject.teachers.map(userApiObjectToDto),
+		students: apiObject.students.map(userApiObjectToDto)
 	}
 }
 
@@ -75,6 +76,9 @@ export function pseFormationPostDtoToApiObject(postDto: PseFormationPostDto): Ps
 }
 
 export function pseFormationEntityToApiObject(entity: PseFormationEntity): PseFormationApiObject {
+	// /!\ is not loaded for lists.
+	const users: Array<UserOnPseFormationApiObject> = (entity.userOnPseFormations || []).map(userOnPseFormationEntityToApiObject)
+
 	return {
 		id: entity.id,
 		createdAt: entity.createdAt,
@@ -85,8 +89,12 @@ export function pseFormationEntityToApiObject(entity: PseFormationEntity): PseFo
 		to: entity.to,
 		// TODO: how to make typescript PseFormationEntity with place / UserOnPseFormation etc?
 		place: placeEntityToApiObject(entity.place),
-		// can be null when loading list
-		users: (entity.userOnPseFormations || []).map(userOnPseFormationEntityToApiObject)
+
+		users,
+
+		// /!\ is not loaded for lists.
+		teachers: users.filter(user => user.role === 'TEACHER').map(user => user.user),
+		students: users.filter(user => user.role === 'STUDENT').map(user => user.user),
 	}
 }
 

@@ -1,3 +1,4 @@
+import type { UserApiObject } from "~/apiobject/user.apiobject";
 import type { PlaceApiObject } from "./place.apiobject";
 import type { UserOnPseFormationApiObject, UserOnPseFormationPutApiObject } from "./useronpseformation.apiobject";
 
@@ -13,6 +14,9 @@ export interface PseFormationApiObject {
 	to: Date;
 	place: PlaceApiObject;
 	users: Array<UserOnPseFormationApiObject>;
+
+	teachers: Array<UserApiObject>;
+	students: Array<UserApiObject>;
 }
 
 export interface PseFormationPostApiObject {
