@@ -1,10 +1,10 @@
-import { PseCompetenceApiObject } from '~/apiobject/psecompetence.apiobject';
-import { PseConcreteCaseGroupApiObject } from '~/apiobject/pseconcretecasegroup.apiobject';
-import { PseConcreteCaseSessionApiObject } from '~/apiobject/pseconcretecasesession.apiobject';
-import { PseConcreteCaseSituationApiObject, PseSituationConcreteCaseGroupApiObject } from '~/apiobject/pseconcretecasesituation.apiobject';
-import { PseFormationApiObject } from '~/apiobject/pseformation.apiobject';
+import type { PseCompetenceApiObject } from '~/apiobject/psecompetence.apiobject';
+import type { PseConcreteCaseGroupApiObject } from '~/apiobject/pseconcretecasegroup.apiobject';
+import type { PseConcreteCaseSessionApiObject } from '~/apiobject/pseconcretecasesession.apiobject';
+import type { PseConcreteCaseSituationApiObject, PseSituationConcreteCaseGroupApiObject } from '~/apiobject/pseconcretecasesituation.apiobject';
+import type { PseFormationApiObject } from '~/apiobject/pseformation.apiobject';
 import { buildPseUserConcreteCaseGroupEvaluation } from '~/helper/pseuserconcretecase.helper';
-import { createOrUpdatePseUserConcreteCases, getPseUserConcreteCasesEntities, getSelectedPseUserConcreteCaseEntities } from '~/repository/pseuserconcretecase.repository';
+import { createOrUpdatePseUserConcreteCases, getPseUserConcreteCasesEntities, getPseUserConcreteCasesForGroupAndSituationEntities, getSelectedPseUserConcreteCaseEntities } from '~/repository/pseuserconcretecase.repository';
 import type { PseUserConcreteCaseApiObject, PseUserConcreteCaseGroupEvaluationPostApiObject } from '../apiobject/pseuserconcretecase.apiobject';
 import { mapPseUserConcreteCaseGroupEvaluationPostApiObjectToPseUserConcreteCasePostEntities, pseUserConcreteCaseEntityToApiObject } from '../mapper/pseuserconcretecase.mapper';
 
@@ -12,7 +12,6 @@ export async function getSelectedPseUserConcreteCases(formationId: string, userI
 	const entities = await getSelectedPseUserConcreteCaseEntities(formationId, userId)
 	return entities.map(pseUserConcreteCaseEntityToApiObject)
 }
-
 
 export async function getPseUserConcreteCases(formationId: string, userId: string): Promise<Array<PseUserConcreteCaseApiObject>> {
 	const entities = await getPseUserConcreteCasesEntities(formationId, userId)
@@ -29,6 +28,23 @@ export async function updatePseUserConcreteCaseGroupEvaluation(pseUserConcreteCa
   );
 }
 
+export async function getPseUserConcreteCasesForGroupAndSituation(
+  pseConcreteCaseGroupId: string,
+  pseConcreteCaseSituationId: string
+) {
+  const pseUserConcreteCaseEntities = await getPseUserConcreteCasesForGroupAndSituationEntities(
+      pseConcreteCaseGroupId,
+      pseConcreteCaseSituationId
+    );
+
+  const pseUserConcreteCaseApiObjects: Array<PseUserConcreteCaseApiObject> = pseUserConcreteCaseEntities.map(pseUserConcreteCaseEntityToApiObject);
+
+  console.log({
+    pseUserConcreteCaseEntities,
+  });
+
+  return pseUserConcreteCaseApiObjects;
+}
 
 export async function getPseUserConcreteCaseGroupEvaluation(
 	pseFormation: PseFormationApiObject,
@@ -47,12 +63,18 @@ export async function getPseUserConcreteCaseGroupEvaluation(
 		throw new Error(`PseSituationConcreteCaseGroupApiObject not found for group ${pseConcreteCaseGroup.id}`)
 	}
 
+	const pseUserConcreteCaseApiObjects = await getPseUserConcreteCasesForGroupAndSituation(
+		pseConcreteCaseGroup.id,
+		pseConcreteCaseSituation.id
+	);
+
 	return buildPseUserConcreteCaseGroupEvaluation(
 		pseFormation,
 		pseConcreteCaseSession,
 		pseConcreteCaseSituation,
 		pseConcreteCaseGroup,
 		pseSituationConcreteCaseGroup,
+		pseUserConcreteCaseApiObjects,
 		pseCompetences,
   )
 }

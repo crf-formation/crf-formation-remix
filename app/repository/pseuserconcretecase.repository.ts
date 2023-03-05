@@ -5,11 +5,17 @@ import type { PseUserConcreteCasePostEntity } from '~/entity/pseuserconcretecase
 const includeForUser = {
 	user: false,
 	pseSituationConcreteCaseGroup: true,
+	competences: {
+		include: { pseCompetence: true }
+	},
 }
 
 const includeForGroup = {
 	user: false,
 	pseSituationConcreteCaseGroup: false,
+	competences: {
+		include: { pseCompetence: true }
+	},
 }
 
 
@@ -46,20 +52,18 @@ export async function getSelectedPseUserConcreteCaseEntities(formationId: string
 }
 
 
-export async function getPseUserConcreteCasesForGroupAndSituation(
-	formationId: string, 
-	concreteCaseGroupId: string,
-	concreteCaseSituationId: string
-): Promise<PseUserConcreteCaseEntity[]> {
+export async function getPseUserConcreteCasesForGroupAndSituationEntities(
+	pseConcreteCaseGroupId: string,
+	pseConcreteCaseSituationId: string
+): Promise<Array<PseUserConcreteCaseEntity>> {
 	return await prisma.pseUserConcreteCase.findMany({
     where: {
       pseSituationConcreteCaseGroup: {
-        id: concreteCaseGroupId,
-
-        where: {
-            concreteCaseSession: {
-              formationId,
-          },
+				pseConcreteCaseGroup: {
+        	id: pseConcreteCaseGroupId,
+				},
+        pseConcreteCaseSituation: {
+					id: pseConcreteCaseSituationId,
         },
       },
     },
@@ -70,8 +74,7 @@ export async function getPseUserConcreteCasesForGroupAndSituation(
 export async function createOrUpdatePseUserConcreteCases(
 	userConcreteCases: Array<PseUserConcreteCasePostEntity>,
 ): Promise<PseUserConcreteCaseEntity> {
-	console.log({ userConcreteCases
-	})
+
   return await prisma.$transaction<PseUserConcreteCaseEntity>(async (tx) => {
 		return Promise.all(userConcreteCases.map(async userConcreteCase => {
 			const pseUserConcreteCaseData: PseUserConcreteCaseCompetenceEntity = {
@@ -101,10 +104,6 @@ export async function createOrUpdatePseUserConcreteCases(
 					grade: gradeEvaluation.grade
 				}
 
-				console.log({
-					pseUserConcreteCaseCompetenceData
-				})
-
 				const pseUserConcreteCaseCompetenceEntity = await tx.pseUserConcreteCaseCompetence.upsert({
 					where: {
 						pseUserConcreteCaseId_pseCompetenceId: {
@@ -116,8 +115,7 @@ export async function createOrUpdatePseUserConcreteCases(
 					create: pseUserConcreteCaseCompetenceData,
 				})
 
-				console.log({ pseUserConcreteCaseCompetenceEntity })
-
+				return pseUserConcreteCaseCompetenceEntity
 			}));
 			
 		}))

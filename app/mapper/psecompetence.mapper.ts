@@ -6,6 +6,8 @@ export function pseCompetenceEntityToApiObject(entity: PseCompetenceEntity): Pse
 	return {
 		id: entity.id,
 		description: entity.description,
+		requiredCountToValidatePseGlobal: entity.requiredCountToValidatePseGlobal,
+		requiredCountToValidatePse1: entity.requiredCountToValidatePse1,
 	}
 }
 
@@ -13,5 +15,7 @@ export function pseCompetenceApiObjectToDto(apiObject: PseCompetenceApiObject): 
 	return {
 		id: apiObject.id,
 		description: apiObject.description,
+		requiredCountToValidatePseGlobal: apiObject.requiredCountToValidatePseGlobal,
+		requiredCountToValidatePse1: apiObject.requiredCountToValidatePse1,
 	}
 }

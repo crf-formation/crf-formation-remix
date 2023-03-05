@@ -1,8 +1,8 @@
 import type { PseEvaluationCompetenceGradeApiObject, PseEvaluationCompetenceGradePostApiObject, PseUserConcreteCaseApiObject, PseUserConcreteCaseCompetenceApiObject, PseUserConcreteCaseCompetenceGradeApiEnum, PseUserConcreteCaseGroupEvaluationApiObject, PseUserConcreteCaseRoleApiEnum, PseUserConcreteCaseStateApiEnum, PseUserEvaluationApiObject, PseUserEvaluationPostApiObject } from "~/apiobject/pseuserconcretecase.apiobject";
 import type { PseEvaluationCompetenceGradeDto, PseEvaluationCompetenceGradePostDto, PseUserConcreteCaseCompetenceDto, PseUserConcreteCaseCompetenceGradeDtoEnum, PseUserConcreteCaseDto, PseUserConcreteCaseGroupEvaluationDto, PseUserConcreteCaseGroupEvaluationPostDto, PseUserConcreteCaseStateDtoEnum, PseUserEvaluationDto, PseUserEvaluationPostDto } from "~/dto/pseuserconcretecase.dto";
 import type { PseUserConcreteCaseCompetenceEntity, PseUserConcreteCaseEntity } from "~/entity";
-import { PseUserConcreteCasePostEntity } from "~/entity/pseuserconcretecase.entity";
-import { PseUserConcreteCaseGroupEvaluationPostApiObject } from '../apiobject/pseuserconcretecase.apiobject';
+import type { PseUserConcreteCasePostEntity } from "~/entity/pseuserconcretecase.entity";
+import type { PseUserConcreteCaseGroupEvaluationPostApiObject } from '../apiobject/pseuserconcretecase.apiobject';
 import { pseCompetenceApiObjectToDto, pseCompetenceEntityToApiObject } from "./psecompetence.mapper";
 import { pseConcreteCaseGroupApiObjectToDto, pseConcreteCaseGroupEntityToApiObject } from "./pseconcretecasegroup.mapper";
 import { pseConcreteCaseTypeApiObjectToDto, pseConcreteCaseTypeEntityToApiObject } from "./pseconcretecasetype.mapper";
