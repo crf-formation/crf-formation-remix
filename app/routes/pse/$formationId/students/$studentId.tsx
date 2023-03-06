@@ -84,7 +84,11 @@ export default function UserPseFormationSummaryRoute() {
       href: `/pse/${pseFormation.id}/students/${student.id}/concrete-case-evaluations`
     },
     {
-      label: 'Suivi final',
+      label: 'Suivi quotidien',
+      href: `/pse/${pseFormation.id}/students/${student.id}/daily`
+    },
+    {
+      label: 'Résumé',
       href: `/pse/${pseFormation.id}/students/${student.id}/summary`
     }
   ]
