@@ -158,6 +158,16 @@ function FinalComment() {
   );
 }
 
+function Grade({ grade }: { grade: PseUserConcreteCaseCompetenceGradeDtoEnum }) {
+	const label = grade === 'NOT_EVALUATED' ? '' : grade
+
+	return (
+		<Box sx={{ width: 16 }}>
+			{label}
+		</Box>
+	)
+}
+
 function ConcreteCase({ pseCompetences, concreteCase }: { pseCompetences: Array<PseCompetenceDto>, concreteCase: PseUserSummaryConcreteCaseDto }) {
   return (
     <>
@@ -176,25 +186,14 @@ function ConcreteCase({ pseCompetences, concreteCase }: { pseCompetences: Array<
         <TableBody>
           {concreteCase.userConcreteCases.map((userConcreteCase, index) => (
             <TableRow key={userConcreteCase.id}>
-              <TableCell>{index}</TableCell>
-              <TableCell>{concreteCaseModule.pseModule.name}</TableCell>
-              {pseCompetences.map((pseCompetenceResult) => {
-                const c = concreteCaseModule.competencesSummary.find(
-                  (c) => c.pseCompetenceId === pseCompetenceResult.id
-                );
-                if (!c) return null;
+              <TableCell>{index + 1}</TableCell>
+              <TableCell>{userConcreteCase.pseConcreteCaseSituation.pseConcreteCaseType.name}</TableCell>
+              {userConcreteCase.competences.map((competence) => {
                 return (
-                  <TableCell key={pseCompetenceResult.id} align="center">
-                    {c.acquired ? (
-                      <BooleanText withColor checked={c.acquired} />
-                    ) : (
-                      <BooleanText
-                        withColor
-                        checked={c.acquiredForPse1}
-                        trueText="PSE1"
-                        trueColor="warning.main"
-                      />
-                    )}
+                  <TableCell key={competence.id} align="center">
+                    <Grade
+                      grade={competence.grade}
+                    />
                   </TableCell>
                 );
               })}
@@ -203,7 +202,7 @@ function ConcreteCase({ pseCompetences, concreteCase }: { pseCompetences: Array<
           {/* RESULT */}
           <TableRow>
             <TableCell></TableCell>
-            <TableCell><Typography fontWeight={500}>RESULTAT</Typography></TableCell>
+            <TableCell><Typography fontWeight={500}>RÉSULTAT</Typography></TableCell>
             {concreteCase.competencesSummary.map((pseCompetenceResult) => (
               <TableCell key={pseCompetenceResult.pseCompetenceId} align="center">
                 {pseCompetenceResult.acquired ? (

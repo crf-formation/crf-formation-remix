@@ -7,6 +7,7 @@ import { z } from "zod";
 import type { PseFormationApiObject } from "~/apiobject/pseformation.apiobject";
 import AppTabsLink from "~/component/layout/AppTabsLink";
 import { Ariane, ArianeItem } from "~/component/layout/Ariane";
+import ButtonStack from "~/component/layout/ButtonStack";
 import PageContainer from "~/component/layout/PageContainer";
 import PagePaperHeader from "~/component/layout/PagePaperHeader";
 import PageSpace from "~/component/layout/PageSpace";
@@ -100,10 +101,7 @@ export default function UserPseFormationSummaryRoute() {
               href={`/pse/${pseFormation.id}`}
             />
 
-            <ArianeItem
-              label="Participants"
-              href={`/pse/${pseFormation.id}`}
-            />
+            <ArianeItem label="Participants" href={`/pse/${pseFormation.id}`} />
           </Ariane>
         }
       >
@@ -121,15 +119,20 @@ export default function UserPseFormationSummaryRoute() {
           </Grid>
           <Grid item xs={3}>
             <Section title="">
-              {user.hasAdminPermission && (
-                <Link href={`/admin/user/${student.id}`}>
-                  Éditer l'utilisateur
-                </Link>
-              )}
+              <ButtonStack>
+                {user.hasAdminPermission && (
+                  <Link href={`/admin/user/${student.id}`}>
+                    Éditer l'utilisateur
+                  </Link>
+                )}
 
-              <Link href={`/pdf/pse/${pseFormation.id}/final/${student.id}`}>
-                PDF final
-              </Link>
+                <Link
+                  href={`/pdf/pse/${pseFormation.id}/final/${student.id}`}
+                  target="_blank"
+                >
+                  PDF final
+                </Link>
+              </ButtonStack>
             </Section>
           </Grid>
         </Grid>
