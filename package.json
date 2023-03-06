@@ -3,6 +3,7 @@
   "private": true,
   "sideEffects": false,
   "scripts": {
+    "// preinstall": "npx only-allow pnpm",
     "build": "run-s build:*",
     "build:remix": "remix build",
     "dev": "run-p dev:* | pino-pretty",
@@ -63,6 +64,7 @@
     "isbot": "^3.5.1",
     "lodash": "^4.17.21",
     "nprogress": "^0.2.0",
+    "pdf-lib": "^1.17.1",
     "pino": "^8.5.0",
     "pino-pretty": "^9.1.0",
     "prop-types": "^15.8.1",

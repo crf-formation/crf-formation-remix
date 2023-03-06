@@ -126,6 +126,10 @@ export default function UserPseFormationSummaryRoute() {
                   Éditer l'utilisateur
                 </Link>
               )}
+
+              <Link href={`/pdf/pse/${pseFormation.id}/final/${student.id}`}>
+                PDF final
+              </Link>
             </Section>
           </Grid>
         </Grid>
