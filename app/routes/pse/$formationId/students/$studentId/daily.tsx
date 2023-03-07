@@ -1,10 +1,11 @@
 import { Button, Grid, List, ListItem, ListItemText } from "@mui/material";
 import type { Params } from "@remix-run/react";
-import { Link, NavLink, Outlet, useLoaderData } from "@remix-run/react";
+import { Link, Outlet, useLoaderData } from "@remix-run/react";
 import type { LoaderArgs } from "@remix-run/server-runtime";
 import { json } from "@remix-run/server-runtime";
 import { z } from "zod";
 import type { PseFormationApiObject } from "~/apiobject/pseformation.apiobject";
+import InternalLink from "~/component/typography/InternalLink";
 import type { SecurityFunction } from "~/helper/remix";
 import { getParamsOrFail } from "~/helper/remix.params.helper";
 import { pseFormationApiObjectToDto } from '~/mapper/pseformation.mapper';
@@ -78,16 +79,17 @@ export default function DailyListRoute() {
             sx={{ width: "100%", maxWidth: 360, bgcolor: "background.paper" }}
           >
             {dailyList.map((daily) => (
-              <NavLink
+              <InternalLink
+                sx={{
+                  textDecoration: "none",
+                  '&.active .MuiListItem-root': {
+                    borderSize: 1,
+                    borderRight: "solid",
+                    borderColor: "primary.main"
+                  }
+                }}
                 key={daily.id}
                 to={daily.id}
-                style={({ isActive }) =>
-                  isActive
-                    ? {
-                        border: `1px solid black`,
-                      }
-                    : undefined
-                }
               >
                 <ListItem>
                   <ListItemText
@@ -95,7 +97,7 @@ export default function DailyListRoute() {
                     secondary={daily.createdAt}
                   />
                 </ListItem>
-              </NavLink>
+              </InternalLink>
             ))}
           </List>
         </Grid>

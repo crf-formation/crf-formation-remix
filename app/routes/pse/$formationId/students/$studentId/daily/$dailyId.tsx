@@ -1,12 +1,15 @@
-import { TextField } from '@mui/material';
 import type { Params } from "@remix-run/react";
 import { useLoaderData } from "@remix-run/react";
-import type { LoaderArgs } from "@remix-run/server-runtime";
+import type { ActionArgs, LoaderArgs } from "@remix-run/server-runtime";
 import { json } from "@remix-run/server-runtime";
 import { z } from "zod";
 import type { PseFormationApiObject } from "~/apiobject/pseformation.apiobject";
+import DailyNoteForm from '~/component/daily/DailyNoteForm';
+import type { DailyNoteDto, DailyNotePostDto } from "~/dto/daily.dto";
+import { dailyValidator } from "~/form/daily.form";
 import type { SecurityFunction } from "~/helper/remix";
 import { getParamsOrFail } from "~/helper/remix.params.helper";
+import { updateDailyNote } from "~/service/daily.server";
 import { getPseFormationById } from "~/service/pseformation.server";
 import { assertUserHasAccessToFormationAsTeacher } from "~/service/security.server";
 import { requireUser } from "~/service/session.server";
@@ -40,7 +43,7 @@ const security: SecurityFunction<{
 export async function loader({ request, params }: LoaderArgs) {
   const { studentId, dailyId } = await security(request, params)
 
-  const dailyList = [
+  const dailyList: Array<DailyNoteDto> = [
     {
       id: "1",
       createdAt: new Date(),
@@ -67,19 +70,43 @@ export async function loader({ request, params }: LoaderArgs) {
   });
 }
 
+export const action = async ({ request, params }: ActionArgs) => {
+  const { pseFormationApiObject, studentId, dailyId } = await security(request, params)
+
+  const result = await validateForm<DailyNotePostDto>(request, dailyValidator);
+  if (result.errorResponse) {
+    return result.errorResponse
+  }
+
+  const dailyNotePostDto = result.data;	
+
+  const dailyNote = await updateDailyNote(dailyId, dailyNotePostDtoToApiObject(dailyNotePostDto));
+
+  return redirect(`/pse/${pseFormationApiObject.id}/students/${studentId}/daily/${dailyNote.id}`);
+};
+
 export default function DailyRoute() {
   const { daily } = useLoaderData<typeof loader>();
 
   return (
     <>
-      <TextField
-        defaultValue={daily.content}
-        variant="filled"
-        size="medium"
-        fullWidth
-        multiline
-        rows={15}
-      />
+      <DailyNoteForm daily={daily} />
     </>
   );
 }
+function validateForm<T>(request: ActionArgs, dailyValidator: any) {
+  throw new Error("Function not implemented.");
+}
+
+function createDailyNote(arg0: any) {
+  throw new Error("Function not implemented.");
+}
+
+function dailyNotePostDtoToApiObject(dailyNotePostDto: any): any {
+  throw new Error("Function not implemented.");
+}
+
+function redirect(arg0: string) {
+  throw new Error("Function not implemented.");
+}
+
