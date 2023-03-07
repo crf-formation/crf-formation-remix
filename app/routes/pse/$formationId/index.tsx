@@ -163,7 +163,7 @@ function Formation({ formation, hasAdminPermission }: { formation: PseFormationD
       }
     >
       <Property name="Status" value={<FormationPseStatusChip state={formation.state} />} />
-      <Property name="Date" value={<span>{formatDate(formation.from)} au {formatDate(formation.to)}</span>} />
+      <Property name="Date" value={<span>{formatDate(formation.from, "date")} au {formatDate(formation.to, "date")}</span>} />
       <Property name="Lieu" value={<span>{formation.place.title}</span>} />
     </Section>
   );
