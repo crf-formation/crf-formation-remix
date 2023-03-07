@@ -2,75 +2,75 @@ export type UserStateDtoEnum = 'CREATED' | 'DISABLED' | 'ENABLED' | 'ARCHIVED'
 export type UserRoleDtoEnum = 'USER' | 'ADMIN' | 'SUPER_ADMIN'
 
 export interface UserDto {
-  id: string;
-  state: UserStateDtoEnum;
-  role: UserRoleDtoEnum;
-  email: string;
-  firstName: string;
-  lastName: string;
-  fullName: string;
-  createdAt: DateISOString;
-  updatedAt: DateISOString;
+  readonly id: string;
+  readonly state: UserStateDtoEnum;
+  readonly role: UserRoleDtoEnum;
+  readonly email: string;
+  readonly firstName: string;
+  readonly lastName: string;
+  readonly fullName: string;
+  readonly createdAt: DateISOString;
+  readonly updatedAt: DateISOString;
 
-  isAdmin: boolean;
-  isSuperAdmin: boolean;
+  readonly isAdmin: boolean;
+  readonly isSuperAdmin: boolean;
 
   // isAdmin or isSuperAdmin
-  hasAdminPermission: boolean;
+  readonly hasAdminPermission: boolean;
 }
 
 export interface UserPostDto {
-  firstName: string;
-  lastName: string;
-  email: string;
+  readonly firstName: string;
+  readonly lastName: string;
+  readonly email: string;
 }
 
 export interface UserPutDto {
-  state: UserStateDtoEnum;
-  role: UserRoleDtoEnum;
-  email: string;
-  firstName: string;
-  lastName: string;
+  readonly state: UserStateDtoEnum;
+  readonly role: UserRoleDtoEnum;
+  readonly email: string;
+  readonly firstName: string;
+  readonly lastName: string;
 }
 
 export interface UserPasswordPutDto {
-  passwordVerification: string
-  password: string
-  currentPassword: string
+  readonly passwordVerification: string
+  readonly password: string
+  readonly currentPassword: string
 }
 
 export interface UserMeDto {
-  id: string;
-  email: string;
-  state: UserStateDtoEnum;
-  role: UserRoleDtoEnum;
-  firstName: string;
-  lastName: string;
-  fullName: string;
-  createdAt: DateISOString;
-  updatedAt: DateISOString;
+  readonly id: string;
+  readonly email: string;
+  readonly state: UserStateDtoEnum;
+  readonly role: UserRoleDtoEnum;
+  readonly firstName: string;
+  readonly lastName: string;
+  readonly fullName: string;
+  readonly createdAt: DateISOString;
+  readonly updatedAt: DateISOString;
 
-  isAdmin: boolean;
-  isSuperAdmin: boolean;
+  readonly isAdmin: boolean;
+  readonly isSuperAdmin: boolean;
 
   // isAdmin or isSuperAdmin
-  hasAdminPermission: boolean;
+  readonly hasAdminPermission: boolean;
 }
 
 export interface PasswordCreateDto {
-  email: string;
-  token: string;
-  password: string;
-  passwordVerification: string;
+  readonly email: string;
+  readonly token: string;
+  readonly password: string;
+  readonly passwordVerification: string;
 }
 
 export interface PasswordResetDto {
-  email: string;
-  token: string;
-  password: string;
-  passwordVerification: string;
+  readonly email: string;
+  readonly token: string;
+  readonly password: string;
+  readonly passwordVerification: string;
 }
 
 export interface PasswordAskResetDto {
-  email: string;
+  readonly email: string;
 }

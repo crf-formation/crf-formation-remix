@@ -1,7 +1,7 @@
 
 
 export interface PseModuleDto {
-	id: string;
-  name: string
-  moduleId: string
+	readonly id: string;
+  readonly name: string
+  readonly moduleId: string
 }

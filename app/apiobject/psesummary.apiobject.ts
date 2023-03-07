@@ -2,53 +2,53 @@ import type { PseConcreteCaseCompetenceSummaryApiObject, PseUserSummaryPreparato
 import type { UserApiObject } from './user.apiobject';
 
 export interface PseSummaryApiObject {
-	resultSummary: PseResultSummaryApiObject;
-	concreteCaseSummary: PseConcreteCaseSummaryApiObject;
-	techniqueSummary: PseTechniqueSummaryApiObject,
-	preparatoryWorkSummary: PsePreparatoryWorkSummaryApiObject,
+	readonly resultSummary: PseResultSummaryApiObject;
+	readonly concreteCaseSummary: PseConcreteCaseSummaryApiObject;
+	readonly techniqueSummary: PseTechniqueSummaryApiObject,
+	readonly preparatoryWorkSummary: PsePreparatoryWorkSummaryApiObject,
 }
 
 export interface PseResultSummaryApiObject {
-	usersSummary: Array<PseResultUserSummaryApiObject>
+	readonly usersSummary: Array<PseResultUserSummaryApiObject>
 }
 
 export interface PseResultUserSummaryApiObject {
-	user: UserApiObject;
-	hasValidatedPse: boolean;
-	hasValidatedPse1: boolean;
-	hasValidatedTechniquesPse: boolean;
-	hasValidatedTechniquesPse1: boolean;
-	hasValidatedConcreteCasePse: boolean;
-	hasValidatedConcreteCasePse1: boolean;
-	hasValidatedPrepratoryWork: boolean;
+	readonly user: UserApiObject;
+	readonly hasValidatedPse: boolean;
+	readonly hasValidatedPse1: boolean;
+	readonly hasValidatedTechniquesPse: boolean;
+	readonly hasValidatedTechniquesPse1: boolean;
+	readonly hasValidatedConcreteCasePse: boolean;
+	readonly hasValidatedConcreteCasePse1: boolean;
+	readonly hasValidatedPrepratoryWork: boolean;
 }
 
 export interface PseTechniqueSummaryApiObject {
-	usersSummary: Array<PseTechniqueUserSummaryApiObject>
+	readonly usersSummary: Array<PseTechniqueUserSummaryApiObject>
 }
 
 export interface PseTechniqueUserSummaryApiObject {
-	user: UserApiObject;
-	technique: PseUserSummaryTechniqueApiObject
+	readonly user: UserApiObject;
+	readonly technique: PseUserSummaryTechniqueApiObject
 }
 
 
 export interface PsePreparatoryWorkSummaryApiObject {
-	usersSummary: Array<PsePreparatoryWorkUserSummaryApiObject>
+	readonly usersSummary: Array<PsePreparatoryWorkUserSummaryApiObject>
 }
 
 export interface PsePreparatoryWorkUserSummaryApiObject {
-	user: UserApiObject;
-	preparatoryWork: PseUserSummaryPreparatoryWorkApiObject;
+	readonly user: UserApiObject;
+	readonly preparatoryWork: PseUserSummaryPreparatoryWorkApiObject;
 }
 
 export interface PseConcreteCaseSummaryApiObject {
-	usersSummary: Array<PseConcreteCaseUserSummaryApiObject>
+	readonly usersSummary: Array<PseConcreteCaseUserSummaryApiObject>
 }
 
 export interface PseConcreteCaseUserSummaryApiObject {
-	user: UserApiObject;
-	competencesSummary: Array<PseConcreteCaseCompetenceSummaryApiObject>;
-	hasAcquiredAll: boolean;
-  hasAcquiredAllForPse1: boolean;
+	readonly user: UserApiObject;
+	readonly competencesSummary: Array<PseConcreteCaseCompetenceSummaryApiObject>;
+	readonly hasAcquiredAll: boolean;
+  readonly hasAcquiredAllForPse1: boolean;
 }

@@ -1,4 +1,4 @@
-import type { ActionArgs, MetaFunction } from "@remix-run/node";
+import type { ActionArgs, LoaderArgs, MetaFunction } from "@remix-run/node";
 import { json, redirect } from "@remix-run/node";
 import type { Params } from "@remix-run/react";
 import { useActionData, useLoaderData } from "@remix-run/react";
@@ -14,10 +14,10 @@ import PageSubtitle from "~/component/layout/PageSubtitle";
 import PageTitle from "~/component/layout/PageTitle";
 import Section from "~/component/layout/Section";
 import PseConcreteCaseSituationForm from "~/component/pse-concrete-case-situation/PseConcreteCaseSituationForm";
-import type { SecurityFunction } from "~/constant/remix";
 import type { PseConcreteCaseSituationPostDto } from "~/dto/pseconcretecasesituation.dto";
 import { validateForm } from "~/form/abstract";
 import { pseConcreteCaseSituationPostDtoValidator } from "~/form/pseconcretecasesituation.form";
+import type { SecurityFunction } from "~/helper/remix";
 import { getParamsOrFail } from '~/helper/remix.params.helper';
 import { pseConcreteCaseSessionApiObjectToDto } from "~/mapper/pseconcretecasesession.mapper";
 import { pseConcreteCaseSituationPostDtoToApiObject } from "~/mapper/pseconcretecasesituation.mapper";
@@ -52,10 +52,10 @@ const security: SecurityFunction<{
   }
 }
 
-export const loader: LoaderFunction = async ({
+export async function loader({
   request,
 	params
-}) => {
+}: LoaderArgs) {
 	const { pseFormationApiObject, pseConcreteCaseSessionApiObject } = await security(request, params)
 
   return json({

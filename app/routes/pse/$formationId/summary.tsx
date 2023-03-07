@@ -17,8 +17,8 @@ import PseSummaryConcreteCaseSummary from "~/component/pse-summary/PseSummaryCon
 import PseSummaryPreparatoryWorkSummary from "~/component/pse-summary/PseSummaryPreparatoryWorkSummary";
 import PseSummaryResult from "~/component/pse-summary/PseSummaryResult";
 import PseSummaryTechniqueSummary from "~/component/pse-summary/PseSummaryTechniqueSummary";
-import type { SecurityFunction } from '~/constant/remix';
 import { loadAndBuildPseSummary } from "~/helper/psesummary.helper";
+import type { SecurityFunction } from '~/helper/remix';
 import { getParamsOrFail } from '~/helper/remix.params.helper';
 import { pseFormationApiObjectToDto } from "~/mapper/pseformation.mapper";
 import { pseSummaryApiObjectToDto } from "~/mapper/psesummary.mapper";

@@ -1,5 +1,5 @@
 export interface UserPasswordTokenApiObject {
-	userId: string;
-	token: string;
-	tokenExpirationDate: Date;
+	readonly userId: string;
+	readonly token: string;
+	readonly tokenExpirationDate: Date;
 }

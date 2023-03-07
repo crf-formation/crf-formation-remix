@@ -1,53 +1,53 @@
 import Brightness2Icon from "@mui/icons-material/Brightness2";
 import Brightness7Icon from "@mui/icons-material/Brightness7";
 import {
-  Box,
-  Button,
-  Grid,
-  IconButton,
-  Tooltip,
-  Typography,
+	Box,
+	Button,
+	Grid,
+	IconButton,
+	Tooltip,
+	Typography,
 } from "@mui/material";
 import type { Params } from "@remix-run/react";
 import {
-  Form,
-  useActionData,
-  useLoaderData,
-  useLocation,
+	Form,
+	useActionData,
+	useLoaderData,
+	useLocation,
 } from "@remix-run/react";
 import type {
-  ActionArgs,
-  LoaderArgs,
-  MetaFunction,
+	ActionArgs,
+	LoaderArgs,
+	MetaFunction,
 } from "@remix-run/server-runtime";
 import { json, redirect } from "@remix-run/server-runtime";
 import type { UserApiObject } from "~/apiobject/user.apiobject";
 import PasswordForm from "~/component/account/PasswordForm";
 import ProfileForm from "~/component/account/ProfileForm";
 import Section from "~/component/layout/Section";
-import type { SecurityFunction } from "~/constant/remix";
 import type { UserPasswordPutDto, UserPutDto } from "~/dto/user.dto";
 import { validateForm } from '~/form/abstract';
+import type { SecurityFunction } from "~/helper/remix";
 import { badRequest } from "~/helper/responses.helper";
 import useRootData from "~/hook/useRootData";
 import { addFlashMessage } from "~/service/flash.server";
 import {
-  commitSession,
-  getSession,
-  requireUser,
+	commitSession,
+	getSession,
+	requireUser,
 } from "~/service/session.server";
 import {
-  updatePassword,
-  updateUser,
-  verifyLogin,
+	updatePassword,
+	updateUser,
+	verifyLogin,
 } from "~/service/user.server";
 import { verifyAuthenticityToken } from "~/util/csrf.server";
 import { namedActionWithFormType } from "~/util/named-actions";
 import PageContainer from "../component/layout/PageContainer";
 import { passwordModificationValidator, profileValidator } from '../form/user.form';
 import {
-  userApiObjectToDto,
-  userPutDtoToApiObject,
+	userApiObjectToDto,
+	userPutDtoToApiObject,
 } from "../mapper/user.mapper";
 
 export const meta: MetaFunction<typeof loader> = () => {

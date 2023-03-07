@@ -3,18 +3,18 @@ import type { UserApiObject } from "./user.apiobject";
 export type UserOnPseFormationRoleApiEnum = 'STUDENT' | 'TEACHER'
 
 export interface UserOnPseFormationApiObject {
-	id: string;
-	formationId: string;
-	userId: string;
-	role: UserOnPseFormationRoleApiEnum;
-	assignedAt: Date;
-	user: UserApiObject;
+	readonly id: string;
+	readonly formationId: string;
+	readonly userId: string;
+	readonly role: UserOnPseFormationRoleApiEnum;
+	readonly assignedAt: Date;
+	readonly user: UserApiObject;
 }
 
 export interface UserOnPseFormationPutApiObject {
-	id: Optional<string>;
-	userId: string;
-	formationId: string;
-	role: UserOnPseFormationRoleApiEnum;
-	assignedAt: Date;
+	readonly id: Optional<string>;
+	readonly userId: string;
+	readonly formationId: string;
+	readonly role: UserOnPseFormationRoleApiEnum;
+	readonly assignedAt: Date;
 }

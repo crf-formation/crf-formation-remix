@@ -9,13 +9,13 @@ import Section from "~/component/layout/Section";
 import { BooleanText } from "~/component/typography/BooleanText";
 import Callout from '~/component/typography/Callout';
 import Property from "~/component/typography/Property";
-import type { SecurityFunction } from "~/constant/remix";
 import type { PseCompetenceDto } from "~/dto/psecompetence.dto";
 import type {
   PseUserSummaryConcreteCaseDto,
   PseUserSummaryPreparatoryWorkDto,
   PseUserSummaryTechniqueDto,
 } from "~/dto/pseusersummary.dto";
+import type { SecurityFunction } from "~/helper/remix";
 import { getParamsOrFail } from "~/helper/remix.params.helper";
 import { pseUserSummaryApiObjectToDto } from "~/mapper/pseusersummary.mapper";
 import { getPseFormationById } from "~/service/pseformation.server";

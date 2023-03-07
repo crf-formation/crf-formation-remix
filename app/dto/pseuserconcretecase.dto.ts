@@ -8,86 +8,86 @@ import type { UserDto } from './user.dto';
 export type PseUserConcreteCaseStateDtoEnum = 'CREATED' | 'RUNNING' | 'CLOSED';
 export type PseUserConcreteCaseRoleApi = 'LEADER' | 'MINION' | 'WATCHER' | 'UNKNOWN';
 
-// TODO: no zod on dtos?
+// readonly TODO: no zod on dtos?
 export const PseUserConcreteCaseCompetenceGradeZEnum = z.enum(['A', 'B', 'C', 'D', 'NOT_EVALUATED'])
 export type PseUserConcreteCaseCompetenceGradeDtoEnum = z.infer<typeof PseUserConcreteCaseCompetenceGradeZEnum>
 
 export const PseUserConcreteCaseRoleZEnum: z.ZodType<PseUserConcreteCaseRoleApi> = z.enum([ 'LEADER', 'MINION', 'WATCHER', 'UNKNOWN' ])
 
 export interface PseUserConcreteCaseDto {
-	id: string;
-	createdAt: DateISOString;
-	updatedAt: DateISOString;
-	userId: string;
+	readonly id: string;
+	readonly createdAt: DateISOString;
+	readonly updatedAt: DateISOString;
+	readonly userId: string;
 	// optionally loaded
-	user?: UserDto;
-	pseConcreteCaseGroup: PseConcreteCaseGroupDto;
-	pseConcreteCaseSituation: PseConcreteCaseSituationDto;
-	state: PseUserConcreteCaseStateDtoEnum;
-	selected: boolean;
-	competences: Array<PseUserConcreteCaseCompetenceDto>
-	role: PseUserConcreteCaseRoleApi;
+	readonly user?: UserDto;
+	readonly pseConcreteCaseGroup: PseConcreteCaseGroupDto;
+	readonly pseConcreteCaseSituation: PseConcreteCaseSituationDto;
+	readonly state: PseUserConcreteCaseStateDtoEnum;
+	readonly selected: boolean;
+	readonly competences: Array<PseUserConcreteCaseCompetenceDto>
+	readonly role: PseUserConcreteCaseRoleApi;
 }
 
 export interface PseUserConcreteCaseCompetenceDto {
-	id: string;
-	createdAt: DateISOString;
-	updatedAt: DateISOString;
-	pseCompetenceId: string;
-	pseCompetence: PseCompetenceDto;
-	grade: PseUserConcreteCaseCompetenceGradeDtoEnum;
+	readonly id: string;
+	readonly createdAt: DateISOString;
+	readonly updatedAt: DateISOString;
+	readonly pseCompetenceId: string;
+	readonly pseCompetence: PseCompetenceDto;
+	readonly grade: PseUserConcreteCaseCompetenceGradeDtoEnum;
 }
 
 
 // --
 
 export interface PseUserConcreteCaseGroupEvaluationDto {
-	formationId: string;
-	pseConcreteCaseSituationId: string;
-	pseConcreteCaseGroupId: string;
-	pseConcreteCaseSessionId: string;
-	pseConcreteCaseTypeId: string;
-	pseSituationConcreteCaseGroupId: string;
+	readonly formationId: string;
+	readonly pseConcreteCaseSituationId: string;
+	readonly pseConcreteCaseGroupId: string;
+	readonly pseConcreteCaseSessionId: string;
+	readonly pseConcreteCaseTypeId: string;
+	readonly pseSituationConcreteCaseGroupId: string;
 
-	usersGrades: Array<PseUserEvaluationDto>;
+	readonly usersGrades: Array<PseUserEvaluationDto>;
 
 	// utility data
-	competencesToEvaluate: Array<PseCompetenceDto>;
-	students: Array<UserDto>;
+	readonly competencesToEvaluate: Array<PseCompetenceDto>;
+	readonly students: Array<UserDto>;
 }
 
 export interface PseUserEvaluationDto {
-	userId: string;
-	role: PseUserConcreteCaseRoleApiEnum;
-	grades: Array<PseEvaluationCompetenceGradeDto>;
+	readonly userId: string;
+	readonly role: PseUserConcreteCaseRoleApiEnum;
+	readonly grades: Array<PseEvaluationCompetenceGradeDto>;
 }
 
 export interface PseEvaluationCompetenceGradeDto {
-	pseCompetenceId: string;
-	shouldEvaluate: boolean;
-	grade: PseUserConcreteCaseCompetenceGradeDtoEnum // should default to NOT_EVALUATED
+	readonly pseCompetenceId: string;
+	readonly shouldEvaluate: boolean;
+	readonly grade: PseUserConcreteCaseCompetenceGradeDtoEnum // should default to NOT_EVALUATED
 }
 
 // --
 
 export interface PseUserConcreteCaseGroupEvaluationPostDto {
-	formationId: string;
-	pseConcreteCaseSituationId: string;
-	pseConcreteCaseGroupId: string;
-	pseConcreteCaseSessionId: string;
-	pseConcreteCaseTypeId: string;
-	pseSituationConcreteCaseGroupId: string;
+	readonly formationId: string;
+	readonly pseConcreteCaseSituationId: string;
+	readonly pseConcreteCaseGroupId: string;
+	readonly pseConcreteCaseSessionId: string;
+	readonly pseConcreteCaseTypeId: string;
+	readonly pseSituationConcreteCaseGroupId: string;
 
-	usersGrades: Array<PseUserEvaluationPostDto>;
+	readonly usersGrades: Array<PseUserEvaluationPostDto>;
 }
 
 export interface PseUserEvaluationPostDto {
-	userId: string;
-	role: PseUserConcreteCaseRoleApiEnum;
-	grades: Array<PseEvaluationCompetenceGradePostDto>;
+	readonly userId: string;
+	readonly role: PseUserConcreteCaseRoleApiEnum;
+	readonly grades: Array<PseEvaluationCompetenceGradePostDto>;
 }
 
 export interface PseEvaluationCompetenceGradePostDto {
-	pseCompetenceId: string;
-	grade: PseUserConcreteCaseCompetenceGradeDtoEnum // should default to NOT_EVALUATED
+	readonly pseCompetenceId: string;
+	readonly grade: PseUserConcreteCaseCompetenceGradeDtoEnum // should default to NOT_EVALUATED
 }

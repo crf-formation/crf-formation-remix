@@ -4,74 +4,74 @@ import type { PseUserConcreteCaseApiObject } from './pseuserconcretecase.apiobje
 import type { PseUserTechniqueApiObject } from "./pseusertechnique.apiobject";
 
 export interface PseUserSummaryApiObject {
-  formationId: string;
-  userId: string;
+  readonly formationId: string;
+  readonly userId: string;
 
-  technique: PseUserSummaryTechniqueApiObject;
-  preparatoryWork: PseUserSummaryPreparatoryWorkApiObject;
-  concreteCase: PseUserSummaryConcreteCaseApiObject;
+  readonly technique: PseUserSummaryTechniqueApiObject;
+  readonly preparatoryWork: PseUserSummaryPreparatoryWorkApiObject;
+  readonly concreteCase: PseUserSummaryConcreteCaseApiObject;
 
-  pseCompetences: Array<PseCompetenceApiObject>;
+  readonly pseCompetences: Array<PseCompetenceApiObject>;
 
-  hasValidatedPse: boolean;
-  hasValidatedPse1: boolean;
+  readonly hasValidatedPse: boolean;
+  readonly hasValidatedPse1: boolean;
 }
 
 export interface PseUserSummaryPreparatoryWorkApiObject {
   /**
    * Should be true to validate the PSE.
    */
-  hasRealisedAllModules: boolean;
+  readonly hasRealisedAllModules: boolean;
 
-  preparatoryWorks: PseUserPreparatoryWorkApiObject[];
+  readonly preparatoryWorks: PseUserPreparatoryWorkApiObject[];
 }
 
 export interface PseUserSummaryTechniqueApiObject {
   /**
    * Must be true to validate the PSE.
    */
-  hasAcquiredAllTechniques: boolean;
+  readonly hasAcquiredAllTechniques: boolean;
   /**
    * When the PSE is not validated, we can validate a PSE1, must be true to validate the PSE1.
    */
-  hasAcquiredAllTechniquesToValidatePse1: boolean;
+  readonly hasAcquiredAllTechniquesToValidatePse1: boolean;
 
-  userTechniques: Array<PseUserTechniqueApiObject>;
+  readonly userTechniques: Array<PseUserTechniqueApiObject>;
 
-  nbAcquired: number;
-  nbNotAcquired: number;
+  readonly nbAcquired: number;
+  readonly nbNotAcquired: number;
 
-  nbAcquiredToValidatePse1: number;
-  nbNotAcquiredToValidatePse1: number;
+  readonly nbAcquiredToValidatePse1: number;
+  readonly nbNotAcquiredToValidatePse1: number;
 }
 
 
 export interface PseUserSummaryConcreteCaseApiObject {
-  userConcreteCases: Array<PseUserConcreteCaseApiObject>;
+  readonly userConcreteCases: Array<PseUserConcreteCaseApiObject>;
 
-  hasAcquiredAll: boolean;
-  hasAcquiredAllForPse1: boolean;
+  readonly hasAcquiredAll: boolean;
+  readonly hasAcquiredAllForPse1: boolean;
 
   // result of the competence for each modules
-  competencesSummary: Array<PseConcreteCaseCompetenceSummaryApiObject>;
+  readonly competencesSummary: Array<PseConcreteCaseCompetenceSummaryApiObject>;
 }
 
 export interface PseConcreteCaseCompetenceSummaryApiObject {
-  pseCompetenceId: string;
-  pseCompetence: PseCompetenceApiObject;
+  readonly pseCompetenceId: string;
+  readonly pseCompetence: PseCompetenceApiObject;
 
-  acquired: boolean
-  acquiredForPse1: boolean
+  readonly acquired: boolean
+  readonly acquiredForPse1: boolean
 
-	nbA: number;
-	nbB: number;
-	nbC: number;
-	nbD: number;
-	nbNotEvalued: number;
+	readonly nbA: number;
+	readonly nbB: number;
+	readonly nbC: number;
+	readonly nbD: number;
+	readonly nbNotEvalued: number;
 	
-	nbAcquired: number; // nbA + nbB
-	nbNotAcquired: number; // nbC + nbD
-	nbTotal: number; // nbSucceed + nbFailed, we do not take nbNotEvalued
+	readonly nbAcquired: number; // nbA + nbB
+	readonly nbNotAcquired: number; // nbC + nbD
+	readonly nbTotal: number; // nbSucceed + nbFailed, we do not take nbNotEvalued
 
-	isInDifficulty: boolean;
+	readonly isInDifficulty: boolean;
 }

@@ -1,7 +1,7 @@
 
 export interface PlaceDto {
-	id: string;
-  createdAt: DateISOString;
-  updatedAt: DateISOString;
-  title: string;
+	readonly id: string;
+  readonly createdAt: DateISOString;
+  readonly updatedAt: DateISOString;
+  readonly title: string;
 }

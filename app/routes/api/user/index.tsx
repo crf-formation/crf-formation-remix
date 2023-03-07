@@ -1,7 +1,7 @@
 import type { LoaderFunction } from "@remix-run/node";
 import { json } from "@remix-run/node";
 import { z } from "zod";
-import type { SecurityFunction } from "~/constant/remix";
+import type { SecurityFunction } from "~/helper/remix";
 import { getSearchParamsOrFail } from "~/helper/remix.params.helper";
 import { paginateEntityToApiObject } from "~/mapper/abstract.mapper";
 import { userApiObjectToDto } from "~/mapper/user.mapper";

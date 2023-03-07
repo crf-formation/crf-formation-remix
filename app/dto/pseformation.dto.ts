@@ -4,32 +4,32 @@ import type { UserDto } from "./user.dto";
 export type PseFormationStateDtoEnum = 'CREATED' | 'DISABLED' | 'ENABLED' | 'ARCHIVED'
 
 export interface PseFormationDto {
-  id: string;
-  createdAt: Date;
-  updatedAt: Date;
-  state: PseFormationStateDtoEnum;
-  title: string;
-	from: string;
-	to: string;
-	place: PlaceDto;
-	placeId: string;
-	teachers: Array<UserDto>;
-	students: Array<UserDto>;
+  readonly id: string;
+  readonly createdAt: Date;
+  readonly updatedAt: Date;
+  readonly state: PseFormationStateDtoEnum;
+  readonly title: string;
+	readonly from: string;
+	readonly to: string;
+	readonly place: PlaceDto;
+	readonly placeId: string;
+	readonly teachers: Array<UserDto>;
+	readonly students: Array<UserDto>;
 }
 
 export interface PseFormationPostDto {
-	state: PseFormationStateDtoEnum;
-  title: string;
-	from: Date;
-	to: Date;
-	placeId: string;
+	readonly state: PseFormationStateDtoEnum;
+  readonly title: string;
+	readonly from: Date;
+	readonly to: Date;
+	readonly placeId: string;
 }
 
 export interface PseFormationPutDto {
-	state: PseFormationStateDtoEnum;
-  title: string;
-	from: Date;
-	to: Date;
-	placeId: string;
-	users: Array<UserDto>;
+	readonly state: PseFormationStateDtoEnum;
+  readonly title: string;
+	readonly from: Date;
+	readonly to: Date;
+	readonly placeId: string;
+	readonly users: Array<UserDto>;
 }

@@ -1,7 +1,7 @@
 import type { ActionArgs, LoaderArgs } from "@remix-run/node";
 import { redirect } from "@remix-run/node";
 import type { Params } from "react-router";
-import type { SecurityFunction } from "~/constant/remix";
+import type { SecurityFunction } from "~/helper/remix";
 
 import { logout } from "~/service/session.server";
 

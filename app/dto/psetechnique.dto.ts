@@ -1,9 +1,9 @@
 import type { PseModuleDto } from "./psemodule.dto";
 
 export interface PseTechniqueDto {
-	id: string;
-	name: string;
-	requiredForPse1: boolean;
-	pseModule: PseModuleDto;
-	pseModuleId: string;
+	readonly id: string;
+	readonly name: string;
+	readonly requiredForPse1: boolean;
+	readonly pseModule: PseModuleDto;
+	readonly pseModuleId: string;
 }

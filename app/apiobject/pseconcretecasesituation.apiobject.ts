@@ -4,51 +4,51 @@ import type { UserApiObject } from './user.apiobject';
 
 
 export interface PseConcreteCaseSituationApiObject {
-	id: string;
-	createdAt: Date;
-	updatedAt: Date;
+	readonly id: string;
+	readonly createdAt: Date;
+	readonly updatedAt: Date;
 
-	teacherId: string;
-	teacher: UserApiObject;
+	readonly teacherId: string;
+	readonly teacher: UserApiObject;
 
-	pseConcreteCaseSessionId: string;
-	pseConcreteCaseTypeId: string;
+	readonly pseConcreteCaseSessionId: string;
+	readonly pseConcreteCaseTypeId: string;
 
-	pseConcreteCaseType: PseConcreteCaseTypeApiObject;
+	readonly pseConcreteCaseType: PseConcreteCaseTypeApiObject;
 
-	pseSituationConcreteCaseGroups: Array<PseSituationConcreteCaseGroupApiObject>
+	readonly pseSituationConcreteCaseGroups: Array<PseSituationConcreteCaseGroupApiObject>
 }
 
 export interface PseSituationConcreteCaseGroupApiObject {
-	id: string;
-	createdAt: Date;
-	updatedAt: Date;
+	readonly id: string;
+	readonly createdAt: Date;
+	readonly updatedAt: Date;
 
-	pseConcreteCaseGroupId: string;
-	pseConcreteCaseGroup: PseConcreteCaseGroupApiObject;
+	readonly pseConcreteCaseGroupId: string;
+	readonly pseConcreteCaseGroup: PseConcreteCaseGroupApiObject;
 
 	/**
 	 * Position of the group in the situation, to order them.
 	 */
-	position: number;
+	readonly position: number;
 }
 
 export interface PseConcreteCaseSituationPostApiObject {
-	pseConcreteCaseSessionId: string;
-	pseConcreteCaseTypeId: string;
-	teacherId: string;
-	pseSituationConcreteCaseGroups: Array<PseSituationConcreteCaseGroupPutApiObject>
+	readonly pseConcreteCaseSessionId: string;
+	readonly pseConcreteCaseTypeId: string;
+	readonly teacherId: string;
+	readonly pseSituationConcreteCaseGroups: Array<PseSituationConcreteCaseGroupPutApiObject>
 }
 
 export interface PseConcreteCaseSituationPutApiObject {
-	pseConcreteCaseSessionId: string;
-	pseConcreteCaseTypeId: string;
-	teacherId: string;
-	pseSituationConcreteCaseGroups: Array<PseSituationConcreteCaseGroupPutApiObject>
+	readonly pseConcreteCaseSessionId: string;
+	readonly pseConcreteCaseTypeId: string;
+	readonly teacherId: string;
+	readonly pseSituationConcreteCaseGroups: Array<PseSituationConcreteCaseGroupPutApiObject>
 }
 
 export interface PseSituationConcreteCaseGroupPutApiObject {
-	id?: string; // null if creation, non-null if already exists.
-	pseConcreteCaseGroupId: string;
-	position: number;
+	readonly id?: string; // null if creation, non-null if already exists.
+	readonly pseConcreteCaseGroupId: string;
+	readonly position: number;
 }

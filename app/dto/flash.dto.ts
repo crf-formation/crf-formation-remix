@@ -1,7 +1,7 @@
 export interface FlashMessage {
-  id: string;
-  message: string;
-  severity: FlashMessageType;
+  readonly id: string;
+  readonly message: string;
+  readonly severity: FlashMessageType;
 }
 
 export type FlashMessageType = "error" | "warning" | "info" | "success";

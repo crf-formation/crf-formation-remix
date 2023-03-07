@@ -2,10 +2,10 @@ import type { PseTechniqueDto } from "./psetechnique.dto";
 
 
 export interface PseUserTechniqueDto {
-	id: Optional<string>; // null when object not yet created on database
-  userId: string;
-  formationId: string;
-  technique: PseTechniqueDto;
-  techniqueId: string;
-  acquired: boolean;
+	readonly id: Optional<string>; // null when object not yet created on database
+  readonly userId: string;
+  readonly formationId: string;
+  readonly technique: PseTechniqueDto;
+  readonly techniqueId: string;
+  readonly acquired: boolean;
 }

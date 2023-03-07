@@ -1,12 +1,12 @@
 import {
-    Button,
-    Link,
-    Table,
-    TableBody,
-    TableCell,
-    TableContainer,
-    TableHead,
-    TableRow,
+	Button,
+	Link,
+	Table,
+	TableBody,
+	TableCell,
+	TableContainer,
+	TableHead,
+	TableRow,
 } from "@mui/material";
 import type { Params } from "@remix-run/react";
 import { useLoaderData } from "@remix-run/react";
@@ -20,7 +20,7 @@ import PagePaperHeader from "~/component/layout/PagePaperHeader";
 import PageSpace from "~/component/layout/PageSpace";
 import PageTitle from "~/component/layout/PageTitle";
 import Section from "~/component/layout/Section";
-import type { SecurityFunction } from "~/constant/remix";
+import type { SecurityFunction } from "~/helper/remix";
 import { getParamsOrFail, getSearchParamsOrFail } from "~/helper/remix.params.helper";
 import { paginateApiObjectToDto } from "~/mapper/abstract.mapper";
 import { pseConcreteCaseSessionApiObjectToDto } from "~/mapper/pseconcretecasesession.mapper";

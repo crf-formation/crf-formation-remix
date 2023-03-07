@@ -13,7 +13,7 @@ import PagePaperHeader from "~/component/layout/PagePaperHeader";
 import PageSpace from "~/component/layout/PageSpace";
 import PageTitle from "~/component/layout/PageTitle";
 import Section from "~/component/layout/Section";
-import type { SecurityFunction } from "~/constant/remix";
+import type { SecurityFunction } from "~/helper/remix";
 import { getParamsOrFail } from "~/helper/remix.params.helper";
 import useUser from "~/hook/useUser";
 import { pseFormationApiObjectToDto } from "~/mapper/pseformation.mapper";

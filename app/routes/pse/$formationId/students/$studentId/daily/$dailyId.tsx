@@ -5,7 +5,7 @@ import type { LoaderArgs } from "@remix-run/server-runtime";
 import { json } from "@remix-run/server-runtime";
 import { z } from "zod";
 import type { PseFormationApiObject } from "~/apiobject/pseformation.apiobject";
-import type { SecurityFunction } from "~/constant/remix";
+import type { SecurityFunction } from "~/helper/remix";
 import { getParamsOrFail } from "~/helper/remix.params.helper";
 import { getPseFormationById } from "~/service/pseformation.server";
 import { assertUserHasAccessToFormationAsTeacher } from "~/service/security.server";

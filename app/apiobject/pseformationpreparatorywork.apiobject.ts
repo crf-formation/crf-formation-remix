@@ -1,14 +1,14 @@
 import type { PseModuleApiObject } from "./psemodule.apiobject";
 
 export interface PseUserPreparatoryWorkApiObject {
-	id: Optional<string>; // null when object not yet created on database
-  createdAt: Date;
-  updatedAt: Date;
-  userId: string;
-  formationId: string;
-  pseModule: PseModuleApiObject;
-  pseModuleId: string;
-  openingDate?: Optional<Date>;
-  realisedDate?: Optional<Date>;
-  realised: boolean;
+	readonly id: Optional<string>; // null when object not yet created on database
+  readonly createdAt: Date;
+  readonly updatedAt: Date;
+  readonly userId: string;
+  readonly formationId: string;
+  readonly pseModule: PseModuleApiObject;
+  readonly pseModuleId: string;
+  readonly openingDate?: Optional<Date>;
+  readonly realisedDate?: Optional<Date>;
+  readonly realised: boolean;
 }

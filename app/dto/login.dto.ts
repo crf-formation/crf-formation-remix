@@ -1,8 +1,8 @@
 
 
 export interface LoginDto {
-	email: string;
-	password: string;
-	remember: boolean;
-	redirectTo: string;
+	readonly email: string;
+	readonly password: string;
+	readonly remember: boolean;
+	readonly redirectTo: string;
 }

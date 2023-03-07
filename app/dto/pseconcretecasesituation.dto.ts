@@ -4,54 +4,54 @@ import type { UserDto } from './user.dto';
 
 
 export interface PseConcreteCaseSituationDto {
-	id: string;
-	createdAt: DateISOString;
-	updatedAt: DateISOString;
+	readonly id: string;
+	readonly createdAt: DateISOString;
+	readonly updatedAt: DateISOString;
 
-	teacherId: string;
-	teacher: UserDto;
+	readonly teacherId: string;
+	readonly teacher: UserDto;
 
-	name: string; // dto only
+	readonly name: string; // dto only
 
-	pseConcreteCaseType: PseConcreteCaseTypeDto;
+	readonly pseConcreteCaseType: PseConcreteCaseTypeDto;
 
-	pseSituationConcreteCaseGroups: Array<PseSituationConcreteCaseGroupDto>
+	readonly pseSituationConcreteCaseGroups: Array<PseSituationConcreteCaseGroupDto>
 }
 
 export interface PseSituationConcreteCaseGroupDto {
-	id: string;
-	createdAt: DateISOString;
-	updatedAt: DateISOString;
+	readonly id: string;
+	readonly createdAt: DateISOString;
+	readonly updatedAt: DateISOString;
 
-	pseConcreteCaseGroupId: string;
-	pseConcreteCaseGroup: PseConcreteCaseGroupDto;
+	readonly pseConcreteCaseGroupId: string;
+	readonly pseConcreteCaseGroup: PseConcreteCaseGroupDto;
 
 	/**
 	 * Position of the group in the situation, to order them.
 	 */
-	position: number;
+	readonly position: number;
 }
 
 export interface PseConcreteCaseSituationPostDto {
-	pseConcreteCaseSessionId: string;
-	pseConcreteCaseTypeId: string;
-	teacherId: string;
-	pseSituationConcreteCaseGroups?: Array<PseSituationConcreteCaseGroupPutDto>
+	readonly pseConcreteCaseSessionId: string;
+	readonly pseConcreteCaseTypeId: string;
+	readonly teacherId: string;
+	readonly pseSituationConcreteCaseGroups?: Array<PseSituationConcreteCaseGroupPutDto>
 }
 
 export interface PseConcreteCaseSituationPutDto {
-	pseConcreteCaseTypeId: string;
-	teacherId: string;
-	pseSituationConcreteCaseGroups: Array<PseSituationConcreteCaseGroupPutDto>
+	readonly pseConcreteCaseTypeId: string;
+	readonly teacherId: string;
+	readonly pseSituationConcreteCaseGroups: Array<PseSituationConcreteCaseGroupPutDto>
 }
 
 export interface PseSituationConcreteCaseGroupPutDto {
-	id?: string; // null if creation, non-null if already exists.
-	pseConcreteCaseGroupId: string;
-	position: number;
+	readonly id?: string; // null if creation, non-null if already exists
+	readonly pseConcreteCaseGroupId: string;
+	readonly position: number;
 }
 
 export interface PseSituationConcreteCaseGroupPostDto {
-	pseConcreteCaseGroupId: string;
-	position: number;
+	readonly pseConcreteCaseGroupId: string;
+	readonly position: number;
 }

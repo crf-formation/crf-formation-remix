@@ -1,7 +1,7 @@
 
 export interface PlaceApiObject {
-	id: string;
-  createdAt: Date;
-  updatedAt: Date;
-  title: string;
+	readonly id: string;
+  readonly createdAt: Date;
+  readonly updatedAt: Date;
+  readonly title: string;
 }

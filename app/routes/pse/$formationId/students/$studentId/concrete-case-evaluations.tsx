@@ -7,7 +7,7 @@ import { z } from "zod";
 import type { PseFormationApiObject } from "~/apiobject/pseformation.apiobject";
 import Section from "~/component/layout/Section";
 import PseUserConcreteCasesTable from "~/component/pse-user-concrete-case/PseUserConcreteCasesTable";
-import type { SecurityFunction } from "~/constant/remix";
+import type { SecurityFunction } from "~/helper/remix";
 import { getParamsOrFail } from "~/helper/remix.params.helper";
 import { pseFormationApiObjectToDto } from "~/mapper/pseformation.mapper";
 import { pseUserSummaryConcreteCaseApiObjectToDto } from "~/mapper/pseusersummary.mapper";

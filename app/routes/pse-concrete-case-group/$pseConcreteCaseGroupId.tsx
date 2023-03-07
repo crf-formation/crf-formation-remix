@@ -1,4 +1,4 @@
-import type { ActionArgs, LoaderArgs, LoaderFunction, MetaFunction } from "@remix-run/node";
+import type { ActionArgs, LoaderFunction, MetaFunction } from "@remix-run/node";
 import { json, redirect } from "@remix-run/node";
 import type { Params } from "@remix-run/react";
 import { useActionData, useLoaderData } from "@remix-run/react";
@@ -7,7 +7,11 @@ import type { PseConcreteCaseGroupApiObject } from "~/apiobject/pseconcretecaseg
 import type { PseConcreteCaseSessionApiObject } from "~/apiobject/pseconcretecasesession.apiobject";
 import type { PseFormationApiObject } from "~/apiobject/pseformation.apiobject";
 import type { UserApiObject } from "~/apiobject/user.apiobject";
+import { Ariane, ArianeItem } from "~/component/layout/Ariane";
 import PageContainer from "~/component/layout/PageContainer";
+import PagePaperHeader from "~/component/layout/PagePaperHeader";
+import PageSpace from "~/component/layout/PageSpace";
+import PageSubtitle from "~/component/layout/PageSubtitle";
 import PageTitle from "~/component/layout/PageTitle";
 import Section from "~/component/layout/Section";
 import PseConcreteCaseGroupForm from "~/component/pse-concrete-case-group/PseConcreteCaseGroupForm";
@@ -15,6 +19,7 @@ import type { PseConcreteCaseGroupPutDto, PseUserConcreteCaseGroupStudentDto } f
 import { validateForm } from "~/form/abstract";
 import { pseConcreteCaseGroupPutDtoValidator } from "~/form/pseconcretecasegroup.form";
 import type { SecurityFunction } from "~/helper/remix.helper";
+import { getParamsOrFail } from "~/helper/remix.params.helper";
 import { pseConcreteCaseGroupPutDtoToApiObject } from "~/mapper/pseconcretecasegroup.mapper";
 import { pseConcreteCaseSessionApiObjectToDto } from "~/mapper/pseconcretecasesession.mapper";
 import { pseFormationApiObjectToDto } from "~/mapper/pseformation.mapper";
@@ -24,10 +29,6 @@ import { getPseFormationByPseConcreteCaseSessionId } from "~/service/pseformatio
 import { assertUserHasAccessToFormationAsTeacher } from "~/service/security.server";
 import { requireUser } from "~/service/session.server";
 import { pseConcreteCaseGroupApiObjectToDto } from '../../mapper/pseconcretecasegroup.mapper';
-import PagePaperHeader from "~/component/layout/PagePaperHeader";
-import PageSpace from "~/component/layout/PageSpace";
-import PageSubtitle from "~/component/layout/PageSubtitle";
-import { Ariane, ArianeItem } from "~/component/layout/Ariane";
 
 const ParamsSchema = z.object({
   pseConcreteCaseGroupId: z.string(),

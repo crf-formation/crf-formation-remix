@@ -6,75 +6,75 @@ import type { PseUserConcreteCaseDto } from './pseuserconcretecase.dto';
 import type { PseUserTechniqueDto } from "./pseusertechnique.dto";
 
 export interface PseUserSummaryDto {
-  formationId: string;
-  userId: string;
+  readonly formationId: string;
+  readonly userId: string;
 
-  technique: PseUserSummaryTechniqueDto;
-  preparatoryWork: PseUserSummaryPreparatoryWorkDto;
-  concreteCase: PseUserSummaryConcreteCaseDto;
+  readonly technique: PseUserSummaryTechniqueDto;
+  readonly preparatoryWork: PseUserSummaryPreparatoryWorkDto;
+  readonly concreteCase: PseUserSummaryConcreteCaseDto;
 
-  pseCompetences: Array<PseCompetenceDto>;
+  readonly pseCompetences: Array<PseCompetenceDto>;
 
-  hasValidatedPse: boolean;
-  hasValidatedPse1: boolean;
+  readonly hasValidatedPse: boolean;
+  readonly hasValidatedPse1: boolean;
 }
 
 export interface PseUserSummaryPreparatoryWorkDto {
-  hasRealisedAllModules: boolean;
+  readonly hasRealisedAllModules: boolean;
 
-  preparatoryWorks: PseUserPreparatoryWorkDto[];
+  readonly preparatoryWorks: PseUserPreparatoryWorkDto[];
 }
 
 export interface PseUserSummaryTechniqueDto {
-  hasAcquiredAllTechniques: boolean;
-  hasAcquiredAllTechniquesToValidatePse1: boolean;
+  readonly hasAcquiredAllTechniques: boolean;
+  readonly hasAcquiredAllTechniquesToValidatePse1: boolean;
 
-  userTechniques: Array<PseUserTechniqueDto>;
+  readonly userTechniques: Array<PseUserTechniqueDto>;
 
-  nbAcquired: number;
-  nbNotAcquired: number;
+  readonly nbAcquired: number;
+  readonly nbNotAcquired: number;
 
-  nbAcquiredToValidatePse1: number;
-  nbNotAcquiredToValidatePse1: number;
+  readonly nbAcquiredToValidatePse1: number;
+  readonly nbNotAcquiredToValidatePse1: number;
 }
 
 export interface PseUserSummaryConcreteCaseDto {
-  userConcreteCases: Array<PseUserConcreteCaseDto>;
+  readonly userConcreteCases: Array<PseUserConcreteCaseDto>;
 
   // TODO: list of selected concreate cases
-  hasAcquiredAll: boolean;
-  hasAcquiredAllForPse1: boolean;
+  readonly hasAcquiredAll: boolean;
+  readonly hasAcquiredAllForPse1: boolean;
 
-  competencesSummary: Array<PseConcreteCaseCompetenceSummaryDto>;
+  readonly competencesSummary: Array<PseConcreteCaseCompetenceSummaryDto>;
 }
 
 export interface PseUserSummaryConcreteCaseModuleDto {
-  pseModuleId: string;
-  pseModule: PseModuleDto;
+  readonly pseModuleId: string;
+  readonly pseModule: PseModuleDto;
 
-	competencesSummary: Array<PseConcreteCaseCompetenceSummaryDto>;
+	readonly competencesSummary: Array<PseConcreteCaseCompetenceSummaryDto>;
 
-  hasAcquiredAllCompetences: boolean;
-  hasAcquiredAllCompetencesForPse1: boolean;
+  readonly hasAcquiredAllCompetences: boolean;
+  readonly hasAcquiredAllCompetencesForPse1: boolean;
   // TODO: list of selected concreate cases for module
 }
 
 export interface PseConcreteCaseCompetenceSummaryDto {
-  pseCompetenceId: string;
-  pseCompetence: PseCompetenceApiObject;
+  readonly pseCompetenceId: string;
+  readonly pseCompetence: PseCompetenceApiObject;
 
-  acquired: boolean
-  acquiredForPse1: boolean
+  readonly acquired: boolean
+  readonly acquiredForPse1: boolean
 
-	nbA: number;
-	nbB: number;
-	nbC: number;
-	nbD: number;
-	nbNotEvalued: number;
+	readonly nbA: number;
+	readonly nbB: number;
+	readonly nbC: number;
+	readonly nbD: number;
+	readonly nbNotEvalued: number;
 	
-	nbAcquired: number; // nbA + nbB
-	nbNotAcquired: number; // nbC + nbD
-	nbTotal: number; // nbSucceed + nbFailed, we do not take nbNotEvalued
+	readonly nbAcquired: number; // nbA + nbB
+	readonly nbNotAcquired: number; // nbC + nbD
+	readonly nbTotal: number; // nbSucceed + nbFailed, we do not take nbNotEvalued
 
-	isInDifficulty: boolean;
+	readonly isInDifficulty: boolean;
 }

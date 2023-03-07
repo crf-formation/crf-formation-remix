@@ -5,33 +5,33 @@ import type { PseConcreteCaseSituationApiObject } from './pseconcretecasesituati
 export type PseConcreteCaseSessionStateApiEnum = 'CREATED' | 'RUNNING' | 'CLOSED';
 
 export interface PseConcreteCaseSessionApiObject {
-	id: string;
-	createdAt: Date;
-	updatedAt: Date;
+	readonly id: string;
+	readonly createdAt: Date;
+	readonly updatedAt: Date;
 
-	name: string;
-	state: PseConcreteCaseSessionStateApiEnum;
+	readonly name: string;
+	readonly state: PseConcreteCaseSessionStateApiEnum;
 
-	pseConcreteCaseGroups: Array<PseConcreteCaseGroupApiObject>;
-	pseConcreteCaseSituations: Array<PseConcreteCaseSituationApiObject>;
+	readonly pseConcreteCaseGroups: Array<PseConcreteCaseGroupApiObject>;
+	readonly pseConcreteCaseSituations: Array<PseConcreteCaseSituationApiObject>;
 
 	// not on database
 
 	/**
 	 * requires situations, so we consider it as not configured if there no situations, nor groups.
 	 */
-	isConfigured: boolean;
+	readonly isConfigured: boolean;
 }
 
 export interface PseConcreteCaseSessionPostApiObject {
-	name: string;
-	state: PseConcreteCaseSessionStateApiEnum;
-	formationId: string;
+	readonly name: string;
+	readonly state: PseConcreteCaseSessionStateApiEnum;
+	readonly formationId: string;
 }
 
 export interface PseConcreteCaseSessionPutApiObject {
-	name: string;
-	state: PseConcreteCaseSessionStateApiEnum;
+	readonly name: string;
+	readonly state: PseConcreteCaseSessionStateApiEnum;
 }
 
 //
@@ -39,18 +39,18 @@ export interface PseConcreteCaseSessionPutApiObject {
 //
 
 export interface PseConcreteCaseSessionGroupOrderApiObject {
-  pseConcreteCaseGroup: PseConcreteCaseGroupApiObject;
+  readonly pseConcreteCaseGroup: PseConcreteCaseGroupApiObject;
 
-  groupOrderSituations: Array<PseConcreteCaseSessionGroupOrderSituationApiObject>;
+  readonly groupOrderSituations: Array<PseConcreteCaseSessionGroupOrderSituationApiObject>;
 
-  duplicatedPositions: Array<PseConcreteCaseSessionGroupOrderSituationApiObject>;
-  situationsWithoutPosition: Array<PseConcreteCaseSituationApiObject>;
+  readonly duplicatedPositions: Array<PseConcreteCaseSessionGroupOrderSituationApiObject>;
+  readonly situationsWithoutPosition: Array<PseConcreteCaseSituationApiObject>;
 
-	hasNoPositions: boolean
-	hasSomeSituationsWithoutPosition: boolean
+	readonly hasNoPositions: boolean
+	readonly hasSomeSituationsWithoutPosition: boolean
 }
 
 export interface PseConcreteCaseSessionGroupOrderSituationApiObject {
-  pseConcreteCaseSituation: PseConcreteCaseSituationApiObject;
-  position: number;
+  readonly pseConcreteCaseSituation: PseConcreteCaseSituationApiObject;
+  readonly position: number;
 }

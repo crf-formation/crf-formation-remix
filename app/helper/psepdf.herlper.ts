@@ -7,13 +7,13 @@ type SetTextFunction = (page: PDFPage, x: number, y: number, size: number, text:
 type SetSmallYesNoFunction = (page: PDFPage, x: number, y: number, checked: boolean) => void
 
 interface PdfApi {
-	helveticaFont: PDFFont;
-	pages: PDFPage[];
-	pseFormation: PseFormationApiObject;
-	user: UserApiObject;
-	pseUserSummary: PseUserSummaryApiObject;
-	setText: SetTextFunction
-	setSmallYesNo: SetSmallYesNoFunction
+	readonly helveticaFont: PDFFont;
+	readonly pages: PDFPage[];
+	readonly pseFormation: PseFormationApiObject;
+	readonly user: UserApiObject;
+	readonly pseUserSummary: PseUserSummaryApiObject;
+	readonly setText: SetTextFunction
+	readonly setSmallYesNo: SetSmallYesNoFunction
 }
 
 const DEFAULT_FONT_SIZE = 12 // TODO: rename to DEFAULT_SIZE
