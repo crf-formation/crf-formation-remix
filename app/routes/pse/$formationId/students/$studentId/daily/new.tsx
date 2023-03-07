@@ -1,3 +1,4 @@
+import { Box, Typography } from '@mui/material';
 import type { ActionArgs } from "@remix-run/node";
 import { redirect } from "@remix-run/node";
 import type { Params } from "@remix-run/react";
@@ -8,7 +9,7 @@ import DailyNoteForm from "~/component/daily/DailyNoteForm";
 import type { DailyPostDto as DailyNotePostDto } from "~/dto/daily.dto";
 import { validateForm } from "~/form/abstract";
 import { dailyValidator } from "~/form/daily.form";
-import type { SecurityFunction } from "~/helper/remix";
+import type { SecurityFunction } from '~/helper/remix.helper';
 import { getParamsOrFail } from "~/helper/remix.params.helper";
 import { dailyNotePostDtoToApiObject } from "~/mapper/daily.mapper";
 import { createDailyNote } from "~/service/daily.server";
@@ -64,7 +65,10 @@ export default function NewDailyNotePage() {
 
   return (
     <>
-      <DailyNoteForm daily={newDaily} />
-    </> 
+      <Typography variant="h3">Nouvelle note</Typography>
+      <Box mt={2}>
+        <DailyNoteForm daily={newDaily} />
+      </Box>
+    </>
   );
 }

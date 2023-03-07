@@ -8,6 +8,7 @@ import type { PseFormationApiObject } from "~/apiobject/pseformation.apiobject";
 import InternalLink from "~/component/typography/InternalLink";
 import type { SecurityFunction } from "~/helper/remix";
 import { getParamsOrFail } from "~/helper/remix.params.helper";
+import useI18n from "~/hook/useI18n";
 import { pseFormationApiObjectToDto } from '~/mapper/pseformation.mapper';
 import { getPseFormationById } from "~/service/pseformation.server";
 import { assertUserHasAccessToFormationAsTeacher } from "~/service/security.server";
@@ -66,6 +67,7 @@ export async function loader({ request, params }: LoaderArgs) {
 
 export default function DailyListRoute() {
   const { pseFormation, studentId, dailyList } = useLoaderData<typeof loader>();
+  const { formatDate } = useI18n()
 
   return (
     <>
@@ -94,7 +96,7 @@ export default function DailyListRoute() {
                 <ListItem>
                   <ListItemText
                     primary={daily.title}
-                    secondary={daily.createdAt}
+                    secondary={formatDate(daily.createdAt, 'datetime')}
                   />
                 </ListItem>
               </InternalLink>

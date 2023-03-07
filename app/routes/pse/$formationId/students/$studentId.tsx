@@ -8,7 +8,7 @@ import type { PseFormationApiObject } from "~/apiobject/pseformation.apiobject";
 import AppTabsLink from "~/component/layout/AppTabsLink";
 import { Ariane, ArianeItem } from "~/component/layout/Ariane";
 import ButtonStack from "~/component/layout/ButtonStack";
-import PageContainer from "~/component/layout/PageContainer";
+import Main from "~/component/layout/Main";
 import PagePaperHeader from "~/component/layout/PagePaperHeader";
 import PageSpace from "~/component/layout/PageSpace";
 import PageTitle from "~/component/layout/PageTitle";
@@ -116,7 +116,7 @@ export default function UserPseFormationSummaryRoute() {
 
       <PageSpace variant="header" />
 
-      <PageContainer>
+      <Main sx={{ px: 4, mb: 4, }}>
         <Grid container spacing={2}>
           <Grid item xs={9}>
             <Outlet />
@@ -140,7 +140,7 @@ export default function UserPseFormationSummaryRoute() {
             </Section>
           </Grid>
         </Grid>
-      </PageContainer>
+      </Main>
     </>
   );
 }

@@ -6,6 +6,7 @@ import { z } from "zod";
 import type { PseFormationApiObject } from "~/apiobject/pseformation.apiobject";
 import DailyNoteForm from '~/component/daily/DailyNoteForm';
 import type { DailyNoteDto, DailyNotePostDto } from "~/dto/daily.dto";
+import { validateForm } from "~/form/abstract";
 import { dailyValidator } from "~/form/daily.form";
 import type { SecurityFunction } from "~/helper/remix";
 import { getParamsOrFail } from "~/helper/remix.params.helper";
@@ -46,15 +47,15 @@ export async function loader({ request, params }: LoaderArgs) {
   const dailyList: Array<DailyNoteDto> = [
     {
       id: "1",
-      createdAt: new Date(),
-      updateddAt: new Date(),
+      createdAt: new Date().toISOString(),
+      updateddAt: new Date().toISOString(),
       title: "Note 1 - Lundi",
 			content: `Content note 1`
     },
     {
       id: "2",
-      createdAt: new Date(),
-      updateddAt: new Date(),
+      createdAt: new Date().toISOString(),
+      updateddAt: new Date().toISOString(),
       title: "Note 2 - Mardi",
 			content: `Content note 2`
     }
@@ -94,19 +95,3 @@ export default function DailyRoute() {
     </>
   );
 }
-function validateForm<T>(request: ActionArgs, dailyValidator: any) {
-  throw new Error("Function not implemented.");
-}
-
-function createDailyNote(arg0: any) {
-  throw new Error("Function not implemented.");
-}
-
-function dailyNotePostDtoToApiObject(dailyNotePostDto: any): any {
-  throw new Error("Function not implemented.");
-}
-
-function redirect(arg0: string) {
-  throw new Error("Function not implemented.");
-}
-
