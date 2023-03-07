@@ -1,6 +1,6 @@
 import { parse, parseISO } from "date-fns";
 import type { PseFormationApiObject, PseFormationPostApiObject, PseFormationPutApiObject, PseFormationStateApiEnum } from "~/apiobject/pseformation.apiobject";
-import { UserOnPseFormationApiObject } from "~/apiobject/useronpseformation.apiobject";
+import type { UserOnPseFormationApiObject } from "~/apiobject/useronpseformation.apiobject";
 import type { PseFormationDto, PseFormationPostDto, PseFormationPutDto } from "~/dto/pseformation.dto";
 import type { PseFormationEntity } from "~/entity";
 import { assertEnum } from "~/mapper/abstract.mapper";

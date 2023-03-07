@@ -1,18 +1,18 @@
 import { z } from 'zod';
 import type { PseUserConcreteCaseRoleApiEnum } from '~/apiobject/pseuserconcretecase.apiobject';
-import { PseConcreteCaseSituationDto } from '~/dto/pseconcretecasesituation.dto';
+import type { PseConcreteCaseSituationDto } from '~/dto/pseconcretecasesituation.dto';
 import type { PseCompetenceDto } from './psecompetence.dto';
 import type { PseConcreteCaseGroupDto } from './pseconcretecasegroup.dto';
 import type { UserDto } from './user.dto';
 
 export type PseUserConcreteCaseStateDtoEnum = 'CREATED' | 'RUNNING' | 'CLOSED';
-export type PseUserConcreteCaseRoleApi = 'LEADER' | 'MINION' | 'WATCHER' | 'UNKNOWN';
+export type PseUserConcreteCaseRoleDtoEnum = 'LEADER' | 'MINION' | 'WATCHER' | 'UNKNOWN';
 
 // readonly TODO: no zod on dtos?
 export const PseUserConcreteCaseCompetenceGradeZEnum = z.enum(['A', 'B', 'C', 'D', 'NOT_EVALUATED'])
 export type PseUserConcreteCaseCompetenceGradeDtoEnum = z.infer<typeof PseUserConcreteCaseCompetenceGradeZEnum>
 
-export const PseUserConcreteCaseRoleZEnum: z.ZodType<PseUserConcreteCaseRoleApi> = z.enum([ 'LEADER', 'MINION', 'WATCHER', 'UNKNOWN' ])
+export const PseUserConcreteCaseRoleZEnum: z.ZodType<PseUserConcreteCaseRoleDtoEnum> = z.enum([ 'LEADER', 'MINION', 'WATCHER', 'UNKNOWN' ])
 
 export interface PseUserConcreteCaseDto {
 	readonly id: string;
@@ -26,7 +26,7 @@ export interface PseUserConcreteCaseDto {
 	readonly state: PseUserConcreteCaseStateDtoEnum;
 	readonly selected: boolean;
 	readonly competences: Array<PseUserConcreteCaseCompetenceDto>
-	readonly role: PseUserConcreteCaseRoleApi;
+	readonly role: PseUserConcreteCaseRoleDtoEnum;
 }
 
 export interface PseUserConcreteCaseCompetenceDto {

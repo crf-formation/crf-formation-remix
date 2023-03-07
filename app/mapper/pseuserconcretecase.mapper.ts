@@ -1,5 +1,5 @@
 import type { PseEvaluationCompetenceGradeApiObject, PseEvaluationCompetenceGradePostApiObject, PseUserConcreteCaseApiObject, PseUserConcreteCaseCompetenceApiObject, PseUserConcreteCaseCompetenceGradeApiEnum, PseUserConcreteCaseGroupEvaluationApiObject, PseUserConcreteCaseRoleApiEnum, PseUserConcreteCaseStateApiEnum, PseUserEvaluationApiObject, PseUserEvaluationPostApiObject } from "~/apiobject/pseuserconcretecase.apiobject";
-import type { PseEvaluationCompetenceGradeDto, PseEvaluationCompetenceGradePostDto, PseUserConcreteCaseCompetenceDto, PseUserConcreteCaseCompetenceGradeDtoEnum, PseUserConcreteCaseDto, PseUserConcreteCaseGroupEvaluationDto, PseUserConcreteCaseGroupEvaluationPostDto, PseUserConcreteCaseStateDtoEnum, PseUserEvaluationDto, PseUserEvaluationPostDto } from "~/dto/pseuserconcretecase.dto";
+import type { PseEvaluationCompetenceGradeDto, PseEvaluationCompetenceGradePostDto, PseUserConcreteCaseCompetenceDto, PseUserConcreteCaseCompetenceGradeDtoEnum, PseUserConcreteCaseDto, PseUserConcreteCaseGroupEvaluationDto, PseUserConcreteCaseGroupEvaluationPostDto, PseUserConcreteCaseRoleDtoEnum, PseUserConcreteCaseStateDtoEnum, PseUserEvaluationDto, PseUserEvaluationPostDto } from "~/dto/pseuserconcretecase.dto";
 import type { PseUserConcreteCaseCompetenceEntity, PseUserConcreteCaseEntity } from "~/entity";
 import type { PseUserConcreteCasePostEntity } from "~/entity/pseuserconcretecase.entity";
 import type { PseUserConcreteCaseGroupEvaluationPostApiObject } from '../apiobject/pseuserconcretecase.apiobject';
@@ -54,7 +54,6 @@ function pseUserConcreteCaseCompetenceGradeStringToApiEnum(grade: string): PseUs
 }
 
 export function pseUserConcreteCaseApiObjectToDto(apiObject: PseUserConcreteCaseApiObject): PseUserConcreteCaseDto {
-	console.log({ apiObject })
 	return {
 		id: apiObject.id,
 		createdAt: apiObject.createdAt.toISOString(),
@@ -66,11 +65,11 @@ export function pseUserConcreteCaseApiObjectToDto(apiObject: PseUserConcreteCase
 		state: pseUserConcreteCaseStateApiEnumToDto(apiObject.state),
 		selected: apiObject.selected,
 		competences: apiObject.competences.map(pseUserConcreteCaseCompetenceApiObjectToDto),
-		role: PseUserConcreteCaseRoleDtoEnumEnumToDtoEnum(apiObject.role),
+		role: pseUserConcreteCaseRoleApiEnumToDtoEnum(apiObject.role),
 	}
 }
 
-function PseUserConcreteCaseRoleDtoEnumEnumToDtoEnum(role: PseUserConcreteCaseRoleApiEnum): PseUserConcreteCaseRoleApiEnum {
+function pseUserConcreteCaseRoleApiEnumToDtoEnum(role: PseUserConcreteCaseRoleApiEnum): PseUserConcreteCaseRoleDtoEnum {
 	return role as PseUserConcreteCaseRoleApiEnum
 }
 

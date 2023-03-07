@@ -1,73 +1,73 @@
 import type { PseConcreteCaseSummaryApiObject, PseConcreteCaseUserSummaryApiObject, PsePreparatoryWorkSummaryApiObject, PsePreparatoryWorkUserSummaryApiObject, PseResultSummaryApiObject, PseResultUserSummaryApiObject, PseSummaryApiObject, PseTechniqueSummaryApiObject, PseTechniqueUserSummaryApiObject } from '~/apiobject/psesummary.apiobject';
 import type { PseConcreteCaseSummaryDto, PseConcreteCaseUserSummaryDto, PsePreparatoryWorkSummaryDto, PsePreparatoryWorkUserSummaryDto, PseResultSummaryDto, PseResultUserSummaryDto, PseSummaryDto, PseTechniqueSummaryDto, PseTechniqueUserSummaryDto } from '~/dto/psesummary.dto';
-import { pseConcreteCaseCompetenceSummaryDtoToApiObject, pseUserSummaryPreparatoryWorkApiObjectToDto, pseUserSummaryTechniqueApiObjectToDto } from '~/mapper/pseusersummary.mapper';
+import { pseConcreteCaseCompetenceSummaryApiObjectToDto, pseUserSummaryPreparatoryWorkApiObjectToDto, pseUserSummaryTechniqueApiObjectToDto } from '~/mapper/pseusersummary.mapper';
 import { userApiObjectToDto } from '~/mapper/user.mapper';
 
-export function pseSummaryApiObjectToDto(apiObject: PseSummaryApiObject): PseSummaryDto {
-	return {
-		resultSummary: pseResultSummaryApiObjectToDto(apiObject.resultSummary),
-		concreteCaseSummary: pseConcreteCaseSummaryApiObjectToDto(apiObject.concreteCaseSummary),
-		techniqueSummary: pseTechniqueSummaryApiObjectToDto(apiObject.techniqueSummary),
-		preparatoryWorkSummary: psePreparatoryWorkSummaryApiObjectToDto(apiObject.preparatoryWorkSummary),
-	}
+export function pseSummaryApiObjectToDto(pseSummaryApiObject: PseSummaryApiObject): PseSummaryDto {
+  return {
+    resultSummary: pseResultSummaryApiObjectToDto(pseSummaryApiObject.resultSummary),
+    concreteCaseSummary: pseConcreteCaseSummaryApiObjectToDto(pseSummaryApiObject.concreteCaseSummary),
+    techniqueSummary: pseTechniqueSummaryApiObjectToDto(pseSummaryApiObject.techniqueSummary),
+    preparatoryWorkSummary: psePreparatoryWorkSummaryApiObjectToDto(pseSummaryApiObject.preparatoryWorkSummary),
+  }
 }
 
-function pseResultSummaryApiObjectToDto(apiObject: PseResultSummaryApiObject): PseResultSummaryDto {
-	return {
-		usersSummary: apiObject.usersSummary.map(pseResultUserSummaryApiObjectToDto)
-	}
+export function pseResultSummaryApiObjectToDto(pseResultSummaryApiObject: PseResultSummaryApiObject): PseResultSummaryDto {
+  return {
+    usersSummary: pseResultSummaryApiObject.usersSummary.map(pseResultUserSummaryApiObjectToDto),
+  }
 }
 
-function pseResultUserSummaryApiObjectToDto(apiObject: PseResultUserSummaryApiObject): PseResultUserSummaryDto {
-	return {
-		user: userApiObjectToDto(apiObject.user),
-		hasValidatedPse: apiObject.hasValidatedPse,
-		hasValidatedPse1: apiObject.hasValidatedPse1,
-		hasValidatedTechniquesPse: apiObject.hasValidatedTechniquesPse,
-		hasValidatedTechniquesPse1: apiObject.hasValidatedTechniquesPse1,
-		hasValidatedConcreteCasePse: apiObject.hasValidatedConcreteCasePse,
-		hasValidatedConcreteCasePse1: apiObject.hasValidatedConcreteCasePse1,
-		hasValidatedPrepratoryWork: apiObject.hasValidatedPrepratoryWork,
-	}
+export function pseResultUserSummaryApiObjectToDto(pseResultUserSummaryApiObject: PseResultUserSummaryApiObject): PseResultUserSummaryDto {
+  return {
+    user: userApiObjectToDto(pseResultUserSummaryApiObject.user),
+    hasValidatedPse: pseResultUserSummaryApiObject.hasValidatedPse,
+    hasValidatedPse1: pseResultUserSummaryApiObject.hasValidatedPse1,
+    hasValidatedTechniquesPse: pseResultUserSummaryApiObject.hasValidatedTechniquesPse,
+    hasValidatedTechniquesPse1: pseResultUserSummaryApiObject.hasValidatedTechniquesPse1,
+    hasValidatedConcreteCasePse: pseResultUserSummaryApiObject.hasValidatedConcreteCasePse,
+    hasValidatedConcreteCasePse1: pseResultUserSummaryApiObject.hasValidatedConcreteCasePse1,
+    hasValidatedPrepratoryWork: pseResultUserSummaryApiObject.hasValidatedPrepratoryWork,
+  }
 }
 
-function pseTechniqueSummaryApiObjectToDto(apiObject: PseTechniqueSummaryApiObject): PseTechniqueSummaryDto {
-	return {
-		usersSummary: apiObject.usersSummary.map(pseTechniqueUserSummaryApiObjectToDto)
-	}
+export function pseTechniqueSummaryApiObjectToDto(pseTechniqueSummaryApiObject: PseTechniqueSummaryApiObject): PseTechniqueSummaryDto {
+  return {
+    usersSummary: pseTechniqueSummaryApiObject.usersSummary.map(pseTechniqueUserSummaryApiObjectToDto),
+  }
 }
 
-function pseTechniqueUserSummaryApiObjectToDto(apiObject: PseTechniqueUserSummaryApiObject): PseTechniqueUserSummaryDto {
-	return {
-		user: userApiObjectToDto(apiObject.user),	
-		technique: pseUserSummaryTechniqueApiObjectToDto(apiObject.technique),
-	}
+export function pseTechniqueUserSummaryApiObjectToDto(pseTechniqueUserSummaryApiObject: PseTechniqueUserSummaryApiObject): PseTechniqueUserSummaryDto {
+  return {
+    user: userApiObjectToDto(pseTechniqueUserSummaryApiObject.user),
+    technique: pseUserSummaryTechniqueApiObjectToDto(pseTechniqueUserSummaryApiObject.technique),
+  }
 }
 
-function psePreparatoryWorkSummaryApiObjectToDto(apiObject: PsePreparatoryWorkSummaryApiObject): PsePreparatoryWorkSummaryDto {
-	return {
-		usersSummary: apiObject.usersSummary.map(psePreparatoryWorkUserSummaryApiObjectToDto)
-	}
+export function psePreparatoryWorkSummaryApiObjectToDto(psePreparatoryWorkSummaryApiObject: PsePreparatoryWorkSummaryApiObject): PsePreparatoryWorkSummaryDto {
+  return {
+    usersSummary: psePreparatoryWorkSummaryApiObject.usersSummary.map(psePreparatoryWorkUserSummaryApiObjectToDto),
+  }
 }
 
-function psePreparatoryWorkUserSummaryApiObjectToDto(apiObject: PsePreparatoryWorkUserSummaryApiObject): PsePreparatoryWorkUserSummaryDto {
-	return {
-		user: userApiObjectToDto(apiObject.user),
-		preparatoryWork: pseUserSummaryPreparatoryWorkApiObjectToDto(apiObject.preparatoryWork)
-	}
+export function psePreparatoryWorkUserSummaryApiObjectToDto(psePreparatoryWorkUserSummaryApiObject: PsePreparatoryWorkUserSummaryApiObject): PsePreparatoryWorkUserSummaryDto {
+  return {
+    user: userApiObjectToDto(psePreparatoryWorkUserSummaryApiObject.user),
+    preparatoryWork: pseUserSummaryPreparatoryWorkApiObjectToDto(psePreparatoryWorkUserSummaryApiObject.preparatoryWork),
+  }
 }
 
-function pseConcreteCaseSummaryApiObjectToDto(apiObject: PseConcreteCaseSummaryApiObject): PseConcreteCaseSummaryDto {
-	return {
-		usersSummary: apiObject.usersSummary.map(pseConcreteCaseUserSummaryApiObjectDto)
-	}
+export function pseConcreteCaseSummaryApiObjectToDto(pseConcreteCaseSummaryApiObject: PseConcreteCaseSummaryApiObject): PseConcreteCaseSummaryDto {
+  return {
+    usersSummary: pseConcreteCaseSummaryApiObject.usersSummary.map(pseConcreteCaseUserSummaryApiObjectToDto),
+  }
 }
 
-function pseConcreteCaseUserSummaryApiObjectDto(apiObject: PseConcreteCaseUserSummaryApiObject): PseConcreteCaseUserSummaryDto {
-	return {
-		user: userApiObjectToDto(apiObject.user),
-		competencesSummary: apiObject.competencesSummary.map(pseConcreteCaseCompetenceSummaryDtoToApiObject),
-		hasAcquiredAll: apiObject.hasAcquiredAll,
-		hasAcquiredAllForPse1: apiObject.hasAcquiredAllForPse1,
-	}
+export function pseConcreteCaseUserSummaryApiObjectToDto(pseConcreteCaseUserSummaryApiObject: PseConcreteCaseUserSummaryApiObject): PseConcreteCaseUserSummaryDto {
+  return {
+    user: userApiObjectToDto(pseConcreteCaseUserSummaryApiObject.user),
+    competencesSummary: pseConcreteCaseUserSummaryApiObject.competencesSummary.map(pseConcreteCaseCompetenceSummaryApiObjectToDto),
+    hasAcquiredAll: pseConcreteCaseUserSummaryApiObject.hasAcquiredAll,
+    hasAcquiredAllForPse1: pseConcreteCaseUserSummaryApiObject.hasAcquiredAllForPse1,
+  }
 }

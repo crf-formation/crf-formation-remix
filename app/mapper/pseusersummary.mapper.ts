@@ -43,11 +43,11 @@ export function pseUserSummaryConcreteCaseApiObjectToDto(apiObject: PseUserSumma
 		userConcreteCases: apiObject.userConcreteCases.map(pseUserConcreteCaseApiObjectToDto),
 		hasAcquiredAll: apiObject.hasAcquiredAll,
 		hasAcquiredAllForPse1: apiObject.hasAcquiredAllForPse1,
-		competencesSummary: apiObject.competencesSummary.map(pseConcreteCaseCompetenceSummaryDtoToApiObject),
+		competencesSummary: apiObject.competencesSummary.map(pseConcreteCaseCompetenceSummaryApiObjectToDto),
 	}
 }
 
-export function pseConcreteCaseCompetenceSummaryDtoToApiObject(apiObject: PseConcreteCaseCompetenceSummaryApiObject): PseConcreteCaseCompetenceSummaryDto {
+export function pseConcreteCaseCompetenceSummaryApiObjectToDto(apiObject: PseConcreteCaseCompetenceSummaryApiObject): PseConcreteCaseCompetenceSummaryDto {
 	return {
 		pseCompetenceId: apiObject.pseCompetenceId,
 		pseCompetence: pseCompetenceApiObjectToDto(apiObject.pseCompetence),
