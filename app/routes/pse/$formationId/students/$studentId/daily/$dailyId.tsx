@@ -2,6 +2,7 @@ import type { Params } from "@remix-run/react";
 import { useLoaderData } from "@remix-run/react";
 import type { ActionArgs, LoaderArgs } from "@remix-run/server-runtime";
 import { json } from "@remix-run/server-runtime";
+import { redirect } from "react-router";
 import { z } from "zod";
 import type { PseFormationApiObject } from "~/apiobject/pseformation.apiobject";
 import DailyNoteForm from '~/component/daily/DailyNoteForm';
@@ -10,6 +11,7 @@ import { validateForm } from "~/form/abstract";
 import { dailyValidator } from "~/form/daily.form";
 import type { SecurityFunction } from "~/helper/remix";
 import { getParamsOrFail } from "~/helper/remix.params.helper";
+import { dailyNotePostDtoToApiObject } from "~/mapper/daily.mapper";
 import { updateDailyNote } from "~/service/daily.server";
 import { getPseFormationById } from "~/service/pseformation.server";
 import { assertUserHasAccessToFormationAsTeacher } from "~/service/security.server";
@@ -91,7 +93,7 @@ export default function DailyRoute() {
 
   return (
     <>
-      <DailyNoteForm daily={daily} />
+      <DailyNoteForm key={daily.id} daily={daily} />
     </>
   );
 }

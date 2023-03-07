@@ -1,8 +1,9 @@
-import { Button, Grid, List, ListItem, ListItemText } from "@mui/material";
+import { Box, Button, Divider, Grid, List, ListItem, ListItemText } from '@mui/material';
 import type { Params } from "@remix-run/react";
 import { Link, Outlet, useLoaderData } from "@remix-run/react";
 import type { LoaderArgs } from "@remix-run/server-runtime";
 import { json } from "@remix-run/server-runtime";
+import { Fragment } from 'react';
 import { z } from "zod";
 import type { PseFormationApiObject } from "~/apiobject/pseformation.apiobject";
 import InternalLink from "~/component/typography/InternalLink";
@@ -73,33 +74,38 @@ export default function DailyListRoute() {
     <>
       <Grid container spacing={2}>
         <Grid item md={4}>
-          <Link to="new" style={{ textDecoration: "none" }}>
-            <Button variant="outlined">créer une note</Button>
-          </Link>
+          <Box sx={{ textAlign: "center" }}>
+            <Link to="new" style={{ textDecoration: "none" }}>
+              <Button variant="outlined">créer une note</Button>
+            </Link>
+          </Box>
 
           <List
-            sx={{ width: "100%", maxWidth: 360, bgcolor: "background.paper" }}
+            sx={{ width: "100%", maxWidth: 360, bgcolor: "background.paper", mt: 2 }}
           >
             {dailyList.map((daily) => (
-              <InternalLink
-                sx={{
-                  textDecoration: "none",
-                  '&.active .MuiListItem-root': {
-                    borderSize: 1,
-                    borderRight: "solid",
-                    borderColor: "primary.main"
-                  }
-                }}
-                key={daily.id}
-                to={daily.id}
-              >
-                <ListItem>
-                  <ListItemText
-                    primary={daily.title}
-                    secondary={formatDate(daily.createdAt, 'datetime')}
-                  />
-                </ListItem>
-              </InternalLink>
+              <Fragment key={daily.id}>
+                <InternalLink
+                  sx={{
+                    textDecoration: "none",
+                    "&.active .MuiListItem-root": {
+                      borderSize: 1,
+                      borderRight: "solid",
+                      borderColor: "primary.main",
+                    },
+                  }}
+                  to={daily.id}
+                >
+                  <ListItem>
+                    <ListItemText
+                      primary={daily.title}
+                      secondary={formatDate(daily.createdAt, "datetime")}
+                    />
+                  </ListItem>
+                </InternalLink>
+
+                <Divider light component="li" />
+              </Fragment>
             ))}
           </List>
         </Grid>

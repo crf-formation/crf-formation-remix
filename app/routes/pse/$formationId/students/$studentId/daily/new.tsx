@@ -65,7 +65,7 @@ export default function NewDailyNotePage() {
 
   return (
     <>
-      <Typography variant="h3">Nouvelle note</Typography>
+      <Typography variant="h4">Nouvelle note</Typography>
       <Box mt={2}>
         <DailyNoteForm daily={newDaily} />
       </Box>
