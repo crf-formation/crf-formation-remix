@@ -1,8 +1,9 @@
 import { AppBar, Box, Tabs } from "@mui/material";
+import type { ReactNode } from "react";
 
 interface AppTabsProps {
   children: ReactNode
-  value: number
+  value?: any
 }
 
 
@@ -53,9 +54,16 @@ export default function AppTabs({ value, children }: AppTabsProps) {
         p: 0,
         m: 0,
         mb: 2,
+        "& .Mui-selected": {
+          // borderBottom: '3px solid white'
+        }
       })}
     >
-      <Tabs value={value} textColor="inherit">
+      <Tabs 
+        value={value} 
+        textColor="inherit"
+        allowScrollButtonsMobile
+      >
         {children}
       </Tabs>
     </AppBar>
