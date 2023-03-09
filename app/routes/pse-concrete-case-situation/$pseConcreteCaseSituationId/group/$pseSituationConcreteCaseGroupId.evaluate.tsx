@@ -168,7 +168,7 @@ export default function PseConcreteCaseSituationRoute() {
             />
 
             <ArianeItem
-              label="Sessions"
+              label="Cas concret"
               href={`/pse/${pseFormation.id}/concrete-case/session`}
             />
 

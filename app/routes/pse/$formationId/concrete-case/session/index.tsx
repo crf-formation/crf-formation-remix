@@ -1,12 +1,12 @@
 import {
-	Button,
-	Link,
-	Table,
-	TableBody,
-	TableCell,
-	TableContainer,
-	TableHead,
-	TableRow,
+  Button,
+  Link,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
 } from "@mui/material";
 import type { Params } from "@remix-run/react";
 import { useLoaderData } from "@remix-run/react";
@@ -110,7 +110,7 @@ export default function ConcreteCaseSessionsRoute() {
           </Ariane>
         }
       >
-        <PageTitle title="Sessions" />
+        <PageTitle title="Cas concrets" />
       </PagePaperHeader>
 
       <PageSpace variant="header" />
