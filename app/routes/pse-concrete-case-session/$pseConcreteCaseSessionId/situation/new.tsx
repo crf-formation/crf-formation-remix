@@ -12,7 +12,6 @@ import PagePaperHeader from '~/component/layout/PagePaperHeader';
 import PageSpace from "~/component/layout/PageSpace";
 import PageSubtitle from "~/component/layout/PageSubtitle";
 import PageTitle from "~/component/layout/PageTitle";
-import Section from "~/component/layout/Section";
 import PseConcreteCaseSituationForm from "~/component/pse-concrete-case-situation/PseConcreteCaseSituationForm";
 import type { PseConcreteCaseSituationPostDto } from "~/dto/pseconcretecasesituation.dto";
 import { validateForm } from "~/form/abstract";
@@ -129,14 +128,12 @@ export default function PseConcreteCaseSessionNewSituationRoute() {
       <PageSpace variant="header" />
 
       <PageContainer>
-        <Section>
-          <PseConcreteCaseSituationForm
-            pseFormationId={pseFormation.id}
-            pseConcreteCaseSessionId={pseConcreteCaseSession.id}
-            pseConcreteCaseGroups={pseConcreteCaseSession.pseConcreteCaseGroups}
-            actionData={actionData}
-          />
-        </Section>
+        <PseConcreteCaseSituationForm
+          pseFormationId={pseFormation.id}
+          pseConcreteCaseSessionId={pseConcreteCaseSession.id}
+          pseConcreteCaseGroups={pseConcreteCaseSession.pseConcreteCaseGroups}
+          actionData={actionData}
+        />
       </PageContainer>
     </>
   );

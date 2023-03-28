@@ -17,7 +17,7 @@ export default function PageContainer({ children, ariane }: { children: ReactNod
       <Container
         maxWidth="lg"
         sx={{
-          paddingTop: "3rem",
+          // paddingTop: "3rem",
           mb: 4,
         }}
       >

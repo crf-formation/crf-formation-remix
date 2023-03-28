@@ -1,6 +1,8 @@
 // based on https://github.com/mui/material-ui/blob/master/examples/remix-with-typescript/app/root.tsx
 import { ThemeProvider, withEmotionCache } from "@emotion/react";
 import { Box, CssBaseline, Link as MuiLink, Typography } from "@mui/material";
+import { LocalizationProvider } from "@mui/x-date-pickers";
+import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import type {
   LinksFunction,
   LoaderArgs,
@@ -19,19 +21,14 @@ import {
   ScrollRestoration,
   useCatch, useLoaderData
 } from "@remix-run/react";
+import type { ActionArgs } from '@remix-run/server-runtime';
+import { json } from '@remix-run/server-runtime';
+import fr from 'date-fns/locale/fr';
 import nProgressStyles from "nprogress/nprogress.css";
 import { useContext, useMemo } from "react";
 import { AuthenticityTokenProvider } from "~/component/csrf";
 import ClientStyleContext from "~/component/layout/ClientStyleContext";
 import Layout from "~/component/layout/Layout";
-import type { ThemeNames } from "./constant";
-import { DEFAULT_THEME } from "./constant";
-import useEnhancedEffect from "./hook/useEnhancedEffect";
-import { commitSession, getMe, getSession } from "./service/session.server";
-import { getTheme } from "./theme";
-import { getUserTheme, themeCookie } from "./util/theme.server";
-import type { ActionArgs} from '@remix-run/server-runtime';
-import { json } from '@remix-run/server-runtime';
 import { LoadingBar } from "~/component/layout/LoadingBar";
 import useIsLoading from "~/hook/useIsLoading";
 import { logger } from "~/service/logger";
@@ -39,11 +36,15 @@ import { getPublicProperties } from '~/service/publicproperties.server';
 import DebugMatches from "./component/dev/DebugMatches";
 import ErrorPageContainer from "./component/layout/ErrorPageContainer";
 import FlashMessages from "./component/layout/FlashMessages";
+import type { ThemeNames } from "./constant";
+import { DEFAULT_THEME } from "./constant";
 import { CSRF_SESSION_KEY } from "./constant/index.server";
 import type { Env } from "./constant/types";
+import type { FlashMessage } from "./dto/flash.dto";
 import type { PseFormationDto } from "./dto/pseformation.dto";
 import type { PublicPropertiesDto } from "./dto/publicproperties.dto";
 import type { UserMeDto } from "./dto/user.dto";
+import useEnhancedEffect from "./hook/useEnhancedEffect";
 import { pseFormationApiObjectToDto } from './mapper/pseformation.mapper';
 import { userApiObjectToUserMeDto } from "./mapper/user.mapper";
 import { getBrowserEnv } from "./service/env.server";
@@ -51,7 +52,9 @@ import { getFlashMessages } from "./service/flash.server";
 import { getCurrentPseFormationForUser } from "./service/pseformation.server";
 import type { Locales } from "./service/request.server";
 import { getClientLocales, isDesktop } from "./service/request.server";
-import type { FlashMessage } from "./dto/flash.dto";
+import { commitSession, getMe, getSession } from "./service/session.server";
+import { getTheme } from "./theme";
+import { getUserTheme, themeCookie } from "./util/theme.server";
 
 export interface RootLoaderData {
   user: Optional<UserMeDto>;
@@ -213,13 +216,18 @@ const Document = withEmotionCache(
         </head>
         <body>
           <ThemeProvider theme={theme}>
-            <CssBaseline />
+            <LocalizationProvider
+              dateAdapter={AdapterDateFns}
+              adapterLocale={fr}
+            >
+              <CssBaseline />
 
-            <LoadingBar isLoading={isLoading} />
+              <LoadingBar isLoading={isLoading} />
 
-            <FlashMessages />
+              <FlashMessages />
 
-            {children}
+              {children}
+            </LocalizationProvider>
           </ThemeProvider>
           <ScrollRestoration />
           <Scripts />

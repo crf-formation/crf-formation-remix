@@ -1,4 +1,4 @@
-import { Box, Checkbox, FormControlLabel, Stack, Typography } from "@mui/material";
+import { Box, Button, Checkbox, FormControlLabel, Stack, Typography } from "@mui/material";
 import type { Params } from "@remix-run/react";
 import { useLoaderData } from "@remix-run/react";
 import type { LoaderArgs } from "@remix-run/server-runtime";
@@ -67,6 +67,7 @@ function ModuleView({ pseModule, pseUserTechniques }: { pseModule?: PseModuleDto
           {pseModule.id} {pseModule.name}
         </span>
       }
+      action={<Button variant="outlined" size="small" sx={{ mb: 1 }}>Valider</Button>}
     >
       <Stack spacing={1}>
         {pseUserTechniques.map((pseUserTechnique: PseUserTechniqueDto) => (
@@ -111,6 +112,10 @@ export default function TechniqueRoute() {
 
 	return (
     <Section title="Techniques">
+      <Box sx={{ my: 2 }}>
+        <Button variant="outlined">Tout valider</Button>
+      </Box>
+
       <Stack spacing={2}>
         {map(groupedByModule, (pseUserTechniques, moduleId) => (
           <ModuleView

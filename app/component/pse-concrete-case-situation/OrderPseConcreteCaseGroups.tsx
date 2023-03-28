@@ -47,9 +47,10 @@ export default function OrderPseConcreteCaseGroups({ name, pseConcreteCaseGroups
   }
 
 	return (
-    <>
-      <Box mt={2}>
-        <Typography variant="h4">Order de passage des groupes</Typography>
+    <Box>
+      {/* required to have our margin tops bellow workibg, our FormView Stack use a spacing of 2. */}
+      <Box mt={4}>
+        <Typography variant="h4"></Typography>
 
         <FormErrorHelperText name={name} />
 
@@ -177,37 +178,43 @@ export default function OrderPseConcreteCaseGroups({ name, pseConcreteCaseGroups
         </Stack>
       </Box>
 
-      <Box my={2}>
-        <Divider />
-      </Box>
+      {notOrdered.length > 0 && (
+        <>
+          <Box my={2}>
+            <Divider />
+          </Box>
 
-      <Box mt={2}>
-        <Typography variant="h4">
-          Groupes non configurés pour cette situation
-        </Typography>
-        <Stack spacing={2} mt={2}>
-          {notOrdered.map(
-            (
-              pseSituationConcreteCaseGroup: PseSituationConcreteCaseGroupDto
-            ) => (
-              <NotOrderedGroupLine
-                key={pseSituationConcreteCaseGroup.pseConcreteCaseGroup.id}
-                pseSituationConcreteCaseGroup={pseSituationConcreteCaseGroup}
-                onAdd={() => {
-                  setState([
-                    ...state,
-                    {
-                      ...pseSituationConcreteCaseGroup,
-                      position: ordered.length + 1,
-                    },
-                  ]);
-                }}
-              />
-            )
-          )}
-        </Stack>
-      </Box>
-    </>
+          <Box mt={4}>
+            <Typography variant="h5">
+              Groupes non configurés pour cette situation
+            </Typography>
+            <Stack spacing={2} mt={2}>
+              {notOrdered.map(
+                (
+                  pseSituationConcreteCaseGroup: PseSituationConcreteCaseGroupDto
+                ) => (
+                  <NotOrderedGroupLine
+                    key={pseSituationConcreteCaseGroup.pseConcreteCaseGroup.id}
+                    pseSituationConcreteCaseGroup={
+                      pseSituationConcreteCaseGroup
+                    }
+                    onAdd={() => {
+                      setState([
+                        ...state,
+                        {
+                          ...pseSituationConcreteCaseGroup,
+                          position: ordered.length + 1,
+                        },
+                      ]);
+                    }}
+                  />
+                )
+              )}
+            </Stack>
+          </Box>
+        </>
+      )}
+    </Box>
   );
 }
 

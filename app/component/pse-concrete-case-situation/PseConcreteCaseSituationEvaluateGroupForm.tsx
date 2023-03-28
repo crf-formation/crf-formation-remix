@@ -2,7 +2,9 @@ import { Box, Checkbox, Table, TableBody, TableCell, TableHead, TableRow, Typogr
 import { useImmer } from 'use-immer';
 import InputHiddenJson from "~/component/form/InputHiddenJson";
 import type { PseCompetenceDto } from "~/dto/psecompetence.dto";
-import PseUserEvaluationDto, { PseUserConcreteCaseCompetenceGradeDtoEnum, PseUserConcreteCaseCompetenceGradeZEnum, PseUserConcreteCaseGroupEvaluationDto, } from '~/dto/pseuserconcretecase.dto';
+import type PseUserEvaluationDto from '~/dto/pseuserconcretecase.dto';
+import type { PseUserConcreteCaseCompetenceGradeDtoEnum, PseUserConcreteCaseGroupEvaluationDto } from '~/dto/pseuserconcretecase.dto';
+import { PseUserConcreteCaseCompetenceGradeZEnum } from '~/dto/pseuserconcretecase.dto';
 import { pseUserConcreteCaseGroupEvaluationPostDtoValidator } from "~/form/pseuserconcretecase.form";
 import FormView from "../form/FormView";
 

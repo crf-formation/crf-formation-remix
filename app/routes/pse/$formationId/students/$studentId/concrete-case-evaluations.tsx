@@ -7,6 +7,7 @@ import { z } from "zod";
 import type { PseFormationApiObject } from "~/apiobject/pseformation.apiobject";
 import Section from "~/component/layout/Section";
 import PseUserConcreteCasesTable from "~/component/pse-user-concrete-case/PseUserConcreteCasesTable";
+import Callout from "~/component/typography/Callout";
 import type { SecurityFunction } from "~/helper/remix";
 import { getParamsOrFail } from "~/helper/remix.params.helper";
 import { pseFormationApiObjectToDto } from "~/mapper/pseformation.mapper";
@@ -57,9 +58,15 @@ export default function SessionRoute() {
   return (
     <Stack spacing={2}>
       <Section>
-        <PseUserConcreteCasesTable
-          pseUserSummaryConcreteCase={pseUserSummaryConcreteCase}
-        />
+        {pseUserSummaryConcreteCase.userConcreteCases.length === 0 ? (
+          <Callout severity="info">
+            Ce participant n'as pas encore participé à un cas concret
+          </Callout>
+        ) : (
+          <PseUserConcreteCasesTable
+            pseUserSummaryConcreteCase={pseUserSummaryConcreteCase}
+          />
+        )}
       </Section>
     </Stack>
   );

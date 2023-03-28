@@ -12,3 +12,12 @@ export interface PseUserPreparatoryWorkDto {
   readonly realisedDate: Optional<DateISOString>;
   readonly realised: boolean;
 }
+export interface PseUserPreparatoryWorkPostDto {
+  pseModuleId: string;
+  openingDate: Optional<DateISOString>;
+  realisedDate: Optional<DateISOString>;
+  realised: boolean;
+
+  // for ui, display label
+  pseModuleName: string;
+}

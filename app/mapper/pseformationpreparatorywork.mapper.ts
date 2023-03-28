@@ -1,6 +1,6 @@
+import type { PseUserPreparatoryWorkApiObject, PseUserPreparatoryWorkPostApiObject } from "~/apiobject/pseuserpreparatorywork.apiobject";
+import type { PseUserPreparatoryWorkDto, PseUserPreparatoryWorkPostDto } from "~/dto/pseuserpreparatorywork.dto";
 import type { PseUserPreparatoryWorkEntity } from "~/entity";
-import type { PseUserPreparatoryWorkApiObject } from "~/apiobject/pseformationpreparatorywork.apiobject";
-import type { PseUserPreparatoryWorkDto } from "~/dto/pseformationpreparatorywork.dto";
 import { pseModuleEntityToApiObject } from "./psemodule.mapper";
 
 export function pseUserPreparatoryWorkEntityToApiObject(entity: PseUserPreparatoryWorkEntity): PseUserPreparatoryWorkApiObject {
@@ -30,5 +30,24 @@ export function pseUserPreparatoryWorkApiObjectToDto(apiObject: PseUserPreparato
 		openingDate : apiObject.openingDate?.toISOString(),
 		realisedDate: apiObject.realisedDate?.toISOString(),
 		realised: apiObject.realised,
+	}
+}
+
+export function pseUserPreparatoryWorkApiObjectToPostDto(apiObject: PseUserPreparatoryWorkApiObject): PseUserPreparatoryWorkPostDto {
+	return {
+		pseModuleId: apiObject.pseModuleId,
+		openingDate: apiObject.openingDate?.toISOString(),
+		realisedDate: apiObject.realisedDate?.toISOString(),
+		realised: apiObject.realised,
+		pseModuleName: apiObject.pseModule?.name,
+	}
+}
+
+export function pseUserPreparatoryWorkPostDtoToApiObject(dto: PseUserPreparatoryWorkPostDto): PseUserPreparatoryWorkPostApiObject {
+	return {
+		pseModuleId: dto.pseModuleId,
+		openingDate: dto.openingDate,
+		realisedDate: dto.realisedDate,
+		realised: dto.realised,
 	}
 }

@@ -1,6 +1,6 @@
 import type { PseCompetenceApiObject } from '~/apiobject/psecompetence.apiobject';
-import type { PseUserPreparatoryWorkApiObject } from "./pseformationpreparatorywork.apiobject";
 import type { PseUserConcreteCaseApiObject } from './pseuserconcretecase.apiobject';
+import type { PseUserPreparatoryWorkApiObject } from "./pseuserpreparatorywork.apiobject";
 import type { PseUserTechniqueApiObject } from "./pseusertechnique.apiobject";
 
 export interface PseUserSummaryApiObject {

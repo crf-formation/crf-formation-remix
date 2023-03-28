@@ -1,6 +1,6 @@
 // https://github.com/mui/material-ui/blob/master/docs/src/layouts/Section.tsx
-import type { PaperProps } from '@mui/material/Paper';
 import { Box, Container, Divider, Paper, Typography } from "@mui/material";
+import type { PaperProps } from '@mui/material/Paper';
 import type { ReactNode } from 'react';
 
 interface SectionProps extends PaperProps {
@@ -18,7 +18,7 @@ export default function Section(props: SectionProps) {
         {...other}
         sx={{
           overflow: "hidden",
-          backgroundColor: '#FBF7FF',
+          backgroundColor: "#FBF7FF",
         }}
       >
         {title && (
@@ -26,7 +26,11 @@ export default function Section(props: SectionProps) {
             <Box display="flex" justifyContent="space-between">
               <Typography
                 variant="subtitle2"
-                sx={{ fontVariant: "small-caps" }}
+                sx={{
+                  fontVariant: "small-caps",
+                  display: "flex",
+                  alignItems: "center",
+                }}
               >
                 {title}
               </Typography>

@@ -1,4 +1,6 @@
-import type { PseUserPreparatoryWorkApiObject } from "~/apiobject/pseformationpreparatorywork.apiobject";
+import type { PseUserPreparatoryWorkApiObject, PseUserPreparatoryWorkPostApiObject } from "~/apiobject/pseuserpreparatorywork.apiobject";
+import { pseUserPreparatoryWorkEntityToApiObject } from "~/mapper/pseformationpreparatorywork.mapper";
+import { getPseUserPreparatoryWorkEntities, updatePseUserPreparatoryWorkEntities } from "~/repository/pseformationpreparatorywork.repository";
 import { getPseModuleByModuleId } from "./psemodule.server";
 
 const pseModulesToPrepare = [
@@ -15,10 +17,15 @@ const pseModulesToPrepare = [
 ]
 
 export async function getPreparatoryWorksForUser(formationId: string, userId: string): Promise<Array<PseUserPreparatoryWorkApiObject>> {
-	return Promise.all(pseModulesToPrepare.map(async pseModuleId => await createPseUserPreparatoryWorkApiObject(formationId, userId, pseModuleId)))
+	const pseUserPreparatoryWorkEntities = await getPseUserPreparatoryWorkEntities(formationId, userId);
+	// not in database yet, create default data
+	if (pseUserPreparatoryWorkEntities.length === 0) {
+		return Promise.all(pseModulesToPrepare.map(async pseModuleId => await buildPseUserPreparatoryWorkApiObject(formationId, userId, pseModuleId)))
+	}
+	return pseUserPreparatoryWorkEntities.map(pseUserPreparatoryWorkEntityToApiObject)
 }
 
-async function createPseUserPreparatoryWorkApiObject(formationId: string, userId: string, pseModuleId: string): Promise<PseUserPreparatoryWorkApiObject> {
+async function buildPseUserPreparatoryWorkApiObject(formationId: string, userId: string, pseModuleId: string): Promise<PseUserPreparatoryWorkApiObject> {
 	const pseModuleApiObject = await getPseModuleByModuleId(pseModuleId);
 
 	return {
@@ -34,4 +41,8 @@ async function createPseUserPreparatoryWorkApiObject(formationId: string, userId
 		realised: false,
 	}
 
+}
+
+export async function updatePseUserPreparatoryWorks(formationId: string, userId: string, apiObjects: Array<PseUserPreparatoryWorkPostApiObject>) {
+	await updatePseUserPreparatoryWorkEntities(formationId, userId, apiObjects)
 }

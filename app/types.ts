@@ -11,6 +11,7 @@ declare global {
   type Void = null
 
   // also see "NonNullable" https://www.typescriptlang.org/docs/handbook/utility-types.html#nonnullabletype
+  // on zdo: nullish
   type Optional<T> = T | null | undefined 
   
   // date.toISOString()

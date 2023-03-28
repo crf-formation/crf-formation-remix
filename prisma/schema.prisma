@@ -121,8 +121,8 @@ model PseUserPreparatoryWork {
   pseModule   PseModule @relation(fields: [pseModuleId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   pseModuleId String
 
-  openingDate  DateTime
-  realisedDate DateTime
+  openingDate  DateTime?
+  realisedDate DateTime?
 
   realised Boolean @default(false)
 

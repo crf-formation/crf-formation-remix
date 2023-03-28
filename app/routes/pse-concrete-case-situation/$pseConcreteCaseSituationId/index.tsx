@@ -13,7 +13,6 @@ import PageContainer from "~/component/layout/PageContainer";
 import PagePaperHeader from '~/component/layout/PagePaperHeader';
 import PageSpace from '~/component/layout/PageSpace';
 import PageTitle from "~/component/layout/PageTitle";
-import Section from "~/component/layout/Section";
 import PseConcreteCaseSituationForm from "~/component/pse-concrete-case-situation/PseConcreteCaseSituationForm";
 import type { PseConcreteCaseSituationPutDto } from "~/dto/pseconcretecasesituation.dto";
 import { pseConcreteCaseSituationPutDtoValidator } from "~/form/pseconcretecasesituation.form";
@@ -136,21 +135,19 @@ export default function PseConcreteCaseSituationRoute() {
       <PageSpace variant="header" />
 
       <PageContainer>
-        <Section>
-          <PseConcreteCaseSituationForm
-            pseFormationId={pseFormation.id}
-            pseConcreteCaseSessionId={pseConcreteCaseSession.id}
-            pseConcreteCaseGroups={pseConcreteCaseSession.pseConcreteCaseGroups}
-            actionData={actionData}
-            // edit data
-            isEdit
-            teacher={pseConcreteCaseSituation.teacher}
-            pseConcreteCaseType={pseConcreteCaseSituation.pseConcreteCaseType}
-            pseSituationConcreteCaseGroups={
-              pseConcreteCaseSituation.pseSituationConcreteCaseGroups
-            }
-          />
-        </Section>
+        <PseConcreteCaseSituationForm
+          pseFormationId={pseFormation.id}
+          pseConcreteCaseSessionId={pseConcreteCaseSession.id}
+          pseConcreteCaseGroups={pseConcreteCaseSession.pseConcreteCaseGroups}
+          actionData={actionData}
+          // edit data
+          isEdit
+          teacher={pseConcreteCaseSituation.teacher}
+          pseConcreteCaseType={pseConcreteCaseSituation.pseConcreteCaseType}
+          pseSituationConcreteCaseGroups={
+            pseConcreteCaseSituation.pseSituationConcreteCaseGroups
+          }
+        />
       </PageContainer>
     </>
   );

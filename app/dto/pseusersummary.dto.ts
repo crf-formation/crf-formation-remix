@@ -1,8 +1,8 @@
 import type { PseCompetenceApiObject } from '~/apiobject/psecompetence.apiobject';
 import type { PseCompetenceDto } from './psecompetence.dto';
-import type { PseUserPreparatoryWorkDto } from "./pseformationpreparatorywork.dto";
 import type { PseModuleDto } from "./psemodule.dto";
 import type { PseUserConcreteCaseDto } from './pseuserconcretecase.dto';
+import type { PseUserPreparatoryWorkDto } from "./pseuserpreparatorywork.dto";
 import type { PseUserTechniqueDto } from "./pseusertechnique.dto";
 
 export interface PseUserSummaryDto {

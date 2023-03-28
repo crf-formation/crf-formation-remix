@@ -10,6 +10,7 @@ import { BooleanText } from "~/component/typography/BooleanText";
 import Callout from '~/component/typography/Callout';
 import Property from "~/component/typography/Property";
 import type { PseCompetenceDto } from "~/dto/psecompetence.dto";
+import type { PseUserConcreteCaseCompetenceGradeDtoEnum } from "~/dto/pseuserconcretecase.dto";
 import type {
   PseUserSummaryConcreteCaseDto,
   PseUserSummaryPreparatoryWorkDto,
@@ -152,7 +153,7 @@ function FinalComment() {
         <TextField multiline rows={6} fullWidth />
       </Box>
       <Box mt={1} display="flex" justifyContent="flex-end">
-        <Button type="submit">Sauvegarder</Button>
+        <Button variant="contained">Sauvegarder</Button>
       </Box>
     </>
   );
@@ -244,19 +245,27 @@ export default function SummaryRoute() {
         />
       </Section>
 
-      <Section title="Preparatory work">
-        <PreparatoryWork preparatoryWork={pseUserSummary.preparatoryWork} />
-      </Section>
+      {pseUserSummary.preparatoryWork && (
+        <Section title="Preparatory work">
+          <PreparatoryWork preparatoryWork={pseUserSummary.preparatoryWork} />
+        </Section>
+      )}
 
       <Section title="Techniques">
         <Techniques technique={pseUserSummary.technique} />
       </Section>
 
       <Section title="Savoir de mise en oeuvre des procédures">
-        <ConcreteCase
-          concreteCase={pseUserSummary.concreteCase}
-          pseCompetences={pseUserSummary.pseCompetences}
-        />
+        {pseUserSummary.concreteCase.userConcreteCases.length === 0 ? (
+          <Callout severity="info">
+            Ce participant n'as pas encore participé à un cas concret
+          </Callout>
+        ) : (
+          <ConcreteCase
+            concreteCase={pseUserSummary.concreteCase}
+            pseCompetences={pseUserSummary.pseCompetences}
+          />
+        )}
       </Section>
 
       <Section title="Commentaire final">
