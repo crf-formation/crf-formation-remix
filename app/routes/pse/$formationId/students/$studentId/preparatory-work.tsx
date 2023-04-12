@@ -20,7 +20,7 @@ import type { FormArrayWrapperDto } from "~/dto/form.dto";
 import type { PseUserPreparatoryWorkPostDto } from "~/dto/pseuserpreparatorywork.dto";
 import { validateForm } from "~/form/abstract";
 import { pseUserPreparatoryWorkValidator } from "~/form/preparatorywork.form";
-import type { SecurityFunction } from "~/helper/remix";
+import type { SecurityFunction } from "~/helper/remix.helper";
 import { getParamsOrFail } from "~/helper/remix.params.helper";
 import { redirectActionToCurrentPage } from "~/helper/responses.helper";
 import { pseUserPreparatoryWorkApiObjectToPostDto, pseUserPreparatoryWorkPostDtoToApiObject } from "~/mapper/pseformationpreparatorywork.mapper";
