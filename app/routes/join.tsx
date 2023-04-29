@@ -1,7 +1,7 @@
 import { faker } from "@faker-js/faker";
 import { Box, Link, TextField } from "@mui/material";
 import type { ActionArgs, LoaderArgs, MetaFunction } from "@remix-run/node";
-import { json, redirect } from "@remix-run/node";
+import { json, redirect, V2_MetaFunction } from "@remix-run/node";
 import { useActionData, useLoaderData, useSearchParams } from "@remix-run/react";
 import { useRef } from "react";
 import { z } from "zod";
@@ -67,10 +67,10 @@ export async function action({ request }: ActionArgs) {
   return redirect("/create-password");
 }
 
-export const meta: MetaFunction<typeof loader> = () => {
-  return {
-    title: "Inscription",
-  };
+export const meta: V2_MetaFunction<typeof loader> = () => {
+  return [
+    { title: "Inscription" },
+  ];
 };
 
 export default function JoinRoute() {

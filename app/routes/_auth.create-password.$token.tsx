@@ -1,6 +1,6 @@
 import { Box, Typography } from "@mui/material";
-import type { ActionArgs, LoaderArgs, MetaFunction } from "@remix-run/node";
-import { json, redirect } from "@remix-run/node";
+import type { ActionArgs, LoaderArgs, V2_MetaFunction } from "@remix-run/node";
+import { json, redirect,  } from "@remix-run/node";
 import { useActionData, useLoaderData } from "@remix-run/react";
 import { useRef, useState } from "react";
 import { z } from "zod";
@@ -83,10 +83,10 @@ export async function action({ request, params  }: ActionArgs) {
   });
 }
 
-export const meta: MetaFunction<typeof loader> = () => {
-  return {
-    title: "Finalisation de la création du compte",
-  };
+export const meta: V2_MetaFunction<typeof loader> = () => {
+  return [
+    { title: "Finalisation de la création du compte" },
+  ];
 };
 
 export default function PasswordResetRoute() {

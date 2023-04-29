@@ -8,11 +8,13 @@ import Callout from "~/component/typography/Callout";
 import useTheme from "~/hook/useTheme";
 import AppTabs from '~/component/layout/AppTabs';
 import PageContainer from '~/component/layout/PageContainer';
+import { V2_MetaFunction } from "@remix-run/node";
+import { loader } from "~/routes/account";
 
-export const meta: MetaFunction<typeof loader> = () => {
-  return {
-    title: "Thème",
-  };
+export const meta: V2_MetaFunction<typeof loader> = () => {
+  return [
+    { title: "Thème" },
+  ];
 };
 
 export default function Theme() {

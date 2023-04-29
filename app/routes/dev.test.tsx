@@ -5,7 +5,7 @@ import {
   Link as MuiLink, Tooltip,
   Typography
 } from "@mui/material";
-import { json } from "@remix-run/node";
+import { json, V2_MetaFunction } from "@remix-run/node";
 import { Form, Link as RmxLink, useLocation } from "@remix-run/react";
 import type { LoaderArgs, MetaFunction } from "@remix-run/server-runtime";
 import Main from "~/component/layout/Main";
@@ -34,10 +34,10 @@ export async function loader({ request }: LoaderArgs) {
   );
 }
 
-export const meta: MetaFunction<typeof loader> = () => {
-  return {
-    title: "Test",
-  };
+export const meta: V2_MetaFunction<typeof loader> = () => {
+  return [
+    { title: "Test" },
+  ];
 };
 
 export default function Test() {

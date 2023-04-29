@@ -2,7 +2,7 @@ import AddIcon from '@mui/icons-material/Add';
 import ModeEditIcon from '@mui/icons-material/ModeEdit';
 import PersonAddIcon from '@mui/icons-material/PersonAdd';
 import { Box, Button, Chip, Divider, Grid, Link, List, ListItem, ListItemText, Stack, Table, TableBody, TableCell, TableHead, TableRow, Typography } from '@mui/material';
-import type { LoaderFunction, MetaFunction } from "@remix-run/node";
+import type { LoaderFunction, MetaFunction, V2_MetaFunction } from "@remix-run/node";
 import { json } from "@remix-run/node";
 import type { Params } from "@remix-run/react";
 import { useLoaderData } from "@remix-run/react";
@@ -80,11 +80,10 @@ export const loader: LoaderFunction = async ({ request, params }) => {
     pseConcreteCaseSessionGroupOrders: pseConcreteCaseSessionGroupOrderApiObjects.map(pseConcreteCaseSessionGroupOrderApiObjectToDto)
   });
 };
-
-export const meta: MetaFunction<typeof loader> = ({ data }) => {
-  return {
-    title: `Session - ${data?.pseConcreteCaseSession?.name}`,
-  };
+export const meta: V2_MetaFunction<typeof loader> = ({ data }) => {
+  return [
+    { title: `Session - ${data?.pseConcreteCaseSession?.name}` },
+  ];
 };
 
 function PseConcreteCaseGroupsTable({ pseFormationId, pseConcreteCaseSessionId, pseConcreteCaseGroups }) {

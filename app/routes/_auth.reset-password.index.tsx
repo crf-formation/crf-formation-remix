@@ -1,6 +1,6 @@
 import { Box, Link, TextField, Typography } from "@mui/material";
 import type { ActionArgs, LoaderArgs, MetaFunction } from "@remix-run/node";
-import { json, redirect } from "@remix-run/node";
+import { json, redirect, V2_MetaFunction } from "@remix-run/node";
 import { useActionData, useLoaderData, useSearchParams } from "@remix-run/react";
 import { useRef } from "react";
 import { z } from "zod";
@@ -48,10 +48,10 @@ export async function action({ request }: ActionArgs) {
   return redirect("/reset-password/sent")
 }
 
-export const meta: MetaFunction<typeof loader> = () => {
-  return {
-    title: "Password fogotten",
-  };
+export const meta: V2_MetaFunction<typeof loader> = () => {
+  return [
+    { title: "Mot de passe oublié" },
+  ];
 };
 
 export default function PasswordResetRoute() {

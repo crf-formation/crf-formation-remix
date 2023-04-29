@@ -1,7 +1,7 @@
 import type { LoaderArgs, MetaFunction } from "@remix-run/node";
 
 import { Paper, Typography } from '@mui/material';
-import { json } from "@remix-run/node";
+import { json, V2_MetaFunction } from "@remix-run/node";
 import WipImage from "~/component/image/wip";
 import PageContainer from "~/component/layout/PageContainer";
 import { requireUser } from "~/service/session.server";
@@ -13,10 +13,10 @@ export async function loader({ request }: LoaderArgs) {
   });
 }
 
-export const meta: MetaFunction<typeof loader> = () => {
-  return {
-    title: "Work in progress",
-  };
+export const meta: V2_MetaFunction<typeof loader> = ({ data }) => {
+  return [
+    { title: `Work in progress` },
+  ];
 };
 
 export default function WipRoute() {

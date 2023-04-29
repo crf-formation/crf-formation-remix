@@ -1,5 +1,5 @@
 import { Box, Typography } from "@mui/material";
-import type { ActionArgs, LoaderArgs, MetaFunction } from "@remix-run/node";
+import type { ActionArgs, LoaderArgs, V2_MetaFunction } from "@remix-run/node";
 import { json, redirect } from "@remix-run/node";
 import type { Params } from "@remix-run/react";
 import { useActionData, useLoaderData } from "@remix-run/react";
@@ -88,11 +88,12 @@ export async function action({ request, params }: ActionArgs) {
   });
 }
 
-export const meta: MetaFunction<typeof loader> = () => {
-  return {
-    title: "Modification du mot de passe",
-  };
+export const meta: V2_MetaFunction<typeof loader> = () => {
+  return [
+    { title: "Modification du mot de passe" },
+  ];
 };
+
 
 export default function PasswordResetRoute() {
   const { email } = useLoaderData<typeof loader>();

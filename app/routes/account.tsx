@@ -49,12 +49,7 @@ import {
 	userApiObjectToDto,
 	userPutDtoToApiObject,
 } from "../mapper/user.mapper";
-
-export const meta: MetaFunction<typeof loader> = () => {
-  return {
-    title: "My account",
-  };
-};
+import { V2_MetaFunction } from "@remix-run/node";
 
 const security: SecurityFunction<{
   userApiObject: UserApiObject;
@@ -80,6 +75,12 @@ export async function action({ request, params }: ActionArgs) {
     actionProfile,
   });
 }
+
+export const meta: V2_MetaFunction<typeof loader> = () => {
+  return [
+    { title: "Mon compte" },
+  ];
+};
 
 async function actionProfile(request: Request, params: Params) {
   const { userApiObject } = await security(request, params);

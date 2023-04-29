@@ -4,7 +4,7 @@ import { z } from "zod";
 import type { PseFormationApiObject } from '~/apiobject/pseformation.apiobject';
 import type { UserApiObject } from "~/apiobject/user.apiobject";
 import { generateUserPdf } from "~/helper/psepdf.herlper";
-import type { SecurityFunction } from '~/helper/remix';
+import type { SecurityFunction } from "~/helper/remix.helper";
 import { getParamsOrFail } from '~/helper/remix.params.helper';
 import { pdf } from "~/helper/responses.helper";
 import { getPseFormationById } from "~/service/pseformation.server";

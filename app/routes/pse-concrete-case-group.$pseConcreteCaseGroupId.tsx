@@ -1,5 +1,5 @@
 import type { ActionArgs, LoaderFunction, MetaFunction } from "@remix-run/node";
-import { json, redirect } from "@remix-run/node";
+import { json, redirect, V2_MetaFunction } from "@remix-run/node";
 import type { Params } from "@remix-run/react";
 import { useActionData, useLoaderData } from "@remix-run/react";
 import { z } from "zod";
@@ -88,10 +88,10 @@ export async function action({ request, params  }: ActionArgs) {
   return redirect(`/pse-concrete-case-group/${pseConcreteCaseGroupApiObject.id}`)
 }
 
-export const meta: MetaFunction<typeof loader> = ({ data }) => {
-  return {
-    title: `Groupe ${data?.pseConcreteCaseGroup?.name}`,
-  };
+export const meta: V2_MetaFunction<typeof loader> = ({ data }) => {
+  return [
+    { title: `Groupe ${data?.pseConcreteCaseGroup?.name}` },
+  ];
 };
 
 export default function PseConcreteCaseGroupRoute() {

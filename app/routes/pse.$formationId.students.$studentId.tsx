@@ -1,5 +1,5 @@
 import { Grid, Link } from "@mui/material";
-import type { LoaderArgs, MetaFunction } from "@remix-run/node";
+import type { LoaderArgs, MetaFunction, V2_MetaFunction } from "@remix-run/node";
 import { json } from "@remix-run/node";
 import type { Params } from "@remix-run/react";
 import { Outlet, useLoaderData } from "@remix-run/react";
@@ -60,10 +60,10 @@ export async function loader({ request, params }: LoaderArgs) {
   });
 };
 
-export const meta: MetaFunction<typeof loader> = ({ data }) => {
-  return {
-    title: data?.student?.fullName,
-  };
+export const meta: V2_MetaFunction<typeof loader> = ({ data }) => {
+  return [
+    { title: data?.student?.fullName },
+  ];
 };
 
 export default function UserPseFormationSummaryRoute() {

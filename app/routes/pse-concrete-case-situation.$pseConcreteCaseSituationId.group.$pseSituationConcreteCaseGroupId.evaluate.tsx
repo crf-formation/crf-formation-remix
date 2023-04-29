@@ -1,5 +1,5 @@
 import type { ActionArgs, LoaderArgs, MetaFunction } from "@remix-run/node";
-import { json } from "@remix-run/node";
+import { json, V2_MetaFunction } from "@remix-run/node";
 import type { Params } from "@remix-run/react";
 import { useLoaderData } from "@remix-run/react";
 import { z } from "zod";
@@ -140,10 +140,10 @@ export async function action({ request, params  }: ActionArgs) {
   return redirectActionToCurrentPage(request);
 }
 
-export const meta: MetaFunction<typeof loader> = ({ data }) => {
-  return {
-    title: `Situation ${data?.pseConcreteCaseSituation?.pseConcreteCaseType?.name}`,
-  };
+export const meta: V2_MetaFunction<typeof loader> = ({ data }) => {
+  return [
+    { title: `Situation ${data?.pseConcreteCaseSituation?.pseConcreteCaseType?.name}` },
+  ];
 };
 
 export default function PseConcreteCaseSituationRoute() {

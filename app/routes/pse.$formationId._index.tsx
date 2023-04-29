@@ -3,7 +3,7 @@ import ImageIcon from '@mui/icons-material/Image';
 import PersonAddIcon from '@mui/icons-material/PersonAdd';
 import { Avatar, Button, Grid, Link, List, ListItem, ListItemAvatar, ListItemText, Stack } from "@mui/material";
 import type { LoaderArgs } from "@remix-run/node";
-import { json } from "@remix-run/node";
+import { json, V2_MetaFunction } from "@remix-run/node";
 import type { Params } from "@remix-run/react";
 import { useLoaderData } from "@remix-run/react";
 import { z } from "zod";
@@ -20,7 +20,7 @@ import Callout from "~/component/typography/Callout";
 import Property from "~/component/typography/Property";
 import type { PseFormationDto } from "~/dto/pseformation.dto";
 import type { UserDto } from "~/dto/user.dto";
-import type { SecurityFunction } from '~/helper/remix';
+import type { SecurityFunction } from "~/helper/remix.helper";
 import { getParamsOrFail } from '~/helper/remix.params.helper';
 import useI18n from "~/hook/useI18n";
 import useUser from "~/hook/useUser";
@@ -62,10 +62,10 @@ export async function loader({ request, params }: LoaderArgs) {
 	});
 };
 
-export const meta: MetaFunction<typeof loader> = ({ data }) => {
-  return {
-    title: `PSE - ${data?.formation?.title}`,
-  };
+export const meta: V2_MetaFunction<typeof loader> = ({ data }) => {
+  return [
+    { title: `PSE - ${data?.formation?.title}` },
+  ];
 };
 
 function TeacherList({ teachers, formationId, hasAdminPermission }: { teachers: Array<UserDto>, formationId: string, hasAdminPermission: boolean }) {

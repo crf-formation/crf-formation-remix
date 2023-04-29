@@ -10,7 +10,7 @@ import type {
   MetaFunction
 } from "@remix-run/node";
 import {
-  redirect
+  redirect, V2_MetaFunction
 } from "@remix-run/node";
 import {
   Links,
@@ -133,11 +133,13 @@ export const links: LinksFunction = () => {
   return [{ rel: "stylesheet", href: nProgressStyles }];
 };
 
-export const meta: MetaFunction<typeof loader> = () => ({
-  charset: "utf-8",
-  title: "",
-  viewport: "width=device-width,initial-scale=1",
-});
+export const meta: V2_MetaFunction<typeof loader> = () => {
+  return [
+    { title: "CRF formation" },
+    { name: "charset", content: "utf-8" },
+    { name: "viewport", content: "width=device-width,initial-scale=1" },
+  ];
+};
 
 type DocumentProps = {
   children: React.ReactNode;

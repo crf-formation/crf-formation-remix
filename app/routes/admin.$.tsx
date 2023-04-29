@@ -1,6 +1,6 @@
 // https://marmelab.com/react-admin/Remix.html
 // https://marmelab.com/react-admin/Tutorial.html
-import type { LoaderArgs, MetaFunction } from "@remix-run/node";
+import type { LoaderArgs, V2_MetaFunction } from "@remix-run/node";
 import { json } from "@remix-run/node";
 import { Admin, Resource } from "react-admin";
 import AdminMenu from "~/component/admin/AdminMenu";
@@ -24,10 +24,10 @@ export async function loader({ request }: LoaderArgs) {
   });
 }
 
-export const meta: MetaFunction<typeof loader> = () => {
-  return {
-    title: "ZDP admin",
-  };
+export const meta: V2_MetaFunction<typeof loader> = () => {
+  return [
+    { title: "Admin" },
+  ];
 };
 
 export default function AdminRoute() {

@@ -1,5 +1,5 @@
 import type { ActionArgs, LoaderArgs, MetaFunction } from "@remix-run/node";
-import { json, redirect } from "@remix-run/node";
+import { json, redirect, V2_MetaFunction } from "@remix-run/node";
 import type { Params } from "@remix-run/react";
 import { useActionData, useLoaderData } from "@remix-run/react";
 import { validationError } from "remix-validated-form";
@@ -87,10 +87,10 @@ export async function action({ request, params  }: ActionArgs) {
   return redirect(`/pse-concrete-case-situation/${pseConcreteCaseSituationApiObject.id}`)
 }
 
-export const meta: MetaFunction<typeof loader> = ({ data }) => {
-  return {
-    title: `Situation ${data?.pseConcreteCaseSituation?.pseConcreteCaseType?.name}`,
-  };
+export const meta: V2_MetaFunction<typeof loader> = ({ data }) => {
+  return [
+    { title: `Situation ${data?.pseConcreteCaseSituation?.pseConcreteCaseType?.name}` },
+  ];
 };
 
 export default function PseConcreteCaseSituationRoute() {

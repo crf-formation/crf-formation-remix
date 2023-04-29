@@ -1,6 +1,6 @@
 import { Stack } from "@mui/material";
 import type { LoaderArgs, MetaFunction } from "@remix-run/node";
-import { json } from "@remix-run/node";
+import { json, V2_MetaFunction } from "@remix-run/node";
 import type { Params } from "@remix-run/react";
 import { useLoaderData } from "@remix-run/react";
 import { z } from "zod";
@@ -18,7 +18,7 @@ import PseSummaryPreparatoryWorkSummary from "~/component/pse-summary/PseSummary
 import PseSummaryResult from "~/component/pse-summary/PseSummaryResult";
 import PseSummaryTechniqueSummary from "~/component/pse-summary/PseSummaryTechniqueSummary";
 import { loadAndBuildPseSummary } from "~/helper/psesummary.helper";
-import type { SecurityFunction } from '~/helper/remix';
+import type { SecurityFunction } from "~/helper/remix.helper";
 import { getParamsOrFail } from '~/helper/remix.params.helper';
 import { pseFormationApiObjectToDto } from "~/mapper/pseformation.mapper";
 import { pseSummaryApiObjectToDto } from "~/mapper/psesummary.mapper";
@@ -62,11 +62,12 @@ export async function loader({ request, params }: LoaderArgs) {
 	});
 };
 
-export const meta: MetaFunction<typeof loader> = ({ data }) => {
-  return {
-    title: `PSE - Follow up`,
-  };
+export const meta: V2_MetaFunction<typeof loader> = ({ data }) => {
+  return [
+    { title: `PSE - Résumé de formation` },
+  ];
 };
+
 
 export default function FromationPseRoute() {
   const { formation, pseSummary } = useLoaderData<typeof loader>();

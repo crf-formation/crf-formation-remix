@@ -1,6 +1,6 @@
 import { Box, Link } from "@mui/material";
 import type { ActionArgs, LoaderArgs, MetaFunction } from "@remix-run/node";
-import { json, redirect } from "@remix-run/node";
+import { json, redirect, V2_MetaFunction } from "@remix-run/node";
 import { useActionData, useLoaderData, useSearchParams } from "@remix-run/react";
 import { useRef, useState } from "react";
 import { z } from "zod";
@@ -76,10 +76,10 @@ export async function action({ request }: ActionArgs) {
 
 }
 
-export const meta: MetaFunction<typeof loader> = () => {
-  return {
-    title: "Login",
-  };
+export const meta: V2_MetaFunction<typeof loader> = () => {
+  return [
+    { title: "Connexion" },
+  ];
 };
 
 export default function LoginRoute() {

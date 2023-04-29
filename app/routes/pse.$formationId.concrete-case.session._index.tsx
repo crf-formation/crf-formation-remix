@@ -29,6 +29,7 @@ import { getPseFormationConcreteCaseSessions } from "~/service/pseconcretecasese
 import { findPseFormationById } from "~/service/pseformation.server";
 import { assertUserHasAccessToFormationAsTeacher } from "~/service/security.server";
 import { requireUser } from "~/service/session.server";
+import type { V2_MetaFunction } from "@remix-run/node";
 
 const ParamsSchema = z.object({
   formationId: z.string(),
@@ -87,10 +88,10 @@ export async function loader({ request, params }: LoaderArgs) {
   });
 }
 
-export const meta: MetaFunction<typeof loader> = () => {
-  return {
-    title: "Sessions",
-  };
+export const meta: V2_MetaFunction<typeof loader> = ({ data }) => {
+  return [
+    { title: `Sessions` },
+  ];
 };
 
 export default function ConcreteCaseSessionsRoute() {

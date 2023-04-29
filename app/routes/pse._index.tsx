@@ -1,6 +1,6 @@
 import { Link, Table, TableBody, TableCell, TableHead, TableRow } from "@mui/material";
 import type { LoaderArgs, MetaFunction } from "@remix-run/node";
-import { json } from "@remix-run/node";
+import { json, V2_MetaFunction } from "@remix-run/node";
 import type { Params } from '@remix-run/react';
 import { useLoaderData } from '@remix-run/react';
 import { z } from "zod";
@@ -49,10 +49,10 @@ export async function loader({ request, params }: LoaderArgs) {
   });
 }
 
-export const meta: MetaFunction<typeof loader> = () => {
-  return {
-    title: "Mes formations PSE",
-  };
+export const meta: V2_MetaFunction<typeof loader> = ({ data }) => {
+  return [
+    { title: `Mes formations PSE` },
+  ];
 };
 
 export default function FromationPseRoute() {

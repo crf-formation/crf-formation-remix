@@ -14,7 +14,7 @@ module.exports = {
     v2_normalizeFormMethod: false,
     // metha functions is changing
     // https://remix.run/docs/en/1.15.0/pages/v2#route-meta
-    v2_meta: false,
+    v2_meta: true,
     // route convention is changing
     // https://remix.run/docs/en/1.15.0/pages/v2#file-system-route-convention
     v2_routeConvention: true,

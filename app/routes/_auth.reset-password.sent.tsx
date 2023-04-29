@@ -1,6 +1,6 @@
 import { Box, Typography } from "@mui/material";
 import type { LoaderArgs, MetaFunction } from "@remix-run/node";
-import { json, redirect } from "@remix-run/node";
+import { json, redirect, V2_MetaFunction } from "@remix-run/node";
 import PageFullContentWithLogo from "~/component/layout/PageFullContentWithLogo";
 import { getUserId } from "~/service/session.server";
 
@@ -10,10 +10,10 @@ export async function loader({ request }: LoaderArgs) {
   return json({});
 }
 
-export const meta: MetaFunction<typeof loader> = () => {
-  return {
-    title: "Password fogotten",
-  };
+export const meta: V2_MetaFunction<typeof loader> = () => {
+  return [
+    { title: "Mot de passe oublié" },
+  ];
 };
 
 export default function PasswordResetRoute() {

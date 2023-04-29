@@ -1,5 +1,5 @@
 import type { LoaderArgs, MetaFunction } from "@remix-run/node";
-import { redirect } from "@remix-run/node";
+import { redirect, V2_MetaFunction } from "@remix-run/node";
 import { requireUser } from "~/service/session.server";
 
 // nothing yet on index redirect:
@@ -12,10 +12,10 @@ export async function loader({ request }: LoaderArgs) {
   // return json({});
 }
 
-export const meta: MetaFunction<typeof loader> = () => {
-  return {
-    title: "Backoffice",
-  };
+export const meta: V2_MetaFunction<typeof loader> = () => {
+  return [
+    { title: "CRF formation" },
+  ];
 };
 
 export default function IndexRoute() {
