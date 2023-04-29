@@ -20,7 +20,7 @@ import {
   Link as RmxLink,
   Scripts,
   ScrollRestoration,
-  useCatch, useLoaderData
+  useCatch, useLoaderData, useRouteError, isRouteErrorResponse
 } from "@remix-run/react";
 import type { ActionArgs } from '@remix-run/server-runtime';
 import { json } from '@remix-run/server-runtime';
@@ -264,107 +264,62 @@ export default function App() {
   );
 }
 
-function parse(error: Error) {
-  try {
-    return JSON.parse(error.message);
-  } catch (e) {}
-  return error;
+
+function ErrorView({ error }: { error: Error }) {
+
+  // Note: we do not display the stacktrace, because it does not have any sense on the front.
+  return (
+    <Box
+      sx={{
+        padding: 2,
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        mt: 6,
+      }}
+    >
+      <Typography variant="h4" component="h1">
+        An error occurred
+      </Typography>
+
+      <Box sx={{ marginTop: 6 }}>
+        <Typography
+          component="pre"
+          variant="inherit"
+          sx={{ color: "error.main" }}
+        >
+          {error.message || "unknown error"}
+        </Typography>
+      </Box>
+
+      <Box sx={{ marginTop: 6 }}>
+        <MuiLink component={RmxLink} to="/">
+          Go to Home
+        </MuiLink>
+      </Box>
+    </Box>
+  )
 }
 
 // https://remix.run/docs/en/v1/api/conventions#errorboundary
-export function ErrorBoundary({ error }: { error: Error }) {
-  logger.error(error);
-  // console.trace()
+export function ErrorBoundary() {
+  const error = useRouteError();
 
-  const errorMessage = parse(error);
+  console.log({ error})
 
-  console.log({errorMessage, error})
-
+  // TODO: add ErrorBoundary on a sub-route to have access to isLoggedIn on root loader data ?
   return (
-    <Document title="Error!" themeName={errorMessage.themeName}>
-      <Layout isLoggedIn={errorMessage.isLoggedIn}>
-        <Box sx={{ padding: 2 }}>
-          <Typography variant="h4" component="h1">
-            An error occured
-          </Typography>
+    <Document title="Error!" themeName={undefined}>
+      <Layout isLoggedIn={false}>
+        {/* when true, this is what used to go to `CatchBoundary`*/}
+        {isRouteErrorResponse(error) ? (
+          <ErrorPageContainer
+            error={error}
+          />
+        ) : (
+          <ErrorView error={error as Error} />
+        )}
 
-          <Box sx={{ marginTop: 4 }}>
-          <Typography
-              component="pre"
-              variant="inherit"
-              sx={{ color: "error.main" }}
-            >
-              {errorMessage.localizedMessage}
-            </Typography>
-            <Typography
-              component="pre"
-              variant="inherit"
-              sx={{ color: "error.main" }}
-            >
-              {errorMessage.message || error.message || "unknown error"}
-            </Typography>
-          </Box>
-
-          {/* TODO: toggle on non-dev env? */}
-          {errorMessage.jsonResponse && (
-            <Box sx={{ marginTop: 4 }}>
-              <Typography component="pre" variant="inherit">
-                <Typography component="code" variant="inherit">
-                  {errorMessage.jsonResponse}
-                </Typography>
-              </Typography>
-            </Box>
-          )}
-
-          {/* TODO: toggle on non-dev env? */}
-          <Box sx={{ marginTop: 4 }}>
-            <Typography component="pre" variant="inherit">
-              <Typography component="code" variant="inherit">
-                {error.stack}
-              </Typography>
-            </Typography>
-          </Box>
-
-          <Box sx={{ marginTop: 4 }}>
-            <MuiLink component={RmxLink} to="/">
-              Go to Home
-            </MuiLink>
-          </Box>
-        </Box>
-      </Layout>
-    </Document>
-  );
-}
-
-// https://remix.run/docs/en/v1/api/conventions#catchboundary
-export function CatchBoundary() {
-  const caught = useCatch();
-
-  let message;
-  switch (caught.status) {
-    case 401:
-      message = (
-        <p>
-          Oops! Looks like you tried to visit a page that you do not have access
-          to.
-        </p>
-      );
-      break;
-    
-    default:
-      throw new Error(JSON.stringify(caught?.data || caught?.statusText));
-  }
-
-  return (
-    <Document
-      title={`${caught.status} ${caught.statusText}`}
-      themeName={caught.data?.themeName}
-    >
-      <Layout isLoggedIn={caught.data?.isLoggedIn}>
-        <ErrorPageContainer
-          title={`${caught.status}: ${caught.statusText}`}
-          message={message}
-        />
       </Layout>
     </Document>
   );

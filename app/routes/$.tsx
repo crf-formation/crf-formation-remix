@@ -3,7 +3,7 @@
 //
 import type { LoaderArgs, MetaFunction } from "@remix-run/node";
 import { json } from "@remix-run/node";
-import ErrorPageContainer from "~/component/layout/ErrorPageContainer";
+import { DefaultErrorView } from "~/component/layout/ErrorPageContainer";
 
 export async function loader({ request }: LoaderArgs) {
   return json({})
@@ -18,9 +18,9 @@ export const meta: MetaFunction<typeof loader> = () => {
 
 export default function NotFoundRoute() {
   return (
-    <ErrorPageContainer
+    <DefaultErrorView
       title={`404 - Page inconnue`}
-      message={
+      defaultMessage={
         <p>Oops! La page demandée n'a pas été trouvée.</p>
       }
     />

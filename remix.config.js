@@ -6,6 +6,22 @@ module.exports = {
   cacheDirectory: "./node_modules/.cache/remix",
   ignoredRouteFiles: ["**/.*", "**/*.css", "**/*.test.{js,jsx,ts,tsx}", "**/fence.json"],
   devServerPort: 8002,
+  future: {
+    // enable the new dev server with all defaults
+    unstable_dev: false,
+    // formMethod is now uppercase
+    // https://remix.run/docs/en/1.15.0/pages/v2#formmethod
+    v2_normalizeFormMethod: false,
+    // metha functions is changing
+    // https://remix.run/docs/en/1.15.0/pages/v2#route-meta
+    v2_meta: false,
+    // route convention is changing
+    // https://remix.run/docs/en/1.15.0/pages/v2#file-system-route-convention
+    v2_routeConvention: false,
+    //
+    // https://remix.run/docs/en/1.15.0/pages/v2#catchboundary-and-errorboundary
+    v2_errorBoundary: true,
+  },
   // fix the "Error [ERR_REQUIRE_ESM]: require() of ES Module" errror
   // https://remix.run/docs/en/v1/pages/gotchas#importing-esm-packages
   serverDependenciesToBundle: [
