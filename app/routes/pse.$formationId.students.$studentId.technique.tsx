@@ -10,7 +10,7 @@ import type { PseUserTechniqueApiObject } from "~/apiobject/pseusertechnique.api
 import Section from "~/component/layout/Section";
 import type { PseModuleDto } from "~/dto/psemodule.dto";
 import type { PseUserTechniqueDto } from "~/dto/pseusertechnique.dto";
-import type { SecurityFunction } from "~/helper/remix";
+import type { SecurityFunction } from "~/helper/remix.helper";
 import { getParamsOrFail } from "~/helper/remix.params.helper";
 import { pseModuleApiObjectToDto } from "~/mapper/psemodule.mapper";
 import { pseUserTechniqueApiObjectToDto } from "~/mapper/pseusertechnique.mapper";

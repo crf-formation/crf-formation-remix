@@ -17,7 +17,7 @@ module.exports = {
     v2_meta: false,
     // route convention is changing
     // https://remix.run/docs/en/1.15.0/pages/v2#file-system-route-convention
-    v2_routeConvention: false,
+    v2_routeConvention: true,
     //
     // https://remix.run/docs/en/1.15.0/pages/v2#catchboundary-and-errorboundary
     v2_errorBoundary: true,

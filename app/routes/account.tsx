@@ -27,7 +27,7 @@ import ProfileForm from "~/component/account/ProfileForm";
 import Section from "~/component/layout/Section";
 import type { UserPasswordPutDto, UserPutDto } from "~/dto/user.dto";
 import { validateForm } from '~/form/abstract';
-import type { SecurityFunction } from "~/helper/remix";
+import type { SecurityFunction } from "~/helper/remix.helper";
 import { badRequest } from "~/helper/responses.helper";
 import useRootData from "~/hook/useRootData";
 import { addFlashMessage } from "~/service/flash.server";

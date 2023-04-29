@@ -7,7 +7,7 @@ import { Fragment } from 'react';
 import { z } from "zod";
 import type { PseFormationApiObject } from "~/apiobject/pseformation.apiobject";
 import InternalLink from "~/component/typography/InternalLink";
-import type { SecurityFunction } from "~/helper/remix";
+import type { SecurityFunction } from "~/helper/remix.helper";
 import { getParamsOrFail } from "~/helper/remix.params.helper";
 import useI18n from "~/hook/useI18n";
 import { pseFormationApiObjectToDto } from '~/mapper/pseformation.mapper';

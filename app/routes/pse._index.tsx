@@ -11,7 +11,7 @@ import PageSpace from "~/component/layout/PageSpace";
 import PageSubtitle from "~/component/layout/PageSubtitle";
 import PageTitle from "~/component/layout/PageTitle";
 import Section from "~/component/layout/Section";
-import type { SecurityFunction } from "~/helper/remix";
+import type { SecurityFunction } from "~/helper/remix.helper";
 import { getSearchParamsOrFail } from "~/helper/remix.params.helper";
 import { paginateApiObjectToDto } from "~/mapper/abstract.mapper";
 import { pseFormationApiObjectToDto } from "~/mapper/pseformation.mapper";

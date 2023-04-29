@@ -19,7 +19,7 @@ import PseConcreteCaseSituationEvaluateGroupForm from "~/component/pse-concrete-
 import type { PseUserConcreteCaseGroupEvaluationPostDto } from "~/dto/pseuserconcretecase.dto";
 import { validateForm } from "~/form/abstract";
 import { pseUserConcreteCaseGroupEvaluationPostDtoValidator } from "~/form/pseuserconcretecase.form";
-import type { SecurityFunction } from "~/helper/remix";
+import type { SecurityFunction } from "~/helper/remix.helper";
 import { getParamsOrFail } from "~/helper/remix.params.helper";
 import { redirectActionToCurrentPage } from "~/helper/responses.helper";
 import { pseCompetenceApiObjectToDto } from "~/mapper/psecompetence.mapper";

@@ -16,7 +16,7 @@ import type {
   PseUserSummaryPreparatoryWorkDto,
   PseUserSummaryTechniqueDto,
 } from "~/dto/pseusersummary.dto";
-import type { SecurityFunction } from "~/helper/remix";
+import type { SecurityFunction } from "~/helper/remix.helper";
 import { getParamsOrFail } from "~/helper/remix.params.helper";
 import { pseUserSummaryApiObjectToDto } from "~/mapper/pseusersummary.mapper";
 import { getPseFormationById } from "~/service/pseformation.server";

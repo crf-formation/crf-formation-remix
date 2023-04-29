@@ -20,7 +20,7 @@ import PseConcreteCaseSessionStateAutocomplete from "~/component/pse-concrete-ca
 import type { PseConcreteCaseSessionPutDto } from "~/dto/pseconcretecasesession.dto";
 import { validateForm } from '~/form/abstract';
 import { pseConcreteCaseSessionPutDtoValidator } from "~/form/pseconcretecasesession.form";
-import type { SecurityFunction } from "~/helper/remix";
+import type { SecurityFunction } from "~/helper/remix.helper";
 import { getParamsOrFail } from '~/helper/remix.params.helper';
 import useFormFocusError from "~/hook/useFormFocusError";
 import { pseConcreteCaseSessionApiObjectToDto, pseConcreteCaseSessionPutDtoToApiObject } from "~/mapper/pseconcretecasesession.mapper";

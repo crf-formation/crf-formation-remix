@@ -4,7 +4,7 @@ import type { Params } from "@remix-run/react";
 import { z } from "zod";
 import type { PseFormationApiObject } from "~/apiobject/pseformation.apiobject";
 import type { PseFormationPutDto } from "~/dto/pseformation.dto";
-import type { SecurityFunction } from "~/helper/remix";
+import type { SecurityFunction } from "~/helper/remix.helper";
 import { getParamsOrFail } from "~/helper/remix.params.helper";
 import { dataToPseFormationPutDto, pseFormationApiObjectToDto, pseFormationPutDtoToApiObject } from "~/mapper/pseformation.mapper";
 import { findPseFormationById, getPseFormationById, updatePseFormation } from "~/service/pseformation.server";

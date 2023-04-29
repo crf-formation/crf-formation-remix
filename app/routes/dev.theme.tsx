@@ -6,8 +6,8 @@ import Section from "~/component/layout/Section";
 import SubHeaderBar from "~/component/layout/SubHeaderBar";
 import Callout from "~/component/typography/Callout";
 import useTheme from "~/hook/useTheme";
-import AppTabs from '../../component/layout/AppTabs';
-import PageContainer from '../../component/layout/PageContainer';
+import AppTabs from '~/component/layout/AppTabs';
+import PageContainer from '~/component/layout/PageContainer';
 
 export const meta: MetaFunction<typeof loader> = () => {
   return {

@@ -3,7 +3,7 @@ import { json } from "@remix-run/node";
 import type { Params } from "@remix-run/react";
 import { z } from "zod";
 import type { PseFormationPostDto } from "~/dto/pseformation.dto";
-import type { SecurityFunction } from "~/helper/remix";
+import type { SecurityFunction } from "~/helper/remix.helper";
 import { getSearchParamsOrFail } from "~/helper/remix.params.helper";
 import { paginateEntityToApiObject } from "~/mapper/abstract.mapper";
 import { dataToPseFormationPostDto, pseFormationApiObjectToDto, pseFormationPostDtoToApiObject } from "~/mapper/pseformation.mapper";

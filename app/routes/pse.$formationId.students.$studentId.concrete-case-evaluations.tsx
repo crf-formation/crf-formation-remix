@@ -8,7 +8,7 @@ import type { PseFormationApiObject } from "~/apiobject/pseformation.apiobject";
 import Section from "~/component/layout/Section";
 import PseUserConcreteCasesTable from "~/component/pse-user-concrete-case/PseUserConcreteCasesTable";
 import Callout from "~/component/typography/Callout";
-import type { SecurityFunction } from "~/helper/remix";
+import type { SecurityFunction } from "~/helper/remix.helper";
 import { getParamsOrFail } from "~/helper/remix.params.helper";
 import { pseFormationApiObjectToDto } from "~/mapper/pseformation.mapper";
 import { pseUserSummaryConcreteCaseApiObjectToDto } from "~/mapper/pseusersummary.mapper";

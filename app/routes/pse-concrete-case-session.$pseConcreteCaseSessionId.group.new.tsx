@@ -1,9 +1,8 @@
-import type { ActionArgs, LoaderFunction, MetaFunction } from "@remix-run/node";
+import type { ActionArgs, LoaderArgs, MetaFunction } from "@remix-run/node";
 import { json, redirect } from "@remix-run/node";
 import type { Params } from "@remix-run/react";
 import { useActionData, useLoaderData } from "@remix-run/react";
 import { z } from "zod";
-import type { PseConcreteCaseGroupApiObject } from "~/apiobject/pseconcretecasegroup.apiobject";
 import type { PseConcreteCaseSessionApiObject } from "~/apiobject/pseconcretecasesession.apiobject";
 import type { PseFormationApiObject } from "~/apiobject/pseformation.apiobject";
 import type { UserApiObject } from "~/apiobject/user.apiobject";
@@ -15,38 +14,33 @@ import PageSubtitle from "~/component/layout/PageSubtitle";
 import PageTitle from "~/component/layout/PageTitle";
 import Section from "~/component/layout/Section";
 import PseConcreteCaseGroupForm from "~/component/pse-concrete-case-group/PseConcreteCaseGroupForm";
-import type { PseConcreteCaseGroupPutDto, PseUserConcreteCaseGroupStudentDto } from "~/dto/pseconcretecasegroup.dto";
+import type { PseConcreteCaseGroupPostDto } from "~/dto/pseconcretecasegroup.dto";
 import { validateForm } from "~/form/abstract";
-import { pseConcreteCaseGroupPutDtoValidator } from "~/form/pseconcretecasegroup.form";
+import { pseConcreteCaseGroupPostDtoValidator } from "~/form/pseconcretecasegroup.form";
 import type { SecurityFunction } from "~/helper/remix.helper";
-import { getParamsOrFail } from "~/helper/remix.params.helper";
-import { pseConcreteCaseGroupPutDtoToApiObject } from "~/mapper/pseconcretecasegroup.mapper";
+import { getParamsOrFail } from '~/helper/remix.params.helper';
+import { pseConcreteCaseGroupPostDtoToApiObject } from "~/mapper/pseconcretecasegroup.mapper";
 import { pseConcreteCaseSessionApiObjectToDto } from "~/mapper/pseconcretecasesession.mapper";
 import { pseFormationApiObjectToDto } from "~/mapper/pseformation.mapper";
-import { getPseConcreteCaseGroup, updatePseConcreteCaseGroup } from "~/service/pseconcretecasegroup.server";
+import { createPseConcreteCaseGroup } from "~/service/pseconcretecasegroup.server";
 import { getPseConcreteCaseSessionById } from "~/service/pseconcretecasesession.server";
 import { getPseFormationByPseConcreteCaseSessionId } from "~/service/pseformation.server";
 import { assertUserHasAccessToFormationAsTeacher } from "~/service/security.server";
 import { requireUser } from "~/service/session.server";
-import { pseConcreteCaseGroupApiObjectToDto } from '../../mapper/pseconcretecasegroup.mapper';
 
 const ParamsSchema = z.object({
-  pseConcreteCaseGroupId: z.string(),
+  pseConcreteCaseSessionId: z.string(),
 });
 
 const security: SecurityFunction<{
   userApiObject: UserApiObject;
   pseFormationApiObject: PseFormationApiObject;
   pseConcreteCaseSessionApiObject: PseConcreteCaseSessionApiObject;
-  pseConcreteCaseGroupApiObject: PseConcreteCaseGroupApiObject;
 }> = async (request: Request, params: Params) => {
-  const { pseConcreteCaseGroupId } = getParamsOrFail(params, ParamsSchema)
+  const { pseConcreteCaseSessionId } = getParamsOrFail(params, ParamsSchema)
 
   const userApiObject = await requireUser(request)
-
-  const pseConcreteCaseGroupApiObject = await getPseConcreteCaseGroup(pseConcreteCaseGroupId)
-
-	const pseConcreteCaseSessionApiObject = await getPseConcreteCaseSessionById(pseConcreteCaseGroupApiObject.pseConcreteCaseSessionId)
+	const pseConcreteCaseSessionApiObject = await getPseConcreteCaseSessionById(pseConcreteCaseSessionId)
 
   const pseFormationApiObject = await getPseFormationByPseConcreteCaseSessionId(pseConcreteCaseSessionApiObject.id)
 	await assertUserHasAccessToFormationAsTeacher(userApiObject.id, pseFormationApiObject.id)
@@ -55,47 +49,45 @@ const security: SecurityFunction<{
     userApiObject,
     pseFormationApiObject,
     pseConcreteCaseSessionApiObject,
-    pseConcreteCaseGroupApiObject
   }
 }
 
-export const loader: LoaderFunction = async ({
+export async function loader({
   request,
 	params
-}) => {
-  const { pseFormationApiObject, pseConcreteCaseSessionApiObject, pseConcreteCaseGroupApiObject } = await security(request, params)
+}: LoaderArgs){
+	const { pseFormationApiObject, pseConcreteCaseSessionApiObject } = await security(request, params)
 
   return json({
     pseFormation: pseFormationApiObjectToDto(pseFormationApiObject),
-		pseConcreteCaseSession: pseConcreteCaseSessionApiObjectToDto(pseConcreteCaseSessionApiObject),
-		pseConcreteCaseGroup: pseConcreteCaseGroupApiObjectToDto(pseConcreteCaseGroupApiObject),
+		pseConcreteCaseSession: pseConcreteCaseSessionApiObjectToDto(pseConcreteCaseSessionApiObject)
 	});
 };
 
 export async function action({ request, params  }: ActionArgs) {
-  const { pseConcreteCaseGroupApiObject } = await security(request, params)
+	const { pseConcreteCaseSessionApiObject } = await security(request, params)
 
-  const result = await validateForm<PseConcreteCaseGroupPutDto>(request, pseConcreteCaseGroupPutDtoValidator);
+  const result = await validateForm<PseConcreteCaseGroupPostDto>(request, pseConcreteCaseGroupPostDtoValidator);
   if (result.errorResponse) {
     return result.errorResponse
   }
-	const putDto = result.data
+	const postDto = result.data
 
-  const putApiObject = pseConcreteCaseGroupPutDtoToApiObject(putDto)
+  const postApiObject = pseConcreteCaseGroupPostDtoToApiObject(postDto)
 
-  await updatePseConcreteCaseGroup(pseConcreteCaseGroupApiObject.id, putApiObject)
+  await createPseConcreteCaseGroup(postApiObject)
 
-  return redirect(`/pse-concrete-case-group/${pseConcreteCaseGroupApiObject.id}`)
+  return redirect(`/pse-concrete-case-session/${pseConcreteCaseSessionApiObject.id}`)
 }
 
 export const meta: MetaFunction<typeof loader> = ({ data }) => {
   return {
-    title: `Groupe ${data?.pseConcreteCaseGroup?.name}`,
+    title: `Nouveau groupe`,
   };
 };
 
-export default function PseConcreteCaseGroupRoute() {
-  const { pseFormation, pseConcreteCaseSession, pseConcreteCaseGroup } = useLoaderData<typeof loader>();
+export default function PseConcreteCaseSessionNewGroupRoute() {
+  const { pseFormation, pseConcreteCaseSession } = useLoaderData<typeof loader>();
 
 	const actionData = useActionData<typeof action>();
 
@@ -123,9 +115,9 @@ export default function PseConcreteCaseGroupRoute() {
           </Ariane>
         }
       >
-        <PageTitle title={`Groupe ${pseConcreteCaseGroup?.name}`} />
+        <PageTitle title="Créer un groupe" />
         <PageSubtitle
-          subtitle={`Détail du groupe pour la session ${pseConcreteCaseSession.name}`}
+          subtitle={`Créez un groupe pour la session ${pseConcreteCaseSession.name}`}
         />
       </PagePaperHeader>
 
@@ -134,11 +126,6 @@ export default function PseConcreteCaseGroupRoute() {
       <PageContainer>
         <Section>
           <PseConcreteCaseGroupForm
-            isEdit
-            name={pseConcreteCaseGroup.name}
-            students={pseConcreteCaseGroup.students?.map(
-              (student: PseUserConcreteCaseGroupStudentDto) => student.user
-            )}
             pseFormationId={pseFormation.id}
             pseConcreteCaseSessionId={pseConcreteCaseSession.id}
             actionData={actionData}

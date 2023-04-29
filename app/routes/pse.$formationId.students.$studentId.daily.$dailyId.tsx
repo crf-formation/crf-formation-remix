@@ -9,7 +9,7 @@ import DailyNoteForm from '~/component/daily/DailyNoteForm';
 import type { DailyNoteDto, DailyNotePostDto } from "~/dto/daily.dto";
 import { validateForm } from "~/form/abstract";
 import { dailyValidator } from "~/form/daily.form";
-import type { SecurityFunction } from "~/helper/remix";
+import type { SecurityFunction } from "~/helper/remix.helper";
 import { getParamsOrFail } from "~/helper/remix.params.helper";
 import { dailyNotePostDtoToApiObject } from "~/mapper/daily.mapper";
 import { updateDailyNote } from "~/service/daily.server";

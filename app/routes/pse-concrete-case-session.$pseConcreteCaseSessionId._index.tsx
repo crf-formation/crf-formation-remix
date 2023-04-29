@@ -21,7 +21,7 @@ import Callout from '~/component/typography/Callout';
 import type { PseConcreteCaseGroupDto } from '~/dto/pseconcretecasegroup.dto';
 import type { PseConcreteCaseSessionGroupOrderDto } from '~/dto/pseconcretecasesession.dto';
 import type { PseConcreteCaseSituationDto, PseSituationConcreteCaseGroupDto } from '~/dto/pseconcretecasesituation.dto';
-import type { SecurityFunction } from "~/helper/remix";
+import type { SecurityFunction } from "~/helper/remix.helper";
 import { getParamsOrFail } from '~/helper/remix.params.helper';
 import { pseConcreteCaseSessionApiObjectToDto, pseConcreteCaseSessionGroupOrderApiObjectToDto } from "~/mapper/pseconcretecasesession.mapper";
 import { pseConcreteCaseSituationApiObjectToDto } from '~/mapper/pseconcretecasesituation.mapper';

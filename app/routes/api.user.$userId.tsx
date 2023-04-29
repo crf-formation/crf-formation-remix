@@ -4,7 +4,7 @@ import type { Params } from "@remix-run/react";
 import { z } from "zod";
 import type { UserApiObject } from "~/apiobject/user.apiobject";
 import type { UserPutDto } from "~/dto/user.dto";
-import type { SecurityFunction } from "~/helper/remix";
+import type { SecurityFunction } from "~/helper/remix.helper";
 import { getParamsOrFail } from "~/helper/remix.params.helper";
 import { dataToUserPutDto, userApiObjectToDto, userPutDtoToApiObject } from "~/mapper/user.mapper";
 import { requireAdmin } from "~/service/session.server";

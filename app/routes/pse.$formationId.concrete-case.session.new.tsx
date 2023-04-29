@@ -19,7 +19,7 @@ import Section from "~/component/layout/Section";
 import type { PseConcreteCaseSessionPostDto } from "~/dto/pseconcretecasesession.dto";
 import { validateForm } from "~/form/abstract";
 import { pseConcreteCaseSessionPostDtoValidator } from "~/form/pseconcretecasesession.form";
-import type { SecurityFunction } from "~/helper/remix";
+import type { SecurityFunction } from "~/helper/remix.helper";
 import { getParamsOrFail } from "~/helper/remix.params.helper";
 import useFormFocusError from "~/hook/useFormFocusError";
 import { pseConcreteCaseSessionPostDtoToApiObject } from "~/mapper/pseconcretecasesession.mapper";
