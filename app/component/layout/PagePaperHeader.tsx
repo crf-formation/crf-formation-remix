@@ -10,7 +10,7 @@ export default function PagePaperHeader({ ariane, children }: Props) {
   return (
     <Box
       sx={{
-        backgroundColor: "#FBF7FF"
+        backgroundColor: "var(--card-background-color)"
       }}
     >
       <Box>{ariane}</Box>

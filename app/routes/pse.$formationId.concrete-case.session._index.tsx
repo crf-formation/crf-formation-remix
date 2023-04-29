@@ -6,7 +6,7 @@ import { json } from "@remix-run/server-runtime";
 import { z } from "zod";
 import type { PseFormationApiObject } from "~/apiobject/pseformation.apiobject";
 import { Ariane, ArianeItem } from "~/component/layout/Ariane";
-import PageContainer from "~/component/layout/PageContainer";
+import Page from "~/component/layout/Page";
 import PagePaperHeader from "~/component/layout/PagePaperHeader";
 import PageSpace from "~/component/layout/PageSpace";
 import PageTitle from "~/component/layout/PageTitle";
@@ -107,7 +107,7 @@ export default function ConcreteCaseSessionsRoute() {
 
       <PageSpace variant="header" />
 
-      <PageContainer>
+      <Page>
         <Section>
           <Button
             variant="outlined"
@@ -143,7 +143,7 @@ export default function ConcreteCaseSessionsRoute() {
             </Table>
           </TableContainer>
         </Section>
-      </PageContainer>
+      </Page>
     </>
   );
 }

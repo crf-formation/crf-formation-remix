@@ -51,7 +51,8 @@ export default function Layout({ isLoggedIn, children }: { isLoggedIn: boolean, 
         styles={{
           ":root": {
             "--header-height": "48px",
-            "--main-background-color": backgroundColor
+            "--main-background-color": backgroundColor,
+            "--card-background-color": themeName === "light" ? "#FBF7FF" : "rgba(255, 255, 255, 0.08)",
           }
         }}
       />

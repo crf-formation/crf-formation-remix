@@ -10,7 +10,7 @@ import { z } from "zod";
 import type { PseFormationApiObject } from "~/apiobject/pseformation.apiobject";
 import FormationPseStatusChip from "~/component/formationpse/FormationPseStatusChip";
 import { Ariane, ArianeItem } from "~/component/layout/Ariane";
-import PageContainer from "~/component/layout/PageContainer";
+import Page from "~/component/layout/Page";
 import PagePaperHeader from "~/component/layout/PagePaperHeader";
 import PageSpace from "~/component/layout/PageSpace";
 import PageSubtitle from "~/component/layout/PageSubtitle";
@@ -197,7 +197,7 @@ export default function FromationPseRoute() {
 
       <PageSpace variant="header" />
 
-      <PageContainer>
+      <Page>
         <Grid container spacing={2}>
           <Grid item md={8}>
             <Stack spacing={2}>
@@ -223,7 +223,7 @@ export default function FromationPseRoute() {
             </Stack>
           </Grid>
         </Grid>
-      </PageContainer>
+      </Page>
     </>
   );
 }

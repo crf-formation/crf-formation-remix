@@ -19,7 +19,7 @@ import { commitSession, getSession, requireUser } from "~/service/session.server
 import { updatePassword, updateUser, verifyLogin } from "~/service/user.server";
 import { verifyAuthenticityToken } from "~/util/csrf.server";
 import { namedActionWithFormType } from "~/util/named-actions";
-import PageContainer from "../component/layout/PageContainer";
+import Page from "../component/layout/Page";
 import { passwordModificationValidator, profileValidator } from "../form/user.form";
 import { userApiObjectToDto, userPutDtoToApiObject } from "../mapper/user.mapper";
 import { V2_MetaFunction } from "@remix-run/node";
@@ -214,7 +214,7 @@ function EditPassword() {
 
 export default function AccountRoute() {
   return (
-    <PageContainer>
+    <Page>
       <Grid container spacing={2}>
         <Grid item xs={9}>
           <Grid>
@@ -236,6 +236,6 @@ export default function AccountRoute() {
           </Grid>
         </Grid>
       </Grid>
-    </PageContainer>
+    </Page>
   );
 }

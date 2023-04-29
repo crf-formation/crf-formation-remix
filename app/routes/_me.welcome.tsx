@@ -2,7 +2,7 @@ import type { LoaderArgs } from "@remix-run/node";
 import { json, V2_MetaFunction } from "@remix-run/node";
 
 import { Paper, Typography } from "@mui/material";
-import PageContainer from "~/component/layout/PageContainer";
+import Page from "~/component/layout/Page";
 import useUser from "~/hook/useUser";
 import { requireUser } from "~/service/session.server";
 
@@ -22,7 +22,7 @@ export const meta: V2_MetaFunction<typeof loader> = ({ data }) => {
 export default function WelcomeRoute() {
   const user = useUser();
   return (
-    <PageContainer>
+    <Page>
       <Paper sx={{ textAlign: "center", py: 4 }}>
         <Typography variant="h2" sx={{ mt: 2 }}>
           Bienvenue {user.firstName} !
@@ -36,6 +36,6 @@ export default function WelcomeRoute() {
           Vous avez désormais accès à CRF Formation.
         </Typography>
       </Paper>
-    </PageContainer>
+    </Page>
   );
 }

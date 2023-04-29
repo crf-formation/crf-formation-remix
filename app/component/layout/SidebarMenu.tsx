@@ -197,7 +197,6 @@ function Category({ name }: CategoryProps) {
 
 interface Props {
   open?: boolean;
-  isLoggedIn: boolean;
 }
 
 export default function SidebarMenu({ open }: Props) {

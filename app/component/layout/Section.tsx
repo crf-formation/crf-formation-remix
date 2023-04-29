@@ -18,7 +18,7 @@ export default function Section(props: SectionProps) {
         {...other}
         sx={{
           overflow: "hidden",
-          backgroundColor: "#FBF7FF"
+          backgroundColor: "var(--card-background-color)"
         }}
       >
         {title && (

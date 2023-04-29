@@ -11,10 +11,7 @@ import FormErrorHelperText from "~/component/form/FormErrorHelperText";
 import FormTextField from "~/component/form/FormTextField";
 import FormView from "~/component/form/FormView";
 import { Ariane, ArianeItem } from "~/component/layout/Ariane";
-import PageContainer from "~/component/layout/PageContainer";
-import PagePaperHeader from "~/component/layout/PagePaperHeader";
-import PageSpace from "~/component/layout/PageSpace";
-import PageTitle from "~/component/layout/PageTitle";
+import Page from "~/component/layout/Page";
 import Section from "~/component/layout/Section";
 import PseConcreteCaseSessionStateAutocomplete
   from "~/component/pse-concrete-case-session/PseConcreteCaseSessionStateAutocomplete";
@@ -106,67 +103,62 @@ export default function SessionPseRoute() {
   ]);
 
   return (
-    <>
-      <PagePaperHeader
-        ariane={
-          <Ariane>
-            <ArianeItem label="PSE" href="pse" />
+    <Page
+      title={pseConcreteCaseSession.name}
+      ariane={
+        <Ariane>
+          <ArianeItem label="PSE" href="pse" />
 
-            <ArianeItem
-              label={pseFormation.title}
-              href={`/pse/${pseFormation.id}`}
-            />
+          <ArianeItem
+            label={pseFormation.title}
+            href={`/pse/${pseFormation.id}`}
+          />
 
-            <ArianeItem
-              label="Cas concret"
-              href={`/pse/${pseFormation.id}/concrete-case/session`}
-            />
+          <ArianeItem
+            label="Cas concret"
+            href={`/pse/${pseFormation.id}/concrete-case/session`}
+          />
 
-            <ArianeItem
-              label={pseConcreteCaseSession.name}
-              href={`/pse-concrete-case-session/${pseConcreteCaseSession.id}`}
-            />
-          </Ariane>
-        }
-      >
-        <PageTitle title={pseConcreteCaseSession.name} />
-      </PagePaperHeader>
+          <ArianeItem
+            label={pseConcreteCaseSession.name}
+            href={`/pse-concrete-case-session/${pseConcreteCaseSession.id}`}
+          />
+        </Ariane>
+      }
+    >
 
-      <PageSpace variant="header" />
+      <Section>
+        <FormView
+          submitText="Valider"
+          validator={pseConcreteCaseSessionPutDtoValidator}
+        >
+          <FormTextField
+            name="name"
+            ref={nameRef}
+            defaultValue={pseConcreteCaseSession.name}
+            label="Nom de la session"
+            variant="standard"
+            margin="normal"
+            type="string"
+            autoFocus
+          />
 
-      <PageContainer>
-        <Section>
-          <FormView
-            submitText="Valider"
-            validator={pseConcreteCaseSessionPutDtoValidator}
-          >
-            <FormTextField
-              name="name"
-              ref={nameRef}
-              defaultValue={pseConcreteCaseSession.name}
-              label="Nom de la session"
-              variant="standard"
-              margin="normal"
-              type="string"
-              autoFocus
-            />
+          <PseConcreteCaseSessionStateAutocomplete
+            name="state"
+            ref={stateRef}
+            defaultValue={pseConcreteCaseSession.state}
+            label="Status"
+            variant="standard"
+            margin="normal"
+            type="string"
+            required
+            autoFocus
+            {...generateAria(actionData, "state")}
+          />
+          <FormErrorHelperText name="state" actionData={actionData} />
+        </FormView>
+      </Section>
 
-            <PseConcreteCaseSessionStateAutocomplete
-              name="state"
-              ref={stateRef}
-              defaultValue={pseConcreteCaseSession.state}
-              label="Status"
-              variant="standard"
-              margin="normal"
-              type="string"
-              required
-              autoFocus
-              {...generateAria(actionData, "state")}
-            />
-            <FormErrorHelperText name="state" actionData={actionData} />
-          </FormView>
-        </Section>
-      </PageContainer>
-    </>
+    </Page>
   );
 }

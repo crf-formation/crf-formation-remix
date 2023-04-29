@@ -6,7 +6,7 @@ import SubHeaderBar from "~/component/layout/SubHeaderBar";
 import Callout from "~/component/typography/Callout";
 import useTheme from "~/hook/useTheme";
 import AppTabs from "~/component/layout/AppTabs";
-import PageContainer from "~/component/layout/PageContainer";
+import Page from "~/component/layout/Page";
 import { V2_MetaFunction } from "@remix-run/node";
 import { loader } from "~/routes/account";
 
@@ -43,7 +43,7 @@ export default function Theme() {
         <Tab label="Usage" />
       </AppTabs>
 
-      <PageContainer>
+      <Page>
         <Section>
           <Box p={2}>
             <Typography variant="h1" color="primary">
@@ -121,7 +121,7 @@ export default function Theme() {
             </Box>
           </Box>
         </Section>
-      </PageContainer>
+      </Page>
     </>
   );
 }

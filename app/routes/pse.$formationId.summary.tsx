@@ -7,7 +7,7 @@ import { z } from "zod";
 import type { PseFormationApiObject } from "~/apiobject/pseformation.apiobject";
 import type { PseSummaryApiObject } from "~/apiobject/psesummary.apiobject";
 import { Ariane, ArianeItem } from "~/component/layout/Ariane";
-import PageContainer from "~/component/layout/PageContainer";
+import Page from "~/component/layout/Page";
 import PagePaperHeader from "~/component/layout/PagePaperHeader";
 import PageSpace from "~/component/layout/PageSpace";
 import PageSubtitle from "~/component/layout/PageSubtitle";
@@ -87,7 +87,7 @@ export default function FromationPseRoute() {
 
       <PageSpace variant="header" />
 
-      <PageContainer>
+      <Page>
         <Stack spacing={2}>
           <Section title="Résumé">
             <PseSummaryResult
@@ -113,7 +113,7 @@ export default function FromationPseRoute() {
             />
           </Section>
         </Stack>
-      </PageContainer>
+      </Page>
     </>
   );
 }

@@ -5,7 +5,7 @@ import type { Params } from "@remix-run/react";
 import { useLoaderData } from "@remix-run/react";
 import { z } from "zod";
 import type { UserApiObject } from "~/apiobject/user.apiobject";
-import PageContainer from "~/component/layout/PageContainer";
+import Page from "~/component/layout/Page";
 import PagePaperHeader from "~/component/layout/PagePaperHeader";
 import PageSpace from "~/component/layout/PageSpace";
 import PageSubtitle from "~/component/layout/PageSubtitle";
@@ -67,7 +67,7 @@ export default function FromationPseRoute() {
 
       <PageSpace variant="header" />
 
-      <PageContainer>
+      <Page>
         <Section>
           <Table size="small">
             <TableHead>
@@ -89,7 +89,7 @@ export default function FromationPseRoute() {
             {/* TODO: paginaation */}
           </Table>
         </Section>
-      </PageContainer>
+      </Page>
     </>
   );
 }

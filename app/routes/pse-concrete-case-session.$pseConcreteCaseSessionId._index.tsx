@@ -28,11 +28,8 @@ import type { PseConcreteCaseSessionApiObject } from "~/apiobject/pseconcretecas
 import type { PseFormationApiObject } from "~/apiobject/pseformation.apiobject";
 import type { UserApiObject } from "~/apiobject/user.apiobject";
 import { Ariane, ArianeItem } from "~/component/layout/Ariane";
-import PageAction from "~/component/layout/PageAction";
-import PageContainer from "~/component/layout/PageContainer";
-import PagePaperHeader from "~/component/layout/PagePaperHeader";
-import PageSpace from "~/component/layout/PageSpace";
-import PageTitle from "~/component/layout/PageTitle";
+import Page from "~/component/layout/Page";
+import PageActions from "~/component/layout/PageActions";
 import Section from "~/component/layout/Section";
 import Callout from "~/component/typography/Callout";
 import type { PseConcreteCaseGroupDto } from "~/dto/pseconcretecasegroup.dto";
@@ -373,32 +370,26 @@ export default function SessionPseRoute() {
   const noneHasPosition = pseConcreteCaseSessionGroupOrders.every((groupOrder: PseConcreteCaseSessionGroupOrderDto) => groupOrder.hasNoPositions);
 
   return (
-    <>
-      <PagePaperHeader
-        ariane={
-          <Ariane>
-            <ArianeItem label="PSE" href="pse" />
+    <Page
+      ariane={
+        <Ariane>
+          <ArianeItem label="PSE" href="pse" />
 
-            <ArianeItem
-              label={pseFormation.title}
-              href={`/pse/${pseFormation.id}`}
-            />
+          <ArianeItem
+            label={pseFormation.title}
+            href={`/pse/${pseFormation.id}`}
+          />
 
-            <ArianeItem
-              label="Cas concret"
-              href={`/pse/${pseFormation.id}/concrete-case/session`}
-            />
+          <ArianeItem
+            label="Cas concret"
+            href={`/pse/${pseFormation.id}/concrete-case/session`}
+          />
 
-          </Ariane>
-        }
-      >
-        <PageTitle title={pseConcreteCaseSession.name} />
-      </PagePaperHeader>
-
-      <PageSpace variant="header" />
-
-      <PageContainer>
-        <PageAction>
+        </Ariane>
+      }
+      title={pseConcreteCaseSession.name}
+      action={
+        <PageActions>
           <Chip label={pseConcreteCaseSession.stateLabel} />
 
           <Button>
@@ -408,45 +399,47 @@ export default function SessionPseRoute() {
               Éditer
             </Link>
           </Button>
-        </PageAction>
+        </PageActions>
+      }
+    >
 
-        <Grid container spacing={2}>
-          <Grid item md={8}>
-            <Stack spacing={2}>
-              <PseConcreteCaseSituationGroupsOrder
-                pseConcreteCaseSessionId={pseConcreteCaseSession.id}
-                pseConcreteCaseSituations={pseConcreteCaseSituations}
-                noneHasPosition={noneHasPosition}
-              />
-              <PseConcreteGroupsOrder
-                pseConcreteCaseSessionGroupOrders={
-                  pseConcreteCaseSessionGroupOrders
-                }
-                noneHasPosition={noneHasPosition}
-              />
-            </Stack>
-          </Grid>
-
-          <Grid item md={4}>
-            <Stack spacing={2}>
-              <PseConcreteCaseGroupsTable
-                pseFormationId={pseFormation.id}
-                pseConcreteCaseSessionId={pseConcreteCaseSession.id}
-                pseConcreteCaseGroups={
-                  pseConcreteCaseSession.pseConcreteCaseGroups
-                }
-              />
-
-              <PseConcreteCaseSituationsTable
-                pseConcreteCaseSessionId={pseConcreteCaseSession.id}
-                pseConcreteCaseSituations={pseConcreteCaseSituations}
-              />
-
-              {/* TODO: list users without groups */}
-            </Stack>
-          </Grid>
+      <Grid container spacing={2}>
+        <Grid item md={8}>
+          <Stack spacing={2}>
+            <PseConcreteCaseSituationGroupsOrder
+              pseConcreteCaseSessionId={pseConcreteCaseSession.id}
+              pseConcreteCaseSituations={pseConcreteCaseSituations}
+              noneHasPosition={noneHasPosition}
+            />
+            <PseConcreteGroupsOrder
+              pseConcreteCaseSessionGroupOrders={
+                pseConcreteCaseSessionGroupOrders
+              }
+              noneHasPosition={noneHasPosition}
+            />
+          </Stack>
         </Grid>
-      </PageContainer>
-    </>
+
+        <Grid item md={4}>
+          <Stack spacing={2}>
+            <PseConcreteCaseGroupsTable
+              pseFormationId={pseFormation.id}
+              pseConcreteCaseSessionId={pseConcreteCaseSession.id}
+              pseConcreteCaseGroups={
+                pseConcreteCaseSession.pseConcreteCaseGroups
+              }
+            />
+
+            <PseConcreteCaseSituationsTable
+              pseConcreteCaseSessionId={pseConcreteCaseSession.id}
+              pseConcreteCaseSituations={pseConcreteCaseSituations}
+            />
+
+            {/* TODO: list users without groups */}
+          </Stack>
+        </Grid>
+      </Grid>
+
+    </Page>
   );
 }

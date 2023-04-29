@@ -1,8 +1,7 @@
 import type { LoaderArgs } from "@remix-run/node";
 import { json, V2_MetaFunction } from "@remix-run/node";
-
 import { Paper, Typography } from "@mui/material";
-import PageContainer from "~/component/layout/PageContainer";
+import Page from "~/component/layout/Page";
 
 export async function loader({ request }: LoaderArgs) {
   return json({});
@@ -16,7 +15,7 @@ export const meta: V2_MetaFunction<typeof loader> = () => {
 
 export default function WelcomeRoute() {
   return (
-    <PageContainer>
+    <Page>
       <Paper sx={{ textAlign: "center", py: 4 }}>
         <Typography variant="h2" sx={{ mt: 2 }}>
           Compte créé !
@@ -31,6 +30,6 @@ export default function WelcomeRoute() {
           a été envoyé.
         </Typography>
       </Paper>
-    </PageContainer>
+    </Page>
   );
 }

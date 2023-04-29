@@ -7,7 +7,7 @@ import { useLocation } from "@remix-run/react";
 import { useEffect, useRef } from "react";
 import type { ErrorProps } from "react-admin";
 import { Title, useTranslate } from "react-admin";
-import PageContainer from "../../layout/PageContainer";
+import Page from "../../layout/Page";
 
 interface Props extends ErrorProps {
   error: Error;
@@ -32,7 +32,7 @@ export default function Error(
 
   const translate = useTranslate();
   return (
-    <PageContainer>
+    <Page>
       <Paper sx={{ p: 4 }}>
         <Title title="Error" />
         <h1>
@@ -65,6 +65,6 @@ export default function Error(
           </Button>
         </div>
       </Paper>
-    </PageContainer>
+    </Page>
   );
 }

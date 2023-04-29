@@ -61,7 +61,7 @@ export function DefaultErrorView(
   );
 }
 
-export default function ErrorPageContainer({ error }: { error: ErrorResponse }) {
+export default function ErrorPage({ error }: { error: ErrorResponse }) {
   // default error view
   let defaultMessage;
   let title;

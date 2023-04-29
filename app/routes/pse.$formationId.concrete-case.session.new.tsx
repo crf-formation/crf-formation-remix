@@ -9,7 +9,7 @@ import type { PseFormationApiObject } from "~/apiobject/pseformation.apiobject";
 import FormTextField from "~/component/form/FormTextField";
 import FormView from "~/component/form/FormView";
 import { Ariane, ArianeItem } from "~/component/layout/Ariane";
-import PageContainer from "~/component/layout/PageContainer";
+import Page from "~/component/layout/Page";
 import PagePaperHeader from "~/component/layout/PagePaperHeader";
 import PageSpace from "~/component/layout/PageSpace";
 import PageSubtitle from "~/component/layout/PageSubtitle";
@@ -111,7 +111,7 @@ export default function ConcreteCaseSessionsRoute() {
 
       <PageSpace variant="header" />
 
-      <PageContainer>
+      <Page>
         <Section sx={{ maxWidth: 720 }}>
 
           <FormView
@@ -134,7 +134,7 @@ export default function ConcreteCaseSessionsRoute() {
             </Box>
           </FormView>
         </Section>
-      </PageContainer>
+      </Page>
     </>
   );
 }

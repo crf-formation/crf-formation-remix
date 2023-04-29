@@ -9,7 +9,7 @@ import type { PseConcreteCaseSituationApiObject } from "~/apiobject/pseconcretec
 import type { PseFormationApiObject } from "~/apiobject/pseformation.apiobject";
 import type { UserApiObject } from "~/apiobject/user.apiobject";
 import { Ariane, ArianeItem } from "~/component/layout/Ariane";
-import PageContainer from "~/component/layout/PageContainer";
+import Page from "~/component/layout/Page";
 import PagePaperHeader from "~/component/layout/PagePaperHeader";
 import PageSpace from "~/component/layout/PageSpace";
 import PageTitle from "~/component/layout/PageTitle";
@@ -141,7 +141,7 @@ export default function PseConcreteCaseSituationRoute() {
 
       <PageSpace variant="header" />
 
-      <PageContainer>
+      <Page>
         <PseConcreteCaseSituationForm
           pseFormationId={pseFormation.id}
           pseConcreteCaseSessionId={pseConcreteCaseSession.id}
@@ -155,7 +155,7 @@ export default function PseConcreteCaseSituationRoute() {
             pseConcreteCaseSituation.pseSituationConcreteCaseGroups
           }
         />
-      </PageContainer>
+      </Page>
     </>
   );
 }
