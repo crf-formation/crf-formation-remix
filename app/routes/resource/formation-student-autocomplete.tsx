@@ -3,7 +3,6 @@ import type { LoaderArgs } from "@remix-run/server-runtime";
 import { json } from "@remix-run/server-runtime";
 import { useEffect } from "react";
 import { z } from "zod";
-import type PaginateObject from "~/constant/types";
 import type { UserDto } from "~/dto/user.dto";
 import { getSearchParamsOrFail } from "~/helper/remix.params.helper";
 import { paginateEntityToApiObject } from "~/mapper/abstract.mapper";

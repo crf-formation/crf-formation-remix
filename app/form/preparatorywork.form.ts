@@ -10,24 +10,15 @@ const PseUserPreparatoryWorkPostSchema: z.ZodType<
   array: zfd.json(
     z.array(
       zfd.json(
-        z.object
-{
-  pseModuleId: z.string(),
-    realised;
-:
-  z.boolean(),
-    openingDate;
-:
-  z.string().nullish(),
-    realisedDate;
-:
-  z.string().nullish();
-}
-)
-)
-)
-)
-})
-;
+        z.object({
+          pseModuleId: z.string(),
+          realised: z.boolean(),
+          openingDate: z.string().nullish(),
+          realisedDate: z.string().nullish()
+        })
+      )
+    )
+  )
+});
 
 export const pseUserPreparatoryWorkValidator = withZod(PseUserPreparatoryWorkPostSchema);

@@ -1,10 +1,13 @@
 // from https://github.com/marmelab/react-admin/blob/master/packages/ra-data-simple-rest/src/index.ts
 import type { DataProvider, GetListParams } from "ra-core";
 import { fetchUtils } from "ra-core";
-import type { GetManyReferenceParams, GetOneParams, UpdateManyParams } from "react-admin";
+import type { GetManyReferenceParams } from "react-admin";
 
-function getPath(apiUrl: string, resource: string, params: GetOneParams<any> | UpdateManyParams<any>) {
-  return `${apiUrl}/${resource}/${params.id}`;
+function getPath(apiUrl: string, resource: string, id: string | number | null, urlSearchParams?: URLSearchParams) {
+  const searchParams = urlSearchParams ? `?${urlSearchParams}` : "";
+  const resourcePath = id ? `/${id}` : "";
+
+  return `${apiUrl}/${resource}${resourcePath}${searchParams}`;
 }
 
 function isGetManyReferenceParams(params: GetManyReferenceParams | GetListParams): params is GetManyReferenceParams {
@@ -87,7 +90,7 @@ export default (
   getList: (resource, params) => getList(apiUrl, httpClient, resource, params),
 
   getOne: (resource, params) => {
-    return httpClient(getPath(apiUrl, resource, params)).then(({ json }) => ({
+    return httpClient(getPath(apiUrl, resource, params.id)).then(({ json }) => ({
       data: json
     }));
   },
@@ -105,7 +108,7 @@ export default (
   getManyReference: (resource, params) => getList(apiUrl, httpClient, resource, params),
 
   update: (resource, params) =>
-    httpClient(getPath(apiUrl, resource, params), {
+    httpClient(getPath(apiUrl, resource, params.id), {
       method: "PUT",
       body: JSON.stringify(params.data)
     }).then(({ json }) => ({ data: json })),
@@ -114,7 +117,7 @@ export default (
   updateMany: (resource, params) =>
     Promise.all(
       params.ids.map((id) =>
-        httpClient(getPath(apiUrl, resource, params), {
+        httpClient(getPath(apiUrl, resource, id), {
           method: "PUT",
           body: JSON.stringify(params.data)
         })
@@ -137,7 +140,7 @@ export default (
       }),
 
   delete: (resource, params) =>
-    httpClient(getPath(apiUrl, resource, params), {
+    httpClient(getPath(apiUrl, resource, params.id), {
       method: "DELETE",
       headers: new Headers({
         "Content-Type": "text/plain"
