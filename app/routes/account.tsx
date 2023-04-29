@@ -167,7 +167,7 @@ function Theme() {
 
   return (
     <Section title="Theme">
-      <Form action="/" method="post">
+      <Form action="/" method="POST">
         <Box
           sx={{
             display: "flex",
@@ -203,7 +203,7 @@ function Logout() {
     <Section title="Deconnexion">
       <Form
         action="/logout"
-        method="post"
+        method="POST"
         style={{ width: "100%", textAlign: "center" }}
       >
         <Button

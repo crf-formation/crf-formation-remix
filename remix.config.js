@@ -11,7 +11,7 @@ module.exports = {
     unstable_dev: false,
     // formMethod is now uppercase
     // https://remix.run/docs/en/1.15.0/pages/v2#formmethod
-    v2_normalizeFormMethod: false,
+    v2_normalizeFormMethod: true,
     // metha functions is changing
     // https://remix.run/docs/en/1.15.0/pages/v2#route-meta
     v2_meta: true,

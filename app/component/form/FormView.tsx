@@ -38,7 +38,7 @@ export default function FormView<DataType>({
 }: FormViewProps<DataType>) {
 	return (
     <ValidatedForm
-      method="post"
+      method="POST"
       validator={validator}
       // Why are my fields triggering the native HTML validations before remix-validated-form ones?
       // This is happening because you or the library you are using is passing the required attribute

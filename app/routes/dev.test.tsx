@@ -60,7 +60,7 @@ export default function Test() {
           },
         }}
       >
-        <Form action="/" method="post">
+        <Form action="/" method="POST">
           <input
             type="hidden"
             name="redirectBack"

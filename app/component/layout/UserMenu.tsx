@@ -88,7 +88,7 @@ export default function UserMenu({ open, user, anchorRef, handleClose }: Props) 
         </ListItem>
         <Divider />
         <ListItem sx={{ justifyContent: "center" }}>
-          <Form method="post" action="/">
+          <Form method="POST" action="/">
             <Box
               sx={{
                 textAlign: "center",
@@ -116,7 +116,7 @@ export default function UserMenu({ open, user, anchorRef, handleClose }: Props) 
         </ListItem>
         <Divider />
         <ListItem alignItems="flex-start" sx={{ padding: [0, 2] }}>
-          <Form action="/logout" method="post" style={{ width: "100%", textAlign: 'center' }}>
+          <Form action="/logout" method="POST" style={{ width: "100%", textAlign: 'center' }}>
             <Button
               type="submit"
               sx={{ width: "100%", maxWidth: 204 }}

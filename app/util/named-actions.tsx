@@ -122,12 +122,12 @@ function findNameInFormData(formData: FormData) {
 }
 
 function findNameUsingMethod(method: string): string  | null {
-	switch (method.toLocaleLowerCase()) {
-    case "post":
+	switch (method.toUpperCase()) {
+    case "POST":
       return "postAction";
-    case "put":
+    case "PUT":
       return "putAction";
-    case "delete":
+    case "DELETE":
       return "deleteAction";
 		default:
 			return null;

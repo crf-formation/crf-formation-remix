@@ -41,7 +41,7 @@ export function AuthenticityTokenProvider({
  * function sendFormWithCode() {
  *   submit(
  *     { csrf: token, ...otherData },
- *     { action: "/action", method: "post" },
+ *     { action: "/action", method: "POST" },
  *   );
  * }
  */
