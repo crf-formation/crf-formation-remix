@@ -5,21 +5,21 @@ import { forwardRef } from "react";
 import useLocationMatchPath from "~/hook/useLocationMatchPath";
 
 type PropsType = {
-	dense: boolean;
-	href?: string | undefined;
-	name: string;
-	icon?: ReactNode;
-	onClick?: ReactEventHandler;
-	sx?: SxProps;
+  dense: boolean;
+  href?: string | undefined;
+  name: string;
+  icon?: ReactNode;
+  onClick?: ReactEventHandler;
+  sx?: SxProps;
 }
 
 const MenuItem = forwardRef<HTMLInputElement, PropsType>((props, ref) => {
-	const { dense, href, name, icon, sx, onClick } = props as PropsType
-	const locationMatchPath = useLocationMatchPath()
+  const { dense, href, name, icon, sx, onClick } = props as PropsType;
+  const locationMatchPath = useLocationMatchPath();
 
-	const matchPath = locationMatchPath(href)
+  const matchPath = locationMatchPath(href);
 
-	return (
+  return (
     <ListItemButton
       ref={ref}
       dense={dense}
@@ -37,21 +37,21 @@ const MenuItem = forwardRef<HTMLInputElement, PropsType>((props, ref) => {
           color: matchPath
             ? "var(--sidebar-item-context)"
             : "var(--sidebar-color-title)",
-          background: "var(--sidebar-item-hover)",
+          background: "var(--sidebar-item-hover)"
         },
 
         "& svg": {
           fill: matchPath
             ? "var(--sidebar-item-context)"
-            : "var(--sidebar-color-title)",
-        },
+            : "var(--sidebar-color-title)"
+        }
       }}
     >
       {icon && (
         <ListItemIcon
           sx={{
             width: 24,
-            minWidth: 0,
+            minWidth: 0
           }}
         >
           {icon}
@@ -64,14 +64,14 @@ const MenuItem = forwardRef<HTMLInputElement, PropsType>((props, ref) => {
 
           "& .MuiTypography-root": {
             // fontWeight: matchPath ? 500 : 400,
-            fontWeight: 500,
-          },
+            fontWeight: 500
+          }
         }}
       />
     </ListItemButton>
   );
-})
+});
 
-MenuItem.displayName = 'MenuItem'
+MenuItem.displayName = "MenuItem";
 
-export default MenuItem
+export default MenuItem;

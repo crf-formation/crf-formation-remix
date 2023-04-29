@@ -1,10 +1,10 @@
 // see https://marmelab.com/react-admin/Show.html
-import { DateInput, TextInput, required } from 'react-admin';
-import CreateLayout from '~/component/reactadmin/layout/CreateLayout';
-import CrudActionsTabs from '~/component/reactadmin/layout/CrudActionsTabs';
-import SimpleFormLayout from '~/component/reactadmin/layout/SimpleFormLayout';
-import { PlaceReferenceInput } from '../PlaceReference';
-import { FormationStateInput } from './PseFormationState';
+import { DateInput, required, TextInput } from "react-admin";
+import CreateLayout from "~/component/reactadmin/layout/CreateLayout";
+import CrudActionsTabs from "~/component/reactadmin/layout/CrudActionsTabs";
+import SimpleFormLayout from "~/component/reactadmin/layout/SimpleFormLayout";
+import { PlaceReferenceInput } from "../PlaceReference";
+import { FormationStateInput } from "./PseFormationState";
 
 export default function PseFormationCreate() {
   return (
@@ -18,7 +18,7 @@ export default function PseFormationCreate() {
         />
 
         <FormationStateInput source="state" />
-        
+
         <PlaceReferenceInput source="placeId" />
 
         <DateInput

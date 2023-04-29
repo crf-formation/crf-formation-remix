@@ -1,7 +1,7 @@
 import type { PseModuleApiObject } from "./psemodule.apiobject";
 
 export interface PseUserPreparatoryWorkApiObject {
-	readonly id: Optional<string>; // null when object not yet created on database
+  readonly id: Optional<string>; // null when object not yet created on database
   readonly createdAt: Date;
   readonly updatedAt: Date;
   readonly userId: string;

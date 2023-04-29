@@ -1,7 +1,7 @@
 import { Box } from "@mui/material";
-import type { ReactNode } from 'react';
-import type { EditProps } from 'react-admin';
-import { Edit } from 'react-admin';
+import type { ReactNode } from "react";
+import type { EditProps } from "react-admin";
+import { Edit } from "react-admin";
 import Main from "~/component/layout/Main";
 
 interface EditLayoutProps extends EditProps {
@@ -20,8 +20,8 @@ export default function EditLayout({ children, small, ...props }: EditLayoutProp
           "& .RaEdit-main": {
             padding: [0, 2],
             maxWidth: small ? 860 : 1200,
-            margin: 'auto',
-          },
+            margin: "auto"
+          }
         }}
       >
         <Edit {...props}>

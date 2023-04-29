@@ -10,20 +10,20 @@ import FormView from "~/component/form/FormView";
 import PasswordCheckView from "~/component/hibp/PasswordCheckView";
 import PageFullContentWithLogo from "~/component/layout/PageFullContentWithLogo";
 import type { PasswordResetDto } from "~/dto/user.dto";
-import { validateForm } from '~/form/abstract';
+import { validateForm } from "~/form/abstract";
 import { passwordResetValidator } from "~/form/user.form";
 import type { SecurityFunction } from "~/helper/remix.helper";
 import { getParamsOrFail, getSearchParamsOrFail } from "~/helper/remix.params.helper";
 import { badRequestWithFlash } from "~/helper/responseerror.helper";
 import { invalidFormResponse } from "~/helper/responses.helper";
 import useFormFocusError from "~/hook/useFormFocusError";
-import type { ApiErrorException } from '~/service/api.error';
+import type { ApiErrorException } from "~/service/api.error";
 import { addFlashMessage } from "~/service/flash.server";
 import { recoverPassword } from "~/service/passwordrecovery.server";
 import { commitSession, getSession, getUserId } from "~/service/session.server";
 
 const ParamsSchema = z.object({
-  token: z.string(),
+  token: z.string()
 });
 
 const URLSearchParamsSchema = z.object({
@@ -36,11 +36,11 @@ const security: SecurityFunction<{
   const userId = await getUserId(request);
   if (userId) return redirect("/");
 
-	const { token } = getParamsOrFail(params, ParamsSchema)
+  const { token } = getParamsOrFail(params, ParamsSchema);
   return {
     token
-  }
-}
+  };
+};
 
 export async function loader({ request, params }: LoaderArgs) {
   await security(request, params);
@@ -57,40 +57,40 @@ export async function action({ request, params }: ActionArgs) {
 
   let session = await getSession(request);
 
-  const result = await validateForm<PasswordResetDto>(request, passwordResetValidator)
+  const result = await validateForm<PasswordResetDto>(request, passwordResetValidator);
   if (result.errorResponse) {
-    return result.errorResponse
+    return result.errorResponse;
   }
 
-  const passwordResetDto: PasswordResetDto = result.data
-	if (passwordResetDto.passwordVerification !== passwordResetDto.password) {
+  const passwordResetDto: PasswordResetDto = result.data;
+  if (passwordResetDto.passwordVerification !== passwordResetDto.password) {
     return invalidFormResponse({
-        passwordVerification: "Les mots de passes ne correspondent pas"
+      passwordVerification: "Les mots de passes ne correspondent pas"
     });
   }
 
-  try { 
-    await recoverPassword(passwordResetDto.email, token, passwordResetDto.password)
+  try {
+    await recoverPassword(passwordResetDto.email, token, passwordResetDto.password);
   } catch (e) {
-    return badRequestWithFlash(session, e as ApiErrorException)
+    return badRequestWithFlash(session, e as ApiErrorException);
   }
 
-	session = await addFlashMessage(
-		request,
-		"success",
+  session = await addFlashMessage(
+    request,
+    "success",
     `Your password has been updated`
   );
 
   return redirect(`/login?email=${passwordResetDto.email}`, {
     headers: {
-      "Set-Cookie": await commitSession(session),
-    },
+      "Set-Cookie": await commitSession(session)
+    }
   });
 }
 
 export const meta: V2_MetaFunction<typeof loader> = () => {
   return [
-    { title: "Modification du mot de passe" },
+    { title: "Modification du mot de passe" }
   ];
 };
 
@@ -105,7 +105,7 @@ export default function PasswordResetRoute() {
   const passwordVerificationRef = useRef<HTMLInputElement>(null);
   useFormFocusError(actionData, [
     ["password", passwordRef],
-    ["passwordVerification", passwordVerificationRef],
+    ["passwordVerification", passwordVerificationRef]
   ]);
 
   return (

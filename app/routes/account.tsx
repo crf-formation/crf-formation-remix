@@ -1,54 +1,27 @@
 import Brightness2Icon from "@mui/icons-material/Brightness2";
 import Brightness7Icon from "@mui/icons-material/Brightness7";
-import {
-	Box,
-	Button,
-	Grid,
-	IconButton,
-	Tooltip,
-	Typography,
-} from "@mui/material";
+import { Box, Button, Grid, IconButton, Tooltip, Typography } from "@mui/material";
 import type { Params } from "@remix-run/react";
-import {
-	Form,
-	useActionData,
-	useLoaderData,
-	useLocation,
-} from "@remix-run/react";
-import type {
-	ActionArgs,
-	LoaderArgs,
-	MetaFunction,
-} from "@remix-run/server-runtime";
+import { Form, useActionData, useLoaderData, useLocation } from "@remix-run/react";
+import type { ActionArgs, LoaderArgs } from "@remix-run/server-runtime";
 import { json, redirect } from "@remix-run/server-runtime";
 import type { UserApiObject } from "~/apiobject/user.apiobject";
 import PasswordForm from "~/component/account/PasswordForm";
 import ProfileForm from "~/component/account/ProfileForm";
 import Section from "~/component/layout/Section";
 import type { UserPasswordPutDto, UserPutDto } from "~/dto/user.dto";
-import { validateForm } from '~/form/abstract';
+import { validateForm } from "~/form/abstract";
 import type { SecurityFunction } from "~/helper/remix.helper";
 import { badRequest } from "~/helper/responses.helper";
 import useRootData from "~/hook/useRootData";
 import { addFlashMessage } from "~/service/flash.server";
-import {
-	commitSession,
-	getSession,
-	requireUser,
-} from "~/service/session.server";
-import {
-	updatePassword,
-	updateUser,
-	verifyLogin,
-} from "~/service/user.server";
+import { commitSession, getSession, requireUser } from "~/service/session.server";
+import { updatePassword, updateUser, verifyLogin } from "~/service/user.server";
 import { verifyAuthenticityToken } from "~/util/csrf.server";
 import { namedActionWithFormType } from "~/util/named-actions";
 import PageContainer from "../component/layout/PageContainer";
-import { passwordModificationValidator, profileValidator } from '../form/user.form';
-import {
-	userApiObjectToDto,
-	userPutDtoToApiObject,
-} from "../mapper/user.mapper";
+import { passwordModificationValidator, profileValidator } from "../form/user.form";
+import { userApiObjectToDto, userPutDtoToApiObject } from "../mapper/user.mapper";
 import { V2_MetaFunction } from "@remix-run/node";
 
 const security: SecurityFunction<{
@@ -56,7 +29,7 @@ const security: SecurityFunction<{
 }> = async (request: Request, params: Params) => {
   const userApiObject = await requireUser(request);
   return {
-    userApiObject,
+    userApiObject
   };
 };
 
@@ -65,20 +38,20 @@ export async function loader({ request, params }: LoaderArgs) {
   const { userApiObject } = await security(request, params);
 
   return json({
-    user: userApiObjectToDto(userApiObject),
+    user: userApiObjectToDto(userApiObject)
   });
 }
 
 export async function action({ request, params }: ActionArgs) {
   return namedActionWithFormType(request, params, {
     actionPassword,
-    actionProfile,
+    actionProfile
   });
 }
 
 export const meta: V2_MetaFunction<typeof loader> = () => {
   return [
-    { title: "Mon compte" },
+    { title: "Mon compte" }
   ];
 };
 
@@ -90,10 +63,10 @@ async function actionProfile(request: Request, params: Params) {
 
   const result = await validateForm<UserPutDto>(request, profileValidator);
   if (result.errorResponse) {
-    return result.errorResponse
+    return result.errorResponse;
   }
 
-  const userPutDto = result.data
+  const userPutDto = result.data;
 
   await updateUser(userApiObject.id, userPutDtoToApiObject(userPutDto));
 
@@ -105,8 +78,8 @@ async function actionProfile(request: Request, params: Params) {
 
   return redirect("/account", {
     headers: {
-      "Set-Cookie": await commitSession(session),
-    },
+      "Set-Cookie": await commitSession(session)
+    }
   });
 }
 
@@ -118,7 +91,7 @@ async function actionPassword(request: Request, params: Params) {
 
   const result = await validateForm<UserPasswordPutDto>(request, passwordModificationValidator);
   if (result.errorResponse) {
-    return result.errorResponse
+    return result.errorResponse;
   }
 
   const userPasswordPutDto = result.data;
@@ -133,15 +106,15 @@ async function actionPassword(request: Request, params: Params) {
   );
   if (!isPasswordCorrect) {
     return badRequest({
-      password: { fieldErrors: { currentPassword: "Invalid password" } },
+      password: { fieldErrors: { currentPassword: "Invalid password" } }
     });
   }
 
   if (passwordVerification !== password) {
     return badRequest({
       password: {
-        fieldErrors: { password: "Les mots de passes ne correspondent pas" },
-      },
+        fieldErrors: { password: "Les mots de passes ne correspondent pas" }
+      }
     });
   }
 
@@ -155,8 +128,8 @@ async function actionPassword(request: Request, params: Params) {
 
   return redirect("/account", {
     headers: {
-      "Set-Cookie": await commitSession(session),
-    },
+      "Set-Cookie": await commitSession(session)
+    }
   });
 }
 
@@ -172,7 +145,7 @@ function Theme() {
           sx={{
             display: "flex",
             flexDirection: "column",
-            alignItems: "center",
+            alignItems: "center"
           }}
         >
           <input

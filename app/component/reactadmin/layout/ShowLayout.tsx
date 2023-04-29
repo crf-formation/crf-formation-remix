@@ -5,7 +5,7 @@ import { Show } from "react-admin";
 import Main from "~/component/layout/Main";
 
 interface ShowLayoutProps extends ShowProps {
-  children: ReactNode
+  children: ReactNode;
 }
 
 export default function ShowLayout({ children, ...props }: ShowLayoutProps) {
@@ -16,8 +16,8 @@ export default function ShowLayout({ children, ...props }: ShowLayoutProps) {
           "& .RaShow-main": {
             padding: [0, 2],
             maxWidth: 1200,
-            margin: 'auto',
-          },
+            margin: "auto"
+          }
         }}
       >
         <Show {...props}>

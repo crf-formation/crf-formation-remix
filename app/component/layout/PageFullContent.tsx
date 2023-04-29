@@ -1,9 +1,9 @@
-import type { SxProps } from '@mui/material';
-import type { ReactNode } from 'react';
-import Main from './Main';
+import type { SxProps } from "@mui/material";
+import type { ReactNode } from "react";
+import Main from "./Main";
 
 interface Props {
-	children: ReactNode,
+  children: ReactNode,
   sx?: SxProps,
 }
 

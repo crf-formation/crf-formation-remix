@@ -1,6 +1,6 @@
 import { faker } from "@faker-js/faker";
 import { Box, Link, TextField } from "@mui/material";
-import type { ActionArgs, LoaderArgs, MetaFunction } from "@remix-run/node";
+import type { ActionArgs, LoaderArgs } from "@remix-run/node";
 import { json, redirect, V2_MetaFunction } from "@remix-run/node";
 import { useActionData, useLoaderData, useSearchParams } from "@remix-run/react";
 import { useRef } from "react";
@@ -22,7 +22,7 @@ import { createUser, findUserByEmail } from "~/service/user.server";
 import { generateAria } from "~/util/form";
 
 const URLSearchParamsSchema = z.object({
-  redirectTo: z.string().optional(),
+  redirectTo: z.string().optional()
 });
 
 
@@ -30,7 +30,7 @@ export async function loader({ request }: LoaderArgs) {
   const userId = await getUserId(request);
   if (userId) return redirect("/");
 
-  const { redirectTo } = getSearchParamsOrFail(request, URLSearchParamsSchema)
+  const { redirectTo } = getSearchParamsOrFail(request, URLSearchParamsSchema);
 
   return json({
     redirectTo
@@ -38,20 +38,20 @@ export async function loader({ request }: LoaderArgs) {
 }
 
 export async function action({ request }: ActionArgs) {
-  const result = await validateForm<UserPostDto>(request, joinValidator)
+  const result = await validateForm<UserPostDto>(request, joinValidator);
 
   if (result.errorResponse) {
-    return result.errorResponse
+    return result.errorResponse;
   }
 
   // -- create dto
-  const userPostDto: UserPostDto = result.data
+  const userPostDto: UserPostDto = result.data;
 
   // -- check existing account with email
   const existingUser = await findUserByEmail(userPostDto.email);
   if (existingUser) {
     return invalidFormResponse({
-      email: "A user already exists with this email",
+      email: "A user already exists with this email"
     });
   }
 
@@ -62,14 +62,14 @@ export async function action({ request }: ActionArgs) {
   const user = await createUser(userPostApiObject);
 
   // -- create password token
-  await askForPasswordCreation(user.id)
-  
+  await askForPasswordCreation(user.id);
+
   return redirect("/create-password");
 }
 
 export const meta: V2_MetaFunction<typeof loader> = () => {
   return [
-    { title: "Inscription" },
+    { title: "Inscription" }
   ];
 };
 
@@ -85,9 +85,9 @@ export default function JoinRoute() {
   const emailRef = useRef<HTMLInputElement>(null);
 
   useFormFocusError(actionData, [
-    [ "firstName", firstNameRef ],
-    [ "lastName", lastNameRef ],
-    [ "email", emailRef ],
+    ["firstName", firstNameRef],
+    ["lastName", lastNameRef],
+    ["email", emailRef]
   ]);
 
   const fakeFirstName = faker.name.firstName();
@@ -97,7 +97,7 @@ export default function JoinRoute() {
     firstName: fakeFirstName,
     lastName: fakeLastName,
     email: faker.internet.email(fakeFirstName, fakeLastName, "crf-formation.fr").toLocaleLowerCase()
-  }
+  };
 
   return (
     <PageFullContentWithLogo>

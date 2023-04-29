@@ -4,14 +4,14 @@ import { getPseModuleEntities, getPseModuleEntityByModuleId } from "~/repository
 import { NotFoundException } from "./api.error";
 
 export async function getPseModules(): Promise<Array<PseModuleApiObject>> {
-	const entities = await getPseModuleEntities();
-	return entities.map(pseModuleEntityToApiObject)
+  const entities = await getPseModuleEntities();
+  return entities.map(pseModuleEntityToApiObject);
 }
 
 export async function getPseModuleByModuleId(moduleId: string): Promise<PseModuleApiObject> {
-	const entity = await getPseModuleEntityByModuleId(moduleId);
-	if (!entity) {
-		throw new NotFoundException('PseModuleEntity', moduleId)
-	}
-	return pseModuleEntityToApiObject(entity)
+  const entity = await getPseModuleEntityByModuleId(moduleId);
+  if (!entity) {
+    throw new NotFoundException("PseModuleEntity", moduleId);
+  }
+  return pseModuleEntityToApiObject(entity);
 }

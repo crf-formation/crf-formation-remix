@@ -1,4 +1,4 @@
-import type { ActionArgs, LoaderArgs, MetaFunction } from "@remix-run/node";
+import type { ActionArgs, LoaderArgs } from "@remix-run/node";
 import { json, V2_MetaFunction } from "@remix-run/node";
 import type { Params } from "@remix-run/react";
 import { useLoaderData } from "@remix-run/react";
@@ -9,13 +9,14 @@ import type { PseConcreteCaseSessionApiObject } from "~/apiobject/pseconcretecas
 import type { PseConcreteCaseSituationApiObject } from "~/apiobject/pseconcretecasesituation.apiobject";
 import type { PseFormationApiObject } from "~/apiobject/pseformation.apiobject";
 import type { UserApiObject } from "~/apiobject/user.apiobject";
-import { Ariane, ArianeItem } from '~/component/layout/Ariane';
+import { Ariane, ArianeItem } from "~/component/layout/Ariane";
 import PageContainer from "~/component/layout/PageContainer";
-import PagePaperHeader from '~/component/layout/PagePaperHeader';
+import PagePaperHeader from "~/component/layout/PagePaperHeader";
 import PageSpace from "~/component/layout/PageSpace";
 import PageTitle from "~/component/layout/PageTitle";
 import Section from "~/component/layout/Section";
-import PseConcreteCaseSituationEvaluateGroupForm from "~/component/pse-concrete-case-situation/PseConcreteCaseSituationEvaluateGroupForm";
+import PseConcreteCaseSituationEvaluateGroupForm
+  from "~/component/pse-concrete-case-situation/PseConcreteCaseSituationEvaluateGroupForm";
 import type { PseUserConcreteCaseGroupEvaluationPostDto } from "~/dto/pseuserconcretecase.dto";
 import { validateForm } from "~/form/abstract";
 import { pseUserConcreteCaseGroupEvaluationPostDtoValidator } from "~/form/pseuserconcretecase.form";
@@ -27,19 +28,25 @@ import { pseConcreteCaseGroupApiObjectToDto } from "~/mapper/pseconcretecasegrou
 import { pseConcreteCaseSessionApiObjectToDto } from "~/mapper/pseconcretecasesession.mapper";
 import { pseConcreteCaseSituationApiObjectToDto } from "~/mapper/pseconcretecasesituation.mapper";
 import { pseFormationApiObjectToDto } from "~/mapper/pseformation.mapper";
-import { pseUserConcreteCaseGroupEvaluationApiObjectToDto, pseUserConcreteCaseGroupEvaluationPostDtoToApiObject } from "~/mapper/pseuserconcretecase.mapper";
+import {
+  pseUserConcreteCaseGroupEvaluationApiObjectToDto,
+  pseUserConcreteCaseGroupEvaluationPostDtoToApiObject
+} from "~/mapper/pseuserconcretecase.mapper";
 import { getPseCompetences } from "~/service/psecompetence.server";
 import { getPseConcreteCaseGroup } from "~/service/pseconcretecasegroup.server";
 import { getPseConcreteCaseSessionById } from "~/service/pseconcretecasesession.server";
 import { getPseConcreteCaseSituation } from "~/service/pseconcretecasesituation.server";
 import { getPseFormationByPseConcreteCaseSessionId } from "~/service/pseformation.server";
-import { getPseUserConcreteCaseGroupEvaluation, updatePseUserConcreteCaseGroupEvaluation } from "~/service/pseuserconcretecase.server";
+import {
+  getPseUserConcreteCaseGroupEvaluation,
+  updatePseUserConcreteCaseGroupEvaluation
+} from "~/service/pseuserconcretecase.server";
 import { assertUserHasAccessToFormationAsTeacher } from "~/service/security.server";
 import { requireUser } from "~/service/session.server";
 
 const ParamsSchema = z.object({
   pseConcreteCaseSituationId: z.string(),
-	pseSituationConcreteCaseGroupId: z.string(),
+  pseSituationConcreteCaseGroupId: z.string()
 });
 
 const security: SecurityFunction<{
@@ -47,29 +54,29 @@ const security: SecurityFunction<{
   pseFormationApiObject: PseFormationApiObject;
   pseConcreteCaseSessionApiObject: PseConcreteCaseSessionApiObject;
   pseConcreteCaseSituationApiObject: PseConcreteCaseSituationApiObject;
-	pseConcreteCaseGroupApiObject: PseConcreteCaseGroupApiObject;
+  pseConcreteCaseGroupApiObject: PseConcreteCaseGroupApiObject;
 }> = async (request: Request, params: Params) => {
-  const { pseConcreteCaseSituationId, pseSituationConcreteCaseGroupId } = getParamsOrFail(params, ParamsSchema)
+  const { pseConcreteCaseSituationId, pseSituationConcreteCaseGroupId } = getParamsOrFail(params, ParamsSchema);
 
-  const userApiObject = await requireUser(request)
+  const userApiObject = await requireUser(request);
 
-  const pseConcreteCaseSituationApiObject = await getPseConcreteCaseSituation(pseConcreteCaseSituationId)
+  const pseConcreteCaseSituationApiObject = await getPseConcreteCaseSituation(pseConcreteCaseSituationId);
 
-	const pseConcreteCaseSessionApiObject = await getPseConcreteCaseSessionById(pseConcreteCaseSituationApiObject.pseConcreteCaseSessionId)
+  const pseConcreteCaseSessionApiObject = await getPseConcreteCaseSessionById(pseConcreteCaseSituationApiObject.pseConcreteCaseSessionId);
 
-  const pseFormationApiObject = await getPseFormationByPseConcreteCaseSessionId(pseConcreteCaseSessionApiObject.id)
-	await assertUserHasAccessToFormationAsTeacher(userApiObject.id, pseFormationApiObject.id)
+  const pseFormationApiObject = await getPseFormationByPseConcreteCaseSessionId(pseConcreteCaseSessionApiObject.id);
+  await assertUserHasAccessToFormationAsTeacher(userApiObject.id, pseFormationApiObject.id);
 
-	const pseConcreteCaseGroupApiObject = await getPseConcreteCaseGroup(pseSituationConcreteCaseGroupId);
+  const pseConcreteCaseGroupApiObject = await getPseConcreteCaseGroup(pseSituationConcreteCaseGroupId);
 
   return {
     userApiObject,
     pseFormationApiObject,
     pseConcreteCaseSessionApiObject,
     pseConcreteCaseSituationApiObject,
-		pseConcreteCaseGroupApiObject,
-  }
-}
+    pseConcreteCaseGroupApiObject
+  };
+};
 
 // GET a formation
 export async function loader({ request, params }: LoaderArgs) {
@@ -77,10 +84,10 @@ export async function loader({ request, params }: LoaderArgs) {
     pseFormationApiObject,
     pseConcreteCaseSessionApiObject,
     pseConcreteCaseSituationApiObject,
-    pseConcreteCaseGroupApiObject,
+    pseConcreteCaseGroupApiObject
   } = await security(request, params);
 
-	const pseCompetenceApiObjects: Array<PseCompetenceApiObject> = await getPseCompetences();
+  const pseCompetenceApiObjects: Array<PseCompetenceApiObject> = await getPseCompetences();
 
   const pseUserConcreteCaseGroupEvaluationApiObject = await getPseUserConcreteCaseGroupEvaluation(
     pseFormationApiObject,
@@ -88,61 +95,61 @@ export async function loader({ request, params }: LoaderArgs) {
     pseConcreteCaseSituationApiObject,
     pseConcreteCaseGroupApiObject,
     pseCompetenceApiObjects
-  )
+  );
 
   return json({
     pseFormation: pseFormationApiObjectToDto(pseFormationApiObject),
-		pseConcreteCaseSession: pseConcreteCaseSessionApiObjectToDto(pseConcreteCaseSessionApiObject),
-		pseConcreteCaseSituation: pseConcreteCaseSituationApiObjectToDto(pseConcreteCaseSituationApiObject),
-		pseConcreteCaseGroup: pseConcreteCaseGroupApiObjectToDto(pseConcreteCaseGroupApiObject),
+    pseConcreteCaseSession: pseConcreteCaseSessionApiObjectToDto(pseConcreteCaseSessionApiObject),
+    pseConcreteCaseSituation: pseConcreteCaseSituationApiObjectToDto(pseConcreteCaseSituationApiObject),
+    pseConcreteCaseGroup: pseConcreteCaseGroupApiObjectToDto(pseConcreteCaseGroupApiObject),
     pseCompetences: pseCompetenceApiObjects.map(pseCompetenceApiObjectToDto),
     pseUserConcreteCaseGroupEvaluation: pseUserConcreteCaseGroupEvaluationApiObjectToDto(pseUserConcreteCaseGroupEvaluationApiObject)
-	});
+  });
 };
 
-export async function action({ request, params  }: ActionArgs) {
+export async function action({ request, params }: ActionArgs) {
   const {
     pseFormationApiObject,
     pseConcreteCaseSessionApiObject,
     pseConcreteCaseSituationApiObject,
-    pseConcreteCaseGroupApiObject,
+    pseConcreteCaseGroupApiObject
   } = await security(request, params);
 
   // TODO: session must be RUNNING
 
-  const result = await validateForm<PseUserConcreteCaseGroupEvaluationPostDto>(request, pseUserConcreteCaseGroupEvaluationPostDtoValidator)
+  const result = await validateForm<PseUserConcreteCaseGroupEvaluationPostDto>(request, pseUserConcreteCaseGroupEvaluationPostDtoValidator);
   if (result.errorResponse) {
-    return result.errorResponse
+    return result.errorResponse;
   }
 
-  const pseUserConcreteCaseGroupEvaluationPostDto: PseUserConcreteCaseGroupEvaluationPostDto = result.data
+  const pseUserConcreteCaseGroupEvaluationPostDto: PseUserConcreteCaseGroupEvaluationPostDto = result.data;
 
   if (pseUserConcreteCaseGroupEvaluationPostDto.formationId !== pseFormationApiObject.id) {
-    throw new Error(`Forbidden`)
+    throw new Error(`Forbidden`);
   }
 
   if (pseUserConcreteCaseGroupEvaluationPostDto.pseConcreteCaseSituationId !== pseConcreteCaseSituationApiObject.id) {
-    throw new Error(`Forbidden`)
+    throw new Error(`Forbidden`);
   }
 
   if (pseUserConcreteCaseGroupEvaluationPostDto.pseConcreteCaseSessionId !== pseConcreteCaseSessionApiObject.id) {
-    throw new Error(`Forbidden`)
+    throw new Error(`Forbidden`);
   }
 
   if (pseUserConcreteCaseGroupEvaluationPostDto.pseConcreteCaseGroupId !== pseConcreteCaseGroupApiObject.id) {
-    throw new Error(`Forbidden`)
+    throw new Error(`Forbidden`);
   }
 
   await updatePseUserConcreteCaseGroupEvaluation(
     pseUserConcreteCaseGroupEvaluationPostDtoToApiObject(pseUserConcreteCaseGroupEvaluationPostDto)
-  )
+  );
 
   return redirectActionToCurrentPage(request);
 }
 
 export const meta: V2_MetaFunction<typeof loader> = ({ data }) => {
   return [
-    { title: `Situation ${data?.pseConcreteCaseSituation?.pseConcreteCaseType?.name}` },
+    { title: `Situation ${data?.pseConcreteCaseSituation?.pseConcreteCaseType?.name}` }
   ];
 };
 
@@ -152,7 +159,7 @@ export default function PseConcreteCaseSituationRoute() {
     pseConcreteCaseSession,
     pseConcreteCaseSituation,
     pseConcreteCaseGroup,
-    pseUserConcreteCaseGroupEvaluation,
+    pseUserConcreteCaseGroupEvaluation
   } = useLoaderData<typeof loader>();
 
   return (

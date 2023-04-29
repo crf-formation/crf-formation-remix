@@ -1,6 +1,5 @@
-
 export interface InvalidFormResultDto {
-  fieldErrors?: { [key: string]: any }
+  fieldErrors?: { [key: string]: any };
 }
 
 

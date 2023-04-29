@@ -1,12 +1,5 @@
-import {
-  Box,
-  List,
-  ListItem,
-  ListItemButton,
-  ListItemIcon,
-  ListItemText,
-} from "@mui/material";
-import Slide from '@mui/material/Collapse';
+import { Box, List, ListItem, ListItemButton, ListItemIcon, ListItemText } from "@mui/material";
+import Slide from "@mui/material/Collapse";
 import type { ReactElement, ReactEventHandler, ReactNode } from "react";
 import ChevronToggleIcon from "../icons/ChevronToggle";
 import MenuItem from "./MenuItem";
@@ -22,9 +15,9 @@ export type MenuItemDefinitions = {
 };
 
 interface ItemsListProps {
-  dense: boolean
-  items: MenuItemDefinition[]
-  open: boolean
+  dense: boolean;
+  items: MenuItemDefinition[];
+  open: boolean;
 }
 
 function ItemsList({ dense, items, open }: ItemsListProps) {
@@ -38,11 +31,11 @@ function ItemsList({ dense, items, open }: ItemsListProps) {
           pb: open ? 2 : undefined,
 
           "& a": {
-            transition: "padding-left 195ms cubic-bezier(0.4, 0, 0.6, 1) 0ms", // TODO: used?
+            transition: "padding-left 195ms cubic-bezier(0.4, 0, 0.6, 1) 0ms" // TODO: used?
           },
-          
+
           "& .MuiListItemText-root": {
-            pl: 4,
+            pl: 4
           }
         })}
       >
@@ -60,11 +53,11 @@ function ItemsList({ dense, items, open }: ItemsListProps) {
 }
 
 interface HeaderProps {
-  icon: ReactNode
-  name: string
-  open: boolean
-  dense: boolean
-  onClick?: ReactEventHandler
+  icon: ReactNode;
+  name: string;
+  open: boolean;
+  dense: boolean;
+  onClick?: ReactEventHandler;
 };
 
 function Header({ icon, name, open, dense, onClick }: HeaderProps) {
@@ -80,7 +73,7 @@ function Header({ icon, name, open, dense, onClick }: HeaderProps) {
           paddingLeft: 1,
           paddingRight: 0.5,
           paddingTop: 1,
-          paddingBottom: 1,
+          paddingBottom: 1
         }}
       >
         <ListItemIcon sx={{ width: 24, minWidth: 0, fontSize: 20 }}>
@@ -94,14 +87,14 @@ function Header({ icon, name, open, dense, onClick }: HeaderProps) {
 
             "& .MuiTypography-root": {
               // fontWeight: matchPath ? 500 : 400,
-              fontWeight: 500,
-            },
+              fontWeight: 500
+            }
           }}
         />
         <ListItemIcon
           sx={{
             minWidth: 0,
-            paddingRight: 0,
+            paddingRight: 0
           }}
         >
           <ChevronToggleIcon open={open} variant="expand" />
@@ -134,8 +127,8 @@ function SubMenu(props: Props) {
         backgroundColor: open ? "var(--sidebar-bg-selected)" : "",
 
         "&:hover": {
-          backgroundColor: "var(--sidebar-bg-selected)",
-        },
+          backgroundColor: "var(--sidebar-bg-selected)"
+        }
       }}
     >
       <Header

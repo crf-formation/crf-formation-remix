@@ -1,5 +1,5 @@
-import type { PseCompetenceApiObject } from '~/apiobject/psecompetence.apiobject';
-import type { PseUserConcreteCaseApiObject } from './pseuserconcretecase.apiobject';
+import type { PseCompetenceApiObject } from "~/apiobject/psecompetence.apiobject";
+import type { PseUserConcreteCaseApiObject } from "./pseuserconcretecase.apiobject";
 import type { PseUserPreparatoryWorkApiObject } from "./pseuserpreparatorywork.apiobject";
 import type { PseUserTechniqueApiObject } from "./pseusertechnique.apiobject";
 
@@ -60,18 +60,18 @@ export interface PseConcreteCaseCompetenceSummaryApiObject {
   readonly pseCompetenceId: string;
   readonly pseCompetence: PseCompetenceApiObject;
 
-  readonly acquired: boolean
-  readonly acquiredForPse1: boolean
+  readonly acquired: boolean;
+  readonly acquiredForPse1: boolean;
 
-	readonly nbA: number;
-	readonly nbB: number;
-	readonly nbC: number;
-	readonly nbD: number;
-	readonly nbNotEvalued: number;
-	
-	readonly nbAcquired: number; // nbA + nbB
-	readonly nbNotAcquired: number; // nbC + nbD
-	readonly nbTotal: number; // nbSucceed + nbFailed, we do not take nbNotEvalued
+  readonly nbA: number;
+  readonly nbB: number;
+  readonly nbC: number;
+  readonly nbD: number;
+  readonly nbNotEvalued: number;
 
-	readonly isInDifficulty: boolean;
+  readonly nbAcquired: number; // nbA + nbB
+  readonly nbNotAcquired: number; // nbC + nbD
+  readonly nbTotal: number; // nbSucceed + nbFailed, we do not take nbNotEvalued
+
+  readonly isInDifficulty: boolean;
 }

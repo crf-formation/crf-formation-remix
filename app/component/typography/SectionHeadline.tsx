@@ -1,7 +1,7 @@
 // https://github.com/mui/material-ui/blob/master/docs/src/component/typography/SectionHeadline.tsx
-import Typography from '@mui/material/Typography';
-import { useTheme } from '@mui/material/styles';
-import * as React from 'react';
+import Typography from "@mui/material/Typography";
+import { useTheme } from "@mui/material/styles";
+import * as React from "react";
 
 interface SectionHeadlineProps {
   description?: React.ReactNode;
@@ -14,9 +14,9 @@ export default function SectionHeadline(props: SectionHeadlineProps) {
   const { description, id, overline, title } = props;
   const globalTheme = useTheme();
   const mode = globalTheme.palette.mode;
-  const overlineColor = mode === 'dark' ? 'primary.300' : 'primary.600';
-  const titleColor = mode === 'dark' ? 'grey.100' : 'primaryDark.900';
-  const descriptionColor = mode === 'dark' ? 'grey.500' : 'grey.800';
+  const overlineColor = mode === "dark" ? "primary.300" : "primary.600";
+  const titleColor = mode === "dark" ? "grey.100" : "primaryDark.900";
+  const descriptionColor = mode === "dark" ? "grey.500" : "grey.800";
 
   return (
     <React.Fragment>
@@ -30,7 +30,7 @@ export default function SectionHeadline(props: SectionHeadlineProps) {
       >
         {overline}
       </Typography>
-      {typeof title === 'string' ? (
+      {typeof title === "string" ? (
         <Typography variant="h2" color={titleColor}>
           {title}
         </Typography>

@@ -1,7 +1,7 @@
-import type { LoaderArgs, MetaFunction } from "@remix-run/node";
-
-import { Paper, Typography } from '@mui/material';
+import type { LoaderArgs } from "@remix-run/node";
 import { json, V2_MetaFunction } from "@remix-run/node";
+
+import { Paper, Typography } from "@mui/material";
 import PageContainer from "~/component/layout/PageContainer";
 import useUser from "~/hook/useUser";
 import { requireUser } from "~/service/session.server";
@@ -15,12 +15,12 @@ export async function loader({ request }: LoaderArgs) {
 
 export const meta: V2_MetaFunction<typeof loader> = ({ data }) => {
   return [
-    { title: `Bienvenue !` },
+    { title: `Bienvenue !` }
   ];
 };
 
 export default function WelcomeRoute() {
-	const user = useUser()
+  const user = useUser();
   return (
     <PageContainer>
       <Paper sx={{ textAlign: "center", py: 4 }}>

@@ -1,4 +1,3 @@
-
 export interface RecoverPasswordPropsDto {
   /**
    * Email of the User to change the password.
@@ -15,5 +14,5 @@ export interface RecoverPasswordPropsDto {
 }
 
 export interface AskPasswordRecoveryTokenPropsDto {
-	readonly email: string;
+  readonly email: string;
 }

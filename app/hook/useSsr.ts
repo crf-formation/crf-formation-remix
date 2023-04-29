@@ -6,14 +6,14 @@
 // return the default value.
 function useSsr() {
   const isDOM =
-    typeof window !== 'undefined' &&
+    typeof window !== "undefined" &&
     window.document &&
-    window.document.documentElement
+    window.document.documentElement;
 
   return {
     isBrowser: isDOM,
-    isServer: !isDOM,
-  }
+    isServer: !isDOM
+  };
 }
 
-export default useSsr
+export default useSsr;

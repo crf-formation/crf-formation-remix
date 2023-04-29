@@ -30,8 +30,8 @@ function parseParams(o: any, schema: any, key: string, value: any) {
       shape instanceof ZodObject
         ? shape.shape
         : shape instanceof ZodEffects
-        ? shape._def.schema
-        : null;
+          ? shape._def.schema
+          : null;
     if (shape === null) {
       throw new Error(`Could not find shape for key ${key}`);
     }
@@ -76,7 +76,7 @@ function getParamsInternal<T>(
 
   const result = schema.safeParse(o);
   if (result.success) {
-    return { success: true, data: result.data as T, errors: undefined }
+    return { success: true, data: result.data as T, errors: undefined };
   } else {
     let errors: any = {};
     const addError = (key: string, message: string) => {
@@ -90,7 +90,7 @@ function getParamsInternal<T>(
       }
     };
     for (let issue of result.error.issues) {
-      const { message, path, /*code, expected, received*/ } = issue;
+      const { message, path /*code, expected, received*/ } = issue;
       const [key, index] = path;
       let value = o[key];
       // let prop = key;
@@ -137,7 +137,7 @@ export function getParamsOrFail<T extends ZodType<any, any, any>>(
   type ParamsType = z.infer<T>;
   const result = getParamsInternal<ParamsType>(params, schema);
   if (!result.success) {
-    throw new BadRequestException("Invalid params", result.errors)
+    throw new BadRequestException("Invalid params", result.errors);
   }
   return result.data;
 }
@@ -150,7 +150,7 @@ export function getSearchParamsOrFail<T extends ZodType<any, any, any>>(
   let url = new URL(request.url);
   const result = getParamsInternal<ParamsType>(url.searchParams, schema);
   if (!result.success) {
-    throw new BadRequestException("Invalid params", result.errors)
+    throw new BadRequestException("Invalid params", result.errors);
   }
   return result.data;
 }
@@ -261,7 +261,7 @@ function getInputProps(name: string, def: ZodTypeAny): InputPropType {
 
   let inputProps: InputPropType = {
     name,
-    type,
+    type
   };
   if (!def.isOptional()) inputProps.required = true;
   if (min) inputProps.min = min;

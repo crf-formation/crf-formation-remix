@@ -1,11 +1,11 @@
-import { createTheme } from '@mui/material/styles';
+import { createTheme } from "@mui/material/styles";
 import { red, teal } from "@mui/material/colors";
 
 const theme = createTheme({
   palette: {
     mode: "light",
     primary: red,
-    secondary: teal,
+    secondary: teal
   }
 });
 

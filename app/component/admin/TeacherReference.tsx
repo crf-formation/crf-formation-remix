@@ -1,25 +1,25 @@
-import { FunctionField, ReferenceField, ReferenceInput, AutocompleteInput } from 'react-admin';
-import type { UserDto } from '~/dto/user.dto';
+import { AutocompleteInput, FunctionField, ReferenceField, ReferenceInput } from "react-admin";
+import type { UserDto } from "~/dto/user.dto";
 
 interface Props {
-  source: string
+  source: string;
 }
 
 export function TeacherReferenceField({ source }: Props) {
-	return (
+  return (
     <ReferenceField label="Teacher" reference="teacher" source={source} fullWidth>
-       <FunctionField render={(teacher: UserDto) => teacher && teacher.fullName} />
+      <FunctionField render={(teacher: UserDto) => teacher && teacher.fullName} />
     </ReferenceField>
   );
 }
 
 export function TeacherReferenceInput({ source }: Props) {
-	return (
+  return (
     <ReferenceInput reference="user" /*filter={{ isTeacher: true }}*/ source={source} fullWidth>
       <AutocompleteInput
-				fullWidth
+        fullWidth
         label="Formateur"
-        optionText={(teacher:  UserDto) =>
+        optionText={(teacher: UserDto) =>
           teacher == null ? "not defined" : teacher.fullName
         }
       />

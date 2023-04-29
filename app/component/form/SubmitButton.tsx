@@ -5,7 +5,7 @@ import { useIsSubmitting } from "remix-validated-form";
 export default function SubmitButton({ children, ...props }: ButtonProps) {
   const isSubmitting = useIsSubmitting();
 
-	// TODO: loading button
+  // TODO: loading button
   return (
     <Button type="submit" variant="contained" color="primary">
       {isSubmitting ? "Chargement" : children}

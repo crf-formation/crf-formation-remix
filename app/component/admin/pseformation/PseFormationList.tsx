@@ -1,6 +1,6 @@
 import { Datagrid, DateField, TextField } from "react-admin";
-import CrudActionsTabs from '~/component/reactadmin/layout/CrudActionsTabs';
-import ListLayout from '~/component/reactadmin/layout/ListLayout';
+import CrudActionsTabs from "~/component/reactadmin/layout/CrudActionsTabs";
+import ListLayout from "~/component/reactadmin/layout/ListLayout";
 import { PlaceReferenceField } from "../PlaceReference";
 import { FormationStateField } from "./PseFormationState";
 

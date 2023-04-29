@@ -1,9 +1,9 @@
 // see https://marmelab.com/react-admin/Show.html
-import { DateField, EmailField, SimpleShowLayout, TextField } from 'react-admin';
-import CrudActionsTabs from '~/component/reactadmin/layout/CrudActionsTabs';
-import ShowLayout from '~/component/reactadmin/layout/ShowLayout';
-import { UserRoleField } from './UserRole';
-import { UserStateField } from './UserState';
+import { DateField, EmailField, SimpleShowLayout, TextField } from "react-admin";
+import CrudActionsTabs from "~/component/reactadmin/layout/CrudActionsTabs";
+import ShowLayout from "~/component/reactadmin/layout/ShowLayout";
+import { UserRoleField } from "./UserRole";
+import { UserStateField } from "./UserState";
 
 export default function UserShow() {
   return (

@@ -1,18 +1,15 @@
-import type {
-  PseConcreteCaseGroupEntity,
-  PseUserConcreteCaseGroupStudentEntity,
-} from "~/entity";
+import type { PseConcreteCaseGroupEntity, PseUserConcreteCaseGroupStudentEntity } from "~/entity";
 import type {
   PseConcreteCaseGroupApiObject,
   PseConcreteCaseGroupPostApiObject,
   PseConcreteCaseGroupPutApiObject,
-  PseUserConcreteCaseGroupStudentApiObject,
+  PseUserConcreteCaseGroupStudentApiObject
 } from "~/apiobject/pseconcretecasegroup.apiobject";
 import type {
   PseConcreteCaseGroupDto,
   PseConcreteCaseGroupPostDto,
   PseConcreteCaseGroupPutDto,
-  PseUserConcreteCaseGroupStudentDto,
+  PseUserConcreteCaseGroupStudentDto
 } from "~/dto/pseconcretecasegroup.dto";
 import { userApiObjectToDto, userEntityToApiObject } from "./user.mapper";
 import { uniq } from "lodash";
@@ -28,7 +25,7 @@ export function pseConcreteCaseGroupEntityToApiObject(
     pseConcreteCaseSessionId: entity.pseConcreteCaseSessionId,
     students: entity.students?.map(
       pseUserConcreteCaseGroupStudentEntityToApiObject
-    ),
+    )
   };
 }
 
@@ -40,7 +37,7 @@ function pseUserConcreteCaseGroupStudentEntityToApiObject(
     createdAt: entity.createdAt,
     updatedAt: entity.updatedAt,
     userId: entity.userId,
-    user: entity.user && userEntityToApiObject(entity.user),
+    user: entity.user && userEntityToApiObject(entity.user)
   };
 }
 
@@ -55,9 +52,10 @@ export function pseConcreteCaseGroupApiObjectToDto(
     pseConcreteCaseSessionId: apiObject.pseConcreteCaseSessionId,
     students: apiObject.students?.map(
       pseUserConcreteCaseGroupStudentApiObjectToDto
-    ),
+    )
   };
 }
+
 function pseUserConcreteCaseGroupStudentApiObjectToDto(
   apiObject: PseUserConcreteCaseGroupStudentApiObject
 ): PseUserConcreteCaseGroupStudentDto {
@@ -66,7 +64,7 @@ function pseUserConcreteCaseGroupStudentApiObjectToDto(
     createdAt: apiObject.createdAt?.toISOString(), // TODO: fix date
     updatedAt: apiObject.updatedAt?.toISOString(), // TODO: fix date
     userId: apiObject.userId,
-    user: apiObject.user && userApiObjectToDto(apiObject.user),
+    user: apiObject.user && userApiObjectToDto(apiObject.user)
   };
 }
 
@@ -76,7 +74,7 @@ export function pseConcreteCaseGroupPostDtoToApiObject(
   return {
     pseConcreteCaseSessionId: dto.pseConcreteCaseSessionId,
     name: dto.name,
-    students: uniq(dto.students),
+    students: uniq(dto.students)
   };
 }
 
@@ -86,6 +84,6 @@ export function pseConcreteCaseGroupPutDtoToApiObject(
   return {
     pseConcreteCaseSessionId: dto.pseConcreteCaseSessionId,
     name: dto.name,
-    students: uniq(dto.students),
+    students: uniq(dto.students)
   };
 }

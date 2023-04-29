@@ -19,8 +19,8 @@ export default function CreateLayout({ children, small, mapper, ...props }: Crea
           "& .RaCreate-main": {
             padding: [0, 2],
             maxWidth: small ? 860 : 1200,
-            margin: "auto",
-          },
+            margin: "auto"
+          }
         }}
       >
         <Create {...props}>

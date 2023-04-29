@@ -1,10 +1,13 @@
 import { Box, Checkbox, Table, TableBody, TableCell, TableHead, TableRow, Typography } from "@mui/material";
-import { useImmer } from 'use-immer';
+import { useImmer } from "use-immer";
 import InputHiddenJson from "~/component/form/InputHiddenJson";
 import type { PseCompetenceDto } from "~/dto/psecompetence.dto";
-import type PseUserEvaluationDto from '~/dto/pseuserconcretecase.dto';
-import type { PseUserConcreteCaseCompetenceGradeDtoEnum, PseUserConcreteCaseGroupEvaluationDto } from '~/dto/pseuserconcretecase.dto';
-import { PseUserConcreteCaseCompetenceGradeZEnum } from '~/dto/pseuserconcretecase.dto';
+import type {
+  PseUserConcreteCaseCompetenceGradeDtoEnum,
+  PseUserConcreteCaseGroupEvaluationDto,
+  PseUserEvaluationDto
+} from "~/dto/pseuserconcretecase.dto";
+import { PseUserConcreteCaseCompetenceGradeZEnum } from "~/dto/pseuserconcretecase.dto";
 import { pseUserConcreteCaseGroupEvaluationPostDtoValidator } from "~/form/pseuserconcretecase.form";
 import FormView from "../form/FormView";
 
@@ -12,21 +15,22 @@ interface Props {
   pseUserConcreteCaseGroupEvaluation: PseUserConcreteCaseGroupEvaluationDto;
 }
 
-interface PseCompetenceRowProps { 
-  pseCompetence: PseCompetenceDto, 
-  shouldBeEvaluated: boolean, 
+interface PseCompetenceRowProps {
+  pseCompetence: PseCompetenceDto,
+  shouldBeEvaluated: boolean,
   pseUserConcreteCaseUsersGrades: Array<PseUserConcreteCaseUsersGradesDto>
   onSetGradeForUser: (userId: string, competenceId: string, grade: PseUserConcreteCaseCompetenceGradeDtoEnum) => void
 }
 
-function PseCompetenceRow({ 
-  pseCompetence, 
-  shouldBeEvaluated, 
-  pseUserConcreteCaseUsersGrades,
-  onSetGradeForUser
- }: PseCompetenceRowProps) {
+function PseCompetenceRow(
+  {
+    pseCompetence,
+    shouldBeEvaluated,
+    pseUserConcreteCaseUsersGrades,
+    onSetGradeForUser
+  }: PseCompetenceRowProps) {
   if (!shouldBeEvaluated) {
-    return null
+    return null;
   }
 
   return (
@@ -42,11 +46,11 @@ function PseCompetenceRow({
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
-              flexDirection: "row",
+              flexDirection: "row"
             }}
           >
             {PseUserConcreteCaseCompetenceGradeZEnum.options.map((grade) => {
-              const userGrade = studentGrades.grades.find(grade => grade.pseCompetenceId === pseCompetence.id)
+              const userGrade = studentGrades.grades.find(grade => grade.pseCompetenceId === pseCompetence.id);
 
               return (
                 <Box key={grade}>
@@ -67,11 +71,12 @@ function PseCompetenceRow({
   );
 }
 
-export default function PseConcreteCaseSituationEvaluateGroupForm({
-  pseUserConcreteCaseGroupEvaluation
-}: Props) {
-  const [pseUserConcreteCaseUsersGrades, updatePseUserConcreteCaseUsersGrades] 
-    = useImmer<Array<PseUserEvaluationDto>>(() => [...pseUserConcreteCaseGroupEvaluation.usersGrades])
+export default function PseConcreteCaseSituationEvaluateGroupForm(
+  {
+    pseUserConcreteCaseGroupEvaluation
+  }: Props) {
+  const [pseUserConcreteCaseUsersGrades, updatePseUserConcreteCaseUsersGrades]
+    = useImmer<Array<PseUserEvaluationDto>>(() => [...pseUserConcreteCaseGroupEvaluation.usersGrades]);
 
 
   function onSetGradeForUser(
@@ -104,11 +109,16 @@ export default function PseConcreteCaseSituationEvaluateGroupForm({
       validator={pseUserConcreteCaseGroupEvaluationPostDtoValidator}
     >
       <input type="hidden" name="formationId" value={pseUserConcreteCaseGroupEvaluation.formationId} />
-      <input type="hidden" name="pseConcreteCaseSituationId" value={pseUserConcreteCaseGroupEvaluation.pseConcreteCaseSituationId} />
-      <input type="hidden" name="pseConcreteCaseGroupId" value={pseUserConcreteCaseGroupEvaluation.pseConcreteCaseGroupId} />
-      <input type="hidden" name="pseConcreteCaseSessionId" value={pseUserConcreteCaseGroupEvaluation.pseConcreteCaseSessionId} />
-      <input type="hidden" name="pseConcreteCaseTypeId" value={pseUserConcreteCaseGroupEvaluation.pseConcreteCaseTypeId} />
-      <input type="hidden" name="pseSituationConcreteCaseGroupId" value={pseUserConcreteCaseGroupEvaluation.pseSituationConcreteCaseGroupId} />
+      <input type="hidden" name="pseConcreteCaseSituationId"
+             value={pseUserConcreteCaseGroupEvaluation.pseConcreteCaseSituationId} />
+      <input type="hidden" name="pseConcreteCaseGroupId"
+             value={pseUserConcreteCaseGroupEvaluation.pseConcreteCaseGroupId} />
+      <input type="hidden" name="pseConcreteCaseSessionId"
+             value={pseUserConcreteCaseGroupEvaluation.pseConcreteCaseSessionId} />
+      <input type="hidden" name="pseConcreteCaseTypeId"
+             value={pseUserConcreteCaseGroupEvaluation.pseConcreteCaseTypeId} />
+      <input type="hidden" name="pseSituationConcreteCaseGroupId"
+             value={pseUserConcreteCaseGroupEvaluation.pseSituationConcreteCaseGroupId} />
       <InputHiddenJson name="usersGrades" json={pseUserConcreteCaseUsersGrades} />
 
       <Table>
@@ -116,11 +126,11 @@ export default function PseConcreteCaseSituationEvaluateGroupForm({
           <TableRow>
             <TableCell align="left">Compétences</TableCell>
             {pseUserConcreteCaseGroupEvaluation.students.map((student) => (
-              <TableCell 
-                key={student.id} 
+              <TableCell
+                key={student.id}
                 align="center"
                 sx={{
-                  width: 200,
+                  width: 200
                 }}
               >
                 {/* TODO: user picture */}
@@ -133,13 +143,13 @@ export default function PseConcreteCaseSituationEvaluateGroupForm({
                     display: "flex",
                     textAlign: "center",
                     justifyContent: "center",
-                    marginTop: 2,
+                    marginTop: 2
                   }}
                 >
                   <Box
                     style={{
                       width: 24,
-                      textAlign: "center",
+                      textAlign: "center"
                     }}
                   >
                     <label>A</label>
@@ -148,7 +158,7 @@ export default function PseConcreteCaseSituationEvaluateGroupForm({
                     style={{
                       marginLeft: 2,
                       width: 24,
-                      textAlign: "center",
+                      textAlign: "center"
                     }}
                   >
                     <label>B</label>
@@ -156,7 +166,7 @@ export default function PseConcreteCaseSituationEvaluateGroupForm({
                   <Box
                     style={{
                       width: 24,
-                      textAlign: "center",
+                      textAlign: "center"
                     }}
                   >
                     <label>C</label>
@@ -164,7 +174,7 @@ export default function PseConcreteCaseSituationEvaluateGroupForm({
                   <Box
                     style={{
                       width: 24,
-                      textAlign: "center",
+                      textAlign: "center"
                     }}
                   >
                     <label>D</label>
@@ -172,7 +182,7 @@ export default function PseConcreteCaseSituationEvaluateGroupForm({
                   <Box
                     style={{
                       width: 24,
-                      textAlign: "center",
+                      textAlign: "center"
                     }}
                   >
                     <label>-</label>
@@ -184,10 +194,10 @@ export default function PseConcreteCaseSituationEvaluateGroupForm({
         </TableHead>
         <TableBody>
           {pseUserConcreteCaseGroupEvaluation.competencesToEvaluate.map((pseCompetence) => (
-            <PseCompetenceRow 
+            <PseCompetenceRow
               key={pseCompetence.id}
               shouldBeEvaluated={!!pseUserConcreteCaseGroupEvaluation.competencesToEvaluate.find(c => c.id === pseCompetence.id)}
-              pseCompetence={pseCompetence} 
+              pseCompetence={pseCompetence}
               pseUserConcreteCaseUsersGrades={pseUserConcreteCaseUsersGrades}
               onSetGradeForUser={onSetGradeForUser}
             />

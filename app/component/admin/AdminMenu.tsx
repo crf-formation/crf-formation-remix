@@ -4,5 +4,5 @@ import type { MenuProps } from "react-admin";
 
 // We do not want a sidebar react-admin menu, we will add the links on our own sidebar
 export default function AdminMenu({ dense = true }: MenuProps) {
-  return null
+  return null;
 }

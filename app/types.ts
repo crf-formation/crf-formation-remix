@@ -12,8 +12,8 @@ declare global {
 
   // also see "NonNullable" https://www.typescriptlang.org/docs/handbook/utility-types.html#nonnullabletype
   // on zdo: nullish
-  type Optional<T> = T | null | undefined 
-  
+  type Optional<T> = T | null | undefined
+
   // date.toISOString()
   type DateISOString = string
 
@@ -27,7 +27,7 @@ declare global {
 
   const isNonEmpty = <T extends unknown>(
     array: Array<T>
-  ): array is NonEmptyArray<T> => array.length > 0
+  ): array is NonEmptyArray<T> => array.length > 0;
 
   interface Dict<T> {
     [key: string]: Optional<T>;

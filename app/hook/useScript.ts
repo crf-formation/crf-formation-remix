@@ -1,5 +1,5 @@
 // https://usehooks.com/useScript/
-import { useEffect, useState } from 'react';
+import { useEffect, useState } from "react";
 
 type Status = "loading" | "idle" | "ready" | "error"
 

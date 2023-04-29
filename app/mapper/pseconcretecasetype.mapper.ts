@@ -5,18 +5,18 @@ import { pseCompetenceApiObjectToDto, pseCompetenceEntityToApiObject } from "./p
 
 
 export function pseConcreteCaseTypeEntityToApiObject(entity: PseConcreteCaseTypeEntity): PseConcreteCaseTypeApiObject {
-	return {
+  return {
     id: entity.id,
     name: entity.name,
-		// put directly the competence
-    competencesToEvaluate: entity.competencesToEvaluate?.map(competenceToEvaluate => pseCompetenceEntityToApiObject(competenceToEvaluate.pseCompetence)),
+    // put directly the competence
+    competencesToEvaluate: entity.competencesToEvaluate?.map(competenceToEvaluate => pseCompetenceEntityToApiObject(competenceToEvaluate.pseCompetence))
   };
 }
 
 export function pseConcreteCaseTypeApiObjectToDto(apiObject: PseConcreteCaseTypeApiObject): PseConcreteCaseTypeDto {
-	return {
-		id: apiObject.id,
-		name: apiObject.name,
-		competencesToEvaluate: apiObject.competencesToEvaluate?.map(pseCompetenceApiObjectToDto)
-	}
+  return {
+    id: apiObject.id,
+    name: apiObject.name,
+    competencesToEvaluate: apiObject.competencesToEvaluate?.map(pseCompetenceApiObjectToDto)
+  };
 }

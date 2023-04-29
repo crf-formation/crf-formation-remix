@@ -1,19 +1,12 @@
 import type { User as UserEntity } from "@prisma/client";
 import type {
-    UserApiObject,
-    UserPostApiObject,
-    UserPutApiObject,
-    UserRoleApiEnum,
-    UserStateApiEnum,
+  UserApiObject,
+  UserPostApiObject,
+  UserPutApiObject,
+  UserRoleApiEnum,
+  UserStateApiEnum
 } from "~/apiobject/user.apiobject";
-import type {
-    UserDto,
-    UserMeDto,
-    UserPostDto,
-    UserPutDto,
-    UserRoleDtoEnum,
-    UserStateDtoEnum,
-} from "~/dto/user.dto";
+import type { UserDto, UserMeDto, UserPostDto, UserPutDto, UserRoleDtoEnum, UserStateDtoEnum } from "~/dto/user.dto";
 import { assertEnum } from "~/mapper/abstract.mapper";
 
 export function userPostDtoToApiObject(
@@ -24,7 +17,7 @@ export function userPostDtoToApiObject(
     lastName: dto.lastName,
     email: dto.email,
     state: "CREATED",
-    role: "USER",
+    role: "USER"
   };
 }
 
@@ -36,7 +29,7 @@ export function userPutDtoToApiObject(
     role: dto.role,
     email: dto.email,
     firstName: dto.firstName,
-    lastName: dto.lastName,
+    lastName: dto.lastName
   };
 }
 
@@ -49,7 +42,7 @@ export function userEntityToApiObject(userEntity: UserEntity): UserApiObject {
     firstName: userEntity.firstName,
     lastName: userEntity.lastName,
     createdAt: userEntity.createdAt,
-    updatedAt: userEntity.updatedAt,
+    updatedAt: userEntity.updatedAt
   };
 }
 
@@ -64,15 +57,15 @@ export function userApiObjectToUserMeDto(
     firstName: userApiObject.firstName,
     lastName: userApiObject.lastName,
     fullName: [userApiObject.firstName, userApiObject.lastName]
-    .filter(Boolean)
-    .join(" "),
+      .filter(Boolean)
+      .join(" "),
     createdAt: userApiObject.createdAt.toISOString(),
     updatedAt: userApiObject.updatedAt.toISOString(),
 
     isAdmin: userApiObject.role === "ADMIN",
     isSuperAdmin: userApiObject.role === "SUPER_ADMIN",
     hasAdminPermission:
-      userApiObject.role === "ADMIN" || userApiObject.role === "SUPER_ADMIN",
+      userApiObject.role === "ADMIN" || userApiObject.role === "SUPER_ADMIN"
   };
 }
 
@@ -93,7 +86,7 @@ export function userApiObjectToDto(userApiObject: UserApiObject): UserDto {
     isAdmin: userApiObject.role === "ADMIN",
     isSuperAdmin: userApiObject.role === "SUPER_ADMIN",
     hasAdminPermission:
-      userApiObject.role === "ADMIN" || userApiObject.role === "SUPER_ADMIN",
+      userApiObject.role === "ADMIN" || userApiObject.role === "SUPER_ADMIN"
   };
 }
 
@@ -103,7 +96,7 @@ export function dataToUserPutDto(data: any): UserPutDto {
     lastName: data.lastName,
     email: data.email,
     state: data.state,
-    role: data.role,
+    role: data.role
   };
 }
 
@@ -116,7 +109,7 @@ function userStateStringToApiEnum(state: string): UserStateApiEnum {
     "CREATED",
     "ENABLED",
     "DISABLED",
-    "ARCHIVED",
+    "ARCHIVED"
   ]);
 }
 
@@ -129,6 +122,6 @@ function userStateStringToDtoEnum(state: UserStateApiEnum): UserStateDtoEnum {
     "CREATED",
     "ENABLED",
     "DISABLED",
-    "ARCHIVED",
+    "ARCHIVED"
   ]);
 }

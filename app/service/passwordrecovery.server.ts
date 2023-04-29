@@ -1,15 +1,19 @@
-import { addDays, isAfter } from 'date-fns';
+import { addDays, isAfter } from "date-fns";
 import { v4 as uuid } from "uuid";
 import type { UserPasswordTokenApiObject } from "~/apiobject/passwordrecovery.apiobject";
 import { PASSWORD_CREATION_EXPIRATION_IN_DAYS } from "~/constant/index.server";
 import type { UserPasswordTokenEntity } from "~/entity";
-import { createUserPasswordTokenEntity, getUserPasswordTokenEntity, removeUserPasswordTokenEntity } from "~/repository/password.repository";
+import {
+  createUserPasswordTokenEntity,
+  getUserPasswordTokenEntity,
+  removeUserPasswordTokenEntity
+} from "~/repository/password.repository";
 import { findUserEntityById, updateUserEntityPassword } from "~/repository/user.repository";
 
 export async function askForPasswordRecovery(
   email: string
 ) {
-  return null
+  return null;
 }
 
 export async function recoverPassword(
@@ -18,7 +22,7 @@ export async function recoverPassword(
   token: string,
   password: string
 ) {
-	return null
+  return null;
 }
 
 export async function askForPasswordCreation(
@@ -26,29 +30,29 @@ export async function askForPasswordCreation(
 ) {
   const userEntity = await findUserEntityById(userId);
   if (!userEntity) {
-    throw new Error(`User not found: ${userId}`)
+    throw new Error(`User not found: ${userId}`);
   }
 
   const userPasswordTokenApiObject: UserPasswordTokenApiObject = {
     userId,
     token: uuid(),
-    tokenExpirationDate: addDays(new Date(), PASSWORD_CREATION_EXPIRATION_IN_DAYS),
-  }
+    tokenExpirationDate: addDays(new Date(), PASSWORD_CREATION_EXPIRATION_IN_DAYS)
+  };
 
-  const userPasswordTokenEntity = await createUserPasswordTokenEntity(userPasswordTokenApiObject)
+  const userPasswordTokenEntity = await createUserPasswordTokenEntity(userPasswordTokenApiObject);
 
   // TODO: send email
-  console.info("Created token: " + userPasswordTokenEntity.token)
-  console.info(`http://localhost:4242/create-password/${userPasswordTokenEntity.token}?email=` + userEntity.email)
+  console.info("Created token: " + userPasswordTokenEntity.token);
+  console.info(`http://localhost:4242/create-password/${userPasswordTokenEntity.token}?email=` + userEntity.email);
 }
 
 export async function verifyTokenIsValid(
-  token: string,
+  token: string
 ) {
   // 1- find token
-  const userPasswordTokenEntity: Optional<UserPasswordTokenEntity> = await getUserPasswordTokenEntity(token)
+  const userPasswordTokenEntity: Optional<UserPasswordTokenEntity> = await getUserPasswordTokenEntity(token);
   if (!userPasswordTokenEntity) {
-    throw new Error("Token not found")
+    throw new Error("Token not found");
   }
 
   const now = Date.now();
@@ -66,9 +70,9 @@ export async function createPassword(
   password: string
 ) {
   // 1- find token
-  const userPasswordTokenEntity: Optional<UserPasswordTokenEntity> = await getUserPasswordTokenEntity(token)
+  const userPasswordTokenEntity: Optional<UserPasswordTokenEntity> = await getUserPasswordTokenEntity(token);
   if (!userPasswordTokenEntity) {
-    throw new Error("Token not found")
+    throw new Error("Token not found");
   }
 
   const now = Date.now();
@@ -89,10 +93,10 @@ export async function createPassword(
   }
 
   // 2- create password
-  await updateUserEntityPassword(userPasswordTokenEntity.userId, password)
+  await updateUserEntityPassword(userPasswordTokenEntity.userId, password);
 
   // 3- remove token
-  await removeUserPasswordTokenEntity(userPasswordTokenEntity.id)
+  await removeUserPasswordTokenEntity(userPasswordTokenEntity.id);
 
-	return null
+  return null;
 }

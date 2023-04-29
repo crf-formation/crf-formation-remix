@@ -1,19 +1,18 @@
 import HelpIcon from "@mui/icons-material/Help";
-import { Box, Button, IconButton, Tab, Tooltip, Typography } from '@mui/material';
-import Grid from '@mui/material/Grid';
-import type { MetaFunction } from "@remix-run/server-runtime";
+import { Box, Button, IconButton, Tab, Tooltip, Typography } from "@mui/material";
+import Grid from "@mui/material/Grid";
 import Section from "~/component/layout/Section";
 import SubHeaderBar from "~/component/layout/SubHeaderBar";
 import Callout from "~/component/typography/Callout";
 import useTheme from "~/hook/useTheme";
-import AppTabs from '~/component/layout/AppTabs';
-import PageContainer from '~/component/layout/PageContainer';
+import AppTabs from "~/component/layout/AppTabs";
+import PageContainer from "~/component/layout/PageContainer";
 import { V2_MetaFunction } from "@remix-run/node";
 import { loader } from "~/routes/account";
 
 export const meta: V2_MetaFunction<typeof loader> = () => {
   return [
-    { title: "Thème" },
+    { title: "Thème" }
   ];
 };
 

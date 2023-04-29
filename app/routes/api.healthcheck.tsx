@@ -12,7 +12,7 @@ export async function loader({ request }: LoaderArgs) {
     await Promise.all([
       fetch(url.toString(), { method: "HEAD" }).then((r) => {
         if (!r.ok) return Promise.reject(r);
-      }),
+      })
     ]);
     return new Response("OK");
   } catch (error: unknown) {

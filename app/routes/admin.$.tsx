@@ -20,13 +20,12 @@ import dataProvider from "~/util/dataProvider";
 export async function loader({ request }: LoaderArgs) {
   await requireAdmin(request);
 
-  return json({
-  });
+  return json({});
 }
 
 export const meta: V2_MetaFunction<typeof loader> = () => {
   return [
-    { title: "Admin" },
+    { title: "Admin" }
   ];
 };
 
@@ -61,7 +60,7 @@ export default function AdminRoute() {
         {/* Resources with no form, referenced on other forms */}
         <Resource name="pse-user" />
         <Resource name="place" />
-        
+
       </Admin>
     </Main>
   );

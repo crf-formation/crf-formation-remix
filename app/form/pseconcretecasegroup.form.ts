@@ -7,12 +7,12 @@ import { zfd } from "zod-form-data";
 //
 
 export const PseConcreteCaseGroupPutSchema = z.object({
-	name: z.string(),
+  name: z.string(),
   students: zfd.repeatableOfType(z.string())
-		.optional(), // optional to allow edit the students later
+    .optional() // optional to allow edit the students later
 });
 
-export const pseConcreteCaseGroupPutDtoValidator = withZod(PseConcreteCaseGroupPutSchema)
+export const pseConcreteCaseGroupPutDtoValidator = withZod(PseConcreteCaseGroupPutSchema);
 
 //
 // Post
@@ -22,7 +22,7 @@ export const PseConcreteCaseGroupPostSchema = z.object({
   pseConcreteCaseSessionId: z.string(),
   name: z.string(),
   students: zfd.repeatableOfType(z.string())
-		.optional(), // optional to allow edit the students later
+    .optional() // optional to allow edit the students later
 });
 
-export const pseConcreteCaseGroupPostDtoValidator = withZod(PseConcreteCaseGroupPostSchema)
+export const pseConcreteCaseGroupPostDtoValidator = withZod(PseConcreteCaseGroupPostSchema);

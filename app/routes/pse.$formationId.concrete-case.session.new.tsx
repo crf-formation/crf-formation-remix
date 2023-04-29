@@ -1,4 +1,3 @@
-
 import { Box } from "@mui/material";
 import type { Params } from "@remix-run/react";
 import { useActionData, useLoaderData } from "@remix-run/react";
@@ -30,56 +29,56 @@ import { assertUserHasAccessToFormationAsTeacher } from "~/service/security.serv
 import { requireUser } from "~/service/session.server";
 
 const ParamsSchema = z.object({
-  formationId: z.string(),
+  formationId: z.string()
 });
 
 const security: SecurityFunction<{
   pseFormationApiObject: PseFormationApiObject;
 }> = async (request: Request, params: Params) => {
-  const { formationId } = getParamsOrFail(params, ParamsSchema)
+  const { formationId } = getParamsOrFail(params, ParamsSchema);
 
-	const userApiObject = await requireUser(request)
+  const userApiObject = await requireUser(request);
 
-	const pseFormationApiObject = await findPseFormationById(formationId)
-	
-	if (!pseFormationApiObject) {
-		throw new Error(`Formation not found: ${formationId}`);
-	}
-	
-	await assertUserHasAccessToFormationAsTeacher(userApiObject.id, pseFormationApiObject.id)
+  const pseFormationApiObject = await findPseFormationById(formationId);
+
+  if (!pseFormationApiObject) {
+    throw new Error(`Formation not found: ${formationId}`);
+  }
+
+  await assertUserHasAccessToFormationAsTeacher(userApiObject.id, pseFormationApiObject.id);
 
   return {
-    pseFormationApiObject,
-  }
-}
+    pseFormationApiObject
+  };
+};
 
 export async function loader({ request, params }: LoaderArgs) {
-	const { pseFormationApiObject } = await security(request, params)
+  const { pseFormationApiObject } = await security(request, params);
 
   return json({
-    pseFormation: pseFormationApiObjectToDto(pseFormationApiObject),
-  })
+    pseFormation: pseFormationApiObjectToDto(pseFormationApiObject)
+  });
 }
 
 
 export async function action({ request, params }: ActionArgs) {
-	const { pseFormationApiObject } = await security(request, params)
+  const { pseFormationApiObject } = await security(request, params);
 
   const result = await validateForm<PseConcreteCaseSessionPostDto>(request, pseConcreteCaseSessionPostDtoValidator);
   if (result.errorResponse) {
-    return result.errorResponse
+    return result.errorResponse;
   }
-	const postDto = result.data 
+  const postDto = result.data;
 
-	if (pseFormationApiObject.id !== postDto.formationId) {
-		// TODO: error
-	}
+  if (pseFormationApiObject.id !== postDto.formationId) {
+    // TODO: error
+  }
 
-	const concreteCaseSessionApiObject = await createPseConcreteCaseSession(
-		pseConcreteCaseSessionPostDtoToApiObject(postDto)
-	)
+  const concreteCaseSessionApiObject = await createPseConcreteCaseSession(
+    pseConcreteCaseSessionPostDtoToApiObject(postDto)
+  );
 
-	return redirect(`/pse-concrete-case-session/${concreteCaseSessionApiObject.id}`);
+  return redirect(`/pse-concrete-case-session/${concreteCaseSessionApiObject.id}`);
 }
 
 export default function ConcreteCaseSessionsRoute() {
@@ -89,7 +88,7 @@ export default function ConcreteCaseSessionsRoute() {
   const nameRef = useRef<HTMLInputElement>(null);
 
   useFormFocusError(actionData, [
-    [ "name", nameRef ],
+    ["name", nameRef]
   ]);
 
   return (

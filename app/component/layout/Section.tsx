@@ -1,7 +1,7 @@
 // https://github.com/mui/material-ui/blob/master/docs/src/layouts/Section.tsx
 import { Box, Container, Divider, Paper, Typography } from "@mui/material";
-import type { PaperProps } from '@mui/material/Paper';
-import type { ReactNode } from 'react';
+import type { PaperProps } from "@mui/material/Paper";
+import type { ReactNode } from "react";
 
 interface SectionProps extends PaperProps {
   title?: ReactNode | undefined;
@@ -18,7 +18,7 @@ export default function Section(props: SectionProps) {
         {...other}
         sx={{
           overflow: "hidden",
-          backgroundColor: "#FBF7FF",
+          backgroundColor: "#FBF7FF"
         }}
       >
         {title && (
@@ -29,7 +29,7 @@ export default function Section(props: SectionProps) {
                 sx={{
                   fontVariant: "small-caps",
                   display: "flex",
-                  alignItems: "center",
+                  alignItems: "center"
                 }}
               >
                 {title}

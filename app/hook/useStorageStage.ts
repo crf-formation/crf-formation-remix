@@ -72,7 +72,7 @@ export function useStorageState<T extends NonFunctionalValue>(
   const [state, setState] = useState(loadState);
 
   const applyUpdate = useCallback(
-    function (newState: T): void {
+    function(newState: T): void {
       let text: string;
       try {
         text = JSON.stringify(newState);
@@ -94,7 +94,7 @@ export function useStorageState<T extends NonFunctionalValue>(
             new StorageEvent("storage", {
               key,
               storageArea,
-              newValue: text,
+              newValue: text
             }),
             { sourceSetState: setState }
           );
@@ -103,7 +103,7 @@ export function useStorageState<T extends NonFunctionalValue>(
             key,
             storageArea,
             newValue: text,
-            sourceSetState: setState,
+            sourceSetState: setState
           });
         }
         window.dispatchEvent(event);
@@ -140,6 +140,7 @@ export function useStorageState<T extends NonFunctionalValue>(
         setState(loadState());
       }
     }
+
     window.addEventListener("storage", onStorage);
     return () => window.removeEventListener("storage", onStorage);
   }, [key, loadState, storageArea]);

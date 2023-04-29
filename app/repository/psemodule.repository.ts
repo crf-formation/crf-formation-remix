@@ -3,12 +3,12 @@ import { prisma } from "~/entity/db.server";
 
 export async function getPseModuleEntities(): Promise<Array<PseModuleEntity>> {
   return await prisma.pseModule.findMany({
-    where: {},
+    where: {}
   });
 }
 
 export async function getPseModuleEntityByModuleId(moduleId: string): Promise<Optional<PseModuleEntity>> {
   return await prisma.pseModule.findUnique({
-    where: { moduleId },
+    where: { moduleId }
   });
 }

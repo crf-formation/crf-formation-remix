@@ -77,12 +77,13 @@ function ContentSingle({ pseConcreteCaseTypes, isLoading, name, defaultValue, qu
   );
 }
 
-export default function PseConcreteCaseTypeAutocomplete({
-  name,
-  multiple,
-  defaultValue,
-  ...otherProps
-}: Props) {
+export default function PseConcreteCaseTypeAutocomplete(
+  {
+    name,
+    multiple,
+    defaultValue,
+    ...otherProps
+  }: Props) {
   const [query, setQuery] = useState("");
 
   return (
@@ -93,7 +94,7 @@ export default function PseConcreteCaseTypeAutocomplete({
           <span />
         ) : multiple ? (
           <ContentMultiple
-          pseConcreteCaseTypes={pseConcreteCaseTypes}
+            pseConcreteCaseTypes={pseConcreteCaseTypes}
             isLoading={isLoading}
             name={name}
             query={query}

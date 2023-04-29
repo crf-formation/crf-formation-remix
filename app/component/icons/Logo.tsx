@@ -1,5 +1,5 @@
-import { SvgIcon } from "@mui/material";
 import type { SvgIconProps } from "@mui/material";
+import { SvgIcon } from "@mui/material";
 
 export default function LogoHorizontal(props: SvgIconProps) {
   return (

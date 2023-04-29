@@ -6,7 +6,7 @@ import { useMemo } from "react";
  * across all loader data using useMatches.
  * @param {string} id The route id
  * @returns {JSON|undefined} The router data or undefined if not found
- * 
+ *
  * https://github.com/sergiodxa/remix-utils/blob/main/src/react/use-route-data.tsx
  */
 export default function useRouteData<Data>(
@@ -17,5 +17,5 @@ export default function useRouteData<Data>(
     () => matchingRoutes.find((route) => route.id === id),
     [matchingRoutes, id]
   );
-  return route?.data as Data | undefined
+  return route?.data as Data | undefined;
 }

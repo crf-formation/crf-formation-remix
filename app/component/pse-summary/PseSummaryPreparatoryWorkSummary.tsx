@@ -3,11 +3,11 @@ import PseAcquiredLabel from "~/component/pse-summary/PseAcquiredLabel";
 import type { PsePreparatoryWorkSummaryDto, PsePreparatoryWorkUserSummaryDto } from "~/dto/psesummary.dto";
 
 interface Props {
-	preparatoryWorkSummary: PsePreparatoryWorkSummaryDto
+  preparatoryWorkSummary: PsePreparatoryWorkSummaryDto;
 }
 
 function UserSummaryTableRow({ userSummary }: { userSummary: PsePreparatoryWorkUserSummaryDto }) {
-	return (
+  return (
     <TableRow>
       <TableCell>{userSummary.user.fullName}</TableCell>
 
@@ -18,7 +18,7 @@ function UserSummaryTableRow({ userSummary }: { userSummary: PsePreparatoryWorkU
 }
 
 export default function PseSummaryPreparatoryWorkSummary({ preparatoryWorkSummary }: Props) {
-	return (
+  return (
     <TableContainer>
       <Table>
         <TableHead>

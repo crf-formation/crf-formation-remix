@@ -1,4 +1,15 @@
-import { Box, Button, Stack, Table, TableBody, TableCell, TableHead, TableRow, TextField, Typography } from "@mui/material";
+import {
+  Box,
+  Button,
+  Stack,
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableRow,
+  TextField,
+  Typography
+} from "@mui/material";
 import type { Params } from "@remix-run/react";
 import { useLoaderData } from "@remix-run/react";
 import type { LoaderArgs } from "@remix-run/server-runtime";
@@ -7,14 +18,14 @@ import { z } from "zod";
 import type { PseFormationApiObject } from "~/apiobject/pseformation.apiobject";
 import Section from "~/component/layout/Section";
 import { BooleanText } from "~/component/typography/BooleanText";
-import Callout from '~/component/typography/Callout';
+import Callout from "~/component/typography/Callout";
 import Property from "~/component/typography/Property";
 import type { PseCompetenceDto } from "~/dto/psecompetence.dto";
 import type { PseUserConcreteCaseCompetenceGradeDtoEnum } from "~/dto/pseuserconcretecase.dto";
 import type {
   PseUserSummaryConcreteCaseDto,
   PseUserSummaryPreparatoryWorkDto,
-  PseUserSummaryTechniqueDto,
+  PseUserSummaryTechniqueDto
 } from "~/dto/pseusersummary.dto";
 import type { SecurityFunction } from "~/helper/remix.helper";
 import { getParamsOrFail } from "~/helper/remix.params.helper";
@@ -27,29 +38,29 @@ import { V2_MetaFunction } from "@remix-run/node";
 
 const ParamsSchema = z.object({
   formationId: z.string(),
-  studentId: z.string(),
-})
+  studentId: z.string()
+});
 
 const security: SecurityFunction<{
   pseFormationApiObject: PseFormationApiObject;
 }> = async (request: Request, params: Params) => {
-  const { formationId } = getParamsOrFail(params, ParamsSchema)
+  const { formationId } = getParamsOrFail(params, ParamsSchema);
 
-	const userApiObject = await requireUser(request)
+  const userApiObject = await requireUser(request);
 
-	const pseFormationApiObject = await getPseFormationById(formationId)
+  const pseFormationApiObject = await getPseFormationById(formationId);
 
-  await assertUserHasAccessToFormationAsTeacher(userApiObject.id, pseFormationApiObject.id)
-	
+  await assertUserHasAccessToFormationAsTeacher(userApiObject.id, pseFormationApiObject.id);
+
   return {
-    pseFormationApiObject,
-  }
-}
+    pseFormationApiObject
+  };
+};
 
 export async function loader({ request, params }: LoaderArgs) {
-  await security(request, params)
+  await security(request, params);
 
-  const { formationId, studentId } = getParamsOrFail(params, ParamsSchema)
+  const { formationId, studentId } = getParamsOrFail(params, ParamsSchema);
 
   const pseUserSummaryApiObject = await getPseUserSummary(
     formationId,
@@ -57,21 +68,22 @@ export async function loader({ request, params }: LoaderArgs) {
   );
 
   return json({
-    pseUserSummary: pseUserSummaryApiObjectToDto(pseUserSummaryApiObject),
+    pseUserSummary: pseUserSummaryApiObjectToDto(pseUserSummaryApiObject)
   });
 }
 
 export const meta: V2_MetaFunction<typeof loader> = () => {
   return [
-    { title: `Résumé` },
+    { title: `Résumé` }
   ];
 };
 
-function PreparatoryWork({
-  preparatoryWork,
-}: {
-  preparatoryWork: PseUserSummaryPreparatoryWorkDto;
-}) {
+function PreparatoryWork(
+  {
+    preparatoryWork
+  }: {
+    preparatoryWork: PseUserSummaryPreparatoryWorkDto;
+  }) {
   return (
     <>
       <Property
@@ -135,7 +147,7 @@ function Techniques({ technique }: { technique: PseUserSummaryTechniqueDto }) {
 
 function Summary(
   { hasValidatedPse, hasValidatedPse1 }:
-  { hasValidatedPse: boolean, hasValidatedPse1: boolean }
+    { hasValidatedPse: boolean, hasValidatedPse1: boolean }
 ) {
   return (
     <>
@@ -167,16 +179,19 @@ function FinalComment() {
 }
 
 function Grade({ grade }: { grade: PseUserConcreteCaseCompetenceGradeDtoEnum }) {
-	const label = grade === 'NOT_EVALUATED' ? '' : grade
+  const label = grade === "NOT_EVALUATED" ? "" : grade;
 
-	return (
-		<Box sx={{ width: 16 }}>
-			{label}
-		</Box>
-	)
+  return (
+    <Box sx={{ width: 16 }}>
+      {label}
+    </Box>
+  );
 }
 
-function ConcreteCase({ pseCompetences, concreteCase }: { pseCompetences: Array<PseCompetenceDto>, concreteCase: PseUserSummaryConcreteCaseDto }) {
+function ConcreteCase({ pseCompetences, concreteCase }: {
+  pseCompetences: Array<PseCompetenceDto>,
+  concreteCase: PseUserSummaryConcreteCaseDto
+}) {
   return (
     <>
       <Table size="small">
@@ -240,7 +255,7 @@ export default function SummaryRoute() {
       <Callout severity="warning">
         Il n'y as pas encore de résumé pour ce participant.
       </Callout>
-    )
+    );
   }
 
   return (

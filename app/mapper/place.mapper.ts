@@ -7,7 +7,7 @@ export function placeApiObjectToDto(apiObject: PlaceApiObject): PlaceDto {
     id: apiObject.id,
     createdAt: apiObject.createdAt,
     updatedAt: apiObject.updatedAt,
-    title: apiObject.title,
+    title: apiObject.title
   };
 }
 
@@ -16,6 +16,6 @@ export function placeEntityToApiObject(entity: PlaceEntity): PlaceApiObject {
     id: entity.id,
     createdAt: entity.createdAt,
     updatedAt: entity.updatedAt,
-    title: entity.title,
-  }
+    title: entity.title
+  };
 }

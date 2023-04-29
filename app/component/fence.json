@@ -1,4 +1,13 @@
 {
-	"tags": ["component"],
-	"imports": ["dto", "util", "hook", "form", "constant", "routes-resources"]
+  "tags": [
+    "component"
+  ],
+  "imports": [
+    "dto",
+    "util",
+    "hook",
+    "form",
+    "constant",
+    "routes-resources"
+  ]
 }

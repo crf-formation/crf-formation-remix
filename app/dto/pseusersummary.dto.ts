@@ -1,7 +1,7 @@
-import type { PseCompetenceApiObject } from '~/apiobject/psecompetence.apiobject';
-import type { PseCompetenceDto } from './psecompetence.dto';
+import type { PseCompetenceApiObject } from "~/apiobject/psecompetence.apiobject";
+import type { PseCompetenceDto } from "./psecompetence.dto";
 import type { PseModuleDto } from "./psemodule.dto";
-import type { PseUserConcreteCaseDto } from './pseuserconcretecase.dto';
+import type { PseUserConcreteCaseDto } from "./pseuserconcretecase.dto";
 import type { PseUserPreparatoryWorkDto } from "./pseuserpreparatorywork.dto";
 import type { PseUserTechniqueDto } from "./pseusertechnique.dto";
 
@@ -52,7 +52,7 @@ export interface PseUserSummaryConcreteCaseModuleDto {
   readonly pseModuleId: string;
   readonly pseModule: PseModuleDto;
 
-	readonly competencesSummary: Array<PseConcreteCaseCompetenceSummaryDto>;
+  readonly competencesSummary: Array<PseConcreteCaseCompetenceSummaryDto>;
 
   readonly hasAcquiredAllCompetences: boolean;
   readonly hasAcquiredAllCompetencesForPse1: boolean;
@@ -63,18 +63,18 @@ export interface PseConcreteCaseCompetenceSummaryDto {
   readonly pseCompetenceId: string;
   readonly pseCompetence: PseCompetenceApiObject;
 
-  readonly acquired: boolean
-  readonly acquiredForPse1: boolean
+  readonly acquired: boolean;
+  readonly acquiredForPse1: boolean;
 
-	readonly nbA: number;
-	readonly nbB: number;
-	readonly nbC: number;
-	readonly nbD: number;
-	readonly nbNotEvalued: number;
-	
-	readonly nbAcquired: number; // nbA + nbB
-	readonly nbNotAcquired: number; // nbC + nbD
-	readonly nbTotal: number; // nbSucceed + nbFailed, we do not take nbNotEvalued
+  readonly nbA: number;
+  readonly nbB: number;
+  readonly nbC: number;
+  readonly nbD: number;
+  readonly nbNotEvalued: number;
 
-	readonly isInDifficulty: boolean;
+  readonly nbAcquired: number; // nbA + nbB
+  readonly nbNotAcquired: number; // nbC + nbD
+  readonly nbTotal: number; // nbSucceed + nbFailed, we do not take nbNotEvalued
+
+  readonly isInDifficulty: boolean;
 }

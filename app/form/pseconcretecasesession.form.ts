@@ -7,11 +7,11 @@ import { PseConcreteCaseSessionStateDtoZEnum } from "~/dto/pseconcretecasesessio
 //
 
 export const PseConcreteCaseSessionPutSchema = z.object({
-	name: z.string(),
-	state: PseConcreteCaseSessionStateDtoZEnum,
+  name: z.string(),
+  state: PseConcreteCaseSessionStateDtoZEnum
 });
 
-export const pseConcreteCaseSessionPutDtoValidator = withZod(PseConcreteCaseSessionPutSchema)
+export const pseConcreteCaseSessionPutDtoValidator = withZod(PseConcreteCaseSessionPutSchema);
 
 //
 // Post
@@ -19,7 +19,7 @@ export const pseConcreteCaseSessionPutDtoValidator = withZod(PseConcreteCaseSess
 
 export const PseConcreteCaseSessionPostSchema = z.object({
   formationId: z.string(),
-	name: z.string(),
+  name: z.string()
 });
 
-export const pseConcreteCaseSessionPostDtoValidator = withZod(PseConcreteCaseSessionPostSchema)
+export const pseConcreteCaseSessionPostDtoValidator = withZod(PseConcreteCaseSessionPostSchema);

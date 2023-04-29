@@ -8,12 +8,12 @@ export async function createUserPasswordTokenEntity(
   const userPasswordTokenEntity = await prisma.userPasswordToken.create({
     data: {
       userId: userPasswordTokenApiObject.userId,
-			token: userPasswordTokenApiObject.token,
-			tokenExpirationDate: userPasswordTokenApiObject.tokenExpirationDate,
-    },
+      token: userPasswordTokenApiObject.token,
+      tokenExpirationDate: userPasswordTokenApiObject.tokenExpirationDate
+    }
   });
 
-  return userPasswordTokenEntity
+  return userPasswordTokenEntity;
 }
 
 export async function getUserPasswordTokenEntity(
@@ -21,11 +21,11 @@ export async function getUserPasswordTokenEntity(
 ): Promise<Optional<UserPasswordTokenEntity>> {
   const userPasswordTokenEntity = await prisma.userPasswordToken.findUnique({
     where: {
-      token,
-    },
+      token
+    }
   });
 
-  return userPasswordTokenEntity
+  return userPasswordTokenEntity;
 }
 
 export async function removeUserPasswordTokenEntity(
@@ -33,9 +33,9 @@ export async function removeUserPasswordTokenEntity(
 ): Promise<Optional<UserPasswordTokenEntity>> {
   const userPasswordTokenEntity = await prisma.userPasswordToken.delete({
     where: {
-      id,
-    },
+      id
+    }
   });
 
-  return userPasswordTokenEntity
+  return userPasswordTokenEntity;
 }

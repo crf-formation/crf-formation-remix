@@ -1,10 +1,10 @@
-import { createElement } from 'react'
+import { createElement } from "react";
 
-import { ChevronRight, ExpandLess, ExpandMore } from '@mui/icons-material';
+import { ChevronRight, ExpandLess, ExpandMore } from "@mui/icons-material";
 
 interface Props {
-  open: boolean
-  variant?: "expand" | "default"
+  open: boolean;
+  variant?: "expand" | "default";
 }
 
 function ChevronToggle({ open, variant = "default", ...props }: Props) {
@@ -14,10 +14,10 @@ function ChevronToggle({ open, variant = "default", ...props }: Props) {
         ? ChevronRight
         : ExpandMore
       : !open
-      ? ExpandMore
-      : ExpandLess;
+        ? ExpandMore
+        : ExpandLess;
 
-  return createElement(icon, { ...props })
+  return createElement(icon, { ...props });
 }
 
-export default ChevronToggle
+export default ChevronToggle;

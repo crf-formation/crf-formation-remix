@@ -1,8 +1,8 @@
 import { Typography } from "@mui/material";
 
-interface Props { 
-	checked: boolean; 
-	withColor?: Optional<boolean>;
+interface Props {
+  checked: boolean;
+  withColor?: Optional<boolean>;
   trueText?: string;
   trueColor?: string;
   falseText?: string;

@@ -1,9 +1,9 @@
 import { Checkbox, FormControlLabel } from "@mui/material";
-import Table from '@mui/material/Table';
-import TableBody from '@mui/material/TableBody';
-import TableCell from '@mui/material/TableCell';
-import TableHead from '@mui/material/TableHead';
-import TableRow from '@mui/material/TableRow';
+import Table from "@mui/material/Table";
+import TableBody from "@mui/material/TableBody";
+import TableCell from "@mui/material/TableCell";
+import TableHead from "@mui/material/TableHead";
+import TableRow from "@mui/material/TableRow";
 import { DatePicker } from "@mui/x-date-pickers";
 import type { Params } from "@remix-run/react";
 import { useLoaderData } from "@remix-run/react";
@@ -23,75 +23,81 @@ import { pseUserPreparatoryWorkValidator } from "~/form/preparatorywork.form";
 import type { SecurityFunction } from "~/helper/remix.helper";
 import { getParamsOrFail } from "~/helper/remix.params.helper";
 import { redirectActionToCurrentPage } from "~/helper/responses.helper";
-import { pseUserPreparatoryWorkApiObjectToPostDto, pseUserPreparatoryWorkPostDtoToApiObject } from "~/mapper/pseformationpreparatorywork.mapper";
+import {
+  pseUserPreparatoryWorkApiObjectToPostDto,
+  pseUserPreparatoryWorkPostDtoToApiObject
+} from "~/mapper/pseformationpreparatorywork.mapper";
 import { getPseFormationById } from "~/service/pseformation.server";
-import { getPreparatoryWorksForUser, updatePseUserPreparatoryWorks } from "~/service/pseformationpreparatorywork.server";
+import {
+  getPreparatoryWorksForUser,
+  updatePseUserPreparatoryWorks
+} from "~/service/pseformationpreparatorywork.server";
 import { assertUserHasAccessToFormationAsTeacher } from "~/service/security.server";
 import { requireUser } from "~/service/session.server";
 import { V2_MetaFunction } from "@remix-run/node";
 
 const ParamsSchema = z.object({
   formationId: z.string(),
-  studentId: z.string(),
-})
+  studentId: z.string()
+});
 
 const security: SecurityFunction<{
   pseFormationApiObject: PseFormationApiObject;
   studentId: string;
 }> = async (request: Request, params: Params) => {
-  const { formationId, studentId } = getParamsOrFail(params, ParamsSchema)
+  const { formationId, studentId } = getParamsOrFail(params, ParamsSchema);
 
-	const userApiObject = await requireUser(request)
+  const userApiObject = await requireUser(request);
 
-	const pseFormationApiObject = await getPseFormationById(formationId)
+  const pseFormationApiObject = await getPseFormationById(formationId);
 
-  await assertUserHasAccessToFormationAsTeacher(userApiObject.id, pseFormationApiObject.id)
-	
+  await assertUserHasAccessToFormationAsTeacher(userApiObject.id, pseFormationApiObject.id);
+
   return {
     pseFormationApiObject,
     studentId
-  }
-}
+  };
+};
 
 export async function loader({ request, params }: LoaderArgs) {
-	const { pseFormationApiObject, studentId } = await security(request, params)
+  const { pseFormationApiObject, studentId } = await security(request, params);
 
-  const userPreparatoryWorksApiObjects = await getPreparatoryWorksForUser(pseFormationApiObject.id, studentId)
+  const userPreparatoryWorksApiObjects = await getPreparatoryWorksForUser(pseFormationApiObject.id, studentId);
 
   return json({
     userPreparatoryWorksPost: userPreparatoryWorksApiObjects.map(pseUserPreparatoryWorkApiObjectToPostDto)
-  })
+  });
 }
 
-export async function action({ request, params  }: ActionArgs) {
-	const { pseFormationApiObject, studentId } = await security(request, params)
+export async function action({ request, params }: ActionArgs) {
+  const { pseFormationApiObject, studentId } = await security(request, params);
 
-  const result = await validateForm<FormArrayWrapperDto<PseUserPreparatoryWorkPostDto>>(request, pseUserPreparatoryWorkValidator)
+  const result = await validateForm<FormArrayWrapperDto<PseUserPreparatoryWorkPostDto>>(request, pseUserPreparatoryWorkValidator);
   if (result.errorResponse) {
-    return result.errorResponse
+    return result.errorResponse;
   }
 
-  const userPreparatoryWorks: Array<PseUserPreparatoryWorkPostDto> = result.data.array
+  const userPreparatoryWorks: Array<PseUserPreparatoryWorkPostDto> = result.data.array;
 
   await updatePseUserPreparatoryWorks(
     pseFormationApiObject.id,
     studentId,
     userPreparatoryWorks.map(pseUserPreparatoryWorkPostDtoToApiObject)
-  )
+  );
 
-  return redirectActionToCurrentPage(request)
+  return redirectActionToCurrentPage(request);
 }
 
 export const meta: V2_MetaFunction<typeof loader> = () => {
   return [
-    { title: `Travail préparatoire` },
+    { title: `Travail préparatoire` }
   ];
 };
 
 export default function PreparatoryWorkRoute() {
   const { userPreparatoryWorksPost } = useLoaderData<typeof loader>();
 
-  const [ state, updateState ] = useImmer<Array<PseUserPreparatoryWorkPostDto>>(userPreparatoryWorksPost)
+  const [state, updateState] = useImmer<Array<PseUserPreparatoryWorkPostDto>>(userPreparatoryWorksPost);
 
   function onSetRealisedDate(pseModuleId: string, realisedDate: Date | null) {
     updateState((draft: Array<PseUserPreparatoryWorkPostDto>) => {
@@ -123,7 +129,7 @@ export default function PreparatoryWorkRoute() {
     });
   }
 
-	return (
+  return (
     <Section title="Travail préparatoire">
       <FormView submitText="Sauvegarder" validator={pseUserPreparatoryWorkValidator}>
         <InputHiddenJson name="array" json={state} />
@@ -144,8 +150,8 @@ export default function PreparatoryWorkRoute() {
                   {index}. {preparatoryWork.pseModuleName}
                 </TableCell>
                 <TableCell>
-                  <DatePicker 
-                    value={preparatoryWork.openingDate ? parseISO(preparatoryWork.openingDate) : null} 
+                  <DatePicker
+                    value={preparatoryWork.openingDate ? parseISO(preparatoryWork.openingDate) : null}
                     onChange={date => onSetOpeningDate(preparatoryWork.pseModuleId, date)}
                   />
                 </TableCell>
@@ -156,7 +162,7 @@ export default function PreparatoryWorkRoute() {
                         checked={preparatoryWork.realised}
                         name={`[${preparatoryWork.pseModuleId}][realised]`}
                         onChange={(e) => {
-                          onSetRealised(preparatoryWork.pseModuleId, e.target.checked)
+                          onSetRealised(preparatoryWork.pseModuleId, e.target.checked);
                         }}
                       />
                     }
@@ -164,9 +170,9 @@ export default function PreparatoryWorkRoute() {
                   />
                 </TableCell>
                 <TableCell>
-                  <DatePicker 
+                  <DatePicker
                     value={preparatoryWork.realisedDate ? parseISO(preparatoryWork.realisedDate) : null}
-                    onChange={date => onSetRealisedDate(preparatoryWork.pseModuleId, date)} 
+                    onChange={date => onSetRealisedDate(preparatoryWork.pseModuleId, date)}
                   />
                 </TableCell>
               </TableRow>

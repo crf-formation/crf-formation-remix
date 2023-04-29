@@ -3,8 +3,8 @@ import { z } from "zod";
 import type { DailyPostDto } from "~/dto/daily.dto";
 
 export const DailySchema: z.ZodType<DailyPostDto> = z.object({
-	title: z.string(),
-	content: z.string(),
+  title: z.string(),
+  content: z.string()
 });
 
-export const dailyValidator = withZod(DailySchema)
+export const dailyValidator = withZod(DailySchema);

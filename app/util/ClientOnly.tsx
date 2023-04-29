@@ -3,13 +3,14 @@ import type { ReactNode } from "react";
 import useHydrated from "./useHydrated";
 
 interface Props {
+  fallback?: ReactNode;
+
   /**
    * You are encouraged to add a fallback that is the same dimensions
    * as the client rendered children. This will avoid content layout
    * shift which is disgusting
    */
   children(): ReactNode;
-  fallback?: ReactNode;
 };
 
 /**

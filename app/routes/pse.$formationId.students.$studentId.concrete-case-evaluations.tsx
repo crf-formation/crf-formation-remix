@@ -20,17 +20,17 @@ import { V2_MetaFunction } from "@remix-run/node";
 
 const ParamsSchema = z.object({
   formationId: z.string(),
-  studentId: z.string(),
-})
+  studentId: z.string()
+});
 
 export async function loader({ request, params }: LoaderArgs) {
-  const { pseFormationApiObject, studentId } = await security(request, params)
+  const { pseFormationApiObject, studentId } = await security(request, params);
 
-  const pseUserSummaryConcreteCaseApiObject = await getPseUserConcreteCasesResume(pseFormationApiObject.id, studentId)
+  const pseUserSummaryConcreteCaseApiObject = await getPseUserConcreteCasesResume(pseFormationApiObject.id, studentId);
 
   return json({
     pseFormation: pseFormationApiObjectToDto(pseFormationApiObject),
-    pseUserSummaryConcreteCase: pseUserSummaryConcreteCaseApiObjectToDto(pseUserSummaryConcreteCaseApiObject),
+    pseUserSummaryConcreteCase: pseUserSummaryConcreteCaseApiObjectToDto(pseUserSummaryConcreteCaseApiObject)
   });
 }
 
@@ -39,23 +39,23 @@ const security: SecurityFunction<{
   pseFormationApiObject: PseFormationApiObject;
   studentId: string;
 }> = async (request: Request, params: Params) => {
-  const { formationId, studentId } = getParamsOrFail(params, ParamsSchema)
+  const { formationId, studentId } = getParamsOrFail(params, ParamsSchema);
 
-	const userApiObject = await requireUser(request)
+  const userApiObject = await requireUser(request);
 
-	const pseFormationApiObject = await getPseFormationById(formationId)
+  const pseFormationApiObject = await getPseFormationById(formationId);
 
-  await assertUserHasAccessToFormationAsTeacher(userApiObject.id, pseFormationApiObject.id)
-	
+  await assertUserHasAccessToFormationAsTeacher(userApiObject.id, pseFormationApiObject.id);
+
   return {
     pseFormationApiObject,
-    studentId,
-  }
-}
+    studentId
+  };
+};
 
 export const meta: V2_MetaFunction<typeof loader> = () => {
   return [
-    { title: `Cas concrets - évaluations` },
+    { title: `Cas concrets - évaluations` }
   ];
 };
 

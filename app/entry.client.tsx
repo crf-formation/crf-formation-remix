@@ -1,13 +1,13 @@
 // https://codesandbox.io/s/remix-mui-switch-theme-fixed-latest-mv73cj?file=/app/entry.client.tsx:1202-1221
-import { CacheProvider } from '@emotion/react';
+import { CacheProvider } from "@emotion/react";
 import { RemixBrowser } from "@remix-run/react";
-import { StrictMode, startTransition, useState } from "react";
+import { startTransition, StrictMode, useState } from "react";
 import { hydrateRoot } from "react-dom/client";
 import ClientStyleContext from "~/component/layout/ClientStyleContext";
 import type { ThemeNames } from "~/constant";
 import { DEFAULT_THEME } from "~/constant";
 import { getCookie, getParsedCookie } from "~/util/theme.client";
-import createEmotionCache from './util/createEmotionCache';
+import createEmotionCache from "./util/createEmotionCache";
 
 function ClientCacheProvider({ children }: React.PropsWithChildren<{}>) {
   const [cache, setCache] = useState(createEmotionCache());
@@ -41,10 +41,10 @@ const hydrate = () => {
         <ClientCacheProvider>
           {/* <CacheProvider value={emotionCache}>
             <ThemeProvider theme={theme}> */}
-              {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
-              {/* <CssBaseline /> */}
-              <RemixBrowser />
-            {/* </ThemeProvider>
+          {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
+          {/* <CssBaseline /> */}
+          <RemixBrowser />
+          {/* </ThemeProvider>
           </CacheProvider> */}
         </ClientCacheProvider>
       </StrictMode>

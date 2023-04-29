@@ -11,7 +11,16 @@ interface Props extends AutocompleteProps {
   defaultValue?: UserDto | Array<UserDto>;
 }
 
-function ContentMultiple({ usersPaginateObject, isLoading, name = "teachers", defaultValue, query, setQuery, ...otherProps }) {
+function ContentMultiple(
+  {
+    usersPaginateObject,
+    isLoading,
+    name = "teachers",
+    defaultValue,
+    query,
+    setQuery,
+    ...otherProps
+  }) {
   const [selectedUsers, setSelectedUsers] = useState<Array<UserDto>>(defaultValue || []);
 
   return (
@@ -44,7 +53,16 @@ function ContentMultiple({ usersPaginateObject, isLoading, name = "teachers", de
 }
 
 
-function ContentSingle({ usersPaginateObject, isLoading, name = "teacher", defaultValue, query, setQuery, ...otherProps }) {
+function ContentSingle(
+  {
+    usersPaginateObject,
+    isLoading,
+    name = "teacher",
+    defaultValue,
+    query,
+    setQuery,
+    ...otherProps
+  }) {
   const [selectedUser, setSelectedUser] = useState<UserDto | null>(defaultValue || null);
 
   return (
@@ -76,13 +94,14 @@ function ContentSingle({ usersPaginateObject, isLoading, name = "teacher", defau
   );
 }
 
-export default function FormationTeacherAutocomplete({
-  formationId,
-  name,
-  multiple,
-  defaultValue,
-  ...otherProps
-}: Props) {
+export default function FormationTeacherAutocomplete(
+  {
+    formationId,
+    name,
+    multiple,
+    defaultValue,
+    ...otherProps
+  }: Props) {
   const [query, setQuery] = useState("");
 
   return (

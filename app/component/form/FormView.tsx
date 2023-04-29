@@ -2,12 +2,12 @@ import { Box, Stack } from "@mui/material";
 import { isEmpty } from "lodash";
 import type { ReactNode } from "react";
 import type { FormProps, Validator } from "remix-validated-form";
-import { ValidatedForm, useFormContext } from "remix-validated-form";
+import { useFormContext, ValidatedForm } from "remix-validated-form";
 import SubmitButton from "./SubmitButton";
 
 interface FormViewProps<DataType> extends FormProps<DataType> {
-	children: ReactNode;
-	renderAction?: ReactNode;
+  children: ReactNode;
+  renderAction?: ReactNode;
   submitText?: ReactNode;
   /**
    * Name of the validator to retrieve from the loader data.
@@ -16,10 +16,10 @@ interface FormViewProps<DataType> extends FormProps<DataType> {
 }
 
 function DebugForm() {
-  const { fieldErrors } = useFormContext()
+  const { fieldErrors } = useFormContext();
 
   if (isEmpty(fieldErrors)) {
-    return null
+    return null;
   }
 
   return (
@@ -29,14 +29,15 @@ function DebugForm() {
   );
 }
 
-export default function FormView<DataType>({
-	children,
-  validator,
-  submitText,
-	renderAction,
-  ...props
-}: FormViewProps<DataType>) {
-	return (
+export default function FormView<DataType>(
+  {
+    children,
+    validator,
+    submitText,
+    renderAction,
+    ...props
+  }: FormViewProps<DataType>) {
+  return (
     <ValidatedForm
       method="POST"
       validator={validator}
@@ -49,7 +50,7 @@ export default function FormView<DataType>({
       noValidate={true}
       {...props}
     >
-       {process.env.NODE_ENV === "development" && <DebugForm />}
+      {process.env.NODE_ENV === "development" && <DebugForm />}
 
       <Stack spacing={2} sx={{ display: "flex", flexDirection: "column" }}>
         {children}

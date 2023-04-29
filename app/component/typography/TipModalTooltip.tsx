@@ -1,9 +1,9 @@
-import TipsAndUpdatesIcon from '@mui/icons-material/TipsAndUpdates';
-import { IconButton, Dialog, DialogTitle, Typography, DialogContent, Box } from "@mui/material";
-import { amber } from '@mui/material/colors';
-import type { MouseEventHandler, ReactNode} from 'react';
-import { useState } from 'react';
-import CloseIcon from '@mui/icons-material/Close';
+import TipsAndUpdatesIcon from "@mui/icons-material/TipsAndUpdates";
+import { Box, Dialog, DialogContent, DialogTitle, IconButton, Typography } from "@mui/material";
+import { amber } from "@mui/material/colors";
+import type { MouseEventHandler, ReactNode } from "react";
+import { useState } from "react";
+import CloseIcon from "@mui/icons-material/Close";
 
 interface Props {
   title?: string;
@@ -13,7 +13,7 @@ interface Props {
 }
 
 export default function TipModalTooltip({ title, tip, onClose, withClose = false }: Props) {
-  const [open, setOpen] = useState(false)
+  const [open, setOpen] = useState(false);
 
   return (
     <>
@@ -31,14 +31,14 @@ export default function TipModalTooltip({ title, tip, onClose, withClose = false
               <IconButton
                 aria-label="close"
                 onClick={(e) => {
-                  setOpen(false)
-                  onClose && onClose(e)
+                  setOpen(false);
+                  onClose && onClose(e);
                 }}
                 sx={{
                   position: "absolute",
                   right: 8,
                   top: 8,
-                  color: (theme) => theme.palette.grey[500],
+                  color: (theme) => theme.palette.grey[500]
                 }}
               >
                 <CloseIcon />
@@ -46,7 +46,7 @@ export default function TipModalTooltip({ title, tip, onClose, withClose = false
             ) : null}
           </Box>
         </DialogTitle>
-        <DialogContent sx={{ minWidth: 360, p: 4, mt: 2, }}>
+        <DialogContent sx={{ minWidth: 360, p: 4, mt: 2 }}>
           <Typography component="div">{tip}</Typography>
         </DialogContent>
       </Dialog>

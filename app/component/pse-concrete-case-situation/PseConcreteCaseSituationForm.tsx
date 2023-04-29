@@ -2,10 +2,13 @@ import { Grid, Stack } from "@mui/material";
 import { useRef } from "react";
 import Section from "~/component/layout/Section";
 import type { PseConcreteCaseGroupDto } from "~/dto/pseconcretecasegroup.dto";
-import type { PseSituationConcreteCaseGroupDto } from '~/dto/pseconcretecasesituation.dto';
-import type { PseConcreteCaseTypeDto } from '~/dto/pseconcretecasetype.dto';
+import type { PseSituationConcreteCaseGroupDto } from "~/dto/pseconcretecasesituation.dto";
+import type { PseConcreteCaseTypeDto } from "~/dto/pseconcretecasetype.dto";
 import type { UserDto } from "~/dto/user.dto";
-import { pseConcreteCaseSituationPostDtoValidator, pseConcreteCaseSituationPutDtoValidator } from "~/form/pseconcretecasesituation.form";
+import {
+  pseConcreteCaseSituationPostDtoValidator,
+  pseConcreteCaseSituationPutDtoValidator
+} from "~/form/pseconcretecasesituation.form";
 import useFormFocusError from "~/hook/useFormFocusError";
 import { generateAria } from "~/util/form";
 import FormErrorHelperText from "../form/FormErrorHelperText";
@@ -22,25 +25,26 @@ interface Props<T> {
   // edit data
   isEdit?: boolean;
   pseConcreteCaseType?: PseConcreteCaseTypeDto;
-	pseSituationConcreteCaseGroups?: Array<PseSituationConcreteCaseGroupDto>;
+  pseSituationConcreteCaseGroups?: Array<PseSituationConcreteCaseGroupDto>;
   teacher?: UserDto;
 }
 
-export default function PseConcreteCaseSituationForm<T>({
-  pseFormationId,
-  pseConcreteCaseSessionId,
-  pseConcreteCaseGroups,
-  actionData,
-  // edit data
-  isEdit,
-  teacher,
-  pseConcreteCaseType,
-  pseSituationConcreteCaseGroups,
-}: Props<T>) {
+export default function PseConcreteCaseSituationForm<T>(
+  {
+    pseFormationId,
+    pseConcreteCaseSessionId,
+    pseConcreteCaseGroups,
+    actionData,
+    // edit data
+    isEdit,
+    teacher,
+    pseConcreteCaseType,
+    pseSituationConcreteCaseGroups
+  }: Props<T>) {
   const nameRef = useRef<HTMLInputElement>(null);
 
   useFormFocusError(actionData, [
-    [ "name", nameRef ],
+    ["name", nameRef]
   ]);
 
   return (

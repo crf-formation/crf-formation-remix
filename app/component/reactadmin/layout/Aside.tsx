@@ -2,7 +2,7 @@ import { Box, Paper } from "@mui/material";
 import type { ReactNode } from "react";
 
 interface Props {
-	children: ReactNode
+  children: ReactNode;
 }
 
 export default function Aside({ children }: Props) {

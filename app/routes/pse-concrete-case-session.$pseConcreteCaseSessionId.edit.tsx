@@ -16,17 +16,21 @@ import PagePaperHeader from "~/component/layout/PagePaperHeader";
 import PageSpace from "~/component/layout/PageSpace";
 import PageTitle from "~/component/layout/PageTitle";
 import Section from "~/component/layout/Section";
-import PseConcreteCaseSessionStateAutocomplete from "~/component/pse-concrete-case-session/PseConcreteCaseSessionStateAutocomplete";
+import PseConcreteCaseSessionStateAutocomplete
+  from "~/component/pse-concrete-case-session/PseConcreteCaseSessionStateAutocomplete";
 import type { PseConcreteCaseSessionPutDto } from "~/dto/pseconcretecasesession.dto";
-import { validateForm } from '~/form/abstract';
+import { validateForm } from "~/form/abstract";
 import { pseConcreteCaseSessionPutDtoValidator } from "~/form/pseconcretecasesession.form";
 import type { SecurityFunction } from "~/helper/remix.helper";
-import { getParamsOrFail } from '~/helper/remix.params.helper';
+import { getParamsOrFail } from "~/helper/remix.params.helper";
 import useFormFocusError from "~/hook/useFormFocusError";
-import { pseConcreteCaseSessionApiObjectToDto, pseConcreteCaseSessionPutDtoToApiObject } from "~/mapper/pseconcretecasesession.mapper";
+import {
+  pseConcreteCaseSessionApiObjectToDto,
+  pseConcreteCaseSessionPutDtoToApiObject
+} from "~/mapper/pseconcretecasesession.mapper";
 import { pseFormationApiObjectToDto } from "~/mapper/pseformation.mapper";
 import { getPseConcreteCaseSessionById, updatePseConcreteCaseSession } from "~/service/pseconcretecasesession.server";
-import { getPseFormationByPseConcreteCaseSessionId } from '~/service/pseformation.server';
+import { getPseFormationByPseConcreteCaseSessionId } from "~/service/pseformation.server";
 import { assertUserHasAccessToFormationAsTeacher } from "~/service/security.server";
 import { requireUser } from "~/service/session.server";
 import { generateAria } from "~/util/form";
@@ -34,7 +38,7 @@ import { generateAria } from "~/util/form";
 // update PSE concrete case session
 
 const ParamsSchema = z.object({
-  pseConcreteCaseSessionId: z.string(),
+  pseConcreteCaseSessionId: z.string()
 });
 
 const security: SecurityFunction<{
@@ -42,51 +46,51 @@ const security: SecurityFunction<{
   pseFormationApiObject: PseFormationApiObject;
   pseConcreteCaseSessionApiObject: PseConcreteCaseSessionApiObject;
 }> = async (request: Request, params: Params) => {
-  const { pseConcreteCaseSessionId } = getParamsOrFail(params, ParamsSchema)
+  const { pseConcreteCaseSessionId } = getParamsOrFail(params, ParamsSchema);
 
-	const userApiObject = await requireUser(request)
+  const userApiObject = await requireUser(request);
 
-	const pseConcreteCaseSessionApiObject = await getPseConcreteCaseSessionById(pseConcreteCaseSessionId)
-  const pseFormationApiObject = await getPseFormationByPseConcreteCaseSessionId(pseConcreteCaseSessionApiObject.id)	
+  const pseConcreteCaseSessionApiObject = await getPseConcreteCaseSessionById(pseConcreteCaseSessionId);
+  const pseFormationApiObject = await getPseFormationByPseConcreteCaseSessionId(pseConcreteCaseSessionApiObject.id);
 
-	await assertUserHasAccessToFormationAsTeacher(userApiObject.id, pseFormationApiObject.id)
+  await assertUserHasAccessToFormationAsTeacher(userApiObject.id, pseFormationApiObject.id);
 
   return {
     userApiObject,
     pseFormationApiObject,
     pseConcreteCaseSessionApiObject
-  }
-}
+  };
+};
 
 export const loader: LoaderFunction = async ({ request, params }) => {
   const {
     pseFormationApiObject,
-    pseConcreteCaseSessionApiObject,
+    pseConcreteCaseSessionApiObject
   } = await security(request, params);
 
   return json({
     pseFormation: pseFormationApiObjectToDto(pseFormationApiObject),
     pseConcreteCaseSession: pseConcreteCaseSessionApiObjectToDto(
       pseConcreteCaseSessionApiObject
-    ),
+    )
   });
 };
 
 export async function action({ request, params }: ActionArgs) {
-	const { pseConcreteCaseSessionApiObject } = await security(request, params)
+  const { pseConcreteCaseSessionApiObject } = await security(request, params);
 
-	const result = await validateForm<PseConcreteCaseSessionPutDto>(request, pseConcreteCaseSessionPutDtoValidator);
+  const result = await validateForm<PseConcreteCaseSessionPutDto>(request, pseConcreteCaseSessionPutDtoValidator);
   if (result.errorResponse) {
-    return result.errorResponse
+    return result.errorResponse;
   }
-	const putDto = result.data 
+  const putDto = result.data;
 
-	const concreteCaseSessionApiObject = await updatePseConcreteCaseSession(
-		pseConcreteCaseSessionApiObject.id,
-		pseConcreteCaseSessionPutDtoToApiObject(putDto)
-	)
+  const concreteCaseSessionApiObject = await updatePseConcreteCaseSession(
+    pseConcreteCaseSessionApiObject.id,
+    pseConcreteCaseSessionPutDtoToApiObject(putDto)
+  );
 
-	return redirect(`/pse-concrete-case-session/${concreteCaseSessionApiObject.id}`);
+  return redirect(`/pse-concrete-case-session/${concreteCaseSessionApiObject.id}`);
 }
 
 export default function SessionPseRoute() {
@@ -96,10 +100,10 @@ export default function SessionPseRoute() {
   const nameRef = useRef<HTMLInputElement>(null);
   const stateRef = useRef<HTMLInputElement>(null);
 
-	useFormFocusError(actionData, [ 
-		[ 'name', nameRef ],
-		[ 'state', stateRef ],
-	])
+  useFormFocusError(actionData, [
+    ["name", nameRef],
+    ["state", stateRef]
+  ]);
 
   return (
     <>

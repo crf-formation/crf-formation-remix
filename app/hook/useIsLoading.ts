@@ -1,8 +1,5 @@
-import { useMemo } from 'react'
-import {
-	useFetchers,
-  useTransition,
-} from '@remix-run/react'
+import { useMemo } from "react";
+import { useFetchers, useTransition } from "@remix-run/react";
 
 export default function useIsLoading() {
   const transition = useTransition();
@@ -18,7 +15,7 @@ export default function useIsLoading() {
     function getGlobalState() {
       let states = [
         transition.state,
-        ...fetchers.map((fetcher) => fetcher.state),
+        ...fetchers.map((fetcher) => fetcher.state)
       ];
       if (states.every((state) => state === "idle")) return "idle";
       return "loading";

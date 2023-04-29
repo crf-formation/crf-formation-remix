@@ -1,7 +1,7 @@
-import type { ThemeNames } from '~/constants';
+import type { ThemeNames } from "~/constants";
 
 export const getParsedCookie = (cookie: string): string => {
-	if (!cookie) return ""
+  if (!cookie) return "";
   return JSON.parse(atob(cookie));
 };
 

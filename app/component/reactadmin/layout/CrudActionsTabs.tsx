@@ -1,7 +1,7 @@
-import AddIcon from '@mui/icons-material/Add';
-import EditIcon from '@mui/icons-material/Edit';
-import ListIcon from '@mui/icons-material/List';
-import VisibilityIcon from '@mui/icons-material/Visibility';
+import AddIcon from "@mui/icons-material/Add";
+import EditIcon from "@mui/icons-material/Edit";
+import ListIcon from "@mui/icons-material/List";
+import VisibilityIcon from "@mui/icons-material/Visibility";
 import { Tab } from "@mui/material";
 import { useRecordContext, useRedirect, useResourceContext } from "react-admin";
 import AppTabs, { AppTabLabel } from "~/component/layout/AppTabs";
@@ -16,12 +16,13 @@ interface ActionsTabsProps {
   disableShow?: boolean;
 }
 
-export default function CrudActionsTabs({
-  variant,
-  disableList,
-  disableCreate,
-  disableShow,
-}: ActionsTabsProps) {
+export default function CrudActionsTabs(
+  {
+    variant,
+    disableList,
+    disableCreate,
+    disableShow
+  }: ActionsTabsProps) {
   const redirect = useRedirect();
   const resource = useResourceContext();
   const record = useRecordContext();
@@ -33,7 +34,7 @@ export default function CrudActionsTabs({
     !disableList && "list",
     !disableCreate && "create",
     !disableShow && isForRecord && "show",
-    isForRecord && "edit",
+    isForRecord && "edit"
   ].filter(Boolean);
 
   return (

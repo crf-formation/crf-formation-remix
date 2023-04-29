@@ -1,4 +1,9 @@
 {
-	"tags": ["util"],
-	"imports": ["constant", "service"]
+  "tags": [
+    "util"
+  ],
+  "imports": [
+    "constant",
+    "service"
+  ]
 }

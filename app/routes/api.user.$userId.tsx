@@ -12,52 +12,53 @@ import { findUserById, updateUser } from "~/service/user.server";
 import { namedAction } from "~/util/named-actions";
 
 const ParamsSchema = z.object({
-  userId: z.string(),
-})
+  userId: z.string()
+});
 
 const security: SecurityFunction<{
-	userApiObject: UserApiObject;
+  userApiObject: UserApiObject;
 }> = async (request: Request, params: Params) => {
-	await requireAdmin(request)
+  await requireAdmin(request);
 
-	const { userId } = getParamsOrFail(params, ParamsSchema)
+  const { userId } = getParamsOrFail(params, ParamsSchema);
 
-	const userApiObject = await findUserById(userId)
-	
-	if (!userApiObject) {
-		throw new Error(`User not found: ${userId}`);
-	}
-	return {
-		userApiObject
-	}
-}
+  const userApiObject = await findUserById(userId);
+
+  if (!userApiObject) {
+    throw new Error(`User not found: ${userId}`);
+  }
+  return {
+    userApiObject
+  };
+};
 
 // GET a user
-export const loader: LoaderFunction = async ({
-  request,
-	params
-}) => {
-	const { userApiObject } = await security(request, params)
+export const loader: LoaderFunction = async (
+  {
+    request,
+    params
+  }) => {
+  const { userApiObject } = await security(request, params);
 
   return json(userApiObjectToDto(userApiObject));
 };
 
 // POST, PUT, PATCH, or DELETE
 export const action: ActionFunction = async ({ request, params }) => {
-	return namedAction(request, params, {
-		putAction
-	})
+  return namedAction(request, params, {
+    putAction
+  });
 };
 
 
 async function putAction(request: Request, params: Params<string>) {
-	const { userApiObject } = await security(request, params)
+  const { userApiObject } = await security(request, params);
 
-	const data = await request.json();
-	// TODO: use zod to map data
-	const userPutDto: UserPutDto = dataToUserPutDto(data);
+  const data = await request.json();
+  // TODO: use zod to map data
+  const userPutDto: UserPutDto = dataToUserPutDto(data);
 
-	const updatedApiObject = await updateUser(userApiObject.id, userPutDtoToApiObject(userPutDto));
+  const updatedApiObject = await updateUser(userApiObject.id, userPutDtoToApiObject(userPutDto));
 
   return json(userApiObjectToDto(updatedApiObject));
 }

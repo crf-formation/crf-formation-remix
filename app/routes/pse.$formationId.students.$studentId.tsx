@@ -1,5 +1,5 @@
 import { Grid, Link } from "@mui/material";
-import type { LoaderArgs, MetaFunction, V2_MetaFunction } from "@remix-run/node";
+import type { LoaderArgs, V2_MetaFunction } from "@remix-run/node";
 import { json } from "@remix-run/node";
 import type { Params } from "@remix-run/react";
 import { Outlet, useLoaderData } from "@remix-run/react";
@@ -17,7 +17,7 @@ import type { SecurityFunction } from "~/helper/remix.helper";
 import { getParamsOrFail } from "~/helper/remix.params.helper";
 import useUser from "~/hook/useUser";
 import { pseFormationApiObjectToDto } from "~/mapper/pseformation.mapper";
-import { userOnPseFormationApiObjectToDto } from '~/mapper/useronpseformation.mapper';
+import { userOnPseFormationApiObjectToDto } from "~/mapper/useronpseformation.mapper";
 import { getPseFormationById } from "~/service/pseformation.server";
 import { assertUserHasAccessToFormationAsTeacher } from "~/service/security.server";
 import { requireUser } from "~/service/session.server";
@@ -27,42 +27,42 @@ import { getUserOnPseFormationEntityById } from "~/service/useronpseformation.se
 
 const ParamsSchema = z.object({
   formationId: z.string(),
-  studentId: z.string(),
-})
+  studentId: z.string()
+});
 
 const security: SecurityFunction<{
   pseFormationApiObject: PseFormationApiObject;
 }> = async (request: Request, params: Params) => {
-  const { formationId } = getParamsOrFail(params, ParamsSchema)
+  const { formationId } = getParamsOrFail(params, ParamsSchema);
 
-	const userApiObject = await requireUser(request)
+  const userApiObject = await requireUser(request);
 
-	const pseFormationApiObject = await getPseFormationById(formationId)
+  const pseFormationApiObject = await getPseFormationById(formationId);
 
-  await assertUserHasAccessToFormationAsTeacher(userApiObject.id, pseFormationApiObject.id)
-	
+  await assertUserHasAccessToFormationAsTeacher(userApiObject.id, pseFormationApiObject.id);
+
   return {
-    pseFormationApiObject,
-  }
-}
+    pseFormationApiObject
+  };
+};
 
 // display the student summary for the formation
 export async function loader({ request, params }: LoaderArgs) {
-  const { pseFormationApiObject } = await security(request, params)
+  const { pseFormationApiObject } = await security(request, params);
 
-  const { formationId, studentId } = getParamsOrFail(params, ParamsSchema)
+  const { formationId, studentId } = getParamsOrFail(params, ParamsSchema);
 
-	const userOnPseFormationApiObject = await getUserOnPseFormationEntityById(formationId, studentId)
+  const userOnPseFormationApiObject = await getUserOnPseFormationEntityById(formationId, studentId);
 
   return json({
     pseFormation: pseFormationApiObjectToDto(pseFormationApiObject),
-    student: userOnPseFormationApiObjectToDto(userOnPseFormationApiObject).user,
+    student: userOnPseFormationApiObjectToDto(userOnPseFormationApiObject).user
   });
 };
 
 export const meta: V2_MetaFunction<typeof loader> = ({ data }) => {
   return [
-    { title: data?.student?.fullName },
+    { title: data?.student?.fullName }
   ];
 };
 
@@ -72,26 +72,26 @@ export default function UserPseFormationSummaryRoute() {
 
   const tabs = [
     {
-      label: 'Travail préparatoire',
+      label: "Travail préparatoire",
       href: `/pse/${pseFormation.id}/students/${student.id}/preparatory-work`
     },
     {
-      label: 'Techniques',
+      label: "Techniques",
       href: `/pse/${pseFormation.id}/students/${student.id}/technique`
     },
     {
-      label: 'Savoir de mise en oeuvre des procédures',
+      label: "Savoir de mise en oeuvre des procédures",
       href: `/pse/${pseFormation.id}/students/${student.id}/concrete-case-evaluations`
     },
     {
-      label: 'Suivi quotidien',
+      label: "Suivi quotidien",
       href: `/pse/${pseFormation.id}/students/${student.id}/daily`
     },
     {
-      label: 'Résumé',
+      label: "Résumé",
       href: `/pse/${pseFormation.id}/students/${student.id}/summary`
     }
-  ]
+  ];
 
   return (
     <>
@@ -116,7 +116,7 @@ export default function UserPseFormationSummaryRoute() {
 
       <PageSpace variant="header" />
 
-      <Main sx={{ px: 4, mb: 4, }}>
+      <Main sx={{ px: 4, mb: 4 }}>
         <Grid container spacing={2}>
           <Grid item xs={9}>
             <Outlet />

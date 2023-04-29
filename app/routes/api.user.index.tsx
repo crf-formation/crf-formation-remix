@@ -11,24 +11,25 @@ import { getUsers } from "~/service/user.server";
 const URLSearchParamsSchema = z.object({
   page: z.number().default(0),
   pageSize: z.number().default(25),
-	orderBy: z.string().default("createdAt"),
-	orderByDirection: z.enum([ 'asc', 'desc']),
-})
+  orderBy: z.string().default("createdAt"),
+  orderByDirection: z.enum(["asc", "desc"])
+});
 
 const security: SecurityFunction<void> = async (request: Request, params: Params) => {
-	await requireAdmin(request)
-}
+  await requireAdmin(request);
+};
 
 // GET list of users
-export const loader: LoaderFunction = async ({
-  request,
-	params,
-}) => {
-	await security(request, params)
+export const loader: LoaderFunction = async (
+  {
+    request,
+    params
+  }) => {
+  await security(request, params);
 
-	const { page, pageSize, orderBy, orderByDirection } = getSearchParamsOrFail(request, URLSearchParamsSchema)
+  const { page, pageSize, orderBy, orderByDirection } = getSearchParamsOrFail(request, URLSearchParamsSchema);
 
-	const usersPaginatedObjectApiObject = await getUsers(page, pageSize, orderBy, orderByDirection)
+  const usersPaginatedObjectApiObject = await getUsers(page, pageSize, orderBy, orderByDirection);
 
   return json(paginateEntityToApiObject(usersPaginatedObjectApiObject, userApiObjectToDto));
 };

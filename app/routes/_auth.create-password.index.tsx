@@ -1,17 +1,16 @@
-import type { LoaderArgs, MetaFunction } from "@remix-run/node";
-
-import { Paper, Typography } from '@mui/material';
+import type { LoaderArgs } from "@remix-run/node";
 import { json, V2_MetaFunction } from "@remix-run/node";
+
+import { Paper, Typography } from "@mui/material";
 import PageContainer from "~/component/layout/PageContainer";
 
 export async function loader({ request }: LoaderArgs) {
-  return json({
-  });
+  return json({});
 }
 
 export const meta: V2_MetaFunction<typeof loader> = () => {
   return [
-    { title: "Compte créé" },
+    { title: "Compte créé" }
   ];
 };
 

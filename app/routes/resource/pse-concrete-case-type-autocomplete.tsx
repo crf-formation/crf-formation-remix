@@ -5,14 +5,14 @@ import { useEffect } from "react";
 import type { PseConcreteCaseTypeDto } from "~/dto/pseconcretecasetype.dto";
 import { getPseConcreteCaseTypes } from "~/service/pseconcretecasetypes.server";
 import { requireUser } from "~/service/session.server";
-import { pseConcreteCaseTypeApiObjectToDto } from '~/mapper/pseconcretecasetype.mapper';
+import { pseConcreteCaseTypeApiObjectToDto } from "~/mapper/pseconcretecasetype.mapper";
 
 export async function loader({ request }: LoaderArgs) {
   await requireUser(request);
 
-	const pseConcreteCaseTypeApiObjects = await getPseConcreteCaseTypes()
+  const pseConcreteCaseTypeApiObjects = await getPseConcreteCaseTypes();
   return json({
-		pseConcreteCaseTypes: pseConcreteCaseTypeApiObjects.map(pseConcreteCaseTypeApiObjectToDto)
+    pseConcreteCaseTypes: pseConcreteCaseTypeApiObjects.map(pseConcreteCaseTypeApiObjectToDto)
   });
 }
 
@@ -25,23 +25,22 @@ interface Props {
 
 // TODO: can we transform this to a hook?
 export default function FormationTeacherAutocompleteResource(props: Props) {
-	const fetcher = useFetcher<typeof loader>()
-	const data = fetcher.data
+  const fetcher = useFetcher<typeof loader>();
+  const data = fetcher.data;
 
   // on mount, load all teachers
   useEffect(() => {
     fetcher.submit(
-      {
-      },
+      {},
       { method: "get", action: "/resource/pse-concrete-case-type-autocomplete" }
     );
-  	// eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   // on query change
-	// useEffect(() => {
+  // useEffect(() => {
   //   // TODO: add debounce
-	// 	// if (props.query?.length > 0) {
+  // 	// if (props.query?.length > 0) {
   //     fetcher.submit(
   //       {
   //         formationId: props.formationId,
@@ -55,10 +54,10 @@ export default function FormationTeacherAutocompleteResource(props: Props) {
   //       { method: "get", action: "/resource/pse-concrete-case-type-autocomplete" }
   //     );
   //   // }
-	// // eslint-disable-next-line react-hooks/exhaustive-deps
-	// }, [ props.query, fetcher.submit ])
+  // // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, [ props.query, fetcher.submit ])
 
-	const isLoading = fetcher.state !== 'idle'
+  const isLoading = fetcher.state !== "idle";
 
-  return props.children({ isLoading, pseConcreteCaseTypes: data?.pseConcreteCaseTypes })
+  return props.children({ isLoading, pseConcreteCaseTypes: data?.pseConcreteCaseTypes });
 }

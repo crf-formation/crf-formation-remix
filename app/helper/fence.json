@@ -1,4 +1,10 @@
 {
-	"tags": ["helper"],
-	"imports": ["apiobject", "util", "service"]
+  "tags": [
+    "helper"
+  ],
+  "imports": [
+    "apiobject",
+    "util",
+    "service"
+  ]
 }

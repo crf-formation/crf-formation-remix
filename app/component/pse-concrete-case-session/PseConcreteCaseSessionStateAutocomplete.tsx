@@ -1,4 +1,4 @@
-import type { AutocompleteProps} from "@mui/material";
+import type { AutocompleteProps } from "@mui/material";
 import { Autocomplete, TextField } from "@mui/material";
 import { useState } from "react";
 
@@ -6,13 +6,13 @@ import { useState } from "react";
 
 export default function PseConcreteCaseSessionStateAutocomplete({ defaultValue, name, ...props }: AutocompleteProps) {
 
-	const options = [
-		{ value: 'CREATED', label: 'Non commencé' },
-		{ value: 'RUNNING', label: 'En cours' },
-		{ value: 'CLOSED', label: 'Fermé' },
-	]
+  const options = [
+    { value: "CREATED", label: "Non commencé" },
+    { value: "RUNNING", label: "En cours" },
+    { value: "CLOSED", label: "Fermé" }
+  ];
 
-	const [state, setState ] = useState(options.find(option => option.value === defaultValue));
+  const [state, setState] = useState(options.find(option => option.value === defaultValue));
 
   return (
     <>

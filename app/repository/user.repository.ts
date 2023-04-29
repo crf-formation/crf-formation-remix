@@ -1,9 +1,6 @@
 import bcrypt from "bcryptjs";
 import { v4 as uuid } from "uuid";
-import type {
-  UserPostApiObject,
-  UserPutApiObject,
-} from "~/apiobject/user.apiobject";
+import type { UserPostApiObject, UserPutApiObject } from "~/apiobject/user.apiobject";
 import type { OrderByDirection, PaginateObject } from "~/constant/types";
 import type { PasswordEntity, UserEntity } from "~/entity";
 import { prisma } from "~/entity/db.server";
@@ -20,10 +17,10 @@ export async function createUserEntity(
       ...userPostApiObject,
       password: {
         create: {
-          hash: hashedPassword,
-        },
-      },
-    },
+          hash: hashedPassword
+        }
+      }
+    }
   });
 
   return userEntity;
@@ -36,8 +33,8 @@ export async function updateUserEntity(
   const userEntity = await prisma.user.update({
     data: userPutApiObject,
     where: {
-      id,
-    },
+      id
+    }
   });
 
   return userEntity;
@@ -51,11 +48,11 @@ export async function updateUserEntityPassword(
 
   const passwordEntity = await prisma.password.update({
     where: {
-      userId,
+      userId
     },
     data: {
-      hash: hashedPassword,
-    },
+      hash: hashedPassword
+    }
   });
 
   return passwordEntity;
@@ -88,8 +85,8 @@ export async function findUserEntityByEmailAndPassword(
   const userWithPassword = await prisma.user.findUnique({
     where: { email },
     include: {
-      password: true,
-    },
+      password: true
+    }
   });
 
   if (!userWithPassword || !userWithPassword.password) {
@@ -122,7 +119,7 @@ export async function findUserEntities(
     pageSize,
     orderBy,
     orderByDirection,
-    where: {},
+    where: {}
   });
 }
 
@@ -144,10 +141,10 @@ export async function getFormationStudentsEntities(
       usersOnPseFormation: {
         every: {
           formationId,
-          role: "STUDENT",
-        },
-      },
-    },
+          role: "STUDENT"
+        }
+      }
+    }
   });
 }
 
@@ -170,8 +167,8 @@ export async function searchFormationStudentsEntities(
       usersOnPseFormation: {
         every: {
           formationId,
-          role: "STUDENT",
-        },
+          role: "STUDENT"
+        }
       },
 
       // TODO: if not using sqlite anymore: https://www.prisma.io/docs/concepts/component/prisma-client/full-text-search
@@ -180,24 +177,24 @@ export async function searchFormationStudentsEntities(
       OR: [
         {
           firstName: {
-            endsWith: query,
+            endsWith: query
             // mode: "insensitive",
-          },
+          }
         },
         {
           lastName: {
-            endsWith: query,
+            endsWith: query
             // mode: "insensitive",
-          },
+          }
         },
         {
           email: {
-            endsWith: query,
+            endsWith: query
             // mode: "insensitive",
-          },
-        },
-      ],
-    },
+          }
+        }
+      ]
+    }
   });
 }
 
@@ -219,10 +216,10 @@ export async function getFormationTeachersEntities(
       usersOnPseFormation: {
         every: {
           formationId,
-          role: "TEACHER",
-        },
-      },
-    },
+          role: "TEACHER"
+        }
+      }
+    }
   });
 }
 
@@ -245,8 +242,8 @@ export async function searchFormationTeachersEntities(
       usersOnPseFormation: {
         every: {
           formationId,
-          role: "TEACHER",
-        },
+          role: "TEACHER"
+        }
       },
 
       // TODO: if not using sqlite anymore: https://www.prisma.io/docs/concepts/component/prisma-client/full-text-search
@@ -255,24 +252,24 @@ export async function searchFormationTeachersEntities(
       OR: [
         {
           firstName: {
-            endsWith: query,
+            endsWith: query
             // mode: "insensitive",
-          },
+          }
         },
         {
           lastName: {
-            endsWith: query,
+            endsWith: query
             // mode: "insensitive",
-          },
+          }
         },
         {
           email: {
-            endsWith: query,
+            endsWith: query
             // mode: "insensitive",
-          },
-        },
-      ],
-    },
+          }
+        }
+      ]
+    }
   });
 }
 

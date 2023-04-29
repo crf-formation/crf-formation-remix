@@ -1,27 +1,27 @@
-import EditIcon from '@mui/icons-material/Edit';
-import ImageIcon from '@mui/icons-material/Image';
-import PersonAddIcon from '@mui/icons-material/PersonAdd';
+import EditIcon from "@mui/icons-material/Edit";
+import ImageIcon from "@mui/icons-material/Image";
+import PersonAddIcon from "@mui/icons-material/PersonAdd";
 import { Avatar, Button, Grid, Link, List, ListItem, ListItemAvatar, ListItemText, Stack } from "@mui/material";
 import type { LoaderArgs } from "@remix-run/node";
 import { json, V2_MetaFunction } from "@remix-run/node";
 import type { Params } from "@remix-run/react";
 import { useLoaderData } from "@remix-run/react";
 import { z } from "zod";
-import type { PseFormationApiObject } from '~/apiobject/pseformation.apiobject';
+import type { PseFormationApiObject } from "~/apiobject/pseformation.apiobject";
 import FormationPseStatusChip from "~/component/formationpse/FormationPseStatusChip";
-import { Ariane, ArianeItem } from '~/component/layout/Ariane';
+import { Ariane, ArianeItem } from "~/component/layout/Ariane";
 import PageContainer from "~/component/layout/PageContainer";
-import PagePaperHeader from '~/component/layout/PagePaperHeader';
-import PageSpace from '~/component/layout/PageSpace';
-import PageSubtitle from '~/component/layout/PageSubtitle';
-import PageTitle from '~/component/layout/PageTitle';
+import PagePaperHeader from "~/component/layout/PagePaperHeader";
+import PageSpace from "~/component/layout/PageSpace";
+import PageSubtitle from "~/component/layout/PageSubtitle";
+import PageTitle from "~/component/layout/PageTitle";
 import Section from "~/component/layout/Section";
 import Callout from "~/component/typography/Callout";
 import Property from "~/component/typography/Property";
 import type { PseFormationDto } from "~/dto/pseformation.dto";
 import type { UserDto } from "~/dto/user.dto";
 import type { SecurityFunction } from "~/helper/remix.helper";
-import { getParamsOrFail } from '~/helper/remix.params.helper';
+import { getParamsOrFail } from "~/helper/remix.params.helper";
 import useI18n from "~/hook/useI18n";
 import useUser from "~/hook/useUser";
 import { pseFormationApiObjectToDto } from "~/mapper/pseformation.mapper";
@@ -30,45 +30,49 @@ import { assertUserHasAccessToFormationAsTeacher } from "~/service/security.serv
 import { requireUser } from "~/service/session.server";
 
 const ParamsSchema = z.object({
-  formationId: z.string(),
+  formationId: z.string()
 });
 
 const security: SecurityFunction<{
   pseFormationApiObject: PseFormationApiObject;
 }> = async (request: Request, params: Params) => {
-  const { formationId } = getParamsOrFail(params, ParamsSchema)
+  const { formationId } = getParamsOrFail(params, ParamsSchema);
 
-	const userApiObject = await requireUser(request)
+  const userApiObject = await requireUser(request);
 
-	const pseFormationApiObject = await findPseFormationById(formationId)
-	
-	if (!pseFormationApiObject) {
-		throw new Error(`Formation not found: ${formationId}`);
-	}
-	
-	await assertUserHasAccessToFormationAsTeacher(userApiObject.id, pseFormationApiObject.id)
+  const pseFormationApiObject = await findPseFormationById(formationId);
+
+  if (!pseFormationApiObject) {
+    throw new Error(`Formation not found: ${formationId}`);
+  }
+
+  await assertUserHasAccessToFormationAsTeacher(userApiObject.id, pseFormationApiObject.id);
 
   return {
-    pseFormationApiObject,
-  }
-}
+    pseFormationApiObject
+  };
+};
 
 // GET a formation
 export async function loader({ request, params }: LoaderArgs) {
-  const { pseFormationApiObject } = await security(request, params)
+  const { pseFormationApiObject } = await security(request, params);
 
   return json({
-		formation: pseFormationApiObjectToDto(pseFormationApiObject)
-	});
+    formation: pseFormationApiObjectToDto(pseFormationApiObject)
+  });
 };
 
 export const meta: V2_MetaFunction<typeof loader> = ({ data }) => {
   return [
-    { title: `PSE - ${data?.formation?.title}` },
+    { title: `PSE - ${data?.formation?.title}` }
   ];
 };
 
-function TeacherList({ teachers, formationId, hasAdminPermission }: { teachers: Array<UserDto>, formationId: string, hasAdminPermission: boolean }) {
+function TeacherList({ teachers, formationId, hasAdminPermission }: {
+  teachers: Array<UserDto>,
+  formationId: string,
+  hasAdminPermission: boolean
+}) {
   return (
     <Section
       title={<span>Formateurs ({teachers.length})</span>}
@@ -99,7 +103,11 @@ function TeacherList({ teachers, formationId, hasAdminPermission }: { teachers: 
   );
 }
 
-function StudentList({ students, formationId, hasAdminPermission }: { students: Array<UserDto>, formationId: string, hasAdminPermission: boolean }) {
+function StudentList({ students, formationId, hasAdminPermission }: {
+  students: Array<UserDto>,
+  formationId: string,
+  hasAdminPermission: boolean
+}) {
   return (
     <Section
       title={<span>Participants ({students.length})</span>}
@@ -148,11 +156,11 @@ function StudentList({ students, formationId, hasAdminPermission }: { students: 
   );
 }
 
-function Formation({ formation, hasAdminPermission }: { formation: PseFormationDto, hasAdminPermission: boolean}) {
-	const { formatDate } = useI18n()
+function Formation({ formation, hasAdminPermission }: { formation: PseFormationDto, hasAdminPermission: boolean }) {
+  const { formatDate } = useI18n();
 
-	return (
-    <Section 
+  return (
+    <Section
       title="Formation"
       action={
         hasAdminPermission && (
@@ -163,7 +171,8 @@ function Formation({ formation, hasAdminPermission }: { formation: PseFormationD
       }
     >
       <Property name="Status" value={<FormationPseStatusChip state={formation.state} />} />
-      <Property name="Date" value={<span>{formatDate(formation.from, "date")} au {formatDate(formation.to, "date")}</span>} />
+      <Property name="Date"
+                value={<span>{formatDate(formation.from, "date")} au {formatDate(formation.to, "date")}</span>} />
       <Property name="Lieu" value={<span>{formation.place.title}</span>} />
     </Section>
   );

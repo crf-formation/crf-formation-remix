@@ -1,5 +1,5 @@
-export type UserStateApiEnum = 'CREATED' | 'DISABLED' | 'ENABLED' | 'ARCHIVED'
-export type UserRoleApiEnum = 'USER' | 'ADMIN' | 'SUPER_ADMIN'
+export type UserStateApiEnum = "CREATED" | "DISABLED" | "ENABLED" | "ARCHIVED"
+export type UserRoleApiEnum = "USER" | "ADMIN" | "SUPER_ADMIN"
 
 export interface UserApiObject {
   readonly id: string;
@@ -13,10 +13,10 @@ export interface UserApiObject {
 }
 
 export interface UserPostApiObject {
-	readonly firstName: string;
+  readonly firstName: string;
   readonly lastName: string;
   readonly email: string;
-	readonly state: UserStateApiEnum;
+  readonly state: UserStateApiEnum;
   readonly role: UserRoleApiEnum;
 }
 
@@ -29,5 +29,5 @@ export interface UserPutApiObject {
 }
 
 export interface UserAuthTokenApiObject {
-  readonly user: UserApiObject
+  readonly user: UserApiObject;
 }

@@ -7,20 +7,20 @@ import { findPlaceById } from "~/service/place.server";
 import { requireAdmin } from "~/service/session.server";
 
 const ParamsSchema = z.object({
-  placeId: z.string(),
-})
+  placeId: z.string()
+});
 
 // GET a formation
 export async function loader({ request, params }: LoaderArgs) {
-	const { placeId } = getParamsOrFail(params, ParamsSchema)
+  const { placeId } = getParamsOrFail(params, ParamsSchema);
 
-	await requireAdmin(request)
+  await requireAdmin(request);
 
-	const formationApiObject = await findPlaceById(placeId)
-	
-	if (!formationApiObject) {
-		throw new Error(`Formation not found: ${placeId}`);
-	}
+  const formationApiObject = await findPlaceById(placeId);
+
+  if (!formationApiObject) {
+    throw new Error(`Formation not found: ${placeId}`);
+  }
 
   return json(placeApiObjectToDto(formationApiObject));
 };

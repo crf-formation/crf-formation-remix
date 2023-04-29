@@ -1,5 +1,4 @@
-
-import { DEFAULT_LOCALE } from '../constant/index';
+import { DEFAULT_LOCALE } from "../constant/index";
 import { translate } from "./i18n";
 
 describe("i18n", () => {
@@ -8,12 +7,12 @@ describe("i18n", () => {
 
     const obj1 = {
       "en-US": "us",
-      "fr-FR": "fr",
+      "fr-FR": "fr"
     };
 
     const obj2 = [
       { locale: "en-US", text: "us" },
-      { locale: "fr-FR", text: "fr" },
+      { locale: "fr-FR", text: "fr" }
     ];
 
     expect(translate(locale, obj1)).toBe("fr");
@@ -25,12 +24,12 @@ describe("i18n", () => {
 
     const obj1 = {
       "en-GB": "us",
-      [DEFAULT_LOCALE]: "default",
+      [DEFAULT_LOCALE]: "default"
     };
 
     const obj2 = [
       { locale: "en-GB", text: "fr" },
-      { locale: [DEFAULT_LOCALE], text: "default" },
+      { locale: [DEFAULT_LOCALE], text: "default" }
     ];
 
     expect(translate(locale, obj1)).toBe("default");

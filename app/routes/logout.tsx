@@ -6,16 +6,16 @@ import type { SecurityFunction } from "~/helper/remix.helper";
 import { logout } from "~/service/session.server";
 
 const security: SecurityFunction<void> = async (request: Request, params: Params) => {
-}
+};
 
 export async function loader({ request, params }: LoaderArgs) {
-  await security(request, params)
+  await security(request, params);
   return redirect("/");
 }
 
 export async function action({ request, params }: ActionArgs) {
-  await security(request, params)
-  console.log('-=---------------------->')
+  await security(request, params);
+  console.log("-=---------------------->");
   return logout(request);
 }
 

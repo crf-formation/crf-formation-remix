@@ -1,30 +1,26 @@
 // based on https://github.com/mui/material-ui/blob/master/examples/remix-with-typescript/app/root.tsx
 import { withEmotionCache } from "@emotion/react";
 import { Box, CssBaseline, Link as MuiLink, Typography } from "@mui/material";
-import { ThemeProvider } from '@mui/material/styles';
+import { ThemeProvider } from "@mui/material/styles";
 import { LocalizationProvider } from "@mui/x-date-pickers";
-import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
-import type {
-  LinksFunction,
-  LoaderArgs,
-  MetaFunction
-} from "@remix-run/node";
+import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
+import type { LinksFunction, LoaderArgs } from "@remix-run/node";
+import { redirect, V2_MetaFunction } from "@remix-run/node";
 import {
-  redirect, V2_MetaFunction
-} from "@remix-run/node";
-import {
+  isRouteErrorResponse,
+  Link as RmxLink,
   Links,
   LiveReload,
   Meta,
   Outlet,
-  Link as RmxLink,
   Scripts,
   ScrollRestoration,
-  useCatch, useLoaderData, useRouteError, isRouteErrorResponse
+  useLoaderData,
+  useRouteError
 } from "@remix-run/react";
-import type { ActionArgs } from '@remix-run/server-runtime';
-import { json } from '@remix-run/server-runtime';
-import fr from 'date-fns/locale/fr';
+import type { ActionArgs } from "@remix-run/server-runtime";
+import { json } from "@remix-run/server-runtime";
+import fr from "date-fns/locale/fr";
 import nProgressStyles from "nprogress/nprogress.css";
 import { useContext, useMemo } from "react";
 import { AuthenticityTokenProvider } from "~/component/csrf";
@@ -32,8 +28,7 @@ import ClientStyleContext from "~/component/layout/ClientStyleContext";
 import Layout from "~/component/layout/Layout";
 import { LoadingBar } from "~/component/layout/LoadingBar";
 import useIsLoading from "~/hook/useIsLoading";
-import { logger } from "~/service/logger";
-import { getPublicProperties } from '~/service/publicproperties.server';
+import { getPublicProperties } from "~/service/publicproperties.server";
 import DebugMatches from "./component/dev/DebugMatches";
 import ErrorPageContainer from "./component/layout/ErrorPageContainer";
 import FlashMessages from "./component/layout/FlashMessages";
@@ -46,7 +41,7 @@ import type { PseFormationDto } from "./dto/pseformation.dto";
 import type { PublicPropertiesDto } from "./dto/publicproperties.dto";
 import type { UserMeDto } from "./dto/user.dto";
 import useEnhancedEffect from "./hook/useEnhancedEffect";
-import { pseFormationApiObjectToDto } from './mapper/pseformation.mapper';
+import { pseFormationApiObjectToDto } from "./mapper/pseformation.mapper";
 import { userApiObjectToUserMeDto } from "./mapper/user.mapper";
 import { getBrowserEnv } from "./service/env.server";
 import { getFlashMessages } from "./service/flash.server";
@@ -75,13 +70,13 @@ export async function loader({ request }: LoaderArgs) {
   // let ipAddress = getClientIPAddress(request);
   // console.log({ ipAddress })
 
-  const csrf = session.get(CSRF_SESSION_KEY)
+  const csrf = session.get(CSRF_SESSION_KEY);
 
-  const flashMessages = await getFlashMessages(session)
+  const flashMessages = await getFlashMessages(session);
 
-  const user = await getMe(request)
+  const user = await getMe(request);
 
-  const currentPseFormationApiObject = user ? await getCurrentPseFormationForUser(user.id) : null
+  const currentPseFormationApiObject = user ? await getCurrentPseFormationForUser(user.id) : null;
 
   return json(
     {
@@ -98,15 +93,15 @@ export async function loader({ request }: LoaderArgs) {
 
       currentPseFormation: currentPseFormationApiObject ? pseFormationApiObjectToDto(currentPseFormationApiObject) : null,
 
-      flashMessages,
+      flashMessages
     },
     {
       headers: {
         // https://remix.run/docs/en/v1/api/remix#sessionflashkey-value
         // only necessary with cookieSessionStorage
         // will remove the flash message for you
-        "Set-Cookie": await commitSession(session),
-      },
+        "Set-Cookie": await commitSession(session)
+      }
     }
   );
 }
@@ -124,8 +119,8 @@ export async function action({ request }: ActionArgs) {
 
   return redirect(redirectBack || "/", {
     headers: {
-      "Set-Cookie": await themeCookie.serialize(newTheme),
-    },
+      "Set-Cookie": await themeCookie.serialize(newTheme)
+    }
   });
 }
 
@@ -137,7 +132,7 @@ export const meta: V2_MetaFunction<typeof loader> = () => {
   return [
     { title: "CRF formation" },
     { name: "charset", content: "utf-8" },
-    { name: "viewport", content: "width=device-width,initial-scale=1" },
+    { name: "viewport", content: "width=device-width,initial-scale=1" }
   ];
 };
 
@@ -152,11 +147,11 @@ const Document = withEmotionCache(
       children,
       title,
       themeName: propThemeName,
-      themeName: loaderDataThemeName,
+      themeName: loaderDataThemeName
     }: DocumentProps,
     emotionCache
   ) => {
-    const isLoading = useIsLoading()
+    const isLoading = useIsLoading();
 
     const clientStyleData = useContext(ClientStyleContext);
 
@@ -197,47 +192,47 @@ const Document = withEmotionCache(
 
     return (
       <html lang="en">
-        <head>
-          <meta charSet="utf-8" />
-          <meta name="viewport" content="width=device-width,initial-scale=1" />
-          <meta name="theme-color" content={theme.palette.primary.main} />
-          {title ? <title>{title}</title> : null}
-          <Meta />
-          <Links />
+      <head>
+        <meta charSet="utf-8" />
+        <meta name="viewport" content="width=device-width,initial-scale=1" />
+        <meta name="theme-color" content={theme.palette.primary.main} />
+        {title ? <title>{title}</title> : null}
+        <Meta />
+        <Links />
 
-          {/* NOTE: Very important meta tag */}
-          {/* because using this, css is re-inserted in entry.server.tsx */}
-          <meta
-            name="emotion-insertion-point"
-            content="emotion-insertion-point"
-          />
+        {/* NOTE: Very important meta tag */}
+        {/* because using this, css is re-inserted in entry.server.tsx */}
+        <meta
+          name="emotion-insertion-point"
+          content="emotion-insertion-point"
+        />
 
-          <link
-            rel="stylesheet"
-            href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap"
-          />
-        </head>
-        <body>
-          <ThemeProvider theme={theme}>
-            <LocalizationProvider
-              dateAdapter={AdapterDateFns}
-              adapterLocale={fr}
-            >
-              <CssBaseline />
+        <link
+          rel="stylesheet"
+          href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap"
+        />
+      </head>
+      <body>
+      <ThemeProvider theme={theme}>
+        <LocalizationProvider
+          dateAdapter={AdapterDateFns}
+          adapterLocale={fr}
+        >
+          <CssBaseline />
 
-              <LoadingBar isLoading={isLoading} />
+          <LoadingBar isLoading={isLoading} />
 
-              <FlashMessages />
+          <FlashMessages />
 
-              {children}
-            </LocalizationProvider>
-          </ThemeProvider>
-          <ScrollRestoration />
-          <Scripts />
+          {children}
+        </LocalizationProvider>
+      </ThemeProvider>
+      <ScrollRestoration />
+      <Scripts />
 
-          {process.env.NODE_ENV === "development" && <DebugMatches />}
-          {process.env.NODE_ENV === "development" && <LiveReload />}
-        </body>
+      {process.env.NODE_ENV === "development" && <DebugMatches />}
+      {process.env.NODE_ENV === "development" && <LiveReload />}
+      </body>
       </html>
     );
   }
@@ -255,10 +250,10 @@ export default function App() {
           <Outlet />
         </Layout>
 
-				{/* Make env data availaible on window directly */}
+        {/* Make env data availaible on window directly */}
         <script
           dangerouslySetInnerHTML={{
-            __html: `window.env = ${JSON.stringify(env)}`,
+            __html: `window.env = ${JSON.stringify(env)}`
           }}
         />
       </Document>
@@ -277,7 +272,7 @@ function ErrorView({ error }: { error: Error }) {
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
-        mt: 6,
+        mt: 6
       }}
     >
       <Typography variant="h4" component="h1">
@@ -300,14 +295,14 @@ function ErrorView({ error }: { error: Error }) {
         </MuiLink>
       </Box>
     </Box>
-  )
+  );
 }
 
 // https://remix.run/docs/en/v1/api/conventions#errorboundary
 export function ErrorBoundary() {
   const error = useRouteError();
 
-  console.log({ error})
+  console.log({ error });
 
   // TODO: add ErrorBoundary on a sub-route to have access to isLoggedIn on root loader data ?
   return (

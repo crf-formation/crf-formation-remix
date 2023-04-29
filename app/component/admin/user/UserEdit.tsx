@@ -1,10 +1,10 @@
 // see https://marmelab.com/react-admin/Show.html
-import { DateTimeInput, TextInput, required } from 'react-admin';
-import CrudActionsTabs from '~/component/reactadmin/layout/CrudActionsTabs';
-import EditLayout from '~/component/reactadmin/layout/EditLayout';
-import SimpleFormLayout from '~/component/reactadmin/layout/SimpleFormLayout';
-import UserRoleInput from './UserRole';
-import { UserStateInput } from './UserState';
+import { DateTimeInput, required, TextInput } from "react-admin";
+import CrudActionsTabs from "~/component/reactadmin/layout/CrudActionsTabs";
+import EditLayout from "~/component/reactadmin/layout/EditLayout";
+import SimpleFormLayout from "~/component/reactadmin/layout/SimpleFormLayout";
+import UserRoleInput from "./UserRole";
+import { UserStateInput } from "./UserState";
 
 
 export default function UserEdit() {

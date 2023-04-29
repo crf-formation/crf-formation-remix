@@ -1,24 +1,24 @@
-import { Box, Checkbox, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material';
-import PseAcquiredLabel from '~/component/pse-summary/PseAcquiredLabel';
+import { Box, Checkbox, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from "@mui/material";
+import PseAcquiredLabel from "~/component/pse-summary/PseAcquiredLabel";
 import type { PseUserConcreteCaseCompetenceGradeDtoEnum, PseUserConcreteCaseDto } from "~/dto/pseuserconcretecase.dto";
 import type { PseUserSummaryConcreteCaseDto } from "~/dto/pseusersummary.dto";
 
 interface Props {
-	pseUserSummaryConcreteCase: PseUserSummaryConcreteCaseDto;
+  pseUserSummaryConcreteCase: PseUserSummaryConcreteCaseDto;
 }
 
 function Grade({ grade }: { grade: PseUserConcreteCaseCompetenceGradeDtoEnum }) {
-	const label = grade === 'NOT_EVALUATED' ? '' : grade
+  const label = grade === "NOT_EVALUATED" ? "" : grade;
 
-	return (
-		<Box sx={{ width: 16 }}>
-			{label}
-		</Box>
-	)
+  return (
+    <Box sx={{ width: 16 }}>
+      {label}
+    </Box>
+  );
 }
 
 function UserConcreteCaseRow({ pseUserConcreteCase }: { pseUserConcreteCase: PseUserConcreteCaseDto }) {
-	return (
+  return (
     <TableRow>
       <TableCell>
         {pseUserConcreteCase.pseConcreteCaseSituation.name}
@@ -30,17 +30,17 @@ function UserConcreteCaseRow({ pseUserConcreteCase }: { pseUserConcreteCase: Pse
         </TableCell>
       ))}
 
-			<TableCell>
-				{/* TODO: form to select / unselect */}
-				<Checkbox checked={pseUserConcreteCase.selected} />
-			</TableCell>
+      <TableCell>
+        {/* TODO: form to select / unselect */}
+        <Checkbox checked={pseUserConcreteCase.selected} />
+      </TableCell>
     </TableRow>
   );
 }
 
 export default function PseUserConcreteCasesTable({ pseUserSummaryConcreteCase }: Props) {
 
-	return (
+  return (
     <TableContainer>
       <Table>
         <TableHead>

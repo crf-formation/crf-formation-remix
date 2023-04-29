@@ -9,7 +9,7 @@ import { USER_PASSWORD_MIN_LENGTH } from "~/constant";
 export const JoinSchema = z.object({
   firstName: z.string().min(1),
   lastName: z.string().min(1),
-  email: z.string().email().min(1),
+  email: z.string().email().min(1)
 });
 
 export const joinValidator = withZod(JoinSchema);
@@ -22,7 +22,7 @@ export const joinValidator = withZod(JoinSchema);
 export const ProfileSchema = z.object({
   firstName: z.string().min(1),
   lastName: z.string().min(1),
-  email: z.string().email().min(1),
+  email: z.string().email().min(1)
 });
 
 export const profileValidator = withZod(ProfileSchema);
@@ -50,7 +50,7 @@ const PasswordModificationSchema = z.object({
     .min(
       USER_PASSWORD_MIN_LENGTH,
       `Le mot de passe doit faire au moins ${USER_PASSWORD_MIN_LENGTH} caractères`
-    ),
+    )
 });
 
 export const passwordModificationValidator = withZod(
@@ -74,10 +74,10 @@ const PasswordCreateSchema = z.object({
     .min(
       USER_PASSWORD_MIN_LENGTH,
       `Le mot de passe doit faire au moins ${USER_PASSWORD_MIN_LENGTH} caractères`
-    ),
+    )
 });
 
-export const passwordCreateValidator = withZod(PasswordCreateSchema)
+export const passwordCreateValidator = withZod(PasswordCreateSchema);
 
 //
 //
@@ -96,10 +96,10 @@ const PasswordResetSchema = z.object({
     .min(
       USER_PASSWORD_MIN_LENGTH,
       `Le mot de passe doit faire au moins ${USER_PASSWORD_MIN_LENGTH} caractères`
-    ),
+    )
 });
 
-export const passwordResetValidator = withZod(PasswordResetSchema)
+export const passwordResetValidator = withZod(PasswordResetSchema);
 
 //
 //
@@ -107,7 +107,7 @@ export const passwordResetValidator = withZod(PasswordResetSchema)
 
 
 const PasswordAskResetSchema = z.object({
-  email: z.string().email().min(1),
+  email: z.string().email().min(1)
 });
 
-export const passwordAskResetValidator = withZod(PasswordAskResetSchema)
+export const passwordAskResetValidator = withZod(PasswordAskResetSchema);

@@ -7,20 +7,20 @@ export function dailyNoteApiObjectToDto(apiObject: DailyNoteApiObject): DailyNot
     title: apiObject.title,
     content: apiObject.content,
     createAt: apiObject.createAt,
-    updatedAt: apiObject.updatedAt,
-  }
+    updatedAt: apiObject.updatedAt
+  };
 }
 
 export function dailyNotePostApiObjectToDto(apiObject: DailyNotePostApiObject): DailyNotePostDto {
   return {
     title: apiObject.title,
-    content: apiObject.content,
-  }
+    content: apiObject.content
+  };
 }
 
 export function dailyNotePostDtoToApiObject(dto: DailyNotePostDto): DailyNotePostApiObject {
   return {
     title: dto.title,
-    content: dto.content,
-  }
+    content: dto.content
+  };
 }

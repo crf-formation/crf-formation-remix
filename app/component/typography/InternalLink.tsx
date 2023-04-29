@@ -11,7 +11,7 @@ type Props = LinkProps & {
 }
 
 export default function InternalLink({ href, to, children, ...props }: Props) {
-	return (
+  return (
     <Link component={NavLink} {...props} to={to || href}>
       {children}
     </Link>

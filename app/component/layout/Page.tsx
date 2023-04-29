@@ -1,13 +1,13 @@
-import { Box, GlobalStyles } from '@mui/material';
-import type { ReactNode } from 'react';
-import { useState } from 'react';
-import useIsDesktop from '~/hook/useIsDesktop';
+import { Box, GlobalStyles } from "@mui/material";
+import type { ReactNode } from "react";
+import { useState } from "react";
+import useIsDesktop from "~/hook/useIsDesktop";
 import useRootData from "~/hook/useRootData";
-import SidebarMenu from './SidebarMenu';
+import SidebarMenu from "./SidebarMenu";
 
 export default function Layout({ isLoggedIn, children }: { isLoggedIn: boolean, children: ReactNode }) {
-  const isDesktop = useIsDesktop()
-	const { themeName } = useRootData()
+  const isDesktop = useIsDesktop();
+  const { themeName } = useRootData();
 
   // since we have aa sidebar specific for the admin pages, we hide by default the layout here.
   // -> sidebarIsOpen false on front because of local storage but true on server-side. 
@@ -19,7 +19,7 @@ export default function Layout({ isLoggedIn, children }: { isLoggedIn: boolean, 
   // const [sidebarIsOpen, setSidebarOpen] = useSidebarState(!isAdminPage);
 
   // what we do now is it always closed, and we open it on hover.
-  
+
   // open in desktop, hidden in mobile
   const [sidebarIsOpen, setSidebarOpen] = useState(isDesktop);
 
@@ -29,7 +29,7 @@ export default function Layout({ isLoggedIn, children }: { isLoggedIn: boolean, 
     setSidebarOpen(!sidebarIsOpen);
   };
 
-  const backgroundColor = themeName === "light" ? "#E8EAED" : "inherit"
+  const backgroundColor = themeName === "light" ? "#E8EAED" : "inherit";
 
 
   return (
@@ -39,7 +39,7 @@ export default function Layout({ isLoggedIn, children }: { isLoggedIn: boolean, 
         // backgroundColor,
 
         // [theme.breakpoints.down("md")]: {
-          minHeight: "100vh",
+        minHeight: "100vh"
         // },
       })}
     >
@@ -51,8 +51,8 @@ export default function Layout({ isLoggedIn, children }: { isLoggedIn: boolean, 
         styles={{
           ":root": {
             "--header-height": "48px",
-            "--main-background-color": backgroundColor,
-          },
+            "--main-background-color": backgroundColor
+          }
         }}
       />
 
@@ -63,7 +63,7 @@ export default function Layout({ isLoggedIn, children }: { isLoggedIn: boolean, 
         />
       )}
 
-      <Box sx={{ flex: 1, display: "flex", flexDirection: "column", }}>
+      <Box sx={{ flex: 1, display: "flex", flexDirection: "column" }}>
         {children}
       </Box>
     </Box>

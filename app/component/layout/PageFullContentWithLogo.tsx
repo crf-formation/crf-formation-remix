@@ -4,7 +4,7 @@ import LogoVerticalImage from "../image/LogoVertical";
 import PageFullContent from "./PageFullContent";
 
 interface Props {
-	children: ReactNode;
+  children: ReactNode;
 }
 
 /**

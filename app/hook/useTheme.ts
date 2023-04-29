@@ -5,7 +5,7 @@ import type { ThemeNames } from "~/theme";
 import { getTheme } from "~/theme";
 
 export default function useTheme() {
-	const { themeName: propThemeName } = useContext(ClientStyleContext)
+  const { themeName: propThemeName } = useContext(ClientStyleContext);
 
   let themeName: ThemeNames = useMemo(() => {
     return propThemeName || DEFAULT_THEME;
@@ -13,5 +13,5 @@ export default function useTheme() {
 
   const theme = getTheme(themeName);
 
-	return theme
+  return theme;
 }

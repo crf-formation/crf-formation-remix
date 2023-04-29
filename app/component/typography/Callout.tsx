@@ -1,29 +1,29 @@
-import { alpha, styled } from '@mui/material/styles';
+import { alpha, styled } from "@mui/material/styles";
 import type { ReactNode } from "react";
 
-import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
-import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline';
-import WarningAmberIcon from '@mui/icons-material/WarningAmber';
-import InfoOutlinedIcon from '~/component/icons/InfoOutlined';
+import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
+import ErrorOutlineIcon from "@mui/icons-material/ErrorOutline";
+import WarningAmberIcon from "@mui/icons-material/WarningAmber";
+import InfoOutlinedIcon from "~/component/icons/InfoOutlined";
 
-export type Severity = 'info' | 'warning' | 'error' | 'success'
+export type Severity = "info" | "warning" | "error" | "success"
 
 interface Props {
-	severity: Severity
-	className?: string
-	children: ReactNode
-	withIcon?: boolean
+  severity: Severity;
+  className?: string;
+  children: ReactNode;
+  withIcon?: boolean;
 }
 
-const icons: {[key in Severity]: ReactNode} = {
-	info: <InfoOutlinedIcon />,
-	warning: <WarningAmberIcon />,
-	error: <ErrorOutlineIcon />,
+const icons: { [key in Severity]: ReactNode } = {
+  info: <InfoOutlinedIcon />,
+  warning: <WarningAmberIcon />,
+  error: <ErrorOutlineIcon />,
   success: <CheckCircleOutlineIcon />
-}
+};
 
-function Callout({ severity = 'info', className, withIcon = false, children }: Props) {
-	return (
+function Callout({ severity = "info", className, withIcon = false, children }: Props) {
+  return (
     <aside className={`MuiCallout-root MuiCallout-${severity} ${className}`}>
       {withIcon && <div className="MuiCallout-icon">{icons[severity]}</div>}
       <div>{children}</div>
@@ -44,18 +44,18 @@ const StyledCallout = styled(Callout)(({ theme, sx }) => ({
   "& > p": {
     color: "inherit",
     "&:last-child": {
-      margin: 0,
-    },
+      margin: 0
+    }
   },
 
   "& ul, li": {
-    color: "inherit",
+    color: "inherit"
   },
 
   "& .MuiCallout-icon": {
     marginRight: theme.spacing(1),
     display: "flex",
-    alignItems: "center",
+    alignItems: "center"
   },
 
   "&.MuiCallout-error": {
@@ -66,7 +66,7 @@ const StyledCallout = styled(Callout)(({ theme, sx }) => ({
     backgroundColor:
       theme.palette.mode === "dark"
         ? // Support Material Design theme
-          alpha(theme.palette.error[900] ?? theme.palette.error.dark, 0.35)
+        alpha(theme.palette.error[900] ?? theme.palette.error.dark, 0.35)
         : theme.palette.error[50] ?? theme.palette.error.light,
     borderColor:
       theme.palette.mode === "dark" // Support Material Design theme
@@ -76,7 +76,7 @@ const StyledCallout = styled(Callout)(({ theme, sx }) => ({
       color:
         theme.palette.mode === "dark"
           ? theme.palette.error[100] ?? "#fff"
-          : theme.palette.error[800] ?? theme.palette.text.primary,
+          : theme.palette.error[800] ?? theme.palette.text.primary
     },
     "& a": {
       color:
@@ -85,9 +85,9 @@ const StyledCallout = styled(Callout)(({ theme, sx }) => ({
           : theme.palette.error[800] ?? theme.palette.text.primary,
       textDecorationColor: alpha(theme.palette.error.main, 0.4),
       "&:hover": {
-        textDecorationColor: "inherit",
-      },
-    },
+        textDecorationColor: "inherit"
+      }
+    }
   },
 
   // TODO: replace primary by blue?
@@ -99,7 +99,7 @@ const StyledCallout = styled(Callout)(({ theme, sx }) => ({
     backgroundColor:
       theme.palette.mode === "dark"
         ? // Support Material Design theme
-          alpha(theme.palette.primary[900] ?? theme.palette.primary.dark, 0.2)
+        alpha(theme.palette.primary[900] ?? theme.palette.primary.dark, 0.2)
         : alpha(theme.palette.primary[50] ?? theme.palette.primary.dark, 0.8),
     borderColor:
       theme.palette.mode === "dark" // Support Material Design theme
@@ -109,8 +109,8 @@ const StyledCallout = styled(Callout)(({ theme, sx }) => ({
       color:
         theme.palette.mode === "dark"
           ? theme.palette.primary[100] ?? "#fff"
-          : theme.palette.primary[800] ?? theme.palette.text.primary,
-    },
+          : theme.palette.primary[800] ?? theme.palette.text.primary
+    }
   },
 
   "&.MuiCallout-warning": {
@@ -121,7 +121,7 @@ const StyledCallout = styled(Callout)(({ theme, sx }) => ({
     backgroundColor:
       theme.palette.mode === "dark"
         ? // Support Material Design theme
-          alpha(theme.palette.warning[900] ?? theme.palette.warning.dark, 0.35)
+        alpha(theme.palette.warning[900] ?? theme.palette.warning.dark, 0.35)
         : alpha(theme.palette.warning[50] ?? theme.palette.warning.light, 0.6),
     borderColor:
       theme.palette.mode === "dark" // Support Material Design theme
@@ -131,7 +131,7 @@ const StyledCallout = styled(Callout)(({ theme, sx }) => ({
       color:
         theme.palette.mode === "dark"
           ? theme.palette.warning[100] ?? "#fff"
-          : theme.palette.warning[800] ?? theme.palette.text.primary,
+          : theme.palette.warning[800] ?? theme.palette.text.primary
     },
     "& a": {
       color:
@@ -140,9 +140,9 @@ const StyledCallout = styled(Callout)(({ theme, sx }) => ({
           : theme.palette.warning[800] ?? theme.palette.text.primary,
       textDecorationColor: alpha(theme.palette.warning.main, 0.4),
       "&:hover": {
-        textDecorationColor: "inherit",
-      },
-    },
+        textDecorationColor: "inherit"
+      }
+    }
   },
 
   "&.MuiCallout-success": {
@@ -153,7 +153,7 @@ const StyledCallout = styled(Callout)(({ theme, sx }) => ({
     backgroundColor:
       theme.palette.mode === "dark"
         ? // Support Material Design theme
-          alpha(theme.palette.success[900] ?? theme.palette.success.dark, 0.35)
+        alpha(theme.palette.success[900] ?? theme.palette.success.dark, 0.35)
         : alpha(theme.palette.success[50] ?? theme.palette.success.light, 0.6),
     borderColor:
       theme.palette.mode === "dark" // Support Material Design theme
@@ -163,7 +163,7 @@ const StyledCallout = styled(Callout)(({ theme, sx }) => ({
       color:
         theme.palette.mode === "dark"
           ? theme.palette.success[100] ?? "#fff"
-          : theme.palette.success[800] ?? theme.palette.text.primary,
+          : theme.palette.success[800] ?? theme.palette.text.primary
     },
     "& a": {
       color:
@@ -172,11 +172,11 @@ const StyledCallout = styled(Callout)(({ theme, sx }) => ({
           : theme.palette.success[800] ?? theme.palette.text.primary,
       textDecorationColor: alpha(theme.palette.success.main, 0.4),
       "&:hover": {
-        textDecorationColor: "inherit",
-      },
-    },
-  },
+        textDecorationColor: "inherit"
+      }
+    }
+  }
 
 }));
 
-export default StyledCallout
+export default StyledCallout;

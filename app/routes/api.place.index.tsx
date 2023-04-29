@@ -9,18 +9,18 @@ import { requireAdmin } from "~/service/session.server";
 const URLSearchParamsSchema = z.object({
   page: z.number().default(0),
   pageSize: z.number().default(25),
-	orderBy: z.string().default("createdAt"),
-	orderByDirection: z.enum([ 'asc', 'desc']),
-})
+  orderBy: z.string().default("createdAt"),
+  orderByDirection: z.enum(["asc", "desc"])
+});
 
 // GET list of formations
 export async function loader({ request, params }: LoaderArgs) {
-	await requireAdmin(request)
+  await requireAdmin(request);
 
-	const { page, pageSize, orderBy, orderByDirection } = getSearchParamsOrFail(request, URLSearchParamsSchema)
+  const { page, pageSize, orderBy, orderByDirection } = getSearchParamsOrFail(request, URLSearchParamsSchema);
 
 
-	const formationsPaginatedObjectApiObject = await getPlaces(page, pageSize, orderBy, orderByDirection)
+  const formationsPaginatedObjectApiObject = await getPlaces(page, pageSize, orderBy, orderByDirection);
 
   return json(paginateEntityToApiObject(formationsPaginatedObjectApiObject, placeApiObjectToDto));
 };

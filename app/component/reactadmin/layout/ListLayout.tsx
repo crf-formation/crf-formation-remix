@@ -1,5 +1,5 @@
 import { Box, Card } from "@mui/material";
-import type { ReactElement, ReactNode } from 'react';
+import type { ReactElement, ReactNode } from "react";
 import { ListBase, ListToolbar, Pagination, Title } from "react-admin";
 import Main from "~/component/layout/Main";
 
@@ -24,7 +24,7 @@ function MyList({ children, actions, filters, aside, title, ...props }: MyListPr
           <Card
             sx={{
               // padding: [2, 2],
-              paddingTop: 6, // add space for top bar that appears when we select an item
+              paddingTop: 6 // add space for top bar that appears when we select an item
             }}
           >
             {children}
@@ -44,10 +44,11 @@ interface ListLayoutProps {
   aside?: ReactElement;
 }
 
-export default function ListLayout({
-  children,
-  ...props
-}: ListLayoutProps) {
+export default function ListLayout(
+  {
+    children,
+    ...props
+  }: ListLayoutProps) {
   return (
     <Main>
       <MyList

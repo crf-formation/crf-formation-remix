@@ -1,11 +1,11 @@
 // see https://marmelab.com/react-admin/Show.html
-import { DateInput, FormTab, TabbedForm, TextInput, required } from 'react-admin';
-import CrudActionsTabs from '~/component/reactadmin/layout/CrudActionsTabs';
-import EditLayout from '~/component/reactadmin/layout/EditLayout';
-import { PlaceReferenceInput } from '../PlaceReference';
-import { FormationStateInput } from './PseFormationState';
-import { PseFormationTeacherReferenceInput } from './PseFormationTeacherReference';
-import { PseFormationUserReferenceInput } from './PseFormationUserReference';
+import { DateInput, FormTab, required, TabbedForm, TextInput } from "react-admin";
+import CrudActionsTabs from "~/component/reactadmin/layout/CrudActionsTabs";
+import EditLayout from "~/component/reactadmin/layout/EditLayout";
+import { PlaceReferenceInput } from "../PlaceReference";
+import { FormationStateInput } from "./PseFormationState";
+import { PseFormationTeacherReferenceInput } from "./PseFormationTeacherReference";
+import { PseFormationUserReferenceInput } from "./PseFormationUserReference";
 
 
 export default function PseFormationEdit() {

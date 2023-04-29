@@ -3,11 +3,11 @@ import PseAcquiredLabel from "~/component/pse-summary/PseAcquiredLabel";
 import type { PseResultSummaryDto, PseResultUserSummaryDto } from "~/dto/psesummary.dto";
 
 interface Props {
-	resultSummary: PseResultSummaryDto
+  resultSummary: PseResultSummaryDto;
 }
 
 function UserSummaryTableRow({ userSummary }: { userSummary: PseResultUserSummaryDto }) {
-	return (
+  return (
     <TableRow>
       <TableCell>{userSummary.user.fullName}</TableCell>
 
@@ -37,13 +37,13 @@ function UserSummaryTableRow({ userSummary }: { userSummary: PseResultUserSummar
           acquiredForPse1={userSummary.hasValidatedPse1}
         />
       </TableCell>
-      
+
     </TableRow>
   );
 }
 
 export default function PseSummaryResult({ resultSummary }: Props) {
-	return (
+  return (
     <TableContainer>
       <Table>
         <TableHead>

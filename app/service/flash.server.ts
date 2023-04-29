@@ -11,7 +11,6 @@ interface FlashMessage {
 type FlashMessageType = "error" | "warning" | "info" | "success";
 
 
-
 async function getSession(
   requestOrSession: Request | Session
 ): Promise<Session> {
@@ -24,7 +23,7 @@ async function getSession(
 
 /**
  * You must update the session after adding a flash message:
- * 
+ *
  * https://remix.run/docs/en/v1/api/remix
  * ```
  * headers: {
@@ -32,7 +31,7 @@ async function getSession(
  *    "Set-Cookie": await commitSession(session),
  *  },
  * ```
- * 
+ *
  */
 export async function addFlashMessage(
   requestOrSession: Request | Session,
@@ -44,16 +43,16 @@ export async function addFlashMessage(
   const flashMessage = {
     id: uuid(),
     message,
-    severity,
+    severity
   };
 
-	// TODO: will always be empty since we did not commit the session yet.
+  // TODO: will always be empty since we did not commit the session yet.
   const flashMessages = await getFlashMessages(requestOrSession);
   flashMessages.push(flashMessage);
 
   session.flash("flashMessages", flashMessages);
 
-	return session
+  return session;
 }
 
 export async function getFlashMessages(requestOrSession: Request | Session) {

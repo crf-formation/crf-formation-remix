@@ -1,4 +1,4 @@
-import type { ActionArgs, LoaderArgs, MetaFunction } from "@remix-run/node";
+import type { ActionArgs, LoaderArgs } from "@remix-run/node";
 import { json, redirect, V2_MetaFunction } from "@remix-run/node";
 import type { Params } from "@remix-run/react";
 import { useActionData, useLoaderData } from "@remix-run/react";
@@ -10,8 +10,8 @@ import type { PseFormationApiObject } from "~/apiobject/pseformation.apiobject";
 import type { UserApiObject } from "~/apiobject/user.apiobject";
 import { Ariane, ArianeItem } from "~/component/layout/Ariane";
 import PageContainer from "~/component/layout/PageContainer";
-import PagePaperHeader from '~/component/layout/PagePaperHeader';
-import PageSpace from '~/component/layout/PageSpace';
+import PagePaperHeader from "~/component/layout/PagePaperHeader";
+import PageSpace from "~/component/layout/PageSpace";
 import PageTitle from "~/component/layout/PageTitle";
 import PseConcreteCaseSituationForm from "~/component/pse-concrete-case-situation/PseConcreteCaseSituationForm";
 import type { PseConcreteCaseSituationPutDto } from "~/dto/pseconcretecasesituation.dto";
@@ -19,7 +19,10 @@ import { pseConcreteCaseSituationPutDtoValidator } from "~/form/pseconcretecases
 import type { SecurityFunction } from "~/helper/remix.helper";
 import { getParamsOrFail } from "~/helper/remix.params.helper";
 import { pseConcreteCaseSessionApiObjectToDto } from "~/mapper/pseconcretecasesession.mapper";
-import { pseConcreteCaseSituationApiObjectToDto, pseConcreteCaseSituationPutDtoToApiObject } from "~/mapper/pseconcretecasesituation.mapper";
+import {
+  pseConcreteCaseSituationApiObjectToDto,
+  pseConcreteCaseSituationPutDtoToApiObject
+} from "~/mapper/pseconcretecasesituation.mapper";
 import { pseFormationApiObjectToDto } from "~/mapper/pseformation.mapper";
 import { getPseConcreteCaseSessionById } from "~/service/pseconcretecasesession.server";
 import { getPseConcreteCaseSituation, updatePseConcreteCaseSituation } from "~/service/pseconcretecasesituation.server";
@@ -28,7 +31,7 @@ import { assertUserHasAccessToFormationAsTeacher } from "~/service/security.serv
 import { requireUser } from "~/service/session.server";
 
 const ParamsSchema = z.object({
-  pseConcreteCaseSituationId: z.string(),
+  pseConcreteCaseSituationId: z.string()
 });
 
 const security: SecurityFunction<{
@@ -37,38 +40,42 @@ const security: SecurityFunction<{
   pseConcreteCaseSessionApiObject: PseConcreteCaseSessionApiObject;
   pseConcreteCaseSituationApiObject: PseConcreteCaseSituationApiObject;
 }> = async (request: Request, params: Params) => {
-  const { pseConcreteCaseSituationId } = getParamsOrFail(params, ParamsSchema)
+  const { pseConcreteCaseSituationId } = getParamsOrFail(params, ParamsSchema);
 
-  const userApiObject = await requireUser(request)
+  const userApiObject = await requireUser(request);
 
-  const pseConcreteCaseSituationApiObject = await getPseConcreteCaseSituation(pseConcreteCaseSituationId)
+  const pseConcreteCaseSituationApiObject = await getPseConcreteCaseSituation(pseConcreteCaseSituationId);
 
-	const pseConcreteCaseSessionApiObject = await getPseConcreteCaseSessionById(pseConcreteCaseSituationApiObject.pseConcreteCaseSessionId)
+  const pseConcreteCaseSessionApiObject = await getPseConcreteCaseSessionById(pseConcreteCaseSituationApiObject.pseConcreteCaseSessionId);
 
-  const pseFormationApiObject = await getPseFormationByPseConcreteCaseSessionId(pseConcreteCaseSessionApiObject.id)
-	await assertUserHasAccessToFormationAsTeacher(userApiObject.id, pseFormationApiObject.id)
+  const pseFormationApiObject = await getPseFormationByPseConcreteCaseSessionId(pseConcreteCaseSessionApiObject.id);
+  await assertUserHasAccessToFormationAsTeacher(userApiObject.id, pseFormationApiObject.id);
 
   return {
     userApiObject,
     pseFormationApiObject,
     pseConcreteCaseSessionApiObject,
     pseConcreteCaseSituationApiObject
-  }
-}
+  };
+};
 
 // GET a formation
 export async function loader({ request, params }: LoaderArgs) {
-  const { pseFormationApiObject, pseConcreteCaseSessionApiObject, pseConcreteCaseSituationApiObject } = await security(request, params)
+  const {
+    pseFormationApiObject,
+    pseConcreteCaseSessionApiObject,
+    pseConcreteCaseSituationApiObject
+  } = await security(request, params);
 
   return json({
     pseFormation: pseFormationApiObjectToDto(pseFormationApiObject),
-		pseConcreteCaseSession: pseConcreteCaseSessionApiObjectToDto(pseConcreteCaseSessionApiObject),
-		pseConcreteCaseSituation: pseConcreteCaseSituationApiObjectToDto(pseConcreteCaseSituationApiObject),
-	});
+    pseConcreteCaseSession: pseConcreteCaseSessionApiObjectToDto(pseConcreteCaseSessionApiObject),
+    pseConcreteCaseSituation: pseConcreteCaseSituationApiObjectToDto(pseConcreteCaseSituationApiObject)
+  });
 };
 
-export async function action({ request, params  }: ActionArgs) {
-  const { pseConcreteCaseSituationApiObject, pseConcreteCaseSessionApiObject } = await security(request, params)
+export async function action({ request, params }: ActionArgs) {
+  const { pseConcreteCaseSituationApiObject, pseConcreteCaseSessionApiObject } = await security(request, params);
 
   const result = await pseConcreteCaseSituationPutDtoValidator.validate(
     await request.formData()
@@ -80,23 +87,23 @@ export async function action({ request, params  }: ActionArgs) {
 
   const putDto = result.data as PseConcreteCaseSituationPutDto;
 
-  const putApiObject = pseConcreteCaseSituationPutDtoToApiObject(putDto, pseConcreteCaseSituationApiObject, pseConcreteCaseSessionApiObject.id)
+  const putApiObject = pseConcreteCaseSituationPutDtoToApiObject(putDto, pseConcreteCaseSituationApiObject, pseConcreteCaseSessionApiObject.id);
 
-  await updatePseConcreteCaseSituation(pseConcreteCaseSituationApiObject.id, putApiObject)
+  await updatePseConcreteCaseSituation(pseConcreteCaseSituationApiObject.id, putApiObject);
 
-  return redirect(`/pse-concrete-case-situation/${pseConcreteCaseSituationApiObject.id}`)
+  return redirect(`/pse-concrete-case-situation/${pseConcreteCaseSituationApiObject.id}`);
 }
 
 export const meta: V2_MetaFunction<typeof loader> = ({ data }) => {
   return [
-    { title: `Situation ${data?.pseConcreteCaseSituation?.pseConcreteCaseType?.name}` },
+    { title: `Situation ${data?.pseConcreteCaseSituation?.pseConcreteCaseType?.name}` }
   ];
 };
 
 export default function PseConcreteCaseSituationRoute() {
   const { pseFormation, pseConcreteCaseSession, pseConcreteCaseSituation } = useLoaderData<typeof loader>();
 
-	const actionData = useActionData<typeof action>();
+  const actionData = useActionData<typeof action>();
 
   return (
     <>

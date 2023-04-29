@@ -1,4 +1,3 @@
-
 const DEFAULT_REDIRECT = "/";
 
 /**

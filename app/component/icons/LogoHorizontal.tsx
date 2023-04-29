@@ -1,5 +1,5 @@
-import { SvgIcon } from "@mui/material";
 import type { SvgIconProps } from "@mui/material";
+import { SvgIcon } from "@mui/material";
 
 export default function LogoHorizontal(props: SvgIconProps) {
   return (
@@ -19,7 +19,7 @@ export default function LogoHorizontal(props: SvgIconProps) {
           fontFamily: "Roboto",
           fontWeight: 500,
           fontSize: 66.5,
-          fill: "#d32f2f",
+          fill: "#d32f2f"
         }}
         x="189.86"
         y="258.772"

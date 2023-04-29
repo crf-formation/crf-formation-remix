@@ -1,4 +1,6 @@
 {
-	"tags": ["dto"],
-	"imports": []
+  "tags": [
+    "dto"
+  ],
+  "imports": []
 }

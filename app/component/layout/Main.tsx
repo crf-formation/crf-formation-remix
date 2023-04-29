@@ -1,13 +1,13 @@
 import { Box } from "@mui/material";
 import type { ReactNode } from "react";
-import type { SxProps } from '@mui/material/styles';
+import type { SxProps } from "@mui/material/styles";
 
 interface Props {
-  children: ReactNode
-  sx?: SxProps
+  children: ReactNode;
+  sx?: SxProps;
 }
 
-export default function Main({ children, sx = {}}: Props) {
+export default function Main({ children, sx = {} }: Props) {
 
   return (
     <Box
@@ -21,7 +21,7 @@ export default function Main({ children, sx = {}}: Props) {
         display: "flex",
         flexDirection: "column",
         flexGrow: 1,
-        ...sx,
+        ...sx
       }}
     >
       {children}

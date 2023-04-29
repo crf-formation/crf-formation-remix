@@ -1,5 +1,5 @@
 import { Box, Link, TextField, Typography } from "@mui/material";
-import type { ActionArgs, LoaderArgs, MetaFunction } from "@remix-run/node";
+import type { ActionArgs, LoaderArgs } from "@remix-run/node";
 import { json, redirect, V2_MetaFunction } from "@remix-run/node";
 import { useActionData, useLoaderData, useSearchParams } from "@remix-run/react";
 import { useRef } from "react";
@@ -18,7 +18,7 @@ import { generateAria } from "~/util/form";
 
 const URLSearchParamsSchema = z.object({
   email: z.string().optional(),
-  redirectTo: z.string().default("/dashboard"),
+  redirectTo: z.string().default("/dashboard")
 });
 
 
@@ -29,28 +29,28 @@ export async function loader({ request }: LoaderArgs) {
   const { email: defaultEmail, redirectTo } = getSearchParamsOrFail(request, URLSearchParamsSchema);
 
   return json({
-    redirectTo, 
-    defaultEmail,
+    redirectTo,
+    defaultEmail
   });
 }
 
 export async function action({ request }: ActionArgs) {
   await getSession(request);
 
-  const result = await validateForm<PasswordAskResetDto>(request, passwordAskResetValidator)
+  const result = await validateForm<PasswordAskResetDto>(request, passwordAskResetValidator);
   if (result.errorResponse) {
-    return result.errorResponse
+    return result.errorResponse;
   }
 
-  const passwordAskResetDto: PasswordAskResetDto = result.data
+  const passwordAskResetDto: PasswordAskResetDto = result.data;
   await askForPasswordRecovery(passwordAskResetDto.email);
 
-  return redirect("/reset-password/sent")
+  return redirect("/reset-password/sent");
 }
 
 export const meta: V2_MetaFunction<typeof loader> = () => {
   return [
-    { title: "Mot de passe oublié" },
+    { title: "Mot de passe oublié" }
   ];
 };
 
@@ -62,7 +62,7 @@ export default function PasswordResetRoute() {
 
   const emailRef = useRef<HTMLInputElement>(null);
   useFormFocusError(actionData, [
-    ["email", emailRef],
+    ["email", emailRef]
   ]);
 
   return (

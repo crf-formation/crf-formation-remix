@@ -1,13 +1,6 @@
 import { Add } from "@mui/icons-material";
 import { Box, Button, Typography } from "@mui/material";
-import {
-  ArrayField,
-  ArrayInput,
-  BooleanField,
-  Datagrid,
-  SimpleFormIterator,
-  TextField,
-} from "react-admin";
+import { ArrayField, ArrayInput, BooleanField, Datagrid, SimpleFormIterator, TextField } from "react-admin";
 import { UserReferenceInput } from "../UserReference";
 
 interface Props {
@@ -44,11 +37,11 @@ export function PseFormationUserReferenceInput({ label, source }: Props) {
           minWidth: 320,
           maxWidth: 640,
           paddingTop: 4,
-          paddingBottom: 2,
+          paddingBottom: 2
         },
 
-        '& .RaSimpleFormIterator-form': {
-          width: "100%",
+        "& .RaSimpleFormIterator-form": {
+          width: "100%"
         }
       }}
     >

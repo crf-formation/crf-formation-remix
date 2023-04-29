@@ -3,14 +3,14 @@ import AppTabLink from "./AppTabLink";
 import AppTabs from "./AppTabs";
 
 interface TabDto {
-	label: string;
-	href: string;
+  label: string;
+  href: string;
 }
 
 export default function AppTabsLink({ tabs }: { tabs: Array<TabDto> }) {
   const location = useLocation();
 
-	return (
+  return (
     <AppTabs
       // value={findIndex(tabs, (tab) => tab.href.endsWith(location.pathname))}
       value={tabs.find(tab => location.pathname.startsWith(tab.href))?.href || location.pathname}

@@ -1,4 +1,4 @@
-import type { LoaderArgs, MetaFunction } from "@remix-run/node";
+import type { LoaderArgs } from "@remix-run/node";
 import { redirect, V2_MetaFunction } from "@remix-run/node";
 import { requireUser } from "~/service/session.server";
 
@@ -8,13 +8,13 @@ import { requireUser } from "~/service/session.server";
 export async function loader({ request }: LoaderArgs) {
   await requireUser(request);
 
-  return redirect("/dashboard")
+  return redirect("/dashboard");
   // return json({});
 }
 
 export const meta: V2_MetaFunction<typeof loader> = () => {
   return [
-    { title: "CRF formation" },
+    { title: "CRF formation" }
   ];
 };
 

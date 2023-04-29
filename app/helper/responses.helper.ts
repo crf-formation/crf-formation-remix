@@ -1,5 +1,5 @@
 // https://github.com/sergiodxa/remix-utils/blob/main/src/server/responses.ts
-import { redirect, json as remixJson } from "@remix-run/server-runtime";
+import { json as remixJson, redirect } from "@remix-run/server-runtime";
 import { ApiError } from "~/service/api.error";
 
 export type ReplacerFunction = (key: string, value: unknown) => unknown;
@@ -57,8 +57,8 @@ export function json<Data>(data: Data, init?: number | ExtendedResponseInit) {
 }
 
 export async function success(data: any, init?: Omit<ExtendedResponseInit, "status">) {
-	// return remixJson(promiseHash(data))
-	return remixJson(data, { ...init, status: 200 })
+  // return remixJson(promiseHash(data))
+  return remixJson(data, { ...init, status: 200 });
 }
 
 /**
@@ -69,7 +69,7 @@ export async function success(data: any, init?: Omit<ExtendedResponseInit, "stat
  *   return created(result);
  * }
  */
- export function created<Data = unknown>(
+export function created<Data = unknown>(
   data: Data,
   init?: Omit<ExtendedResponseInit, "status">
 ) {
@@ -90,7 +90,7 @@ export async function success(data: any, init?: Omit<ExtendedResponseInit, "stat
  *   return redirectBack(request, { fallback: "/search" });
  * }
  */
- export function redirectBack(
+export function redirectBack(
   request: Request,
   { fallback, ...init }: ResponseInit & { fallback: string }
 ): Response {
@@ -101,9 +101,9 @@ export function redirectActionToCurrentPage(
   request: Request,
   init?: ResponseInit
 ): Response {
-  const referer = request.headers.get("Referer")
+  const referer = request.headers.get("Referer");
   if (!referer) {
-    throw new Error("No referer to redirect to")
+    throw new Error("No referer to redirect to");
   }
   return redirect(referer, init);
 }
@@ -123,7 +123,7 @@ export function failureResponse(error: ApiError, init?: ExtendedResponseInit): R
  *   throw badRequest<BoundaryData>({ user });
  * }
  */
- export function badRequest<Data = unknown>(
+export function badRequest<Data = unknown>(
   data: Data,
   init?: Omit<ExtendedResponseInit, "status">
 ) {
@@ -237,7 +237,7 @@ export function notModified(init?: Omit<ResponseInit, "status">) {
  *   return pdf(await generatePDF(request.formData()));
  * }
  */
- export function pdf(
+export function pdf(
   content: Blob | Buffer | ArrayBuffer,
   init: number | ResponseInit = {}
 ): Response {
@@ -250,7 +250,7 @@ export function notModified(init?: Omit<ResponseInit, "status">) {
 
   return new Response(content, {
     ...responseInit,
-    headers,
+    headers
   });
 }
 
@@ -265,7 +265,7 @@ export function notModified(init?: Omit<ResponseInit, "status">) {
  *   return html("<h1>Hello World</h1>");
  * }
  */
- export function html(
+export function html(
   content: string,
   init: number | ResponseInit = {}
 ): Response {
@@ -278,7 +278,7 @@ export function notModified(init?: Omit<ResponseInit, "status">) {
 
   return new Response(content, {
     ...responseInit,
-    headers,
+    headers
   });
 }
 
@@ -314,6 +314,6 @@ export function image(
 
   return new Response(content, {
     ...init,
-    headers,
+    headers
   });
 }

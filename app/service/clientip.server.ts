@@ -17,7 +17,7 @@ const headerNames = Object.freeze([
   "X-Cluster-Client-IP",
   "X-Forwarded",
   "Forwarded-For",
-  "Forwarded",
+  "Forwarded"
 ] as const);
 
 /**
@@ -62,7 +62,7 @@ export function getClientIPAddress(
     })
     .find((ip) => {
       if (ip === null) return false;
-				 return ip // TODO:
+      return ip; // TODO:
       // return isIP(ip);
     });
 

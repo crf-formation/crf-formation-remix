@@ -48,7 +48,7 @@ export async function verifyAuthenticityToken(
   session: Session,
   sessionKey = CSRF_SESSION_KEY
 ) {
-  console.log('verifyAuthenticityToken')
+  console.log("verifyAuthenticityToken");
 
   if (data instanceof Request && data.bodyUsed) {
     throw new Error(
@@ -63,14 +63,14 @@ export async function verifyAuthenticityToken(
   // if the session doesn't have a csrf token, throw an error
   if (!session.has(sessionKey)) {
     throw unprocessableEntity({
-      message: "Can't find CSRF token in session.",
+      message: "Can't find CSRF token in session."
     });
   }
 
   // if the body doesn't have a csrf token, throw an error
   if (!formData.get(sessionKey)) {
     throw unprocessableEntity({
-      message: "Can't find CSRF token in body.",
+      message: "Can't find CSRF token in body."
     });
   }
 
@@ -78,7 +78,7 @@ export async function verifyAuthenticityToken(
   // error
   if (formData.get(sessionKey) !== session.get(sessionKey)) {
     throw unprocessableEntity({
-      message: "Can't verify CSRF token authenticity.",
+      message: "Can't verify CSRF token authenticity."
     });
   }
 

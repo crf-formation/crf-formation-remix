@@ -1,4 +1,4 @@
-import type { ReactNode} from "react";
+import type { ReactNode } from "react";
 import { createContext, useContext } from "react";
 
 export interface AuthenticityTokenProviderProps {
@@ -26,10 +26,11 @@ let context = createContext<string | null>(null);
  * )'
  * ```
  */
-export function AuthenticityTokenProvider({
-  children,
-  token,
-}: AuthenticityTokenProviderProps) {
+export function AuthenticityTokenProvider(
+  {
+    children,
+    token
+  }: AuthenticityTokenProviderProps) {
   return <context.Provider value={token}>{children}</context.Provider>;
 }
 
@@ -64,9 +65,10 @@ export function useAuthenticityToken() {
  * );
  * ```
  */
-export function AuthenticityTokenInput({
-  name = "csrf",
-}: AuthenticityTokenInputProps) {
+export function AuthenticityTokenInput(
+  {
+    name = "csrf"
+  }: AuthenticityTokenInputProps) {
   let token = useAuthenticityToken();
   return <input type="hidden" value={token} name={name} />;
 }

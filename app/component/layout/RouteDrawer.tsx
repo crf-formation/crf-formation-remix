@@ -4,19 +4,19 @@ import type { ReactNode } from "react";
 import WarningBlock from "../typography/WarningBlock";
 
 type RouteDrawerCatchBoundaryProps = {
-	/**
-	 * url to redirect to when the drawer closes
-	 */
-	redirectTo: string
-	children?: ReactNode
+  /**
+   * url to redirect to when the drawer closes
+   */
+  redirectTo: string
+  children?: ReactNode
 }
 
 export function RouteDrawerCatchBoundary({ redirectTo, children }: RouteDrawerCatchBoundaryProps) {
-	const caught = useCatch();
+  const caught = useCatch();
 
-	return (
+  return (
     <RouteDrawer redirectTo={redirectTo}>
-      <WarningBlock sx={{ textAlign: 'center', marginTop: 2 }}>
+      <WarningBlock sx={{ textAlign: "center", marginTop: 2 }}>
         <Typography component="p" variant="h5">
           {caught.data?.message || caught.data}
         </Typography>
@@ -28,32 +28,33 @@ export function RouteDrawerCatchBoundary({ redirectTo, children }: RouteDrawerCa
 }
 
 interface Props {
-	/**
-	 * url to redirect to when the drawer closes
-	 */
-	redirectTo: string
-	children: ReactNode
+  /**
+   * url to redirect to when the drawer closes
+   */
+  redirectTo: string;
+  children: ReactNode;
 }
 
 // render a route inside a drawer
 // ex: http://localhost:3000/users/dewdew/show
-export default function RouteDrawer({
-	redirectTo,
-	children
-} : Props) {
+export default function RouteDrawer(
+  {
+    redirectTo,
+    children
+  }: Props) {
   const navigate = useNavigate();
 
-	function onClose() {
+  function onClose() {
     navigate(redirectTo);
   }
 
-	return (
+  return (
     <Drawer anchor="right" open onClose={onClose}>
       <Container
         maxWidth="md"
         sx={{
           minWidth: 480,
-          paddingTop: 6, // padding for the content to not be above the page header
+          paddingTop: 6 // padding for the content to not be above the page header
         }}
       >
         {children}

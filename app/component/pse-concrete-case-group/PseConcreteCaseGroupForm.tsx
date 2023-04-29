@@ -1,9 +1,12 @@
 import { TextField } from "@mui/material";
 import { useRef } from "react";
-import { pseConcreteCaseGroupPostDtoValidator, pseConcreteCaseGroupPutDtoValidator } from "~/form/pseconcretecasegroup.form";
+import {
+  pseConcreteCaseGroupPostDtoValidator,
+  pseConcreteCaseGroupPutDtoValidator
+} from "~/form/pseconcretecasegroup.form";
 import useFormFocusError from "~/hook/useFormFocusError";
 import { generateAria } from "~/util/form";
-import type { UserDto } from '../../dto/user.dto';
+import type { UserDto } from "../../dto/user.dto";
 import FormErrorHelperText from "../form/FormErrorHelperText";
 import FormView from "../form/FormView";
 import FormationStudentAutocomplete from "../formationpse/FormationStudentAutocomplete";
@@ -18,19 +21,20 @@ interface Props<T> {
   students?: Array<UserDto>;
 }
 
-export default function PseConcreteCaseGroupForm<T>({
-  pseFormationId,
-  pseConcreteCaseSessionId,
-  actionData,
-  // edit data
-  isEdit,
-  name,
-  students,
-}: Props<T>) {
+export default function PseConcreteCaseGroupForm<T>(
+  {
+    pseFormationId,
+    pseConcreteCaseSessionId,
+    actionData,
+    // edit data
+    isEdit,
+    name,
+    students
+  }: Props<T>) {
   const nameRef = useRef<HTMLInputElement>(null);
 
   useFormFocusError(actionData, [
-    [ "name", nameRef ],
+    ["name", nameRef]
   ]);
 
   return (

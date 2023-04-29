@@ -1,5 +1,5 @@
 import { Box, Typography } from "@mui/material";
-import type { LoaderArgs, MetaFunction } from "@remix-run/node";
+import type { LoaderArgs } from "@remix-run/node";
 import { json, redirect, V2_MetaFunction } from "@remix-run/node";
 import PageFullContentWithLogo from "~/component/layout/PageFullContentWithLogo";
 import { getUserId } from "~/service/session.server";
@@ -12,7 +12,7 @@ export async function loader({ request }: LoaderArgs) {
 
 export const meta: V2_MetaFunction<typeof loader> = () => {
   return [
-    { title: "Mot de passe oublié" },
+    { title: "Mot de passe oublié" }
   ];
 };
 

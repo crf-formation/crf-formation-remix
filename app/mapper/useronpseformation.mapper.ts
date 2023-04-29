@@ -1,12 +1,12 @@
 import type {
-    UserOnPseFormationApiObject,
-    UserOnPseFormationPutApiObject,
-    UserOnPseFormationRoleApiEnum,
+  UserOnPseFormationApiObject,
+  UserOnPseFormationPutApiObject,
+  UserOnPseFormationRoleApiEnum
 } from "~/apiobject/useronpseformation.apiobject";
 import type {
-    UserOnPseFormationDto,
-    UserOnPseFormationPutDto,
-    UserOnPseFormationRoleDtoEnum,
+  UserOnPseFormationDto,
+  UserOnPseFormationPutDto,
+  UserOnPseFormationRoleDtoEnum
 } from "~/dto/useronpseformation.dto";
 import type { UserOnPseFormationEntity } from "~/entity";
 import { assertEnum } from "~/mapper/abstract.mapper";
@@ -19,7 +19,7 @@ export function userOnPseFormationDataToPutDto(
   return {
     userId: data.id,
     assignedAt: data.assignedAt,
-    role,
+    role
   };
 }
 
@@ -33,7 +33,7 @@ export function userOnPseFormationDataPutDtoToApiObject(
     userId: dto.userId,
     formationId,
     role: dto.role,
-    assignedAt: current?.assignedAt || new Date(),
+    assignedAt: current?.assignedAt || new Date()
   };
 }
 
@@ -45,7 +45,7 @@ export function userOnPseFormationApiObjectToDto(
     userId: apiObject.userId,
     role: userOnPseFormationRoleApiEnumToDtoEnum(apiObject.role),
     assignedAt: apiObject.assignedAt.toISOString(),
-    user: userApiObjectToDto(apiObject.user),
+    user: userApiObjectToDto(apiObject.user)
   };
 }
 
@@ -58,7 +58,7 @@ export function userOnPseFormationEntityToApiObject(
     userId: entity.userId,
     role: userOnPseFormationRoleStringToApiEnum(entity.role),
     assignedAt: entity.assignedAt,
-    user: userEntityToApiObject(entity.user),
+    user: userEntityToApiObject(entity.user)
   };
 }
 
@@ -67,7 +67,7 @@ function userOnPseFormationRoleStringToApiEnum(
 ): UserOnPseFormationRoleApiEnum {
   return assertEnum<UserOnPseFormationRoleApiEnum>(role, [
     "STUDENT",
-    "TEACHER",
+    "TEACHER"
   ]);
 }
 
@@ -76,6 +76,6 @@ function userOnPseFormationRoleApiEnumToDtoEnum(
 ): UserOnPseFormationRoleDtoEnum {
   return assertEnum<UserOnPseFormationRoleDtoEnum>(role, [
     "STUDENT",
-    "TEACHER",
+    "TEACHER"
   ]);
 }

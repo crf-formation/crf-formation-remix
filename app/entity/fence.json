@@ -1,4 +1,6 @@
 {
-	"tags": ["entity"],
-	"imports": []
+  "tags": [
+    "entity"
+  ],
+  "imports": []
 }

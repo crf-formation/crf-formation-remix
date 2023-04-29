@@ -1,4 +1,7 @@
-import type { PseConcreteCaseSessionPostApiObject, PseConcreteCaseSessionPutApiObject } from "~/apiobject/pseconcretecasesession.apiobject";
+import type {
+  PseConcreteCaseSessionPostApiObject,
+  PseConcreteCaseSessionPutApiObject
+} from "~/apiobject/pseconcretecasesession.apiobject";
 import type { OrderByDirection, PaginateObject } from "~/constant/types";
 import { prisma } from "~/entity/db.server";
 import type { PseConcreteCaseSessionEntity } from "~/entity";
@@ -10,21 +13,20 @@ const includeForSingleItem = {
     include: {
       pseSituationConcreteCaseGroups: { include: { pseConcreteCaseGroup: true } },
       teacher: true,
-      pseConcreteCaseType: true,
-    },
-  },
-}
+      pseConcreteCaseType: true
+    }
+  }
+};
 
 const includeForMultipleItem = {
   groups: { include: { students: { include: { user: true } } } },
   situations: {
     include: {
       teacher: true,
-      pseConcreteCaseType: true,
-    },
-  },
-}
-
+      pseConcreteCaseType: true
+    }
+  }
+};
 
 
 export async function getPseConcreteCaseSessionEntitiesByFormationId(
@@ -41,9 +43,9 @@ export async function getPseConcreteCaseSessionEntitiesByFormationId(
     orderBy,
     orderByDirection,
     where: {
-      formationId,
+      formationId
     },
-    include: includeForMultipleItem,
+    include: includeForMultipleItem
   });
 }
 
@@ -52,7 +54,7 @@ export async function findPseConcreteCaseSessionsEntityById(
 ): Promise<Optional<PseConcreteCaseSessionEntity>> {
   return await prisma.pseConcreteCaseSession.findUnique({
     where: { id },
-    include: includeForSingleItem,
+    include: includeForSingleItem
   });
 }
 
@@ -61,10 +63,10 @@ export async function createPseConcreteCaseSessionsEntity(
 ): Promise<PseConcreteCaseSessionEntity> {
   return await prisma.pseConcreteCaseSession.create({
     data: {
-      ...pseConcreteCaseSessionApiObject,
+      ...pseConcreteCaseSessionApiObject
     },
     // will be empty
-    include: includeForSingleItem,
+    include: includeForSingleItem
   });
 }
 
@@ -74,11 +76,11 @@ export async function updatePseConcreteCaseSessionsEntity(
 ): Promise<PseConcreteCaseSessionEntity> {
   return await prisma.pseConcreteCaseSession.update({
     data: {
-      ...pseConcreteCaseSessionPutApiObject,
+      ...pseConcreteCaseSessionPutApiObject
     },
     where: {
-      id,
+      id
     },
-    include: includeForSingleItem,
+    include: includeForSingleItem
   });
 }

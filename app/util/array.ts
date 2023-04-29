@@ -1,49 +1,49 @@
-import clone from 'lodash/clone';
-import find from 'lodash/find';
-import findIndex from 'lodash/findIndex';
-import indexOf from 'lodash/indexOf';
-import isArray from 'lodash/isArray';
-import isFunction from 'lodash/isFunction';
-import isNil from 'lodash/isNil';
-import isNull from 'lodash/isNull';
-import isString from 'lodash/isString';
-import isUndefined from 'lodash/isUndefined';
-import map from 'lodash/map';
-import uniqBy from 'lodash/uniqBy';
-import values from 'lodash/values';
+import clone from "lodash/clone";
+import find from "lodash/find";
+import findIndex from "lodash/findIndex";
+import indexOf from "lodash/indexOf";
+import isArray from "lodash/isArray";
+import isFunction from "lodash/isFunction";
+import isNil from "lodash/isNil";
+import isNull from "lodash/isNull";
+import isString from "lodash/isString";
+import isUndefined from "lodash/isUndefined";
+import map from "lodash/map";
+import uniqBy from "lodash/uniqBy";
+import values from "lodash/values";
 import invariant from "tiny-invariant";
 
 export const compare = (comparator, item, toCompare = null) => {
   if (isNil(comparator)) {
     // no comparator we try ours.
-    if (!isNil(item['id'])) {
+    if (!isNil(item["id"])) {
       // try to compare ids
-      invariant(toCompare !== null, 'A comparator is required if there is no object to compare to')
-      return item['id'] === toCompare['id']
+      invariant(toCompare !== null, "A comparator is required if there is no object to compare to");
+      return item["id"] === toCompare["id"];
     }
   } else {
     if (isFunction(comparator)) {
-      return comparator(item, toCompare)
+      return comparator(item, toCompare);
     } else {
       // comparator is not a function, it contains a value (fallback id)
       // TODO: comparator is an object suchs as { id: 3, test: 'toto' }
       invariant(
-        !isNil(item['id']),
+        !isNil(item["id"]),
         `A string comparator will be compared with the item 'id'. No id found on item object`
-      )
-      return item['id'] === comparator
+      );
+      return item["id"] === comparator;
     }
   }
 
   if (isString(item)) {
-    return item === toCompare
+    return item === toCompare;
   }
 
-  invariant(false, 'not handled')
-  return false
-}
+  invariant(false, "not handled");
+  return false;
+};
 
-export const copyArray = array => map(array, clone)
+export const copyArray = array => map(array, clone);
 
 /**
  * https://stackoverflow.com/questions/13518343/sort-array-containing-objects-based-on-another-array
@@ -55,113 +55,113 @@ export const copyArray = array => map(array, clone)
  * @return {[type]}             a sorted array
  */
 export const getOrderedArray = (keysOrder, arrayToSort, comparator) => {
-  const comparatorFunc = current => key => comparator(key, current)
-  let orderedArray = []
-  let len = arrayToSort.length
-  let index
-  let current
+  const comparatorFunc = current => key => comparator(key, current);
+  let orderedArray = [];
+  let len = arrayToSort.length;
+  let index;
+  let current;
 
-  for (; len--; ) {
-    current = arrayToSort[len]
-    index = findIndex(keysOrder, comparatorFunc(current))
-    orderedArray[index] = current
+  for (; len--;) {
+    current = arrayToSort[len];
+    index = findIndex(keysOrder, comparatorFunc(current));
+    orderedArray[index] = current;
   }
 
   //change the arrayToSort
-  return orderedArray
-}
+  return orderedArray;
+};
 
 export const findOnArray = (array, comparator) => {
-  const match = find(array, item => compare(comparator, item))
+  const match = find(array, item => compare(comparator, item));
 
-  return isUndefined(match) ? null : match
-}
+  return isUndefined(match) ? null : match;
+};
 
 export const findIndexOnArray = (array, comparator) => {
-  const match = findIndex(array, item => compare(comparator, item))
+  const match = findIndex(array, item => compare(comparator, item));
 
-  return isUndefined(match) ? -1 : match
-}
+  return isUndefined(match) ? -1 : match;
+};
 
 export const existsOnArray = (array, comparator) => {
-  const match = findOnArray(array, comparator)
+  const match = findOnArray(array, comparator);
 
-  return !isNull(match)
-}
+  return !isNull(match);
+};
 
 export const deleteObjectAtIndexOnArray = (arrayParam, index) => {
-  const array = copyArray(arrayParam)
-  array.splice(index, 1)
-  return array
-}
+  const array = copyArray(arrayParam);
+  array.splice(index, 1);
+  return array;
+};
 
 export const addObjectAtIndexOnArray = (arrayParam, object, index) => {
-  const array = copyArray(arrayParam)
-  array.splice(index, 0, object)
-  return array
-}
+  const array = copyArray(arrayParam);
+  array.splice(index, 0, object);
+  return array;
+};
 
 export const moveObjectAtIndexOnArray = (arrayParam, object, index, comparator) => {
-  let array = copyArray(arrayParam)
-	array = deleteObjectOnArray(array, comparator)
-	return addObjectAtIndexOnArray(array, object, index - 1)
-}
+  let array = copyArray(arrayParam);
+  array = deleteObjectOnArray(array, comparator);
+  return addObjectAtIndexOnArray(array, object, index - 1);
+};
 
 export const deleteObjectOnArray = (arrayParam, comparator) => {
-  const array = copyArray(arrayParam)
-  const match = findOnArray(array, comparator)
+  const array = copyArray(arrayParam);
+  const match = findOnArray(array, comparator);
 
   if (match) {
     // Find item index using indexOf+find
-    const index = indexOf(array, match)
+    const index = indexOf(array, match);
 
     // Replace item at index using native splice
-    array.splice(index, 1)
+    array.splice(index, 1);
   }
 
-  return array
-}
+  return array;
+};
 
 export const toggleObjectOnArray = (arrayParam, obj, comparator) => {
-  const array = copyArray(arrayParam)
+  const array = copyArray(arrayParam);
   if (existsOnArray(array, comparator)) {
-    return deleteObjectOnArray(array, comparator)
+    return deleteObjectOnArray(array, comparator);
   }
 
-  array.push(obj)
-  return array
-}
+  array.push(obj);
+  return array;
+};
 
 export const updateObjectAtIndexOnArray = (arrayParam, obj, index) => {
-  const array = arrayParam
-  array[index] = obj
-  return array
-}
+  const array = arrayParam;
+  array[index] = obj;
+  return array;
+};
 
 export const updateObjectOnArray = (arrayParam, obj, comparator) => {
-  const array = arrayParam
+  const array = arrayParam;
 
-  return array.map(item => (compare(comparator, item) === true ? obj : item))
-}
+  return array.map(item => (compare(comparator, item) === true ? obj : item));
+};
 
 export const updateObjectOrCreateOnArray = (arrayParam, obj, comparator) => {
-  const array = arrayParam
+  const array = arrayParam;
 
   if (existsOnArray(array, comparator)) {
-    return updateObjectOnArray(array, obj, comparator)
+    return updateObjectOnArray(array, obj, comparator);
   }
 
-  array.push(obj)
-  return array
-}
+  array.push(obj);
+  return array;
+};
 
 export const addUniqueObjectOnArray = (arrayParam, obj, comparator) => {
-  const array = copyArray(arrayParam)
+  const array = copyArray(arrayParam);
   if (!existsOnArray(array, comparator)) {
-    array.push(obj)
+    array.push(obj);
   }
-  return array
-}
+  return array;
+};
 
 /**
  * @param array {Array} the new array
@@ -171,33 +171,33 @@ export const addUniqueObjectOnArray = (arrayParam, obj, comparator) => {
  */
 export const mergeArray = (array, source, getValueFunc, appendMode = false) => {
   // merge new array and source and remove duplicate data
-  const mergedArray = appendMode ? [...source, ...array] : [...array, ...source]
-  const newArray = uniqBy(mergedArray, getValueFunc)
+  const mergedArray = appendMode ? [...source, ...array] : [...array, ...source];
+  const newArray = uniqBy(mergedArray, getValueFunc);
   // update the data
   const res = newArray.map(object => {
     const updatedObject = findOnArray(array, a => {
-      return getValueFunc(object) === getValueFunc(a)
-    })
-    return updatedObject ? updatedObject : object
-  })
-  return res
-}
+      return getValueFunc(object) === getValueFunc(a);
+    });
+    return updatedObject ? updatedObject : object;
+  });
+  return res;
+};
 
 export function toggleValueOnArray<T>(arrayParam: T[], value: T): T[] {
-  const array = copyArray(arrayParam)
+  const array = copyArray(arrayParam);
 
   if (array.includes(value)) {
-    array.splice(indexOf(array, value), 1)
+    array.splice(indexOf(array, value), 1);
   } else {
-    array.push(value)
+    array.push(value);
   }
 
-  return array
+  return array;
 }
 
 export function asArray<T>(param: T[] | T): T[] {
-  return (isArray(param) ? param : [param])
-} 
+  return (isArray(param) ? param : [param]);
+}
 
 /**
  * Modify the given target array, to add the source array on it, with an optimize way.
@@ -207,18 +207,18 @@ export function asArray<T>(param: T[] | T): T[] {
  * see https://dev.to/uilicious/javascript-array-push-is-945x-faster-than-array-concat-1oki
  */
 export const addToArray = (target, source) => {
-  const targetLength = target.length
-  const sourceLength = source.length
+  const targetLength = target.length;
+  const sourceLength = source.length;
 
   // pre-allocate
-  target.length = targetLength + sourceLength
+  target.length = targetLength + sourceLength;
 
   // Add arr2 items to arr1
   for (let i = 0; i < source.length; i++) {
-    target[targetLength + i] = source[i]
+    target[targetLength + i] = source[i];
   }
-  return target
-}
+  return target;
+};
 
 /**
  * Filter duplicates from the given array. The array sorting is not preserved.
@@ -227,32 +227,32 @@ export const addToArray = (target, source) => {
  * @param comparator function(object, other). returns true if other must replace the given object
  */
 export const filterDuplicates = (arrayParam, getId, comparator) => {
-  const objects = {}
+  const objects = {};
 
   arrayParam.forEach(other => {
-    const id = getId(other)
+    const id = getId(other);
 
-    const object = objects[id]
+    const object = objects[id];
     if (!object) {
-      objects[id] = other
+      objects[id] = other;
     } else {
       // duplicate, compare which one we keep
       if (comparator && comparator(object, other)) {
-        objects[id] = other
+        objects[id] = other;
       }
     }
-  })
+  });
 
   // the purpose here is to keep the returned array in the same order of keys as it was before
   return getOrderedArray(
     arrayParam,
     values(objects),
     (value, other) => getId(value) === getId(other)
-  ).filter(Boolean)
-}
+  ).filter(Boolean);
+};
 
 export function moveOnArray(arrayParam, oldIndex, newIndex) {
-  const array = [...arrayParam]
+  const array = [...arrayParam];
   if (newIndex >= array.length) {
     var k = newIndex - array.length + 1;
     while (k--) {
@@ -268,20 +268,20 @@ export function arrayHasDuplicates(array, comparator) {
 }
 
 export function arrayGetDuplicates(arrayParam, getId) {
-  const duplicates = []
-  const objects = {}
+  const duplicates = [];
+  const objects = {};
 
   arrayParam.forEach(other => {
-    const id = getId(other)
+    const id = getId(other);
 
-    const object = objects[id]
+    const object = objects[id];
     if (!object) {
-      objects[id] = other
+      objects[id] = other;
     } else {
-      duplicates.push(other)
-      duplicates.push(objects[id])
+      duplicates.push(other);
+      duplicates.push(objects[id]);
     }
-  })
+  });
 
-  return duplicates
+  return duplicates;
 }

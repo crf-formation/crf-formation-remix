@@ -1,9 +1,6 @@
 import Brightness2Icon from "@mui/icons-material/Brightness2";
 import Brightness7Icon from "@mui/icons-material/Brightness7";
-import {
-    Box, Button, Divider, IconButton, Link, List,
-    ListItem, Menu, Tooltip, Typography
-} from "@mui/material";
+import { Box, Button, Divider, IconButton, Link, List, ListItem, Menu, Tooltip, Typography } from "@mui/material";
 import { Form, useLocation } from "@remix-run/react";
 import type { UserMeDto } from "~/dto/user.dto";
 import useRootData from "~/hook/useRootData";
@@ -39,7 +36,7 @@ export default function UserMenu({ open, user, anchorRef, handleClose }: Props) 
 
           // triangle pointing top
           "&:before": {
-            content: '""',
+            content: "\"\"",
             display: "block",
             position: "absolute",
             bottom: 20,
@@ -48,9 +45,9 @@ export default function UserMenu({ open, user, anchorRef, handleClose }: Props) 
             height: 10,
             bgcolor: "background.paper",
             transform: "translateY(-25%) rotate(45deg)",
-            zIndex: 0,
-          },
-        },
+            zIndex: 0
+          }
+        }
       }}
     >
       <List>
@@ -58,7 +55,7 @@ export default function UserMenu({ open, user, anchorRef, handleClose }: Props) 
           <Box sx={{ width: "100%", textAlign: "center", p: [0, 2] }}>
             <Typography
               sx={{
-                fontWeight: 600,
+                fontWeight: 600
               }}
             >
               {user.fulleName}
@@ -66,12 +63,12 @@ export default function UserMenu({ open, user, anchorRef, handleClose }: Props) 
             <Typography
               sx={{
                 fontSize: 14,
-                font: "text.secondary",
+                font: "text.secondary"
               }}
             >
               {user.email}
             </Typography>
-           
+
             <Box mt={2}>
               <Button
                 variant="outlined"
@@ -91,7 +88,7 @@ export default function UserMenu({ open, user, anchorRef, handleClose }: Props) 
           <Form method="POST" action="/">
             <Box
               sx={{
-                textAlign: "center",
+                textAlign: "center"
               }}
             >
               <input
@@ -116,7 +113,7 @@ export default function UserMenu({ open, user, anchorRef, handleClose }: Props) 
         </ListItem>
         <Divider />
         <ListItem alignItems="flex-start" sx={{ padding: [0, 2] }}>
-          <Form action="/logout" method="POST" style={{ width: "100%", textAlign: 'center' }}>
+          <Form action="/logout" method="POST" style={{ width: "100%", textAlign: "center" }}>
             <Button
               type="submit"
               sx={{ width: "100%", maxWidth: 204 }}
@@ -136,8 +133,8 @@ export default function UserMenu({ open, user, anchorRef, handleClose }: Props) 
 
             "& a": {
               color: "text.secondary",
-              fontSize: 12,
-            },
+              fontSize: 12
+            }
           }}
         >
           <Typography component="span">

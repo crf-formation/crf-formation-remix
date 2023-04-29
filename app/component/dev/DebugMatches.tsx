@@ -1,34 +1,34 @@
-import BugReportIcon from '@mui/icons-material/BugReport';
-import CloseIcon from '@mui/icons-material/Close';
-import { Box, Button, Dialog, DialogContent, DialogTitle, IconButton, Typography } from '@mui/material';
+import BugReportIcon from "@mui/icons-material/BugReport";
+import CloseIcon from "@mui/icons-material/Close";
+import { Box, Button, Dialog, DialogContent, DialogTitle, IconButton, Typography } from "@mui/material";
 import { useActionData, useMatches } from "@remix-run/react";
 import isEmpty from "lodash/isEmpty";
-import { useMemo, useState } from 'react';
+import { useMemo, useState } from "react";
 import { ReactJson } from "../typography/Json";
 
 /**
- * 
+ *
  */
 function useDebugMatches(): any | undefined {
   const matchingRoutes = useMatches();
   const routesData = useMemo(
     () => {
-			return matchingRoutes.map(matchingRoute => {
-				return {
-					id: matchingRoute.id,
-					pathname: matchingRoute.pathname,
-					params: matchingRoute.params,
-					data: matchingRoute.data
-				}
-			})
-		},
+      return matchingRoutes.map(matchingRoute => {
+        return {
+          id: matchingRoute.id,
+          pathname: matchingRoute.pathname,
+          params: matchingRoute.params,
+          data: matchingRoute.data
+        };
+      });
+    },
     [matchingRoutes]
   );
-  return routesData
+  return routesData;
 }
 
 function RouteDataView({ routeData }) {
-	return (
+  return (
     <Box>
       <Box mt={2}>
         {!isEmpty(routeData.params) ? (
@@ -39,7 +39,7 @@ function RouteDataView({ routeData }) {
       </Box>
       <Box mt={2}>
         {routeData.data ? (
-          <ReactJson src={routeData.data} collapsed displayDataTypes={false}	/>
+          <ReactJson src={routeData.data} collapsed displayDataTypes={false} />
         ) : (
           <span>No data</span>
         )}
@@ -63,10 +63,10 @@ function ActionDataView({ actionData }) {
 }
 
 function DebugContent({ show, onClose }) {
-	const debug = useDebugMatches()
+  const debug = useDebugMatches();
   const actionData = useActionData();
 
-	return (
+  return (
     <Dialog
       open={show}
       onClose={() => onClose()}
@@ -86,7 +86,7 @@ function DebugContent({ show, onClose }) {
               position: "absolute",
               right: 8,
               top: 8,
-              color: (theme) => theme.palette.grey[500],
+              color: (theme) => theme.palette.grey[500]
             }}
           >
             <CloseIcon />
@@ -110,13 +110,13 @@ function DebugContent({ show, onClose }) {
 }
 
 export default function DebugMatches() {
-	const [show, setShow] = useState<boolean>(false)
-	return (    <>
+  const [show, setShow] = useState<boolean>(false);
+  return (<>
       <Box
         sx={{
           position: "fixed",
           bottom: 1,
-          right: 1,
+          right: 1
         }}
       >
         <Button onClick={() => setShow((show) => !show)}>
@@ -124,7 +124,7 @@ export default function DebugMatches() {
         </Button>
       </Box>
 
-      {show && <DebugContent show={show} onClose={() => setShow(false)}/>}
+      {show && <DebugContent show={show} onClose={() => setShow(false)} />}
     </>
   );
 }

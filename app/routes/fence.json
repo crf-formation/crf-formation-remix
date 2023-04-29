@@ -1,6 +1,18 @@
 {
-	"// tags": "nothing should be able to import routes",
-	"tags": ["routes"],
-	"//": "we do not allow: repository",
-	"imports": [ "component", "dto", "apiobject", "mapper", "service", "util", "hook", "constant", "form" ]
+  "// tags": "nothing should be able to import routes",
+  "tags": [
+    "routes"
+  ],
+  "//": "we do not allow: repository",
+  "imports": [
+    "component",
+    "dto",
+    "apiobject",
+    "mapper",
+    "service",
+    "util",
+    "hook",
+    "constant",
+    "form"
+  ]
 }

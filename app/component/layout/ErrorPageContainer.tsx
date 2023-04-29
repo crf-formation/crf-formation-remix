@@ -13,7 +13,7 @@ export function DefaultErrorView(
   {
     title,
     defaultMessage,
-    jsonResponse,
+    jsonResponse
   }: DefaultErrorViewProps
 ) {
   return (
@@ -22,7 +22,7 @@ export function DefaultErrorView(
         sx={{
           marginTop: 2,
           display: "flex",
-          flexDirection: "column",
+          flexDirection: "column"
         }}
       >
         <Paper sx={{ width: "100%", p: 4 }}>
@@ -47,7 +47,7 @@ export function DefaultErrorView(
                   sx={{
                     maxWidth: 720,
                     whiteSpace: "pre-wrap",
-                    wordWrap: "break-word",
+                    wordWrap: "break-word"
                   }}
                 >
                   {JSON.stringify(jsonResponse, null, 2)}

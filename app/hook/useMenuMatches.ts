@@ -16,9 +16,9 @@ export default function useMenuMatches() {
 
   /**
    * Look for a matching path for the current location in the menu items.
-   * 
-   * @param menusItems 
-   * 
+   *
+   * @param menusItems
+   *
    * @return menu name that has an item matching the current location, undefined otherwise.
    */
   function getMatchingMenuName(menusItems: MenuItemDefinitions): MenuName | undefined {
@@ -33,6 +33,6 @@ export default function useMenuMatches() {
 
   return {
     getMatchingMenuName,
-    isItemsMatches,
+    isItemsMatches
   };
 }

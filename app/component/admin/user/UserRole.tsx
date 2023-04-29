@@ -1,32 +1,31 @@
-
-import { required, SelectInput, SelectField } from 'react-admin';
-import type { SelectInputProps, SelectFieldProps } from 'react-admin';
+import type { SelectFieldProps, SelectInputProps } from "react-admin";
+import { required, SelectField, SelectInput } from "react-admin";
 
 export default function UserRoleInput(props: SelectInputProps) {
-	return (
+  return (
     <SelectInput
       {...props}
-			defaultValue="USER"
+      defaultValue="USER"
       choices={[
         { id: "USER", name: "User" },
         { id: "ADMIN", name: "Admin" },
-        { id: "SUPER_ADMIN", name: "Super admin" },
+        { id: "SUPER_ADMIN", name: "Super admin" }
       ]}
-			validate={required()}
+      validate={required()}
     />
   );
 }
 
 
 export function UserRoleField(props: SelectFieldProps) {
-	return (
+  return (
     <SelectField
       {...props}
-			defaultValue="USER"
+      defaultValue="USER"
       choices={[
         { id: "USER", name: "User" },
         { id: "ADMIN", name: "Admin" },
-        { id: "SUPER_ADMIN", name: "Super admin" },
+        { id: "SUPER_ADMIN", name: "Super admin" }
       ]}
     />
   );

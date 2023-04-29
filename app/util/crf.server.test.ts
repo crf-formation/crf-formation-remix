@@ -7,7 +7,7 @@ import { createAuthenticityToken, verifyAuthenticityToken } from "./csrf.server.
 
 describe("CSRF Server", () => {
   let sessionStorage = createCookieSessionStorage({
-    cookie: { name: "session", secrets: ["s3cr3t"] },
+    cookie: { name: "session", secrets: ["s3cr3t"] }
   });
 
   describe("createAuthenticityToken", () => {
@@ -39,18 +39,18 @@ describe("CSRF Server", () => {
       let request = new Request("http://test.com/", {
         method: "POST",
         headers: { cookie },
-        body: new FormData(),
+        body: new FormData()
       });
 
       try {
         await verifyAuthenticityToken(request, session);
       } catch (error) {
         if (!(error instanceof Response)) throw error;
-				
+
         expect(error.status).toBe(422);
         expect(await error.json()).toEqual(
           JSON.stringify({
-            message: "Can't find CSRF token in session.",
+            message: "Can't find CSRF token in session."
           })
         );
       }
@@ -65,7 +65,7 @@ describe("CSRF Server", () => {
       let request = new Request("http://test.com/", {
         method: "POST",
         headers: { cookie },
-        body: new FormData(),
+        body: new FormData()
       });
 
       try {
@@ -75,7 +75,7 @@ describe("CSRF Server", () => {
         expect(error.status).toBe(422);
         expect(await error.json()).toEqual(
           JSON.stringify({
-            message: "Can't find CSRF token in body.",
+            message: "Can't find CSRF token in body."
           })
         );
       }
@@ -93,7 +93,7 @@ describe("CSRF Server", () => {
       let request = new Request("http://test.com/", {
         method: "POST",
         headers: { cookie },
-        body: formData,
+        body: formData
       });
 
       try {
@@ -103,7 +103,7 @@ describe("CSRF Server", () => {
         expect(error.status).toBe(422);
         expect(await error.json()).toEqual(
           JSON.stringify({
-            message: "Can't verify CSRF token authenticity.",
+            message: "Can't verify CSRF token authenticity."
           })
         );
       }
@@ -111,7 +111,7 @@ describe("CSRF Server", () => {
 
     test.each([
       [undefined, "csrf"],
-      ["xsrf", "xsrf"],
+      ["xsrf", "xsrf"]
     ])("should validate request if session and body csrf match", async (sessionKey, expected) => {
       let session = await sessionStorage.getSession();
       session.set(expected, "token");
@@ -124,7 +124,7 @@ describe("CSRF Server", () => {
       let request = new Request("http://test.com/", {
         method: "POST",
         headers: { cookie },
-        body: formData,
+        body: formData
       });
 
       await verifyAuthenticityToken(request, session, sessionKey);
@@ -133,7 +133,7 @@ describe("CSRF Server", () => {
     afterEach(() => vitest.restoreAllMocks());
 
     test("should validate request with File if session and body csrf match", async () => {
-      vitest.spyOn(console, 'warn');
+      vitest.spyOn(console, "warn");
       // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
       const uploadHandler = <UploadHandler>(part => Promise.resolve(`${part.filename} contents`));
 
@@ -149,7 +149,7 @@ describe("CSRF Server", () => {
       let request = new Request("http://test.com/", {
         method: "POST",
         headers: { cookie },
-        body: formData,
+        body: formData
       });
 
       await verifyAuthenticityToken(

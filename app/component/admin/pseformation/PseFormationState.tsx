@@ -1,34 +1,33 @@
-
-import { required, SelectInput, SelectField } from 'react-admin';
-import type { SelectInputProps, SelectFieldProps } from 'react-admin';
+import type { SelectFieldProps, SelectInputProps } from "react-admin";
+import { required, SelectField, SelectInput } from "react-admin";
 
 export function FormationStateField(props: SelectFieldProps) {
-	return (
+  return (
     <SelectField
       {...props}
-			defaultValue="CREATED"
+      defaultValue="CREATED"
       choices={[
         { id: "CREATED", name: "Created" },
         { id: "ENABLED", name: "Enabled" },
         { id: "DISABLED", name: "Disabled" },
-        { id: "ARCHIVED", name: "Archived" },
+        { id: "ARCHIVED", name: "Archived" }
       ]}
     />
   );
 }
 
 export function FormationStateInput(props: SelectInputProps) {
-	return (
+  return (
     <SelectInput
       {...props}
-			defaultValue="CREATED"
+      defaultValue="CREATED"
       choices={[
         { id: "CREATED", name: "Created" },
         { id: "ENABLED", name: "Enabled" },
         { id: "DISABLED", name: "Disabled" },
-        { id: "ARCHIVED", name: "Archived" },
+        { id: "ARCHIVED", name: "Archived" }
       ]}
-			validate={required()}
+      validate={required()}
     />
   );
 }

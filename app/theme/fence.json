@@ -1,4 +1,6 @@
 {
-	"tags": ["theme"],
-	"imports": []
+  "tags": [
+    "theme"
+  ],
+  "imports": []
 }

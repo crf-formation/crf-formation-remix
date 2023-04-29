@@ -1,21 +1,21 @@
 import type {
-    PseFormationApiObject,
-    PseFormationPostApiObject,
-    PseFormationPutApiObject,
+  PseFormationApiObject,
+  PseFormationPostApiObject,
+  PseFormationPutApiObject
 } from "~/apiobject/pseformation.apiobject";
 import type { OrderByDirection, PaginateObject } from "~/constant/types";
 import { paginateEntityToApiObject } from "~/mapper/abstract.mapper";
 import { pseFormationEntityToApiObject } from "~/mapper/pseformation.mapper";
 import {
-    createPseFormationEntity,
-    findCurrentPseFormationEntityForUser,
-    findPseFormationEntities,
-    findPseFormationEntityById,
-    findPseFormationEntityByPseConcreteCaseSessionId,
-    findPseFormationForUserEntities,
-    updatePseFormationEntity,
+  createPseFormationEntity,
+  findCurrentPseFormationEntityForUser,
+  findPseFormationEntities,
+  findPseFormationEntityById,
+  findPseFormationEntityByPseConcreteCaseSessionId,
+  findPseFormationForUserEntities,
+  updatePseFormationEntity
 } from "~/repository/pseformation.repository";
-import { NotFoundException } from './api.error';
+import { NotFoundException } from "./api.error";
 
 export async function updatePseFormation(
   pseFormationId: string,
@@ -47,7 +47,7 @@ export async function getPseFormationById(
 ): Promise<PseFormationApiObject> {
   const pseFormationEntity = await findPseFormationEntityById(id);
   if (!pseFormationEntity) {
-    throw new NotFoundException("PseFormation", id)
+    throw new NotFoundException("PseFormation", id);
   }
   return pseFormationEntityToApiObject(pseFormationEntity);
 }
@@ -85,7 +85,7 @@ export async function getCurrentPseFormationForUser(userId: string): Promise<Opt
 export async function getPseFormationByPseConcreteCaseSessionId(concreteCaseSessionId: string): Promise<PseFormationApiObject> {
   const entity = await findPseFormationEntityByPseConcreteCaseSessionId(concreteCaseSessionId);
   if (entity == null) {
-		throw new NotFoundException('findPseFormationEntityByPseConcreteCaseSessionId', concreteCaseSessionId)
+    throw new NotFoundException("findPseFormationEntityByPseConcreteCaseSessionId", concreteCaseSessionId);
   }
-  return pseFormationEntityToApiObject(entity)
+  return pseFormationEntityToApiObject(entity);
 }

@@ -5,20 +5,20 @@ import { pseModuleEntityToApiObject } from "./psemodule.mapper";
 
 export function pseTechniqueApiObjectToDto(apiObject: PseTechniqueApiObject): PseTechniqueDto {
   return {
-		id: apiObject.id,
-		name: apiObject.name,
-		requiredForPse1: apiObject.requiredForPse1,
-		pseModule: apiObject.pseModule,
-		pseModuleId: apiObject.pseModuleId,
+    id: apiObject.id,
+    name: apiObject.name,
+    requiredForPse1: apiObject.requiredForPse1,
+    pseModule: apiObject.pseModule,
+    pseModuleId: apiObject.pseModuleId
   };
 }
 
 export function pseTechniqueEntityToApiObject(entity: PseTechniqueEntity): PseTechniqueApiObject {
   return {
-		id: entity.id,
-		name: entity.name,
-		requiredForPse1: entity.requiredForPse1,
-		pseModule: pseModuleEntityToApiObject(entity.pseModule),
-		pseModuleId: entity.pseModuleId,
-  }
+    id: entity.id,
+    name: entity.name,
+    requiredForPse1: entity.requiredForPse1,
+    pseModule: pseModuleEntityToApiObject(entity.pseModule),
+    pseModuleId: entity.pseModuleId
+  };
 }

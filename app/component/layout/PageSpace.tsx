@@ -1,17 +1,17 @@
-import { Box } from "@mui/material"
+import { Box } from "@mui/material";
 
-type Variant = 'header'
+type Variant = "header"
 
 interface Props {
-	variant: Variant
+  variant: Variant;
 }
 
 export default function PageSpace({ variant }: Props) {
-	const mbs: { [key in Variant]: number } = {
-		header: 8
-	}
+  const mbs: { [key in Variant]: number } = {
+    header: 8
+  };
 
-	return (
-		<Box mb={mbs[variant]} />
-	)
+  return (
+    <Box mb={mbs[variant]} />
+  );
 }

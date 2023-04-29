@@ -1,5 +1,5 @@
-import FormHelperText from '@mui/material/FormHelperText';
-import { useField } from 'remix-validated-form';
+import FormHelperText from "@mui/material/FormHelperText";
+import { useField } from "remix-validated-form";
 
 export default function FormErrorHelperText({ name, actionData }: { name: string, actionData?: any }) {
   const { error } = useField(name);
@@ -25,5 +25,5 @@ export default function FormErrorHelperText({ name, actionData }: { name: string
     );
   }
 
-  return null
+  return null;
 }

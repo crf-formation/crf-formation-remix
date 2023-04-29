@@ -1,24 +1,24 @@
 import type {
-    UserApiObject,
-    UserAuthTokenApiObject,
-    UserPostApiObject,
-    UserPutApiObject,
+  UserApiObject,
+  UserAuthTokenApiObject,
+  UserPostApiObject,
+  UserPutApiObject
 } from "~/apiobject/user.apiobject";
 import type { OrderByDirection, PaginateObject } from "~/constant/types";
 import { paginateEntityToApiObject } from "~/mapper/abstract.mapper";
 import { userEntityToApiObject } from "~/mapper/user.mapper";
 import {
-    createUserEntity,
-    findUserEntities,
-    findUserEntityByEmail,
-    findUserEntityByEmailAndPassword,
-    findUserEntityById,
-    getFormationStudentsEntities,
-    getFormationTeachersEntities,
-    searchFormationStudentsEntities,
-    searchFormationTeachersEntities,
-    updateUserEntity,
-    updateUserEntityPassword,
+  createUserEntity,
+  findUserEntities,
+  findUserEntityByEmail,
+  findUserEntityByEmailAndPassword,
+  findUserEntityById,
+  getFormationStudentsEntities,
+  getFormationTeachersEntities,
+  searchFormationStudentsEntities,
+  searchFormationTeachersEntities,
+  updateUserEntity,
+  updateUserEntityPassword
 } from "~/repository/user.repository";
 
 export async function updateUser(
@@ -38,7 +38,7 @@ export async function createUser(
 
 export async function updatePassword(userId: string, password: string) {
   // 2- update password
-  await updateUserEntityPassword(userId, password)
+  await updateUserEntityPassword(userId, password);
 }
 
 export async function findUserById(
@@ -57,11 +57,11 @@ export async function verifyLogin(
 ): Promise<Optional<UserAuthTokenApiObject>> {
   const userEntity = await findUserEntityByEmailAndPassword(email, password);
   if (!userEntity) {
-    return null
+    return null;
   }
 
   return {
-    user: userEntityToApiObject(userEntity),
+    user: userEntityToApiObject(userEntity)
   };
 }
 

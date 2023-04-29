@@ -1,6 +1,6 @@
 import type { Session } from "@remix-run/server-runtime";
 import { badRequest } from "~/helper/responses.helper";
-import type { ApiErrorException } from '~/service/api.error';
+import type { ApiErrorException } from "~/service/api.error";
 import { addFlashMessage } from "~/service/flash.server";
 import { commitSession } from "~/service/session.server";
 
@@ -12,7 +12,7 @@ import { commitSession } from "~/service/session.server";
  *   throw badRequest<BoundaryData>({ user });
  * }
  */
- export async function badRequestWithFlash(
+export async function badRequestWithFlash(
   session: Session,
   e: ApiErrorException
 ) {
@@ -24,7 +24,7 @@ import { commitSession } from "~/service/session.server";
 
   return badRequest(e, {
     headers: {
-      "Set-Cookie": await commitSession(session),
-    },
-  })
+      "Set-Cookie": await commitSession(session)
+    }
+  });
 }

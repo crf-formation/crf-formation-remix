@@ -1,4 +1,6 @@
 {
-	"tags": ["constant"],
-	"imports": []
+  "tags": [
+    "constant"
+  ],
+  "imports": []
 }

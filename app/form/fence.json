@@ -1,4 +1,8 @@
 {
-	"tags": ["form"],
-	"imports": ["dto"]
+  "tags": [
+    "form"
+  ],
+  "imports": [
+    "dto"
+  ]
 }

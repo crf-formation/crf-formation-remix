@@ -1,6 +1,6 @@
 import { Box, Typography } from "@mui/material";
 import type { ActionArgs, LoaderArgs, V2_MetaFunction } from "@remix-run/node";
-import { json, redirect,  } from "@remix-run/node";
+import { json, redirect } from "@remix-run/node";
 import { useActionData, useLoaderData } from "@remix-run/react";
 import { useRef, useState } from "react";
 import { z } from "zod";
@@ -20,7 +20,7 @@ import { createUserSession, getSession, getUserId } from "~/service/session.serv
 import { verifyLogin } from "~/service/user.server";
 
 const ParamsSchema = z.object({
-  token: z.string(),
+  token: z.string()
 });
 
 const URLSearchParamsSchema = z.object({
@@ -37,32 +37,32 @@ export async function loader({ request, params }: LoaderArgs) {
   await verifyTokenIsValid(token);
 
   return json({
-    email,
+    email
   });
 }
 
-export async function action({ request, params  }: ActionArgs) {
+export async function action({ request, params }: ActionArgs) {
   let session = await getSession(request);
 
-	const { token } = getParamsOrFail(params, ParamsSchema)
+  const { token } = getParamsOrFail(params, ParamsSchema);
 
-  const result = await validateForm<PasswordCreateDto>(request, passwordCreateValidator)
+  const result = await validateForm<PasswordCreateDto>(request, passwordCreateValidator);
   if (result.errorResponse) {
-    return result.errorResponse
+    return result.errorResponse;
   }
 
-  const passwordCreateDto: PasswordCreateDto = result.data
+  const passwordCreateDto: PasswordCreateDto = result.data;
 
-	if (passwordCreateDto.passwordVerification !== passwordCreateDto.password) {
+  if (passwordCreateDto.passwordVerification !== passwordCreateDto.password) {
     return invalidFormResponse({
       passwordVerification: "Les mots de passes ne correspondent pas"
     });
   }
-	
-  try { 
-    await createPassword(passwordCreateDto.email, token, passwordCreateDto.password)
+
+  try {
+    await createPassword(passwordCreateDto.email, token, passwordCreateDto.password);
   } catch (e) {
-    return badRequestWithFlash(session, e)
+    return badRequestWithFlash(session, e);
   }
 
   // password has been created, automatically login
@@ -79,13 +79,13 @@ export async function action({ request, params  }: ActionArgs) {
     session,
     userId: userAuthToken.user.id,
     remember: true,
-    redirectTo: "/welcome",
+    redirectTo: "/welcome"
   });
 }
 
 export const meta: V2_MetaFunction<typeof loader> = () => {
   return [
-    { title: "Finalisation de la création du compte" },
+    { title: "Finalisation de la création du compte" }
   ];
 };
 
@@ -93,14 +93,14 @@ export default function PasswordResetRoute() {
   const { email } = useLoaderData<typeof loader>();
   const actionData = useActionData<typeof action>();
 
-  const [password, setPassword] = useState('bonjour1') // TODO: remove default value
+  const [password, setPassword] = useState("bonjour1"); // TODO: remove default value
 
   const passwordRef = useRef<HTMLInputElement>(null);
   const passwordVerificationRef = useRef<HTMLInputElement>(null);
 
   useFormFocusError(actionData, [
-    [ "password", passwordRef ],
-    [ "passwordVerification", passwordVerificationRef ],
+    ["password", passwordRef],
+    ["passwordVerification", passwordVerificationRef]
   ]);
 
   return (
@@ -114,7 +114,7 @@ export default function PasswordResetRoute() {
       </Box>
 
       <FormView
-      	submitText="Valider"
+        submitText="Valider"
         validator={passwordCreateValidator}
       >
         <input type="hidden" name="email" value={email} />

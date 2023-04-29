@@ -7,22 +7,22 @@ import { createPaginateObject } from "./abstract.repository";
 const includeForSingleItem = {
   place: true,
   userOnPseFormations: {
-    include: { 
+    include: {
       user: true
     }
-  }, 
-}
+  }
+};
 
 const includeForMultipleItem = {
-  place: true,
-}
+  place: true
+};
 
 export async function createPseFormationEntity(pseFormationPostApiObject: PseFormationPostApiObject): Promise<PseFormationEntity> {
   return await prisma.pseFormation.create({
     data: {
-      ...pseFormationPostApiObject,
+      ...pseFormationPostApiObject
     },
-		include: includeForSingleItem,
+    include: includeForSingleItem
   });
 }
 
@@ -47,16 +47,16 @@ export async function updatePseFormationEntity(
     // update
     return await tx.pseFormation.update({
       data: {
-        ...data,
+        ...data
         // userOnPseFormations: {
         //   // createMany is not supported by SQLite.
         //   createMany: { data: users }
         // },
       },
       where: {
-        id,
+        id
       },
-      include: includeForSingleItem,
+      include: includeForSingleItem
     });
   });
 }
@@ -64,7 +64,7 @@ export async function updatePseFormationEntity(
 export async function findPseFormationEntityById(id: string): Promise<Optional<PseFormationEntity>> {
   return await prisma.pseFormation.findUnique({
     where: { id },
-    include: includeForSingleItem,
+    include: includeForSingleItem
   });
 }
 
@@ -77,7 +77,7 @@ export async function findPseFormationEntityByPseConcreteCaseSessionId(pseConcre
     include: {
       formation: true
     }
-  })
+  });
 
   if (!pseConcreteCaseSessionEntity) {
     return null;
@@ -105,30 +105,30 @@ export async function findPseFormationEntityByPseConcreteCaseSessionId(pseConcre
 }
 
 export async function findPseFormationEntities(
-	page: number,
+  page: number,
   pageSize: number,
   orderBy: string,
-  orderByDirection: OrderByDirection,
+  orderByDirection: OrderByDirection
 ): Promise<PaginateObject<PseFormationEntity>> {
-	return await createPaginateObject<PseFormationEntity>({
+  return await createPaginateObject<PseFormationEntity>({
     model: prisma.pseFormation,
     page,
     pageSize,
     orderBy,
     orderByDirection,
     where: {},
-		include: includeForMultipleItem,
+    include: includeForMultipleItem
   });
 }
 
 export async function findPseFormationForUserEntities(
   userId: string,
-	page: number,
+  page: number,
   pageSize: number,
   orderBy: string,
-  orderByDirection: OrderByDirection,
+  orderByDirection: OrderByDirection
 ): Promise<PaginateObject<PseFormationEntity>> {
-	return await createPaginateObject<PseFormationEntity>({
+  return await createPaginateObject<PseFormationEntity>({
     model: prisma.pseFormation,
     page,
     pageSize,
@@ -137,7 +137,7 @@ export async function findPseFormationForUserEntities(
     where: {
       userOnPseFormations: { some: { userId } }
     },
-		include: includeForMultipleItem,
+    include: includeForMultipleItem
   });
 }
 
@@ -146,8 +146,8 @@ export async function findCurrentPseFormationEntityForUser(userId: string): Prom
   const pseFormationPaginateObjectEntities = await findPseFormationForUserEntities(userId, 0, 1, "from", "desc");
 
   if (pseFormationPaginateObjectEntities.page.totalElements === 0) {
-    return null
+    return null;
   }
 
-  return pseFormationPaginateObjectEntities.data[0]
+  return pseFormationPaginateObjectEntities.data[0];
 }

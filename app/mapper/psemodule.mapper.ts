@@ -8,7 +8,7 @@ export function pseModuleEntityToApiObject(
   return {
     id: entity.id,
     name: entity.name,
-    moduleId: entity.moduleId,
+    moduleId: entity.moduleId
   };
 }
 
@@ -18,6 +18,6 @@ export function pseModuleApiObjectToDto(
   return {
     id: entity.id,
     name: entity.name,
-    moduleId: entity.moduleId,
+    moduleId: entity.moduleId
   };
 }

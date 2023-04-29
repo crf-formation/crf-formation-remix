@@ -1,4 +1,4 @@
-import type { ActionArgs, LoaderFunction, MetaFunction } from "@remix-run/node";
+import type { ActionArgs, LoaderFunction } from "@remix-run/node";
 import { json, redirect, V2_MetaFunction } from "@remix-run/node";
 import type { Params } from "@remix-run/react";
 import { useActionData, useLoaderData } from "@remix-run/react";
@@ -20,7 +20,10 @@ import { validateForm } from "~/form/abstract";
 import { pseConcreteCaseGroupPutDtoValidator } from "~/form/pseconcretecasegroup.form";
 import type { SecurityFunction } from "~/helper/remix.helper";
 import { getParamsOrFail } from "~/helper/remix.params.helper";
-import { pseConcreteCaseGroupPutDtoToApiObject } from "~/mapper/pseconcretecasegroup.mapper";
+import {
+  pseConcreteCaseGroupApiObjectToDto,
+  pseConcreteCaseGroupPutDtoToApiObject
+} from "~/mapper/pseconcretecasegroup.mapper";
 import { pseConcreteCaseSessionApiObjectToDto } from "~/mapper/pseconcretecasesession.mapper";
 import { pseFormationApiObjectToDto } from "~/mapper/pseformation.mapper";
 import { getPseConcreteCaseGroup, updatePseConcreteCaseGroup } from "~/service/pseconcretecasegroup.server";
@@ -28,10 +31,9 @@ import { getPseConcreteCaseSessionById } from "~/service/pseconcretecasesession.
 import { getPseFormationByPseConcreteCaseSessionId } from "~/service/pseformation.server";
 import { assertUserHasAccessToFormationAsTeacher } from "~/service/security.server";
 import { requireUser } from "~/service/session.server";
-import { pseConcreteCaseGroupApiObjectToDto } from '~/mapper/pseconcretecasegroup.mapper';
 
 const ParamsSchema = z.object({
-  pseConcreteCaseGroupId: z.string(),
+  pseConcreteCaseGroupId: z.string()
 });
 
 const security: SecurityFunction<{
@@ -40,64 +42,69 @@ const security: SecurityFunction<{
   pseConcreteCaseSessionApiObject: PseConcreteCaseSessionApiObject;
   pseConcreteCaseGroupApiObject: PseConcreteCaseGroupApiObject;
 }> = async (request: Request, params: Params) => {
-  const { pseConcreteCaseGroupId } = getParamsOrFail(params, ParamsSchema)
+  const { pseConcreteCaseGroupId } = getParamsOrFail(params, ParamsSchema);
 
-  const userApiObject = await requireUser(request)
+  const userApiObject = await requireUser(request);
 
-  const pseConcreteCaseGroupApiObject = await getPseConcreteCaseGroup(pseConcreteCaseGroupId)
+  const pseConcreteCaseGroupApiObject = await getPseConcreteCaseGroup(pseConcreteCaseGroupId);
 
-	const pseConcreteCaseSessionApiObject = await getPseConcreteCaseSessionById(pseConcreteCaseGroupApiObject.pseConcreteCaseSessionId)
+  const pseConcreteCaseSessionApiObject = await getPseConcreteCaseSessionById(pseConcreteCaseGroupApiObject.pseConcreteCaseSessionId);
 
-  const pseFormationApiObject = await getPseFormationByPseConcreteCaseSessionId(pseConcreteCaseSessionApiObject.id)
-	await assertUserHasAccessToFormationAsTeacher(userApiObject.id, pseFormationApiObject.id)
+  const pseFormationApiObject = await getPseFormationByPseConcreteCaseSessionId(pseConcreteCaseSessionApiObject.id);
+  await assertUserHasAccessToFormationAsTeacher(userApiObject.id, pseFormationApiObject.id);
 
   return {
     userApiObject,
     pseFormationApiObject,
     pseConcreteCaseSessionApiObject,
     pseConcreteCaseGroupApiObject
-  }
-}
+  };
+};
 
-export const loader: LoaderFunction = async ({
-  request,
-	params
-}) => {
-  const { pseFormationApiObject, pseConcreteCaseSessionApiObject, pseConcreteCaseGroupApiObject } = await security(request, params)
+export const loader: LoaderFunction = async (
+  {
+    request,
+    params
+  }) => {
+  const {
+    pseFormationApiObject,
+    pseConcreteCaseSessionApiObject,
+    pseConcreteCaseGroupApiObject
+  } = await security(request, params);
 
   return json({
     pseFormation: pseFormationApiObjectToDto(pseFormationApiObject),
-		pseConcreteCaseSession: pseConcreteCaseSessionApiObjectToDto(pseConcreteCaseSessionApiObject),
-		pseConcreteCaseGroup: pseConcreteCaseGroupApiObjectToDto(pseConcreteCaseGroupApiObject),
-	});
+    pseConcreteCaseSession: pseConcreteCaseSessionApiObjectToDto(pseConcreteCaseSessionApiObject),
+    pseConcreteCaseGroup: pseConcreteCaseGroupApiObjectToDto(pseConcreteCaseGroupApiObject)
+  });
 };
 
-export async function action({ request, params  }: ActionArgs) {
-  const { pseConcreteCaseGroupApiObject } = await security(request, params)
+export async function action({ request, params }: ActionArgs) {
+  const { pseConcreteCaseGroupApiObject } = await security(request, params);
 
   const result = await validateForm<PseConcreteCaseGroupPutDto>(request, pseConcreteCaseGroupPutDtoValidator);
   if (result.errorResponse) {
-    return result.errorResponse
+    return result.errorResponse;
   }
-	const putDto = result.data
+  const putDto = result.data;
 
-  const putApiObject = pseConcreteCaseGroupPutDtoToApiObject(putDto)
+  const putApiObject = pseConcreteCaseGroupPutDtoToApiObject(putDto);
 
-  await updatePseConcreteCaseGroup(pseConcreteCaseGroupApiObject.id, putApiObject)
+  await updatePseConcreteCaseGroup(pseConcreteCaseGroupApiObject.id, putApiObject);
 
-  return redirect(`/pse-concrete-case-group/${pseConcreteCaseGroupApiObject.id}`)
+  return redirect(`/pse-concrete-case-group/${pseConcreteCaseGroupApiObject.id}`);
 }
 
 export const meta: V2_MetaFunction<typeof loader> = ({ data }) => {
   return [
-    { title: `Groupe ${data?.pseConcreteCaseGroup?.name}` },
+    { title: `Groupe ${data?.pseConcreteCaseGroup?.name}` }
   ];
 };
 
 export default function PseConcreteCaseGroupRoute() {
   const { pseFormation, pseConcreteCaseSession, pseConcreteCaseGroup } = useLoaderData<typeof loader>();
 
-	const actionData = useActionData<typeof action>();
+  const actionData = useActionData<typeof action>();
 
   return (
     <>

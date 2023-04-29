@@ -1,33 +1,33 @@
-import AccountCircleIcon from '@mui/icons-material/AccountCircle';
-import AssignmentIcon from '@mui/icons-material/Assignment';
-import BubbleChartIcon from '@mui/icons-material/BubbleChart';
-import ConstructionIcon from '@mui/icons-material/Construction';
-import DashboardIcon from '@mui/icons-material/Dashboard';
-import ShieldIcon from '@mui/icons-material/Shield';
-import { Box, GlobalStyles, List, ListItem, ListItemText, Drawer as MuiDrawer, Toolbar } from "@mui/material";
-import { styled } from '@mui/material/styles';
+import AccountCircleIcon from "@mui/icons-material/AccountCircle";
+import AssignmentIcon from "@mui/icons-material/Assignment";
+import BubbleChartIcon from "@mui/icons-material/BubbleChart";
+import ConstructionIcon from "@mui/icons-material/Construction";
+import DashboardIcon from "@mui/icons-material/Dashboard";
+import ShieldIcon from "@mui/icons-material/Shield";
+import { Box, Drawer as MuiDrawer, GlobalStyles, List, ListItem, ListItemText, Toolbar } from "@mui/material";
+import { styled } from "@mui/material/styles";
 import { useState } from "react";
 import LogoIcon from "~/component/icons/LogoHorizontal";
-import useCurrentPseFormation from '~/hook/useCurrentPseFormation';
+import useCurrentPseFormation from "~/hook/useCurrentPseFormation";
 import useMenuMatches from "~/hook/useMenuMatches";
-import useOptionalUser from '~/hook/useOptionalUser';
-import useUser from '~/hook/useUser';
+import useOptionalUser from "~/hook/useOptionalUser";
+import useUser from "~/hook/useUser";
 import MenuItem from "./MenuItem";
 import SidebarDivider from "./SidebarDivider";
 import SubMenu from "./SubMenu";
-import UserMenu from './UserMenu';
+import UserMenu from "./UserMenu";
 
 type MenuProps = {
   openedMenu: MenuName;
-	dense: boolean;
+  dense: boolean;
   handleToggle: Function;
   menuItems: Array<Map<String, any[]>>;
 }
 
-export type MenuName = 'menuDevTools' | 'menuAdmin' | 'menuCurrentPseFormation' | undefined
+export type MenuName = "menuDevTools" | "menuAdmin" | "menuCurrentPseFormation" | undefined
 
 const MainListItems = ({ openedMenu, handleToggle, dense, menuItems }: MenuProps) => {
-  const currentPseFormation = useCurrentPseFormation()
+  const currentPseFormation = useCurrentPseFormation();
   return (
     <>
       <MenuItem
@@ -59,7 +59,7 @@ const MainListItems = ({ openedMenu, handleToggle, dense, menuItems }: MenuProps
 };
 
 const SecondaryListItems = ({ openedMenu, handleToggle, dense, menuItems }: MenuProps) => {
-  const user = useUser()
+  const user = useUser();
   return (
     <>
       {user.hasAdminPermission && (
@@ -81,13 +81,14 @@ const SecondaryListItems = ({ openedMenu, handleToggle, dense, menuItems }: Menu
   );
 };
 
-const BottomListItems = ({
-  openedMenu,
-  handleToggle,
-  dense,
-  menuItems,
-}: MenuProps) => {
-  const user = useOptionalUser()
+const BottomListItems = (
+  {
+    openedMenu,
+    handleToggle,
+    dense,
+    menuItems
+  }: MenuProps) => {
+  const user = useOptionalUser();
 
   const [userMenuAnchorEl, setUserMenuAnchorEl] = useState<null | HTMLElement>(
     null
@@ -110,7 +111,7 @@ const BottomListItems = ({
       <List>
         {user && (
           <>
-           <MenuItem
+            <MenuItem
               name={user.fullName}
               onClick={(e) => setUserMenuAnchorEl(e.currentTarget)}
               aria-controls={userMenuOpen ? "account-menu" : undefined}
@@ -134,7 +135,7 @@ const BottomListItems = ({
 };
 
 const Drawer = styled(MuiDrawer, {
-  shouldForwardProp: (prop) => prop !== "open",
+  shouldForwardProp: (prop) => prop !== "open"
 })(({ theme, open }) => ({
   position: "sticky",
   top: 0, // for sticky
@@ -142,14 +143,14 @@ const Drawer = styled(MuiDrawer, {
   height: "100vh", // TODO: ?
 
   [theme.breakpoints.up("xs")]: {
-    display: !open ? "none" : "block",
+    display: !open ? "none" : "block"
   },
   [theme.breakpoints.up("lg")]: {
-    display: "block",
+    display: "block"
   },
 
   "& svg": {
-    fill: "var(--sidebar-color-title)",
+    fill: "var(--sidebar-color-title)"
   },
 
   "& .MuiDrawer-paper": {
@@ -158,32 +159,32 @@ const Drawer = styled(MuiDrawer, {
 
     width: theme.sidebar.width,
     [theme.breakpoints.down("sm")]: {
-      width: `100vw`,
+      width: `100vw`
     },
 
     backgroundColor: "var(--sidebar-background-color)",
     transition: theme.transitions.create("width", {
       easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.enteringScreen,
+      duration: theme.transitions.duration.enteringScreen
     }),
     boxSizing: "border-box",
     ...(!open && {
       overflowX: "hidden",
       transition: theme.transitions.create("width", {
         easing: theme.transitions.easing.sharp,
-        duration: theme.transitions.duration.leavingScreen,
+        duration: theme.transitions.duration.leavingScreen
       }),
       width: 0,
 
       [theme.breakpoints.up("sm")]: {
-        width: theme.sidebar.closedWidth,
-      },
-    }),
-  },
+        width: theme.sidebar.closedWidth
+      }
+    })
+  }
 }));
 
 interface CategoryProps {
-  name: string
+  name: string;
 }
 
 function Category({ name }: CategoryProps) {
@@ -200,56 +201,56 @@ interface Props {
 }
 
 export default function SidebarMenu({ open }: Props) {
-  const { getMatchingMenuName } = useMenuMatches()
-  const currentPseFormation = useCurrentPseFormation()
+  const { getMatchingMenuName } = useMenuMatches();
+  const currentPseFormation = useCurrentPseFormation();
 
   const menuItems = {
     menuAdmin: [
       {
         name: "Users",
-        href: "/admin/user",
+        href: "/admin/user"
       },
       {
         name: "Formations - PSE",
-        href: "/admin/pse",
-      },
+        href: "/admin/pse"
+      }
     ],
 
     menuDevTools: [
       {
         name: "Theme",
-        href: "/dev/theme",
+        href: "/dev/theme"
       },
 
       {
         name: "Test Page",
-        href: "/dev/test",
-      },
+        href: "/dev/test"
+      }
     ],
 
-    menuCurrentPseFormation: !currentPseFormation ? []  : [
+    menuCurrentPseFormation: !currentPseFormation ? [] : [
       {
         name: "Dashboard",
-        href: `/pse/${currentPseFormation.id}`,
+        href: `/pse/${currentPseFormation.id}`
       },
       {
         name: "Cas concrets",
-        href: `/pse/${currentPseFormation.id}/concrete-case/session`,
+        href: `/pse/${currentPseFormation.id}/concrete-case/session`
       },
       {
         name: "Suivi",
-        href: `/pse/${currentPseFormation.id}/summary`,
-      },
+        href: `/pse/${currentPseFormation.id}/summary`
+      }
     ].filter(Boolean)
   };
 
-	const [openedSubMenu, setOpenedSubMenu] = useState<MenuName | undefined>(
+  const [openedSubMenu, setOpenedSubMenu] = useState<MenuName | undefined>(
     getMatchingMenuName(menuItems)
   );
 
-	const dense = true
+  const dense = true;
 
-	const handleToggle = (menu: MenuName) => {
+  const handleToggle = (menu: MenuName) => {
     setOpenedSubMenu(openedMenu => openedMenu === menu ? undefined : menu);
   };
 
@@ -264,8 +265,8 @@ export default function SidebarMenu({ open }: Props) {
             "--sidebar-divider": "rgba(255, 255, 255, 0.12)",
             "--sidebar-item-context": "#669df6",
             "--sidebar-item-hover": "rgba(255, 255, 2555, 0.08)",
-            "--sidebar-bg-selected": "rgba(71,98,130,.2)",
-          },
+            "--sidebar-bg-selected": "rgba(71,98,130,.2)"
+          }
         }}
       />
       <Drawer
@@ -279,7 +280,7 @@ export default function SidebarMenu({ open }: Props) {
             display: "flex",
             alignItems: "center",
             justifyContent: "space-between",
-            p: [0],
+            p: [0]
           }}
         >
           <Box sx={{ display: "flex", alignItems: "center" }}>
@@ -315,7 +316,7 @@ export default function SidebarMenu({ open }: Props) {
             flex: 1,
             flexDirection: "column",
             justifyContent: "flex-end",
-            padding: 0,
+            padding: 0
           }}
         >
           <SidebarDivider />

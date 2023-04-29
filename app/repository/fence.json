@@ -1,6 +1,12 @@
 {
-	"tags": ["repository"],
-	"//": "We allow passing apiobject to repository in to simplify the code and not create another dto just for passing apiobject to the repository.",
-	"// 2": "You should never return an apiobject from a repository.",
-	"imports": [ "entity", "constant", "apiobject" ]
+  "tags": [
+    "repository"
+  ],
+  "//": "We allow passing apiobject to repository in to simplify the code and not create another dto just for passing apiobject to the repository.",
+  "// 2": "You should never return an apiobject from a repository.",
+  "imports": [
+    "entity",
+    "constant",
+    "apiobject"
+  ]
 }

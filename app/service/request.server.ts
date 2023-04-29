@@ -1,12 +1,13 @@
 import { parseAcceptLanguage } from "intl-parse-accept-language";
-const usParser = require('ua-parser-js');
+
+const usParser = require("ua-parser-js");
 
 /**
  * Receives a Request or Headers objects.
  * If it's a Request returns the request.headers
  * If it's a Headers returns the object directly.
  */
- export function getHeaders(requestOrHeaders: Request | Headers): Headers {
+export function getHeaders(requestOrHeaders: Request | Headers): Headers {
   if (requestOrHeaders instanceof Request) {
     return requestOrHeaders.headers;
   }
@@ -16,19 +17,19 @@ const usParser = require('ua-parser-js');
 
 export function getSearchParams(request: Request): URLSearchParams {
   const url = new URL(request.url);
-  return url.searchParams
+  return url.searchParams;
 }
 
 export function getSearchParam(request: Request, name: string): string | null {
-  const searchParams = getSearchParams(request)
+  const searchParams = getSearchParams(request);
   const value = searchParams.get(name);
-  return value
+  return value;
 }
 
 export function getSearchParamNumber(request: Request, name: string): Optional<number> {
-  const searchParams = getSearchParams(request)
+  const searchParams = getSearchParams(request);
   const value = searchParams.get(name);
-  return value ? parseInt(value) : null
+  return value ? parseInt(value) : null;
 }
 
 export type Locales = string[] | undefined;
@@ -60,7 +61,7 @@ export function getClientLocales(requestOrHeaders: Request | Headers): Locales {
 
   let locales = parseAcceptLanguage(acceptLanguage, {
     validate: Intl.DateTimeFormat.supportedLocalesOf,
-    ignoreWildcard: true,
+    ignoreWildcard: true
   });
 
   // if there are no locales found, return undefined
@@ -73,25 +74,25 @@ export function getClientLocales(requestOrHeaders: Request | Headers): Locales {
 
 
 /**
- * 
- * @param headers 
- * 
+ *
+ * @param headers
+ *
  * @return true if the requests seem to come from a desktop device.
- * 
+ *
  * https://nitayneeman.com/posts/combining-server-side-rendering-and-responsive-design-using-react/
- * 
+ *
  * Sadly, there are a few drawbacks to this strategy.
- * First of all, the information we can extract out of the userAgent is pretty limited. 
- * Namely, we cannot understand the device properties (dimensions, orientation, etc.) directly. 
- * Indeed, it might be possible to infer the viewport dimensions someway, however then again - 
+ * First of all, the information we can extract out of the userAgent is pretty limited.
+ * Namely, we cannot understand the device properties (dimensions, orientation, etc.) directly.
+ * Indeed, it might be possible to infer the viewport dimensions someway, however then again -
  * it leaves the orientation (and others) unsolved.
- * 
+ *
  * Alternatively, you can use native css.
  */
 export function isDesktop(requestOrHeaders: Request | Headers): boolean {
   const headers: Headers = getHeaders(requestOrHeaders);
-  const userAgent = usParser(headers.get('user-agent'));
-  const { type } = userAgent.device
+  const userAgent = usParser(headers.get("user-agent"));
+  const { type } = userAgent.device;
 
-  return !(type === 'mobile' || type === 'tablet')
+  return !(type === "mobile" || type === "tablet");
 }

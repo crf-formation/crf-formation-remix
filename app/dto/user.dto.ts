@@ -1,5 +1,5 @@
-export type UserStateDtoEnum = 'CREATED' | 'DISABLED' | 'ENABLED' | 'ARCHIVED'
-export type UserRoleDtoEnum = 'USER' | 'ADMIN' | 'SUPER_ADMIN'
+export type UserStateDtoEnum = "CREATED" | "DISABLED" | "ENABLED" | "ARCHIVED"
+export type UserRoleDtoEnum = "USER" | "ADMIN" | "SUPER_ADMIN"
 
 export interface UserDto {
   readonly id: string;
@@ -34,9 +34,9 @@ export interface UserPutDto {
 }
 
 export interface UserPasswordPutDto {
-  readonly passwordVerification: string
-  readonly password: string
-  readonly currentPassword: string
+  readonly passwordVerification: string;
+  readonly password: string;
+  readonly currentPassword: string;
 }
 
 export interface UserMeDto {

@@ -5,11 +5,11 @@ import type { Severity } from "../typography/Callout";
 import Callout from "../typography/Callout";
 
 interface PasswordCheckViewProps {
-	password: string;
+  password: string;
 }
 
 function getSeverity(statusCode: StatusCode | null): Severity {
-	switch (statusCode) {
+  switch (statusCode) {
     case StatusCode.WAITING:
       return "info";
     case StatusCode.MIN_LENGTH:
@@ -25,9 +25,10 @@ function getSeverity(statusCode: StatusCode | null): Severity {
   }
 }
 
-export default function PasswordCheckView({
-  password,
-}: PasswordCheckViewProps) {
+export default function PasswordCheckView(
+  {
+    password
+  }: PasswordCheckViewProps) {
   const [statusCode, checkPassword] = usePasswordCheck();
   useEffect(() => checkPassword(password), [password, checkPassword]);
 
@@ -44,7 +45,7 @@ export default function PasswordCheckView({
         )}
 
         {statusCode === StatusCode.WAITING && (
-          <Box sx={{ display: "flex", justifyContent: "row", alignItems: "center", }}>
+          <Box sx={{ display: "flex", justifyContent: "row", alignItems: "center" }}>
             <CircularProgress size={16} />
 
             <Typography sx={{ ml: 1 }}>Checking password security</Typography>

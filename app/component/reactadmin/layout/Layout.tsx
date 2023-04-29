@@ -1,27 +1,27 @@
 // https://marmelab.com/react-admin/Layout.html
-import type { LayoutProps } from 'react-admin';
-import { Layout as MuiLayout, Menu as ReactAdminMenu } from 'react-admin';
+import type { LayoutProps } from "react-admin";
+import { Layout as MuiLayout, Menu as ReactAdminMenu } from "react-admin";
 
 import AppBar from "./AppBar";
 import Error from "./Error";
 
 export default function Layout(props: LayoutProps) {
-	return (
+  return (
     <MuiLayout
       sx={{
         "& .RaSidebar-docked": {
-          display: "none",
+          display: "none"
         },
-        '& .RaLayout-content': {
-          background: 'var(--main-background-color)',
-          padding: 0,
+        "& .RaLayout-content": {
+          background: "var(--main-background-color)",
+          padding: 0
         },
         "& .RaLayout-appFrame": {
-          marginTop: 0,
+          marginTop: 0
         },
         "& .MuiMenuItem-root": {
-          textTransform: "capitalize",
-        },
+          textTransform: "capitalize"
+        }
       }}
       {...props}
       appBar={AppBar}

@@ -1,4 +1,4 @@
-import { Box, Typography } from '@mui/material';
+import { Box, Typography } from "@mui/material";
 import type { ActionArgs } from "@remix-run/node";
 import { redirect, V2_MetaFunction } from "@remix-run/node";
 import type { Params } from "@remix-run/react";
@@ -9,7 +9,7 @@ import DailyNoteForm from "~/component/daily/DailyNoteForm";
 import type { DailyPostDto as DailyNotePostDto } from "~/dto/daily.dto";
 import { validateForm } from "~/form/abstract";
 import { dailyValidator } from "~/form/daily.form";
-import type { SecurityFunction } from '~/helper/remix.helper';
+import type { SecurityFunction } from "~/helper/remix.helper";
 import { getParamsOrFail } from "~/helper/remix.params.helper";
 import { dailyNotePostDtoToApiObject } from "~/mapper/daily.mapper";
 import { createDailyNote } from "~/service/daily.server";
@@ -20,38 +20,38 @@ import { loader } from "~/routes/pse.$formationId.students.$studentId.concrete-c
 
 const ParamsSchema = z.object({
   formationId: z.string(),
-  studentId: z.string(),
-})
+  studentId: z.string()
+});
 
 const security: SecurityFunction<{
   pseFormationApiObject: PseFormationApiObject;
   studentId: string;
-	userApiObject: UserApiObject;
+  userApiObject: UserApiObject;
 }> = async (request: Request, params: Params) => {
-  const { formationId, studentId } = getParamsOrFail(params, ParamsSchema)
+  const { formationId, studentId } = getParamsOrFail(params, ParamsSchema);
 
-	const userApiObject = await requireUser(request)
+  const userApiObject = await requireUser(request);
 
-	const pseFormationApiObject = await getPseFormationById(formationId)
+  const pseFormationApiObject = await getPseFormationById(formationId);
 
-  await assertUserHasAccessToFormationAsTeacher(userApiObject.id, pseFormationApiObject.id)
-	
+  await assertUserHasAccessToFormationAsTeacher(userApiObject.id, pseFormationApiObject.id);
+
   return {
     pseFormationApiObject,
-		userApiObject,
-    studentId,
-  }
-}
+    userApiObject,
+    studentId
+  };
+};
 
 export const action = async ({ request, params }: ActionArgs) => {
-  const { pseFormationApiObject, userApiObject, studentId } = await security(request, params)
+  const { pseFormationApiObject, userApiObject, studentId } = await security(request, params);
 
   const result = await validateForm<DailyNotePostDto>(request, dailyValidator);
   if (result.errorResponse) {
-    return result.errorResponse
+    return result.errorResponse;
   }
 
-  const dailyNotePostDto = result.data;	
+  const dailyNotePostDto = result.data;
 
   const dailyNote = await createDailyNote(dailyNotePostDtoToApiObject(dailyNotePostDto));
 
@@ -60,15 +60,15 @@ export const action = async ({ request, params }: ActionArgs) => {
 
 export const meta: V2_MetaFunction<typeof loader> = () => {
   return [
-    { title: `Nouvelle note` },
+    { title: `Nouvelle note` }
   ];
 };
 
 export default function NewDailyNotePage() {
   const newDaily: DailyNotePostDto = {
     title: "",
-    content: "",
-  }
+    content: ""
+  };
 
   return (
     <>

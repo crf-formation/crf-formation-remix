@@ -12,7 +12,7 @@ export function pseUserTechniqueEntityToApiObject(
     formationId: entity.formationId,
     technique: pseTechniqueEntityToApiObject(entity.technique),
     techniqueId: entity.techniqueId,
-    acquired: entity.acquired,
+    acquired: entity.acquired
   };
 }
 
@@ -25,6 +25,6 @@ export function pseUserTechniqueApiObjectToDto(
     formationId: apiObject.formationId,
     technique: pseTechniqueApiObjectToDto(apiObject.technique),
     techniqueId: apiObject.techniqueId,
-    acquired: apiObject.acquired,
+    acquired: apiObject.acquired
   };
 }

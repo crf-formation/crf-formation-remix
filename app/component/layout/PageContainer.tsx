@@ -9,7 +9,7 @@ export default function PageContainer({ children, ariane }: { children: ReactNod
   return (
     <Main
       sx={{
-        flexDirection: "column",
+        flexDirection: "column"
       }}
     >
       {ariane}
@@ -18,7 +18,7 @@ export default function PageContainer({ children, ariane }: { children: ReactNod
         maxWidth="lg"
         sx={{
           // paddingTop: "3rem",
-          mb: 4,
+          mb: 4
         }}
       >
         {children}

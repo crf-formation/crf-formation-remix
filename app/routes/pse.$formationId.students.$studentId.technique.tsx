@@ -23,48 +23,51 @@ import { V2_MetaFunction } from "@remix-run/node";
 
 const ParamsSchema = z.object({
   formationId: z.string(),
-  studentId: z.string(),
-})
+  studentId: z.string()
+});
 
 const security: SecurityFunction<{
   pseFormationApiObject: PseFormationApiObject;
 }> = async (request: Request, params: Params) => {
-  const { formationId } = getParamsOrFail(params, ParamsSchema)
+  const { formationId } = getParamsOrFail(params, ParamsSchema);
 
-	const userApiObject = await requireUser(request)
+  const userApiObject = await requireUser(request);
 
-	const pseFormationApiObject = await getPseFormationById(formationId)
+  const pseFormationApiObject = await getPseFormationById(formationId);
 
-  await assertUserHasAccessToFormationAsTeacher(userApiObject.id, pseFormationApiObject.id)
-	
+  await assertUserHasAccessToFormationAsTeacher(userApiObject.id, pseFormationApiObject.id);
+
   return {
-    pseFormationApiObject,
-  }
-}
+    pseFormationApiObject
+  };
+};
 
 export async function loader({ request, params }: LoaderArgs) {
-  await security(request, params)
+  await security(request, params);
 
-  const { formationId, studentId } = getParamsOrFail(params, ParamsSchema)
+  const { formationId, studentId } = getParamsOrFail(params, ParamsSchema);
 
-  const pseModuleApiObjects = await getPseModules()
-  const pseUserTechniquesForUserApiObjects: Array<PseUserTechniqueApiObject> = await getPseUserTechniquesForUser(formationId, studentId)
+  const pseModuleApiObjects = await getPseModules();
+  const pseUserTechniquesForUserApiObjects: Array<PseUserTechniqueApiObject> = await getPseUserTechniquesForUser(formationId, studentId);
 
   return json({
     pseUserTechniques: pseUserTechniquesForUserApiObjects.map(pseUserTechniqueApiObjectToDto),
-    pseModules: pseModuleApiObjects.map(pseModuleApiObjectToDto),
-  })
+    pseModules: pseModuleApiObjects.map(pseModuleApiObjectToDto)
+  });
 }
 
 export const meta: V2_MetaFunction<typeof loader> = () => {
   return [
-    { title: `Techniques` },
+    { title: `Techniques` }
   ];
 };
 
-function ModuleView({ pseModule, pseUserTechniques }: { pseModule?: PseModuleDto; pseUserTechniques: Array<PseUserTechniqueDto> }) {
+function ModuleView({ pseModule, pseUserTechniques }: {
+  pseModule?: PseModuleDto;
+  pseUserTechniques: Array<PseUserTechniqueDto>
+}) {
   if (!pseModule) {
-    return null
+    return null;
   }
 
   return (
@@ -83,7 +86,7 @@ function ModuleView({ pseModule, pseUserTechniques }: { pseModule?: PseModuleDto
               sx={{
                 fontWeight: pseUserTechnique.technique.requiredForPse1
                   ? 500
-                  : undefined,
+                  : undefined
               }}
             >
               <FormControlLabel
@@ -115,9 +118,9 @@ function ModuleView({ pseModule, pseUserTechniques }: { pseModule?: PseModuleDto
 export default function TechniqueRoute() {
   const { pseUserTechniques, pseModules } = useLoaderData<typeof loader>();
 
-  const groupedByModule = groupBy(pseUserTechniques, pseUserTechnique => pseUserTechnique.technique.pseModuleId)
+  const groupedByModule = groupBy(pseUserTechniques, pseUserTechnique => pseUserTechnique.technique.pseModuleId);
 
-	return (
+  return (
     <Section title="Techniques">
       <Box sx={{ my: 2 }}>
         <Button variant="outlined">Tout valider</Button>

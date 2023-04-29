@@ -1,40 +1,45 @@
-import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
-import ArrowDropUpIcon from '@mui/icons-material/ArrowDropUp';
-import RemoveIcon from '@mui/icons-material/Remove';
+import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
+import ArrowDropUpIcon from "@mui/icons-material/ArrowDropUp";
+import RemoveIcon from "@mui/icons-material/Remove";
 import { Box, Button, Divider, Stack, Typography } from "@mui/material";
 import { sortBy } from "lodash";
 import { useState } from "react";
-import { v4 as uuid } from 'uuid';
+import { v4 as uuid } from "uuid";
 import type { PseConcreteCaseGroupDto } from "~/dto/pseconcretecasegroup.dto";
 import type { PseSituationConcreteCaseGroupDto } from "~/dto/pseconcretecasesituation.dto";
 import { deleteObjectOnArray, moveObjectAtIndexOnArray } from "~/util/array";
-import FormErrorHelperText from '../form/FormErrorHelperText';
-import InputHiddenJson from '../form/InputHiddenJson';
+import FormErrorHelperText from "../form/FormErrorHelperText";
+import InputHiddenJson from "../form/InputHiddenJson";
 import Callout from "../typography/Callout";
 
 
 interface Props {
-	name: string;
-	pseConcreteCaseGroups: Array<PseConcreteCaseGroupDto>;
-	pseSituationConcreteCaseGroups?: Array<PseSituationConcreteCaseGroupDto>;
+  name: string;
+  pseConcreteCaseGroups: Array<PseConcreteCaseGroupDto>;
+  pseSituationConcreteCaseGroups?: Array<PseSituationConcreteCaseGroupDto>;
 }
 
-export default function OrderPseConcreteCaseGroups({ name, pseConcreteCaseGroups, pseSituationConcreteCaseGroups }: Props) {
-	const [state, setState ] = useState<Array<PseSituationConcreteCaseGroupDto>>(pseSituationConcreteCaseGroups || [])
+export default function OrderPseConcreteCaseGroups(
+  {
+    name,
+    pseConcreteCaseGroups,
+    pseSituationConcreteCaseGroups
+  }: Props) {
+  const [state, setState] = useState<Array<PseSituationConcreteCaseGroupDto>>(pseSituationConcreteCaseGroups || []);
 
-	const notOrdered: Array<PseSituationConcreteCaseGroupDto> = pseConcreteCaseGroups
-		.filter(pseConcreteCaseGroup => !state.find((pseSituationConcreteCaseGroup: PseSituationConcreteCaseGroupDto) => pseSituationConcreteCaseGroup.pseConcreteCaseGroupId === pseConcreteCaseGroup.id))
-		.map(pseConcreteCaseGroup => {
-			return {
+  const notOrdered: Array<PseSituationConcreteCaseGroupDto> = pseConcreteCaseGroups
+    .filter(pseConcreteCaseGroup => !state.find((pseSituationConcreteCaseGroup: PseSituationConcreteCaseGroupDto) => pseSituationConcreteCaseGroup.pseConcreteCaseGroupId === pseConcreteCaseGroup.id))
+    .map(pseConcreteCaseGroup => {
+      return {
         id: uuid(),
         pseConcreteCaseGroup: pseConcreteCaseGroup,
-        pseConcreteCaseGroupId: pseConcreteCaseGroup.id,
+        pseConcreteCaseGroupId: pseConcreteCaseGroup.id
       } as PseSituationConcreteCaseGroupDto;
-	})
+    });
 
-	const ordered: Array<PseSituationConcreteCaseGroupDto> = sortBy(
-		state, 
-		(pseSituationConcreteCaseGroupDto: PseSituationConcreteCaseGroupDto) => pseSituationConcreteCaseGroupDto?.position)
+  const ordered: Array<PseSituationConcreteCaseGroupDto> = sortBy(
+    state,
+    (pseSituationConcreteCaseGroupDto: PseSituationConcreteCaseGroupDto) => pseSituationConcreteCaseGroupDto?.position);
 
   if (pseConcreteCaseGroups?.length === 0) {
     return (
@@ -46,7 +51,7 @@ export default function OrderPseConcreteCaseGroups({ name, pseConcreteCaseGroups
     );
   }
 
-	return (
+  return (
     <Box>
       {/* required to have our margin tops bellow workibg, our FormView Stack use a spacing of 2. */}
       <Box mt={4}>
@@ -65,7 +70,7 @@ export default function OrderPseConcreteCaseGroups({ name, pseConcreteCaseGroups
           json={ordered.map((group) => ({
             id: group.id,
             position: group.position,
-            pseConcreteCaseGroupId: group.pseConcreteCaseGroupId,
+            pseConcreteCaseGroupId: group.pseConcreteCaseGroupId
           }))}
         />
 
@@ -99,7 +104,7 @@ export default function OrderPseConcreteCaseGroups({ name, pseConcreteCaseGroups
                     ) => {
                       return {
                         ...pseSituationConcreteCaseGroupDto,
-                        position: index + 1,
+                        position: index + 1
                       };
                     }
                   );
@@ -116,7 +121,7 @@ export default function OrderPseConcreteCaseGroups({ name, pseConcreteCaseGroups
                     state,
                     {
                       ...pseSituationConcreteCaseGroup,
-                      position: pseSituationConcreteCaseGroup.position - 1,
+                      position: pseSituationConcreteCaseGroup.position - 1
                     },
                     pseSituationConcreteCaseGroup.position - 1,
                     (other: PseSituationConcreteCaseGroupDto) =>
@@ -131,7 +136,7 @@ export default function OrderPseConcreteCaseGroups({ name, pseConcreteCaseGroups
                     ) => {
                       return {
                         ...pseSituationConcreteCaseGroupDto,
-                        position: index + 1,
+                        position: index + 1
                       };
                     }
                   );
@@ -150,7 +155,7 @@ export default function OrderPseConcreteCaseGroups({ name, pseConcreteCaseGroups
                     state,
                     {
                       ...pseSituationConcreteCaseGroup,
-                      position: pseSituationConcreteCaseGroup.position + 1,
+                      position: pseSituationConcreteCaseGroup.position + 1
                     },
                     pseSituationConcreteCaseGroup.position + 1,
                     (other: PseSituationConcreteCaseGroupDto) =>
@@ -165,7 +170,7 @@ export default function OrderPseConcreteCaseGroups({ name, pseConcreteCaseGroups
                     ) => {
                       return {
                         ...pseSituationConcreteCaseGroupDto,
-                        position: index + 1,
+                        position: index + 1
                       };
                     }
                   );
@@ -203,8 +208,8 @@ export default function OrderPseConcreteCaseGroups({ name, pseConcreteCaseGroups
                         ...state,
                         {
                           ...pseSituationConcreteCaseGroup,
-                          position: ordered.length + 1,
-                        },
+                          position: ordered.length + 1
+                        }
                       ]);
                     }}
                   />
@@ -219,7 +224,7 @@ export default function OrderPseConcreteCaseGroups({ name, pseConcreteCaseGroups
 }
 
 function OrderedGroupLine({ index, name, pseSituationConcreteCaseGroup, isFirst, isLast, onUp, onDown, onRemove }) {
-	return (
+  return (
     <>
       <Box display="flex" justifyContent="space-between" px={2}>
         <div>{pseSituationConcreteCaseGroup.pseConcreteCaseGroup.name}</div>
@@ -241,12 +246,12 @@ function OrderedGroupLine({ index, name, pseSituationConcreteCaseGroup, isFirst,
 }
 
 function NotOrderedGroupLine({ pseSituationConcreteCaseGroup, onAdd }) {
-	return (
-		<Box display="flex" justifyContent="space-between" px={2}>
-			<div>{pseSituationConcreteCaseGroup.pseConcreteCaseGroup.name}</div>
-			<div>
-				<Button onClick={() => onAdd()}>Ajouter</Button>
-			</div>
-		</Box>
-	)
+  return (
+    <Box display="flex" justifyContent="space-between" px={2}>
+      <div>{pseSituationConcreteCaseGroup.pseConcreteCaseGroup.name}</div>
+      <div>
+        <Button onClick={() => onAdd()}>Ajouter</Button>
+      </div>
+    </Box>
+  );
 }

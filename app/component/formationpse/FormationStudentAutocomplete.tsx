@@ -44,12 +44,13 @@ function Content({ usersPaginateObject, isLoading, name, defaultValue, query, se
   );
 }
 
-export default function FormationStudentAutocomplete({
-  formationId,
-  name = "students",
-  defaultValue,
-  ...otherProps
-}: Props) {
+export default function FormationStudentAutocomplete(
+  {
+    formationId,
+    name = "students",
+    defaultValue,
+    ...otherProps
+  }: Props) {
   const [query, setQuery] = useState("");
 
   return (

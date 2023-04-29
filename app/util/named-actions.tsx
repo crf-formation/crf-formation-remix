@@ -14,7 +14,7 @@ type Actions = Record<string, (request: Request, params: Params) => Promise<Resp
  */
 export async function namedActionWithFormType(
   request: Request,
-	params: Params,
+  params: Params,
   actions: Actions
 ): Promise<Response> {
   return await run(await request.clone().formData(), request, params, actions);
@@ -30,19 +30,19 @@ export async function namedActionWithFormType(
  */
 export async function namedAction(
   request: Request,
-	params: Params,
+  params: Params,
   actions: Actions
 ) {
-	return await run(request, request, params, actions); 
+  return await run(request, request, params, actions);
 }
 
 async function run(
-	input: Request | FormData,
-	request: Request,
-	params: Params,
+  input: Request | FormData,
+  request: Request,
+  params: Params,
   actions: Actions
 ) {
-	let name = await getActionName(input);
+  let name = await getActionName(input);
 
   if (name && name in actions) return await actions[name](request, params);
 
@@ -66,7 +66,7 @@ async function getActionName(
       if (actionName) return actionName;
     }
 
-    return findNameUsingMethod(input.method)
+    return findNameUsingMethod(input.method);
   }
 
   if (input instanceof URL) {
@@ -106,7 +106,7 @@ function findNameInFormData(formData: FormData) {
     if (key.startsWith("/")) return key.slice(1);
   }
 
-	let actionName = formData.get("formType");
+  let actionName = formData.get("formType");
   if (typeof actionName === "string") return `action${actionName.charAt(0).toUpperCase() + actionName.slice(1)}`;
 
   actionName = formData.get("intent");
@@ -121,15 +121,15 @@ function findNameInFormData(formData: FormData) {
   return null;
 }
 
-function findNameUsingMethod(method: string): string  | null {
-	switch (method.toUpperCase()) {
+function findNameUsingMethod(method: string): string | null {
+  switch (method.toUpperCase()) {
     case "POST":
       return "postAction";
     case "PUT":
       return "putAction";
     case "DELETE":
       return "deleteAction";
-		default:
-			return null;
+    default:
+      return null;
   }
 }

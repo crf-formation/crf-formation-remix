@@ -1,22 +1,22 @@
 import { Alert as MuiAlert, Snackbar } from "@mui/material";
-import type { AlertProps } from '@mui/material/Alert';
+import type { AlertProps } from "@mui/material/Alert";
 import { forwardRef, useState } from "react";
-import type { FlashMessage } from '~/dto/flash.dto';
-import useRootData from '~/hook/useRootData';
+import type { FlashMessage } from "~/dto/flash.dto";
+import useRootData from "~/hook/useRootData";
 
 const Alert = forwardRef<HTMLDivElement, AlertProps>(function Alert(
   props,
-  ref,
+  ref
 ) {
   return <MuiAlert elevation={6} ref={ref} variant="standard" {...props} />;
 });
 
 interface FlashMessageSnackbarProps {
-  flashMessage: FlashMessage
+  flashMessage: FlashMessage;
 }
 
 function FlashMessageSnackbar({ flashMessage }: FlashMessageSnackbarProps) {
-  const [open, setOpen] = useState(true)
+  const [open, setOpen] = useState(true);
 
   return (
     <Snackbar
@@ -24,7 +24,7 @@ function FlashMessageSnackbar({ flashMessage }: FlashMessageSnackbarProps) {
       autoHideDuration={6000}
       onClose={(event, reason) => {
         if (reason === "timeout") {
-          setOpen(false)
+          setOpen(false);
         } else if (reason === "clickaway") {
           // do nothing
         }
@@ -33,11 +33,11 @@ function FlashMessageSnackbar({ flashMessage }: FlashMessageSnackbarProps) {
       sx={(theme) => ({
         top: "calc(var(--header-height) + 8px)",
         [theme.breakpoints.up("md")]: {
-          top: "calc(var(--header-height) + 8px)",
-        },
+          top: "calc(var(--header-height) + 8px)"
+        }
       })}
     >
-      <Alert 
+      <Alert
         severity={flashMessage.severity || "info"}
         color={"info"} // TODO: remove, use only severity
         onClick={() => setOpen(false)}
@@ -49,7 +49,7 @@ function FlashMessageSnackbar({ flashMessage }: FlashMessageSnackbarProps) {
 }
 
 export default function FlashMessages() {
-  const { flashMessages } = useRootData()
+  const { flashMessages } = useRootData();
 
   if (!flashMessages || flashMessages.length === 0) {
     return null;

@@ -6,11 +6,11 @@ import type { ReactNode } from "react";
 const lightColor = "rgba(255, 255, 255, 0.7)";
 
 interface Props {
-	children: ReactNode
+  children: ReactNode;
 }
 
 export default function SubHeaderBar({ children }: Props) {
-	return (
+  return (
     <AppBar
       component="div"
       color="primary"
@@ -19,8 +19,8 @@ export default function SubHeaderBar({ children }: Props) {
       sx={{
         zIndex: 0,
         "& .Button-root": {
-          borderColor: lightColor,
-        },
+          borderColor: lightColor
+        }
       }}
     >
       <Toolbar>

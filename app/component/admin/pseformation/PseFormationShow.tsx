@@ -1,9 +1,9 @@
 // see https://marmelab.com/react-admin/Show.html
-import { DateField, EmailField, SimpleShowLayout, TextField } from 'react-admin';
-import CrudActionsTabs from '~/component/reactadmin/layout/CrudActionsTabs';
-import ShowLayout from '~/component/reactadmin/layout/ShowLayout';
-import { PlaceReferenceField } from '../PlaceReference';
-import { FormationStateField } from './PseFormationState';
+import { DateField, EmailField, SimpleShowLayout, TextField } from "react-admin";
+import CrudActionsTabs from "~/component/reactadmin/layout/CrudActionsTabs";
+import ShowLayout from "~/component/reactadmin/layout/ShowLayout";
+import { PlaceReferenceField } from "../PlaceReference";
+import { FormationStateField } from "./PseFormationState";
 
 export default function PseFormationShow() {
   return (

@@ -5,7 +5,7 @@ import { dailyValidator } from "~/form/daily.form";
 
 
 export default function DailyNoteForm({ daily }: { daily: DailyNoteDto }) {
-	return (
+  return (
     <FormView
       submitText="Mettre à jour"
       validator={dailyValidator}

@@ -1,16 +1,7 @@
-import {
-  Button,
-  Link,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
-} from "@mui/material";
+import { Button, Link, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from "@mui/material";
 import type { Params } from "@remix-run/react";
 import { useLoaderData } from "@remix-run/react";
-import type { LoaderArgs, MetaFunction } from "@remix-run/server-runtime";
+import type { LoaderArgs } from "@remix-run/server-runtime";
 import { json } from "@remix-run/server-runtime";
 import { z } from "zod";
 import type { PseFormationApiObject } from "~/apiobject/pseformation.apiobject";
@@ -32,38 +23,38 @@ import { requireUser } from "~/service/session.server";
 import type { V2_MetaFunction } from "@remix-run/node";
 
 const ParamsSchema = z.object({
-  formationId: z.string(),
+  formationId: z.string()
 });
 
 const URLSearchParamsSchema = z.object({
   page: z.number().default(0),
   pageSize: z.number().default(25),
   orderBy: z.string().default("createdAt"),
-  orderByDirection: z.enum(["asc", "desc"]).default("desc"),
+  orderByDirection: z.enum(["asc", "desc"]).default("desc")
 });
 
 const security: SecurityFunction<{
   pseFormationApiObject: PseFormationApiObject;
 }> = async (request: Request, params: Params) => {
-  const { formationId } = getParamsOrFail(params, ParamsSchema)
+  const { formationId } = getParamsOrFail(params, ParamsSchema);
 
-	const userApiObject = await requireUser(request)
+  const userApiObject = await requireUser(request);
 
-	const pseFormationApiObject = await findPseFormationById(formationId)
-	
-	if (!pseFormationApiObject) {
-		throw new Error(`Formation not found: ${formationId}`);
-	}
-	
-	await assertUserHasAccessToFormationAsTeacher(userApiObject.id, pseFormationApiObject.id)
+  const pseFormationApiObject = await findPseFormationById(formationId);
+
+  if (!pseFormationApiObject) {
+    throw new Error(`Formation not found: ${formationId}`);
+  }
+
+  await assertUserHasAccessToFormationAsTeacher(userApiObject.id, pseFormationApiObject.id);
 
   return {
-    pseFormationApiObject,
-  }
-}
+    pseFormationApiObject
+  };
+};
 
 export async function loader({ request, params }: LoaderArgs) {
-  const { pseFormationApiObject }  = await security(request, params);
+  const { pseFormationApiObject } = await security(request, params);
 
   const { page, pageSize, orderBy, orderByDirection } = getSearchParamsOrFail(
     request,
@@ -84,13 +75,13 @@ export async function loader({ request, params }: LoaderArgs) {
     concreteCaseSessionsPaginateObject: paginateApiObjectToDto(
       concreteCaseSessionsPaginateObject,
       pseConcreteCaseSessionApiObjectToDto
-    ),
+    )
   });
 }
 
 export const meta: V2_MetaFunction<typeof loader> = ({ data }) => {
   return [
-    { title: `Sessions` },
+    { title: `Sessions` }
   ];
 };
 

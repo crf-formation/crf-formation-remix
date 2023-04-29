@@ -1,42 +1,38 @@
 import Brightness2Icon from "@mui/icons-material/Brightness2";
 import Brightness7Icon from "@mui/icons-material/Brightness7";
-import {
-  Box, IconButton,
-  Link as MuiLink, Tooltip,
-  Typography
-} from "@mui/material";
+import { Box, IconButton, Link as MuiLink, Tooltip, Typography } from "@mui/material";
 import { json, V2_MetaFunction } from "@remix-run/node";
 import { Form, Link as RmxLink, useLocation } from "@remix-run/react";
-import type { LoaderArgs, MetaFunction } from "@remix-run/server-runtime";
+import type { LoaderArgs } from "@remix-run/server-runtime";
 import Main from "~/component/layout/Main";
 import useRootData from "~/hook/useRootData";
 import { addFlashMessage } from "~/service/flash.server";
 import { commitSession, requireUser } from "~/service/session.server";
 
 export async function loader({ request }: LoaderArgs) {
-  const user = await requireUser(request)
+  const user = await requireUser(request);
 
-	const session = await addFlashMessage(
-		request,
-		"success",
+  const session = await addFlashMessage(
+    request,
+    "success",
     `Testing success flash message`
   );
 
   return json(
     {
-      user,
+      user
     },
     {
       headers: {
-        "Set-Cookie": await commitSession(session),
-      },
+        "Set-Cookie": await commitSession(session)
+      }
     }
   );
 }
 
 export const meta: V2_MetaFunction<typeof loader> = () => {
   return [
-    { title: "Test" },
+    { title: "Test" }
   ];
 };
 
@@ -56,8 +52,8 @@ export default function Test() {
           textAlign: "center",
           flexDirection: "column",
           "& > *": {
-            mb: 1,
-          },
+            mb: 1
+          }
         }}
       >
         <Form action="/" method="POST">

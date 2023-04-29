@@ -1,17 +1,17 @@
 //
 // 404 page (fallback route)
 //
-import type { LoaderArgs, V2_MetaFunction  } from "@remix-run/node";
+import type { LoaderArgs, V2_MetaFunction } from "@remix-run/node";
 import { json } from "@remix-run/node";
 import { DefaultErrorView } from "~/component/layout/ErrorPageContainer";
 
 export async function loader({ request }: LoaderArgs) {
-  return json({})
+  return json({});
 }
 
 export const meta: V2_MetaFunction<typeof loader> = () => {
   return [
-    { title: "404 - Page inconnue" },
+    { title: "404 - Page inconnue" }
   ];
 };
 

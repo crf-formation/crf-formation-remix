@@ -1,11 +1,10 @@
 import { createCookieSessionStorage, redirect } from "@remix-run/node";
-import type { CookieSerializeOptions, Session } from '@remix-run/server-runtime';
+import type { CookieSerializeOptions, Session } from "@remix-run/server-runtime";
 import invariant from "tiny-invariant";
 import type { UserApiObject } from "~/apiobject/user.apiobject";
 import { SESSION_KEY, SESSION_MAX_AGE } from "~/constant/index.server";
-import { getUserMe, } from "~/service/user.server";
-import { ApiErrorException } from './api.error';
-import { findUserById } from "./user.server";
+import { getUserMe } from "~/service/user.server";
+import { ApiErrorException } from "./api.error";
 
 invariant(process.env.SESSION_SECRET, "SESSION_SECRET must be set");
 
@@ -16,8 +15,8 @@ export const sessionStorage = createCookieSessionStorage({
     path: "/",
     sameSite: "lax",
     secrets: [process.env.SESSION_SECRET],
-    secure: process.env.NODE_ENV === "production",
-  },
+    secure: process.env.NODE_ENV === "production"
+  }
 });
 
 export async function getSession(request: Request) {
@@ -38,13 +37,13 @@ export async function getMe(request: Request): Promise<Optional<UserApiObject>> 
 
   try {
     const userApiObject = await getUserMe(userId);
-    return userApiObject
+    return userApiObject;
   } catch (e) {
     if (e instanceof ApiErrorException && e.status === 401) {
       throw await logout(request);
     }
   }
-  return null
+  return null;
 }
 
 export async function requireUserId(
@@ -62,63 +61,64 @@ export async function requireUserId(
 export async function requireUser(request: Request): Promise<UserApiObject> {
   const userMe = await getMe(request);
 
-  if (userMe) return userMe
+  if (userMe) return userMe;
 
   throw await logout(request);
 }
 
 export async function requireAdmin(request: Request): Promise<UserApiObject> { // TODO: return UserMeApiObject?
-	const user = await requireUser(request);
+  const user = await requireUser(request);
 
-  if (user.role === 'ADMIN' || user.role == 'SUPER_ADMIN') return user;
+  if (user.role === "ADMIN" || user.role == "SUPER_ADMIN") return user;
 
-  throw await redirect("/")
+  throw await redirect("/");
 }
 
 export async function requireAuth(request: Request) {
   return {
-    userId: await requireUserId(request),
-  }
+    userId: await requireUserId(request)
+  };
 }
 
-export async function createUserSession({
-  session,
-  userId,
-  remember,
-  redirectTo,
-}: {
-  session: Session;
-  userId: string;
-  remember: boolean;
-  redirectTo: string;
-}) {
-  session.set(SESSION_KEY,  { userId });
-  
+export async function createUserSession(
+  {
+    session,
+    userId,
+    remember,
+    redirectTo
+  }: {
+    session: Session;
+    userId: string;
+    remember: boolean;
+    redirectTo: string;
+  }) {
+  session.set(SESSION_KEY, { userId });
+
   return redirect(redirectTo, {
     headers: {
       "Set-Cookie": await sessionStorage.commitSession(session, {
         // TODO: max-age will be overriden when we commitSession on the code..
         maxAge: remember
           ? SESSION_MAX_AGE
-          : undefined,
-      }),
-    },
+          : undefined
+      })
+    }
   });
 }
 
 export async function logout(request: Request) {
   const session = await getSession(request);
-  const cookie = await sessionStorage.destroySession(session)
+  const cookie = await sessionStorage.destroySession(session);
 
   return redirect("/login", {
     headers: {
       "Set-Cookie": cookie
-    },
+    }
   });
 }
 
 export async function commitSession(session: Session, options?: CookieSerializeOptions): Promise<string> {
-  return sessionStorage.commitSession(session, { maxAge: SESSION_MAX_AGE, ...options })
+  return sessionStorage.commitSession(session, { maxAge: SESSION_MAX_AGE, ...options });
 }
 
 export let { destroySession } = sessionStorage;

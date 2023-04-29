@@ -1,5 +1,5 @@
 import { Box, Link } from "@mui/material";
-import type { ActionArgs, LoaderArgs, MetaFunction } from "@remix-run/node";
+import type { ActionArgs, LoaderArgs } from "@remix-run/node";
 import { json, redirect, V2_MetaFunction } from "@remix-run/node";
 import { useActionData, useLoaderData, useSearchParams } from "@remix-run/react";
 import { useRef, useState } from "react";
@@ -20,14 +20,14 @@ import { createAuthenticityToken } from "~/util/csrf.server";
 
 const URLSearchParamsSchema = z.object({
   redirectTo: z.string().default("/dashboard"),
-  email: z.string().default("jon-doe@crf-formation.fr"), // TODO: remove
+  email: z.string().default("jon-doe@crf-formation.fr") // TODO: remove
 });
 
 export async function loader({ request }: LoaderArgs) {
   const userId = await getUserId(request);
   if (userId) return redirect("/");
-  
-  const { redirectTo, email: defaultEmail } = getSearchParamsOrFail(request, URLSearchParamsSchema)
+
+  const { redirectTo, email: defaultEmail } = getSearchParamsOrFail(request, URLSearchParamsSchema);
 
   return json({
     redirectTo,
@@ -54,10 +54,10 @@ export async function action({ request }: ActionArgs) {
   const result = await validateForm<LoginDto>(request, loginValidator);
 
   if (result.errorResponse) {
-    return result.errorResponse
+    return result.errorResponse;
   }
 
-  const { email, password, redirectTo, remember, } = result.data
+  const { email, password, redirectTo, remember } = result.data;
 
 
   const userAuthToken = await verifyLogin(email, password);
@@ -71,14 +71,14 @@ export async function action({ request }: ActionArgs) {
     session,
     userId: userAuthToken.user.id,
     remember,
-    redirectTo,
+    redirectTo
   });
 
 }
 
 export const meta: V2_MetaFunction<typeof loader> = () => {
   return [
-    { title: "Connexion" },
+    { title: "Connexion" }
   ];
 };
 
@@ -87,15 +87,15 @@ export default function LoginRoute() {
 
   const [searchParams] = useSearchParams();
 
-  const [email, setEmail] = useState(defaultEmail)
+  const [email, setEmail] = useState(defaultEmail);
   const [password, setPassword] = useState("bonjour1"); // TODO: remove test password
 
   const actionData = useActionData<typeof action>();
   const emailRef = useRef<HTMLInputElement>(null);
   const passwordRef = useRef<HTMLInputElement>(null);
   useFormFocusError(actionData, [
-    [ "email", emailRef ],
-    [ "password", passwordRef ],
+    ["email", emailRef],
+    ["password", passwordRef]
   ]);
 
   return (

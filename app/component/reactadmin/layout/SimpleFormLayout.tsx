@@ -1,13 +1,13 @@
 // https://marmelab.com/react-admin/Buttons.html#record-buttons
 
-import { Box } from '@mui/material';
-import type { SimpleFormProps as MuiSimpleFormProps, ToolbarProps } from 'react-admin';
-import { DeleteWithConfirmButton, SaveButton, SimpleForm, Toolbar, useRecordContext } from 'react-admin';
+import { Box } from "@mui/material";
+import type { SimpleFormProps as MuiSimpleFormProps, ToolbarProps } from "react-admin";
+import { DeleteWithConfirmButton, SaveButton, SimpleForm, Toolbar, useRecordContext } from "react-admin";
 
 function EditToolbar(props: ToolbarProps) {
-	const record = useRecordContext();
+  const record = useRecordContext();
 
-	return (
+  return (
     <Toolbar {...props}>
       <Box sx={{ width: "100%", display: "flex", justifyContent: "space-between" }}>
         <SaveButton />
@@ -21,16 +21,16 @@ function EditToolbar(props: ToolbarProps) {
 }
 
 function CreateToolbar(props: ToolbarProps) {
-	return (
+  return (
     <Toolbar {...props}>
-     
+
     </Toolbar>
   );
 }
 
 
-interface SimpleFormProps extends MuiSimpleFormProps{
-	variant: 'edit' | 'create'
+interface SimpleFormProps extends MuiSimpleFormProps {
+  variant: "edit" | "create";
 }
 
 export default function SimpleFormLayout({ variant, children, ...props }: SimpleFormProps) {

@@ -1,4 +1,4 @@
-import { TextField, } from "@mui/material";
+import { TextField } from "@mui/material";
 import { useRef, useState } from "react";
 import type { FormResult } from "~/constant/types";
 import { passwordModificationValidator } from "~/form/user.form";
@@ -22,7 +22,7 @@ export default function PasswordForm({ actionData }: PasswordFormProps) {
 
   useFormFocusError(actionData, [
     ["currentPassword", currentPasswordRef],
-    ["password", passwordRef],
+    ["password", passwordRef]
   ]);
 
   return (

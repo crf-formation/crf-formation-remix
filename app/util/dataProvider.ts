@@ -1,10 +1,10 @@
 // from https://github.com/marmelab/react-admin/blob/master/packages/ra-data-simple-rest/src/index.ts
-import type { DataProvider, GetListParams } from 'ra-core';
-import { fetchUtils } from 'ra-core';
-import type { GetManyReferenceParams, GetOneParams, UpdateManyParams } from 'react-admin';
+import type { DataProvider, GetListParams } from "ra-core";
+import { fetchUtils } from "ra-core";
+import type { GetManyReferenceParams, GetOneParams, UpdateManyParams } from "react-admin";
 
 function getPath(apiUrl: string, resource: string, params: GetOneParams<any> | UpdateManyParams<any>) {
-  return `${apiUrl}/${resource}/${params.id}`
+  return `${apiUrl}/${resource}/${params.id}`;
 }
 
 function isGetManyReferenceParams(params: GetManyReferenceParams | GetListParams): params is GetManyReferenceParams {
@@ -16,15 +16,15 @@ function getList(apiUrl: string, httpClient = fetchUtils.fetchJson, resource: st
   const { field, order } = params.sort;
 
   const filter = {
-    ...params.filter,
-  }
+    ...params.filter
+  };
 
   if (isGetManyReferenceParams(params)) {
     if (params.target) {
       filter[params.target] = params.id;
     }
   }
-  
+
   const urlSearchParams = new URLSearchParams({
     orderByDirection: order.toLowerCase(),
     orderBy: field,
@@ -45,7 +45,7 @@ function getList(apiUrl: string, httpClient = fetchUtils.fetchJson, resource: st
     }
     return {
       data: json.data,
-      total: json.page.totalElements,
+      total: json.page.totalElements
     };
   });
 }
@@ -73,7 +73,7 @@ function getList(apiUrl: string, httpClient = fetchUtils.fetchJson, resource: st
  * import { PostList } from './posts';
  *
  * const App = () => (
- *     <Admin dataProvider={simpleRestProvider('http://path.to.my.api/')}>
+ *     <Admin dataProvider={simpleRestProvider("http://path.to.my.api/")}>
  *         <Resource name="posts" list={PostList} />
  *     </Admin>
  * );
@@ -88,15 +88,15 @@ export default (
 
   getOne: (resource, params) => {
     return httpClient(getPath(apiUrl, resource, params)).then(({ json }) => ({
-      data: json,
-    }))
+      data: json
+    }));
   },
 
   getMany: (resource, params) => {
     return Promise.all(
       params.ids.map((id) =>
         httpClient(`${apiUrl}/${resource}/${id}`, {
-          method: "GET",
+          method: "GET"
         })
       )
     ).then((responses) => ({ data: responses.map(({ json }) => json) }));
@@ -107,7 +107,7 @@ export default (
   update: (resource, params) =>
     httpClient(getPath(apiUrl, resource, params), {
       method: "PUT",
-      body: JSON.stringify(params.data),
+      body: JSON.stringify(params.data)
     }).then(({ json }) => ({ data: json })),
 
   // simple-rest doesn't handle provide an updateMany route, so we fallback to calling update n times instead
@@ -116,7 +116,7 @@ export default (
       params.ids.map((id) =>
         httpClient(getPath(apiUrl, resource, params), {
           method: "PUT",
-          body: JSON.stringify(params.data),
+          body: JSON.stringify(params.data)
         })
       )
     ).then((responses) => ({ data: responses.map(({ json }) => json.id) })),
@@ -124,24 +124,24 @@ export default (
   create: (resource, params) =>
     httpClient(`${apiUrl}/${resource}`, {
       method: "POST",
-      body: JSON.stringify(params.data),
+      body: JSON.stringify(params.data)
     })
-    .then(response => {
-      // handle redirection. We redirect from the proxy to our custom pages after creation
-      // if (response.status === 302) {
-      //   // window.location.href = response.headers.get('location') as string
-      //   return { data: {} }
-      // } else {
-        return { data: response.json }
-      // }
-    }),
+      .then(response => {
+        // handle redirection. We redirect from the proxy to our custom pages after creation
+        // if (response.status === 302) {
+        //   // window.location.href = response.headers.get('location') as string
+        //   return { data: {} }
+        // } else {
+        return { data: response.json };
+        // }
+      }),
 
   delete: (resource, params) =>
     httpClient(getPath(apiUrl, resource, params), {
       method: "DELETE",
       headers: new Headers({
-        "Content-Type": "text/plain",
-      }),
+        "Content-Type": "text/plain"
+      })
     }).then(({ json }) => ({ data: json })),
 
   // simple-rest doesn't handle filters on DELETE route, so we fallback to calling DELETE n times instead
@@ -151,12 +151,12 @@ export default (
         httpClient(`${apiUrl}/${resource}/${id}`, {
           method: "DELETE",
           headers: new Headers({
-            "Content-Type": "text/plain",
-          }),
+            "Content-Type": "text/plain"
+          })
         })
       )
     ).then((responses) => ({
-      data: responses.map(({ json }) => json.id),
-    })),
+      data: responses.map(({ json }) => json.id)
+    }))
 });
 

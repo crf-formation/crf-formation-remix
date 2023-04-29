@@ -4,44 +4,50 @@ import PseAcquiredLabel from "~/component/pse-summary/PseAcquiredLabel";
 import type { PseConcreteCaseSummaryDto, PseConcreteCaseUserSummaryDto } from "~/dto/psesummary.dto";
 
 interface Props {
-	concreteCaseSummary: PseConcreteCaseSummaryDto
+  concreteCaseSummary: PseConcreteCaseSummaryDto;
 }
 
-function CompetenceAcquiredLabel({ 
-	children, 
-	acquired, 
-	acquiredForPse1,
-	isInDifficulty
- }: { children: ReactNode, acquired: boolean, acquiredForPse1: boolean, isInDifficulty: boolean }) {
-	const theme = {
-		acquired: {  color: 'success.main' },
-		acquiredForPse1: { fontWeight: 500, color: 'warning.main' },
-		isInDifficulty: { fontWeight: 600, color: 'error.main' }
-	}
+function CompetenceAcquiredLabel(
+  {
+    children,
+    acquired,
+    acquiredForPse1,
+    isInDifficulty
+  }: {
+    children: ReactNode,
+    acquired: boolean,
+    acquiredForPse1: boolean,
+    isInDifficulty: boolean
+  }) {
+  const theme = {
+    acquired: { color: "success.main" },
+    acquiredForPse1: { fontWeight: 500, color: "warning.main" },
+    isInDifficulty: { fontWeight: 600, color: "error.main" }
+  };
 
-	const sx = [
-		isInDifficulty && theme.isInDifficulty,
-		acquired && theme.acquired,
-		acquiredForPse1 && theme.acquiredForPse1,
-	].filter(Boolean)[0]
-	
-	return <Box sx={{ ...sx, }}>{children}</Box>
+  const sx = [
+    isInDifficulty && theme.isInDifficulty,
+    acquired && theme.acquired,
+    acquiredForPse1 && theme.acquiredForPse1
+  ].filter(Boolean)[0];
+
+  return <Box sx={{ ...sx }}>{children}</Box>;
 }
 
 function UserSummaryTableRow({ userSummary }: { userSummary: PseConcreteCaseUserSummaryDto }) {
-	return (
+  return (
     <TableRow>
       <TableCell>{userSummary.user.fullName}</TableCell>
 
       {userSummary.competencesSummary.map((competenceSummary) => (
         <TableCell key={competenceSummary.pseCompetenceId}>
-					<CompetenceAcquiredLabel
-						acquired={competenceSummary.acquired}
-						acquiredForPse1={competenceSummary.acquiredForPse1}
-						isInDifficulty={competenceSummary.isInDifficulty}
-					>
-						<span>{competenceSummary.nbAcquired}{'/'}{competenceSummary.nbTotal}</span>
-					</CompetenceAcquiredLabel>
+          <CompetenceAcquiredLabel
+            acquired={competenceSummary.acquired}
+            acquiredForPse1={competenceSummary.acquiredForPse1}
+            isInDifficulty={competenceSummary.isInDifficulty}
+          >
+            <span>{competenceSummary.nbAcquired}{"/"}{competenceSummary.nbTotal}</span>
+          </CompetenceAcquiredLabel>
         </TableCell>
       ))}
 
@@ -56,7 +62,7 @@ function UserSummaryTableRow({ userSummary }: { userSummary: PseConcreteCaseUser
 }
 
 export default function PseSummaryConcreteCaseSummary({ concreteCaseSummary }: Props) {
-	return (
+  return (
     <TableContainer>
       <Table>
 
@@ -71,7 +77,7 @@ export default function PseSummaryConcreteCaseSummary({ concreteCaseSummary }: P
               </TableCell>
             ))}
 
-						<TableCell>Validé</TableCell>
+            <TableCell>Validé</TableCell>
 
           </TableRow>
 

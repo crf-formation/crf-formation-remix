@@ -17,15 +17,15 @@ export default function ProfileForm({ user, actionData }: ProfileFormProps) {
   const lastNameRef = useRef<HTMLInputElement>(null);
   const phoneNumberRef = useRef<HTMLInputElement>(null);
   const emailRef = useRef<HTMLInputElement>(null);
-  
+
   useFormFocusError(actionData, [
-    [ "firstName", firstNameRef ],
-    [ "lastName", lastNameRef ],
-    [ "phoneNumber", phoneNumberRef ],
-    [ "email", emailRef ],
+    ["firstName", firstNameRef],
+    ["lastName", lastNameRef],
+    ["phoneNumber", phoneNumberRef],
+    ["email", emailRef]
   ]);
 
-	return (
+  return (
     <FormView
       submitText="Mettre à jour"
       validator={profileValidator}

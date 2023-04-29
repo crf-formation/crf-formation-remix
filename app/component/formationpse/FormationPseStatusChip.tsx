@@ -3,9 +3,9 @@ import type { PseFormationStateDtoEnum } from "~/dto/pseformation.dto";
 
 
 interface Props {
-	state: PseFormationStateDtoEnum;
+  state: PseFormationStateDtoEnum;
 }
 
 export default function FormationPseStatusChip({ state }: Props) {
-	return <Chip label={state} />
+  return <Chip label={state} />;
 }
