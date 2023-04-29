@@ -9,9 +9,7 @@ import AppTabsLink from "~/component/layout/AppTabsLink";
 import { Ariane, ArianeItem } from "~/component/layout/Ariane";
 import ButtonStack from "~/component/layout/ButtonStack";
 import Main from "~/component/layout/Main";
-import PagePaperHeader from "~/component/layout/PagePaperHeader";
-import PageSpace from "~/component/layout/PageSpace";
-import PageTitle from "~/component/layout/PageTitle";
+import Page from "~/component/layout/Page";
 import Section from "~/component/layout/Section";
 import type { SecurityFunction } from "~/helper/remix.helper";
 import { getParamsOrFail } from "~/helper/remix.params.helper";
@@ -94,27 +92,23 @@ export default function UserPseFormationSummaryRoute() {
   ];
 
   return (
-    <>
-      <PagePaperHeader
-        ariane={
-          <Ariane>
-            <ArianeItem label="PSE" href="pse" />
+    <Page
+      fullWidth
+      ariane={
+        <Ariane>
+          <ArianeItem label="PSE" href="pse" />
 
-            <ArianeItem
-              label={pseFormation.title}
-              href={`/pse/${pseFormation.id}`}
-            />
+          <ArianeItem
+            label={pseFormation.title}
+            href={`/pse/${pseFormation.id}`}
+          />
 
-            <ArianeItem label="Participants" href={`/pse/${pseFormation.id}`} />
-          </Ariane>
-        }
-      >
-        <PageTitle title={student.fullName} />
-      </PagePaperHeader>
-
-      <AppTabsLink tabs={tabs} />
-
-      <PageSpace variant="header" />
+          <ArianeItem label="Participants" href={`/pse/${pseFormation.id}`} />
+        </Ariane>
+      }
+      title={student.fullName}
+      tabs={<AppTabsLink tabs={tabs} />}
+    >
 
       <Main sx={{ px: 4, mb: 4 }}>
         <Grid container spacing={2}>
@@ -141,6 +135,7 @@ export default function UserPseFormationSummaryRoute() {
           </Grid>
         </Grid>
       </Main>
-    </>
+
+    </Page>
   );
 }

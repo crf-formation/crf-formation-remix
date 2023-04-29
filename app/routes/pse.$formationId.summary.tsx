@@ -8,10 +8,6 @@ import type { PseFormationApiObject } from "~/apiobject/pseformation.apiobject";
 import type { PseSummaryApiObject } from "~/apiobject/psesummary.apiobject";
 import { Ariane, ArianeItem } from "~/component/layout/Ariane";
 import Page from "~/component/layout/Page";
-import PagePaperHeader from "~/component/layout/PagePaperHeader";
-import PageSpace from "~/component/layout/PageSpace";
-import PageSubtitle from "~/component/layout/PageSubtitle";
-import PageTitle from "~/component/layout/PageTitle";
 import Section from "~/component/layout/Section";
 import PseSummaryConcreteCaseSummary from "~/component/pse-summary/PseSummaryConcreteCaseSummary";
 import PseSummaryPreparatoryWorkSummary from "~/component/pse-summary/PseSummaryPreparatoryWorkSummary";
@@ -69,51 +65,45 @@ export const meta: V2_MetaFunction<typeof loader> = ({ data }) => {
 };
 
 
-export default function FromationPseRoute() {
+export default function FormationPseRoute() {
   const { formation, pseSummary } = useLoaderData<typeof loader>();
 
   return (
-    <>
-      <PagePaperHeader
-        ariane={
-          <Ariane>
-            <ArianeItem label="PSE" href="pse" />
-          </Ariane>
-        }
-      >
-        <PageTitle title={`PSE: ${formation.title} - Résumé de formation`} />
-        <PageSubtitle subtitle="Résumé de la formation pour tous les participants" />
-      </PagePaperHeader>
+    <Page
+      ariane={
+        <Ariane>
+          <ArianeItem label="PSE" href="pse" />
+        </Ariane>
+      }
+      title={`PSE: ${formation.title} - Résumé de formation`}
+      subtitle="Résumé de la formation pour tous les participants"
+    >
 
-      <PageSpace variant="header" />
+      <Stack spacing={2}>
+        <Section title="Résumé">
+          <PseSummaryResult
+            resultSummary={pseSummary.resultSummary}
+          />
+        </Section>
 
-      <Page>
-        <Stack spacing={2}>
-          <Section title="Résumé">
-            <PseSummaryResult
-              resultSummary={pseSummary.resultSummary}
-            />
-          </Section>
+        <Section title="Cas concrets">
+          <PseSummaryConcreteCaseSummary
+            concreteCaseSummary={pseSummary.concreteCaseSummary}
+          />
+        </Section>
 
-          <Section title="Cas concrets">
-            <PseSummaryConcreteCaseSummary
-              concreteCaseSummary={pseSummary.concreteCaseSummary}
-            />
-          </Section>
+        <Section title="Techniques">
+          <PseSummaryTechniqueSummary
+            techniqueSummary={pseSummary.techniqueSummary}
+          />
+        </Section>
 
-          <Section title="Techniques">
-            <PseSummaryTechniqueSummary
-              techniqueSummary={pseSummary.techniqueSummary}
-            />
-          </Section>
-
-          <Section title="Travail préparatoire">
-            <PseSummaryPreparatoryWorkSummary
-              preparatoryWorkSummary={pseSummary.preparatoryWorkSummary}
-            />
-          </Section>
-        </Stack>
-      </Page>
-    </>
+        <Section title="Travail préparatoire">
+          <PseSummaryPreparatoryWorkSummary
+            preparatoryWorkSummary={pseSummary.preparatoryWorkSummary}
+          />
+        </Section>
+      </Stack>
+    </Page>
   );
 }

@@ -11,9 +11,6 @@ import type { PseFormationApiObject } from "~/apiobject/pseformation.apiobject";
 import type { UserApiObject } from "~/apiobject/user.apiobject";
 import { Ariane, ArianeItem } from "~/component/layout/Ariane";
 import Page from "~/component/layout/Page";
-import PagePaperHeader from "~/component/layout/PagePaperHeader";
-import PageSpace from "~/component/layout/PageSpace";
-import PageTitle from "~/component/layout/PageTitle";
 import Section from "~/component/layout/Section";
 import PseConcreteCaseSituationEvaluateGroupForm
   from "~/component/pse-concrete-case-situation/PseConcreteCaseSituationEvaluateGroupForm";
@@ -163,53 +160,44 @@ export default function PseConcreteCaseSituationRoute() {
   } = useLoaderData<typeof loader>();
 
   return (
-    <>
-      <PagePaperHeader
-        ariane={
-          <Ariane>
-            <ArianeItem label="PSE" href="pse" />
+    <Page
+      title={`Évaluation ${pseConcreteCaseSituation?.pseConcreteCaseType?.name} - ${pseConcreteCaseGroup.name}`}
+      ariane={
+        <Ariane>
+          <ArianeItem label="PSE" href="pse" />
 
-            <ArianeItem
-              label={pseFormation.title}
-              href={`/pse/${pseFormation.id}`}
-            />
-
-            <ArianeItem
-              label="Cas concret"
-              href={`/pse/${pseFormation.id}/concrete-case/session`}
-            />
-
-            <ArianeItem
-              label={pseConcreteCaseSession.name}
-              href={`/pse-concrete-case-session/${pseConcreteCaseSession.id}`}
-            />
-
-            <ArianeItem
-              label="Situations"
-              href={`/pse-concrete-case-session/${pseConcreteCaseSession.id}`}
-            />
-
-            <ArianeItem
-              label={pseConcreteCaseSituation.pseConcreteCaseType?.name}
-              href={`/pse-concrete-case-situation/${pseConcreteCaseSituation.id}`}
-            />
-          </Ariane>
-        }
-      >
-        <PageTitle
-          title={`Évaluation ${pseConcreteCaseSituation?.pseConcreteCaseType?.name} - ${pseConcreteCaseGroup.name}`}
-        />
-      </PagePaperHeader>
-
-      <PageSpace variant="header" />
-
-      <Page>
-        <Section>
-          <PseConcreteCaseSituationEvaluateGroupForm
-            pseUserConcreteCaseGroupEvaluation={pseUserConcreteCaseGroupEvaluation}
+          <ArianeItem
+            label={pseFormation.title}
+            href={`/pse/${pseFormation.id}`}
           />
-        </Section>
-      </Page>
-    </>
+
+          <ArianeItem
+            label="Cas concret"
+            href={`/pse/${pseFormation.id}/concrete-case/session`}
+          />
+
+          <ArianeItem
+            label={pseConcreteCaseSession.name}
+            href={`/pse-concrete-case-session/${pseConcreteCaseSession.id}`}
+          />
+
+          <ArianeItem
+            label="Situations"
+            href={`/pse-concrete-case-session/${pseConcreteCaseSession.id}`}
+          />
+
+          <ArianeItem
+            label={pseConcreteCaseSituation.pseConcreteCaseType?.name}
+            href={`/pse-concrete-case-situation/${pseConcreteCaseSituation.id}`}
+          />
+        </Ariane>
+      }
+    >
+      <Section>
+        <PseConcreteCaseSituationEvaluateGroupForm
+          pseUserConcreteCaseGroupEvaluation={pseUserConcreteCaseGroupEvaluation}
+        />
+      </Section>
+    </Page>
   );
 }

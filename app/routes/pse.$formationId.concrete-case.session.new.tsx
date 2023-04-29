@@ -10,10 +10,6 @@ import FormTextField from "~/component/form/FormTextField";
 import FormView from "~/component/form/FormView";
 import { Ariane, ArianeItem } from "~/component/layout/Ariane";
 import Page from "~/component/layout/Page";
-import PagePaperHeader from "~/component/layout/PagePaperHeader";
-import PageSpace from "~/component/layout/PageSpace";
-import PageSubtitle from "~/component/layout/PageSubtitle";
-import PageTitle from "~/component/layout/PageTitle";
 import Section from "~/component/layout/Section";
 import type { PseConcreteCaseSessionPostDto } from "~/dto/pseconcretecasesession.dto";
 import { validateForm } from "~/form/abstract";
@@ -92,50 +88,43 @@ export default function ConcreteCaseSessionsRoute() {
   ]);
 
   return (
-    <>
-      <PagePaperHeader
-        ariane={
-          <Ariane>
-            <ArianeItem label="PSE" href="/pse" />
+    <Page
+      title="Créer une session"
+      subtitle="Créez une nouvelle session de cas concret"
+      ariane={
+        <Ariane>
+          <ArianeItem label="PSE" href="/pse" />
 
-            <ArianeItem
-              label={pseFormation.title}
-              href={`/pse/${pseFormation.id}`}
+          <ArianeItem
+            label={pseFormation.title}
+            href={`/pse/${pseFormation.id}`}
+          />
+        </Ariane>
+      }
+    >
+      <Section sx={{ maxWidth: 720 }}>
+
+        <FormView
+          submitText="Créer"
+          validator={pseConcreteCaseSessionPostDtoValidator}
+        >
+          <input type="hidden" name="formationId" value={pseFormation.id} />
+
+          <Box sx={{ display: "flex", flexDirection: "column", mt: 2 }}>
+            <FormTextField
+              name="name"
+              ref={nameRef}
+              label="Nom de la session"
+              variant="standard"
+              margin="normal"
+              type="string"
+              required
+              autoFocus
             />
-          </Ariane>
-        }
-      >
-        <PageTitle title="Créer une session" />
-        <PageSubtitle subtitle="Créez une nouvelle session de cas concret" />
-      </PagePaperHeader>
-
-      <PageSpace variant="header" />
-
-      <Page>
-        <Section sx={{ maxWidth: 720 }}>
-
-          <FormView
-            submitText="Créer"
-            validator={pseConcreteCaseSessionPostDtoValidator}
-          >
-            <input type="hidden" name="formationId" value={pseFormation.id} />
-
-            <Box sx={{ display: "flex", flexDirection: "column", mt: 2 }}>
-              <FormTextField
-                name="name"
-                ref={nameRef}
-                label="Nom de la session"
-                variant="standard"
-                margin="normal"
-                type="string"
-                required
-                autoFocus
-              />
-            </Box>
-          </FormView>
-        </Section>
-      </Page>
-    </>
+          </Box>
+        </FormView>
+      </Section>
+    </Page>
   );
 }
 

@@ -10,9 +10,6 @@ import type { PseFormationApiObject } from "~/apiobject/pseformation.apiobject";
 import type { UserApiObject } from "~/apiobject/user.apiobject";
 import { Ariane, ArianeItem } from "~/component/layout/Ariane";
 import Page from "~/component/layout/Page";
-import PagePaperHeader from "~/component/layout/PagePaperHeader";
-import PageSpace from "~/component/layout/PageSpace";
-import PageTitle from "~/component/layout/PageTitle";
 import PseConcreteCaseSituationForm from "~/component/pse-concrete-case-situation/PseConcreteCaseSituationForm";
 import type { PseConcreteCaseSituationPutDto } from "~/dto/pseconcretecasesituation.dto";
 import { pseConcreteCaseSituationPutDtoValidator } from "~/form/pseconcretecasesituation.form";
@@ -106,56 +103,49 @@ export default function PseConcreteCaseSituationRoute() {
   const actionData = useActionData<typeof action>();
 
   return (
-    <>
-      <PagePaperHeader
-        ariane={
-          <Ariane>
-            <ArianeItem label="PSE" href="pse" />
+    <Page
+      title={`Situation ${pseConcreteCaseSituation?.pseConcreteCaseType?.name}`}
+      ariane={
+        <Ariane>
+          <ArianeItem label="PSE" href="pse" />
 
-            <ArianeItem
-              label={pseFormation.title}
-              href={`/pse/${pseFormation.id}`}
-            />
+          <ArianeItem
+            label={pseFormation.title}
+            href={`/pse/${pseFormation.id}`}
+          />
 
-            <ArianeItem
-              label="Cas concret"
-              href={`/pse/${pseFormation.id}/concrete-case/session`}
-            />
+          <ArianeItem
+            label="Cas concret"
+            href={`/pse/${pseFormation.id}/concrete-case/session`}
+          />
 
-            <ArianeItem
-              label={pseConcreteCaseSession.name}
-              href={`/pse-concrete-case-session/${pseConcreteCaseSession.id}`}
-            />
+          <ArianeItem
+            label={pseConcreteCaseSession.name}
+            href={`/pse-concrete-case-session/${pseConcreteCaseSession.id}`}
+          />
 
-            <ArianeItem
-              label="Situations"
-              href={`/pse-concrete-case-session/${pseConcreteCaseSession.id}`}
-            />
-          </Ariane>
+          <ArianeItem
+            label="Situations"
+            href={`/pse-concrete-case-session/${pseConcreteCaseSession.id}`}
+          />
+        </Ariane>
+      }
+    >
+
+      <PseConcreteCaseSituationForm
+        pseFormationId={pseFormation.id}
+        pseConcreteCaseSessionId={pseConcreteCaseSession.id}
+        pseConcreteCaseGroups={pseConcreteCaseSession.pseConcreteCaseGroups}
+        actionData={actionData}
+        // edit data
+        isEdit
+        teacher={pseConcreteCaseSituation.teacher}
+        pseConcreteCaseType={pseConcreteCaseSituation.pseConcreteCaseType}
+        pseSituationConcreteCaseGroups={
+          pseConcreteCaseSituation.pseSituationConcreteCaseGroups
         }
-      >
-        <PageTitle
-          title={`Situation ${pseConcreteCaseSituation?.pseConcreteCaseType?.name}`}
-        />
-      </PagePaperHeader>
+      />
 
-      <PageSpace variant="header" />
-
-      <Page>
-        <PseConcreteCaseSituationForm
-          pseFormationId={pseFormation.id}
-          pseConcreteCaseSessionId={pseConcreteCaseSession.id}
-          pseConcreteCaseGroups={pseConcreteCaseSession.pseConcreteCaseGroups}
-          actionData={actionData}
-          // edit data
-          isEdit
-          teacher={pseConcreteCaseSituation.teacher}
-          pseConcreteCaseType={pseConcreteCaseSituation.pseConcreteCaseType}
-          pseSituationConcreteCaseGroups={
-            pseConcreteCaseSituation.pseSituationConcreteCaseGroups
-          }
-        />
-      </Page>
-    </>
+    </Page>
   );
 }

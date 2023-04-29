@@ -4,7 +4,6 @@ import PagePaperHeader from "~/component/layout/PagePaperHeader";
 import PageTitle from "~/component/layout/PageTitle";
 import PageSubtitle from "~/component/layout/PageSubtitle";
 import PageSpace from "~/component/layout/PageSpace";
-import ButtonPageActions from "~/component/layout/ButtonPageActions";
 
 interface Props {
   title?: string;
@@ -13,9 +12,11 @@ interface Props {
   children: ReactNode;
   ariane?: ReactNode;
   action?: ReactNode;
+  tabs?: ReactNode;
+  fullWidth?: boolean;
 }
 
-export default function Page({ title, subtitle, subheader, ariane, children, action }: Props) {
+export default function Page({ title, subtitle, subheader, ariane, tabs, children, action, fullWidth }: Props) {
   return (
     <Box
       sx={{
@@ -24,13 +25,13 @@ export default function Page({ title, subtitle, subheader, ariane, children, act
         height: "100%",
         display: "flex",
         flexDirection: "column",
-        flexGrow: 1,
+        flexGrow: 1
       }}
     >
       {ariane && (
         <Box
           sx={{
-            backgroundColor: title ? "var(--card-background-color)" : undefined,
+            backgroundColor: title ? "var(--card-background-color)" : undefined
           }}
         >
           {ariane}
@@ -47,18 +48,28 @@ export default function Page({ title, subtitle, subheader, ariane, children, act
 
       {subheader}
 
+      {tabs}
+
       <PageSpace variant="header" />
 
-      <Container
-        maxWidth="lg"
-        sx={{
-          mb: 4,
-        }}
-      >
-        {action}
+      {fullWidth ?
+        (
+          <>
+            {action}
+            {children}
+          </>
+        ) : (
+          <Container
+            maxWidth="lg"
+            sx={{
+              mb: 4
+            }}
+          >
+            {action}
 
-        {children}
-      </Container>
+            {children}
+          </Container>
+        )}
     </Box>
   );
 }

@@ -7,9 +7,6 @@ import { z } from "zod";
 import type { PseFormationApiObject } from "~/apiobject/pseformation.apiobject";
 import { Ariane, ArianeItem } from "~/component/layout/Ariane";
 import Page from "~/component/layout/Page";
-import PagePaperHeader from "~/component/layout/PagePaperHeader";
-import PageSpace from "~/component/layout/PageSpace";
-import PageTitle from "~/component/layout/PageTitle";
 import Section from "~/component/layout/Section";
 import type { SecurityFunction } from "~/helper/remix.helper";
 import { getParamsOrFail, getSearchParamsOrFail } from "~/helper/remix.params.helper";
@@ -89,61 +86,56 @@ export default function ConcreteCaseSessionsRoute() {
   const { pseFormation, concreteCaseSessionsPaginateObject } = useLoaderData<typeof loader>();
 
   return (
-    <>
-      <PagePaperHeader
-        ariane={
-          <Ariane>
-            <ArianeItem label="PSE" href="pse" />
+    <Page
+      title="Cas concrets"
+      ariane={
+        <Ariane>
+          <ArianeItem label="PSE" href="pse" />
 
-            <ArianeItem
-              label={pseFormation.title}
-              href={`/pse/${pseFormation.id}`}
-            />
-          </Ariane>
-        }
-      >
-        <PageTitle title="Cas concrets" />
-      </PagePaperHeader>
+          <ArianeItem
+            label={pseFormation.title}
+            href={`/pse/${pseFormation.id}`}
+          />
+        </Ariane>
+      }
+    >
 
-      <PageSpace variant="header" />
+      <Section>
+        <Button
+          variant="outlined"
+          href={`/pse/${pseFormation.id}/concrete-case/session/new`}
+        >
+          Créer une session
+        </Button>
+        <TableContainer sx={{ mt: 4 }}>
+          <Table size="small">
+            <TableHead>
+              <TableRow>
+                <TableCell>Modules</TableCell>
+                <TableCell>Ouverture des accès</TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {concreteCaseSessionsPaginateObject.data.map(
+                (concreteCaseSession) => (
+                  <TableRow key={concreteCaseSession.id}>
+                    <TableCell>
+                      <Link
+                        href={`/pse-concrete-case-session/${concreteCaseSession.id}`}
+                      >
+                        {concreteCaseSession.name}
+                      </Link>
+                    </TableCell>
+                    <TableCell>{concreteCaseSession.stateLabel}</TableCell>
+                  </TableRow>
+                )
+              )}
+            </TableBody>
+            {/* TODO: paginaation */}
+          </Table>
+        </TableContainer>
+      </Section>
 
-      <Page>
-        <Section>
-          <Button
-            variant="outlined"
-            href={`/pse/${pseFormation.id}/concrete-case/session/new`}
-          >
-            Créer une session
-          </Button>
-          <TableContainer sx={{ mt: 4 }}>
-            <Table size="small">
-              <TableHead>
-                <TableRow>
-                  <TableCell>Modules</TableCell>
-                  <TableCell>Ouverture des accès</TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {concreteCaseSessionsPaginateObject.data.map(
-                  (concreteCaseSession) => (
-                    <TableRow key={concreteCaseSession.id}>
-                      <TableCell>
-                        <Link
-                          href={`/pse-concrete-case-session/${concreteCaseSession.id}`}
-                        >
-                          {concreteCaseSession.name}
-                        </Link>
-                      </TableCell>
-                      <TableCell>{concreteCaseSession.stateLabel}</TableCell>
-                    </TableRow>
-                  )
-                )}
-              </TableBody>
-              {/* TODO: paginaation */}
-            </Table>
-          </TableContainer>
-        </Section>
-      </Page>
-    </>
+    </Page>
   );
 }

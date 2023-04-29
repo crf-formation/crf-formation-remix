@@ -4,7 +4,6 @@ import { json } from "@remix-run/server-runtime";
 import type { UserApiObject } from "~/apiobject/user.apiobject";
 import type { SecurityFunction } from "~/helper/remix.helper";
 import { requireUser } from "~/service/session.server";
-import { userApiObjectToDto } from "~/mapper/user.mapper";
 import type { V2_MetaFunction } from "@remix-run/node";
 import { Box, Paper, Stack, Typography } from "@mui/material";
 import useUser from "~/hook/useUser";
@@ -24,8 +23,7 @@ const security: SecurityFunction<{
 export async function loader({ request, params }: LoaderArgs) {
   const { userApiObject } = await security(request, params);
 
-  return json({
-  });
+  return json({});
 }
 
 export const meta: V2_MetaFunction<typeof loader> = () => {

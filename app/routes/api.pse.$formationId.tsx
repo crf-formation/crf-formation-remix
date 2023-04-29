@@ -7,9 +7,9 @@ import type { PseFormationPutDto } from "~/dto/pseformation.dto";
 import type { SecurityFunction } from "~/helper/remix.helper";
 import { getParamsOrFail } from "~/helper/remix.params.helper";
 import {
-	dataToPseFormationPutDto,
-	pseFormationApiObjectToDto,
-	pseFormationPutDtoToApiObject
+  dataToPseFormationPutDto,
+  pseFormationApiObjectToDto,
+  pseFormationPutDtoToApiObject
 } from "~/mapper/pseformation.mapper";
 import { findPseFormationById, getPseFormationById, updatePseFormation } from "~/service/pseformation.server";
 import { requireAdmin } from "~/service/session.server";
