@@ -28,6 +28,7 @@ import { getPseFormationById } from "~/service/pseformation.server";
 import { getPreparatoryWorksForUser, updatePseUserPreparatoryWorks } from "~/service/pseformationpreparatorywork.server";
 import { assertUserHasAccessToFormationAsTeacher } from "~/service/security.server";
 import { requireUser } from "~/service/session.server";
+import { V2_MetaFunction } from "@remix-run/node";
 
 const ParamsSchema = z.object({
   formationId: z.string(),
@@ -80,6 +81,12 @@ export async function action({ request, params  }: ActionArgs) {
 
   return redirectActionToCurrentPage(request)
 }
+
+export const meta: V2_MetaFunction<typeof loader> = () => {
+  return [
+    { title: `Travail préparatoire` },
+  ];
+};
 
 export default function PreparatoryWorkRoute() {
   const { userPreparatoryWorksPost } = useLoaderData<typeof loader>();

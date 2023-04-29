@@ -23,6 +23,7 @@ import { getPseFormationById } from "~/service/pseformation.server";
 import { getPseUserSummary } from "~/service/pseusesummary.server";
 import { assertUserHasAccessToFormationAsTeacher } from "~/service/security.server";
 import { requireUser } from "~/service/session.server";
+import { V2_MetaFunction } from "@remix-run/node";
 
 const ParamsSchema = z.object({
   formationId: z.string(),
@@ -59,6 +60,12 @@ export async function loader({ request, params }: LoaderArgs) {
     pseUserSummary: pseUserSummaryApiObjectToDto(pseUserSummaryApiObject),
   });
 }
+
+export const meta: V2_MetaFunction<typeof loader> = () => {
+  return [
+    { title: `Résumé` },
+  ];
+};
 
 function PreparatoryWork({
   preparatoryWork,

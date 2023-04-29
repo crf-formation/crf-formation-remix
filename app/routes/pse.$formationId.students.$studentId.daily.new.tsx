@@ -1,6 +1,6 @@
 import { Box, Typography } from '@mui/material';
 import type { ActionArgs } from "@remix-run/node";
-import { redirect } from "@remix-run/node";
+import { redirect, V2_MetaFunction } from "@remix-run/node";
 import type { Params } from "@remix-run/react";
 import { z } from "zod";
 import type { PseFormationApiObject } from "~/apiobject/pseformation.apiobject";
@@ -16,6 +16,7 @@ import { createDailyNote } from "~/service/daily.server";
 import { getPseFormationById } from "~/service/pseformation.server";
 import { assertUserHasAccessToFormationAsTeacher } from "~/service/security.server";
 import { requireUser } from "~/service/session.server";
+import { loader } from "~/routes/pse.$formationId.students.$studentId.concrete-case-evaluations";
 
 const ParamsSchema = z.object({
   formationId: z.string(),
@@ -55,6 +56,12 @@ export const action = async ({ request, params }: ActionArgs) => {
   const dailyNote = await createDailyNote(dailyNotePostDtoToApiObject(dailyNotePostDto));
 
   return redirect(`/pse/${pseFormationApiObject.id}/students/${studentId}/daily/${dailyNote.id}`);
+};
+
+export const meta: V2_MetaFunction<typeof loader> = () => {
+  return [
+    { title: `Nouvelle note` },
+  ];
 };
 
 export default function NewDailyNotePage() {

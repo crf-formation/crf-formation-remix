@@ -16,6 +16,8 @@ import { updateDailyNote } from "~/service/daily.server";
 import { getPseFormationById } from "~/service/pseformation.server";
 import { assertUserHasAccessToFormationAsTeacher } from "~/service/security.server";
 import { requireUser } from "~/service/session.server";
+import type { V2_MetaFunction } from "@remix-run/node";
+import pseFormationIdStudentsStudentIdLoader from "./pse.$formationId.students.$studentId"
 
 const ParamsSchema = z.object({
   formationId: z.string(),
@@ -72,6 +74,12 @@ export async function loader({ request, params }: LoaderArgs) {
     daily
   });
 }
+
+export const meta: V2_MetaFunction<typeof loader> = ({ data }) => {
+  return [
+    { title: `${data.daily.title}` },
+  ];
+};
 
 export const action = async ({ request, params }: ActionArgs) => {
   const { pseFormationApiObject, studentId, dailyId } = await security(request, params)

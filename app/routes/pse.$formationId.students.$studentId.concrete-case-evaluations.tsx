@@ -16,6 +16,7 @@ import { getPseFormationById } from "~/service/pseformation.server";
 import { getPseUserConcreteCasesResume } from "~/service/pseuserconcretecase.server";
 import { assertUserHasAccessToFormationAsTeacher } from "~/service/security.server";
 import { requireUser } from "~/service/session.server";
+import { V2_MetaFunction } from "@remix-run/node";
 
 const ParamsSchema = z.object({
   formationId: z.string(),
@@ -51,6 +52,12 @@ const security: SecurityFunction<{
     studentId,
   }
 }
+
+export const meta: V2_MetaFunction<typeof loader> = () => {
+  return [
+    { title: `Cas concrets - évaluations` },
+  ];
+};
 
 export default function SessionRoute() {
   const { pseUserSummaryConcreteCase } = useLoaderData<typeof loader>();

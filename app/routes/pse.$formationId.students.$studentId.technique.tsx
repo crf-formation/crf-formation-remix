@@ -19,6 +19,7 @@ import { getPseModules } from "~/service/psemodule.server";
 import { getPseUserTechniquesForUser } from "~/service/pseusertechniques.server";
 import { assertUserHasAccessToFormationAsTeacher } from "~/service/security.server";
 import { requireUser } from "~/service/session.server";
+import { V2_MetaFunction } from "@remix-run/node";
 
 const ParamsSchema = z.object({
   formationId: z.string(),
@@ -54,6 +55,12 @@ export async function loader({ request, params }: LoaderArgs) {
     pseModules: pseModuleApiObjects.map(pseModuleApiObjectToDto),
   })
 }
+
+export const meta: V2_MetaFunction<typeof loader> = () => {
+  return [
+    { title: `Techniques` },
+  ];
+};
 
 function ModuleView({ pseModule, pseUserTechniques }: { pseModule?: PseModuleDto; pseUserTechniques: Array<PseUserTechniqueDto> }) {
   if (!pseModule) {

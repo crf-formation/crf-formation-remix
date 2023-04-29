@@ -14,6 +14,7 @@ import { pseFormationApiObjectToDto } from '~/mapper/pseformation.mapper';
 import { getPseFormationById } from "~/service/pseformation.server";
 import { assertUserHasAccessToFormationAsTeacher } from "~/service/security.server";
 import { requireUser } from "~/service/session.server";
+import { V2_MetaFunction } from "@remix-run/node";
 
 // Note: not named index.tsx on daily directory, because of the <Outlet />
 
@@ -65,6 +66,12 @@ export async function loader({ request, params }: LoaderArgs) {
     pseFormation: pseFormationApiObjectToDto(pseFormationApiObject),
   });
 }
+
+export const meta: V2_MetaFunction<typeof loader> = () => {
+  return [
+    { title: `Suivi quotidien` },
+  ];
+};
 
 export default function DailyListRoute() {
   const { pseFormation, studentId, dailyList } = useLoaderData<typeof loader>();
