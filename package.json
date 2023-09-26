@@ -30,10 +30,10 @@
     "/public/build"
   ],
   "dependencies": {
-    "@emotion/cache": "^11.10.3",
-    "@emotion/react": "^11.10.4",
-    "@emotion/server": "^11.10.0",
-    "@emotion/styled": "^11.10.4",
+    "@emotion/cache": "^11.11.0",
+    "@emotion/react": "^11.11.1",
+    "@emotion/server": "^11.11.0",
+    "@emotion/styled": "^11.11.0",
     "@loadable/component": "^5.15.2",
     "@mui/icons-material": "^5.10.3",
     "@mui/lab": "^5.0.0-alpha.98",
