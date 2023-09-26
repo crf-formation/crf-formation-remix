@@ -7,20 +7,6 @@ module.exports = {
   ignoredRouteFiles: ["**/.*", "**/*.css", "**/*.test.{js,jsx,ts,tsx}", "**/fence.json"],
   devServerPort: 8002,
   future: {
-    // enable the new dev server with all defaults
-    unstable_dev: false,
-    // formMethod is now uppercase
-    // https://remix.run/docs/en/1.15.0/pages/v2#formmethod
-    v2_normalizeFormMethod: true,
-    // metha functions is changing
-    // https://remix.run/docs/en/1.15.0/pages/v2#route-meta
-    v2_meta: true,
-    // route convention is changing
-    // https://remix.run/docs/en/1.15.0/pages/v2#file-system-route-convention
-    v2_routeConvention: true,
-    //
-    // https://remix.run/docs/en/1.15.0/pages/v2#catchboundary-and-errorboundary
-    v2_errorBoundary: true,
   },
   // fix the "Error [ERR_REQUIRE_ESM]: require() of ES Module" errror
   // https://remix.run/docs/en/v1/pages/gotchas#importing-esm-packages

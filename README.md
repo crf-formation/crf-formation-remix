@@ -1,8 +1,21 @@
-# Remix Indie Stack
+# crf-formation
 
-Learn more about [Remix Stacks](https://remix.run/stacks).
+
+## Usage
+
+### Format code
+
+- `npm run format`
+
+## Upgrade remix
+
+Note: if you are on windows, first stop the development server.
+
+`yarn add @remix-run/dev@latest @remix-run/eslint-config@latest @remix-run/express@latest @remix-run/node@latest @remix-run/react@latest @remix-run/router@latest @remix-run/serve@latest @remix-run/server-runtime@latest @remix-run/web-blob@latest @remix-run/web-fetch@latest @remix-run/web-file@latest @remix-run/web-form-data@latest @remix-run/web-stream@latest`
 
 ## What's in the stack
+
+Learn more about [Remix Stacks](https://remix.run/stacks).
 
 ### To move
 
