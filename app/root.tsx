@@ -4,8 +4,8 @@ import { Box, CssBaseline, Link as MuiLink, Typography } from "@mui/material";
 import { ThemeProvider } from "@mui/material/styles";
 import { LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
-import type { LinksFunction, LoaderArgs } from "@remix-run/node";
-import { redirect, V2_MetaFunction } from "@remix-run/node";
+import type { LinksFunction } from "@remix-run/node";
+import { redirect } from "@remix-run/node";
 import {
   isRouteErrorResponse,
   Link as RmxLink,
@@ -18,7 +18,7 @@ import {
   useLoaderData,
   useRouteError
 } from "@remix-run/react";
-import type { ActionArgs } from "@remix-run/server-runtime";
+import type { LoaderArgs } from "@remix-run/server-runtime";
 import { json } from "@remix-run/server-runtime";
 import fr from "date-fns/locale/fr";
 import nProgressStyles from "nprogress/nprogress.css";
@@ -35,7 +35,6 @@ import FlashMessages from "./component/layout/FlashMessages";
 import type { ThemeNames } from "./constant";
 import { DEFAULT_THEME } from "./constant";
 import { CSRF_SESSION_KEY } from "./constant/index.server";
-import type { Env } from "./constant/types";
 import type { FlashMessage } from "./dto/flash.dto";
 import type { PseFormationDto } from "./dto/pseformation.dto";
 import type { PublicPropertiesDto } from "./dto/publicproperties.dto";
@@ -86,7 +85,7 @@ export async function loader({ request }: LoaderArgs) {
       themeName: await getUserTheme(request),
       locales: getClientLocales(request),
       // env properties to share with the browser side.
-      env: getBrowserEnv(),
+      env: getBrowserEnv(), // TODO: dto
       isDesktop: isDesktop(request),
 
       publicProperties: await getPublicProperties(),

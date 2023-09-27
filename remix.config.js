@@ -8,9 +8,13 @@ module.exports = {
   devServerPort: 8002,
   future: {
   },
-  // fix the "Error [ERR_REQUIRE_ESM]: require() of ES Module" errror
+  // fix the "Error [ERR_REQUIRE_ESM]: require() of ES Module" error
   // https://remix.run/docs/en/v1/pages/gotchas#importing-esm-packages
   serverDependenciesToBundle: [
+    /.*/,
+    "react",
+    /^@emotion.*/,
+    "stylis",
      // begin: markdown libraries
     // https://andre-landgraf.dev/blog/2022-05-29_how-to-integrate-markdown-content-with-syntax-highlighting-in-remix/
     // there is a lot of dependencies just for markdown, welcome to javascript ecosystem.
