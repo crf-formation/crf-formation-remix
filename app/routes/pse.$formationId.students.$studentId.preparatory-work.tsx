@@ -1,10 +1,11 @@
-import { Checkbox, FormControlLabel } from "@mui/material";
+import Checkbox from "@mui/material/Checkbox";
+import FormControlLabel from "@mui/material/FormControlLabel";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
-import { DatePicker } from "@mui/x-date-pickers";
+import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import type { Params } from "@remix-run/react";
 import { useLoaderData } from "@remix-run/react";
 import type { ActionArgs, LoaderArgs } from "@remix-run/server-runtime";

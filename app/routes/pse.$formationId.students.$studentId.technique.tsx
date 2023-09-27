@@ -1,4 +1,9 @@
-import { Box, Button, Checkbox, FormControlLabel, Stack, Typography } from "@mui/material";
+import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
+import Checkbox from "@mui/material/Checkbox";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import Stack from "@mui/material/Stack";
+import Typography from "@mui/material/Typography";
 import type { Params } from "@remix-run/react";
 import { useLoaderData } from "@remix-run/react";
 import type { LoaderArgs } from "@remix-run/server-runtime";

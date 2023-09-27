@@ -1,4 +1,4 @@
-import { createSvgIcon } from "@mui/material";
+import { createSvgIcon } from '@mui/material/utils';
 
 export default createSvgIcon(
   <>

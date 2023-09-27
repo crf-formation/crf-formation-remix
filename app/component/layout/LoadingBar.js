@@ -1,7 +1,7 @@
 import NProgress from "nprogress";
 import React, { useEffect } from "react";
 import PropTypes from "prop-types";
-import { GlobalStyles } from "@mui/material";
+import GlobalStyles from "@mui/material/GlobalStyles";
 
 export function LoadingBar({ isLoading, startDelay = 500 }) {
   useEffect(() => {

@@ -1,6 +1,7 @@
 import type { LoaderArgs } from "@remix-run/node";
 import { json, V2_MetaFunction } from "@remix-run/node";
-import { Paper, Typography } from "@mui/material";
+import Paper from "@mui/material/Paper";
+import Typography from "@mui/material/Typography";
 import Page from "~/component/layout/Page";
 
 export async function loader({ request }: LoaderArgs) {

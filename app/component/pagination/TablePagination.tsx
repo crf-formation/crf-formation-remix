@@ -1,4 +1,4 @@
-import { TablePagination as MuiTablePagination } from "@mui/material";
+import MuiTablePagination from "@mui/material/TablePagination";
 import type { PaginateObject } from "~/constant/types";
 import usePagination from "~/hook/usePagination";
 

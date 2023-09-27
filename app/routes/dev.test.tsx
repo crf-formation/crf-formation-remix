@@ -1,6 +1,10 @@
 import Brightness2Icon from "@mui/icons-material/Brightness2";
 import Brightness7Icon from "@mui/icons-material/Brightness7";
-import { Box, IconButton, Link as MuiLink, Tooltip, Typography } from "@mui/material";
+import Box from "@mui/material/Box";
+import Link from "@mui/material/MuiLink";
+import IconButton from "@mui/material/IconButton";
+import Tooltip from "@mui/material/Tooltip";
+import Typography from "@mui/material/Typography";
 import { json, V2_MetaFunction } from "@remix-run/node";
 import { Form, Link as RmxLink, useLocation } from "@remix-run/react";
 import type { LoaderArgs } from "@remix-run/server-runtime";

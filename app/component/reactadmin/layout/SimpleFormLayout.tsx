@@ -1,6 +1,6 @@
 // https://marmelab.com/react-admin/Buttons.html#record-buttons
 
-import { Box } from "@mui/material";
+import Box from "@mui/material/Box";
 import type { SimpleFormProps as MuiSimpleFormProps, ToolbarProps } from "react-admin";
 import { DeleteWithConfirmButton, SaveButton, SimpleForm, Toolbar, useRecordContext } from "react-admin";
 

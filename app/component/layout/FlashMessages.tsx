@@ -1,4 +1,5 @@
-import { Alert as MuiAlert, Snackbar } from "@mui/material";
+import MuiAlert from "@mui/material/Alert";
+import Snackbar from "@mui/material/Snackbar";
 import type { AlertProps } from "@mui/material/Alert";
 import { forwardRef, useState } from "react";
 import type { FlashMessage } from "~/dto/flash.dto";

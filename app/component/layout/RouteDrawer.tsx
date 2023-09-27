@@ -1,4 +1,7 @@
-import { Box, Container, Drawer, Typography } from "@mui/material";
+import Box from "@mui/material/Box";
+import Container from "@mui/material/Container";
+import Drawer from "@mui/material/Drawer";
+import Typography from "@mui/material/Typography";
 import { useCatch, useNavigate } from "@remix-run/react";
 import type { ReactNode } from "react";
 import WarningBlock from "../typography/WarningBlock";

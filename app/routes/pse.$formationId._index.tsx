@@ -1,7 +1,15 @@
 import EditIcon from "@mui/icons-material/Edit";
 import ImageIcon from "@mui/icons-material/Image";
 import PersonAddIcon from "@mui/icons-material/PersonAdd";
-import { Avatar, Button, Grid, Link, List, ListItem, ListItemAvatar, ListItemText, Stack } from "@mui/material";
+import Avatar from "@mui/material/Avatar";
+import Button from "@mui/material/Button";
+import Grid from "@mui/material/Grid";
+import Link from "@mui/material/Link";
+import List from "@mui/material/List";
+import ListItem from "@mui/material/ListItem";
+import ListItemAvatar from "@mui/material/ListItemAvatar";
+import ListItemText from "@mui/material/ListItemText";
+import Stack from "@mui/material/Stack";
 import type { LoaderArgs } from "@remix-run/node";
 import { json, V2_MetaFunction } from "@remix-run/node";
 import type { Params } from "@remix-run/react";

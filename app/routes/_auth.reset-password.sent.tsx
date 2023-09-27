@@ -1,4 +1,5 @@
-import { Box, Typography } from "@mui/material";
+import Box from "@mui/material/Box";
+import Typography from "@mui/material/Typography";
 import type { LoaderArgs } from "@remix-run/node";
 import { json, redirect, V2_MetaFunction } from "@remix-run/node";
 import PageFullContentWithLogo from "~/component/layout/PageFullContentWithLogo";

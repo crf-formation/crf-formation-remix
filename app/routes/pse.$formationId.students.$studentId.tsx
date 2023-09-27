@@ -1,4 +1,5 @@
-import { Grid, Link } from "@mui/material";
+import Grid from "@mui/material/Grid";
+import Link from "@mui/material/Link";
 import type { LoaderArgs, V2_MetaFunction } from "@remix-run/node";
 import { json } from "@remix-run/node";
 import type { Params } from "@remix-run/react";

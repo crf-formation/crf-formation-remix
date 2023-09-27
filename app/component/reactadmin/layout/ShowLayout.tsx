@@ -1,4 +1,4 @@
-import { Box } from "@mui/material";
+import Box from "@mui/material/Box";
 import type { ReactNode } from "react";
 import type { ShowProps } from "react-admin";
 import { Show } from "react-admin";

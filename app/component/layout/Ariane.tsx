@@ -1,6 +1,7 @@
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
-import { Box, Link } from "@mui/material";
+import Box from "@mui/material/Box";
+import Link from "@mui/material/Link";
 import type { ReactNode } from "react";
 import React from "react";
 

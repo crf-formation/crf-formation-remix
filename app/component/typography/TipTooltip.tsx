@@ -1,5 +1,6 @@
 import TipsAndUpdatesIcon from "@mui/icons-material/TipsAndUpdates";
-import { IconButton, Tooltip } from "@mui/material";
+import IconButton from "@mui/material/IconButton";
+import Tooltip from "@mui/material/Tooltip";
 
 export default function TipTooltip({ tip }: { tip: string }) {
   return (

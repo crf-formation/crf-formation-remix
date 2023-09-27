@@ -1,6 +1,9 @@
 // based on https://github.com/mui/material-ui/blob/master/examples/remix-with-typescript/app/root.tsx
 import { withEmotionCache } from "@emotion/react";
-import { Box, CssBaseline, Link as MuiLink, Typography } from "@mui/material";
+import Box from "@mui/material/Box";
+import CssBaseline from "@mui/material/CssBaseline";
+import MuiLink from "@mui/material/Link";
+import Typography from "@mui/material/Typography";
 import { ThemeProvider } from "@mui/material/styles";
 import { LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";

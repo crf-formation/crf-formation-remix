@@ -1,4 +1,5 @@
-import { Grid, Stack } from "@mui/material";
+import Grid from "@mui/material/Grid";
+import Stack from "@mui/material/Stack";
 import { useRef } from "react";
 import Section from "~/component/layout/Section";
 import type { PseConcreteCaseGroupDto } from "~/dto/pseconcretecasegroup.dto";

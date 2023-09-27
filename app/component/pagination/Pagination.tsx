@@ -1,4 +1,5 @@
-import { Grid, Pagination as MuiPagination } from "@mui/material";
+import Grid from "@mui/material/Grid";
+import MuiPagination from "@mui/material/Pagination";
 import PageCallout from "~/component/typography/PageCallout";
 import type { PaginateObject } from "~/constant/types";
 import usePagination from "~/hook/usePagination";

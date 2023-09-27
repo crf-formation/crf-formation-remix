@@ -1,4 +1,6 @@
-import { Box, CircularProgress, Typography } from "@mui/material";
+import Box from "@mui/material/Box";
+import CircularProgress from "@mui/material/CircularProgress";
+import Typography from "@mui/material/Typography";
 import { useEffect } from "react";
 import { StatusCode, usePasswordCheck } from "~/hook/hibp/usePasswordCheck";
 import type { Severity } from "../typography/Callout";

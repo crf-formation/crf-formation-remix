@@ -1,5 +1,5 @@
 // @ts-ignore
-import { Link } from "@mui/material";
+import Link from "@mui/material/Link";
 import { NavLink } from "@remix-run/react";
 import type { LinkProps } from "@mui/material/Link/Link";
 import type { ReactNode } from "react";

@@ -1,6 +1,8 @@
 import { createElement } from "react";
 
-import { ChevronRight, ExpandLess, ExpandMore } from "@mui/icons-material";
+import ChevronRight from "@mui/icons-material/ChevronRight";
+import ExpandLess from "@mui/icons-material/ExpandLess";
+import ExpandMore from "@mui/icons-material/ExpandMore";
 
 interface Props {
   open: boolean;

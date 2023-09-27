@@ -1,6 +1,5 @@
 import type { PaperProps } from "@mui/material";
-import { Paper } from "@mui/material";
-
+import Paper from "@mui/material/Paper";
 
 export default function PagePaperContent({ sx, children, ...props }: PaperProps) {
   return (

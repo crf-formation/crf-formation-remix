@@ -1,4 +1,5 @@
-import { Box, GlobalStyles } from "@mui/material";
+import Box from "@mui/material/Box";
+import GlobalStyles from "@mui/material/GlobalStyles";
 import type { ReactNode } from "react";
 import { useState } from "react";
 import useIsDesktop from "~/hook/useIsDesktop";

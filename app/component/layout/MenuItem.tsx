@@ -1,5 +1,7 @@
 import type { SxProps } from "@mui/material";
-import { ListItemButton, ListItemIcon, ListItemText } from "@mui/material";
+import ListItemButton from "@mui/material/ListItemButton";
+import ListItemIcon from "@mui/material/ListItemIcon";
+import ListItemText from "@mui/material/ListItemText";
 import type { ReactEventHandler, ReactNode } from "react";
 import { forwardRef } from "react";
 import useLocationMatchPath from "~/hook/useLocationMatchPath";
