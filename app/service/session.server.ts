@@ -1,7 +1,7 @@
 import { createCookieSessionStorage, redirect } from "@remix-run/node";
 import type { CookieSerializeOptions, Session } from "@remix-run/server-runtime";
 import invariant from "tiny-invariant";
-import type { UserApiObject } from "~/apiobject/user.apiobject";
+import type { UserApiObject, UserMeApiObject } from "~/apiobject/user.apiobject";
 import { SESSION_KEY, SESSION_MAX_AGE } from "~/constant/index.server";
 import { getUserMe } from "~/service/user.server";
 import { ApiErrorException } from "./api.error";
@@ -31,13 +31,12 @@ export async function getUserId(
   return session.get(SESSION_KEY)?.userId;
 }
 
-export async function getMe(request: Request): Promise<Optional<UserApiObject>> {
+export async function getMe(request: Request): Promise<Optional<UserMeApiObject>> {
   const userId = await getUserId(request);
   if (userId === undefined) return null;
 
   try {
-    const userApiObject = await getUserMe(userId);
-    return userApiObject;
+    return await getUserMe(userId);
   } catch (e) {
     if (e instanceof ApiErrorException && e.status === 401) {
       throw await logout(request);
@@ -58,7 +57,7 @@ export async function requireUserId(
   return userId;
 }
 
-export async function requireUser(request: Request): Promise<UserApiObject> {
+export async function requireUser(request: Request): Promise<UserMeApiObject> {
   const userMe = await getMe(request);
 
   if (userMe) return userMe;
@@ -66,7 +65,7 @@ export async function requireUser(request: Request): Promise<UserApiObject> {
   throw await logout(request);
 }
 
-export async function requireAdmin(request: Request): Promise<UserApiObject> { // TODO: return UserMeApiObject?
+export async function requireAdmin(request: Request): Promise<UserMeApiObject> { // TODO: return UserMeApiObject?
   const user = await requireUser(request);
 
   if (user.role === "ADMIN" || user.role == "SUPER_ADMIN") return user;

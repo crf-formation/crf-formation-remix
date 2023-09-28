@@ -44,7 +44,7 @@ import type { PublicPropertiesDto } from "./dto/publicproperties.dto";
 import type { UserMeDto } from "./dto/user.dto";
 import useEnhancedEffect from "./hook/useEnhancedEffect";
 import { pseFormationApiObjectToDto } from "./mapper/pseformation.mapper";
-import { userApiObjectToUserMeDto } from "./mapper/user.mapper";
+import { userMeApiObjectToUserMeDto } from "./mapper/user.mapper";
 import { getBrowserEnv } from "./service/env.server";
 import { getFlashMessages } from "./service/flash.server";
 import { getCurrentPseFormationForUser } from "./service/pseformation.server";
@@ -57,6 +57,9 @@ import type { BrowserEnvDto } from "~/dto/env.dto";
 import { browserEnvApiObjectToDto } from "./mapper/environment.mapper";
 import { publicPropertiesApiObjectToDto } from "~/mapper/publicproperties.mapper";
 import { flashMessageApiObjectToDto } from "./mapper/flashmessage.mapper";
+import type { MenuDefinitionDto } from "~/dto/menu.dto";
+import { getMenuDefinition } from "~/helper/menu.helper";
+import { menuDefinitionApiObjectToDto } from "~/mapper/menu.mapper";
 
 export interface RootLoaderData {
   user: UserMeDto | null;
@@ -68,6 +71,7 @@ export interface RootLoaderData {
   flashMessages: FlashMessage[];
   publicProperties: Optional<PublicPropertiesDto>;
   currentPseFormation: Optional<PseFormationDto>;
+  menuDefinition: MenuDefinitionDto;
 }
 
 export async function loader({ request }: LoaderArgs) {
@@ -78,20 +82,22 @@ export async function loader({ request }: LoaderArgs) {
 
   const csrf = session.get(CSRF_SESSION_KEY);
 
-  const user = await getMe(request);
+  const userApiObject = await getMe(request);
 
-  const currentPseFormationApiObject = user ? await getCurrentPseFormationForUser(user.id) : null;
+  const currentPseFormationApiObject = userApiObject ? await getCurrentPseFormationForUser(userApiObject.id) : null;
 
   const browserEnvApiObject = getBrowserEnv();
   const publicPropertiesApiObject = await getPublicProperties()
 
   const flashMessageApiObjects = await getFlashMessages(session);
 
+  const menuDefinitionApiObject = getMenuDefinition(userApiObject, currentPseFormationApiObject);
+
   return json(
     {
       // https://github.com/sergiodxa/remix-utils
       csrf, // csrf: pass token to browser
-      user: !user ? null : userApiObjectToUserMeDto(user),
+      user: !userApiObject ? null : userMeApiObjectToUserMeDto(userApiObject),
       themeName: await getUserTheme(request),
       locales: getClientLocales(request),
       // env properties to share with the browser side.
@@ -103,6 +109,8 @@ export async function loader({ request }: LoaderArgs) {
       currentPseFormation: currentPseFormationApiObject ? pseFormationApiObjectToDto(currentPseFormationApiObject) : null,
 
       flashMessages: flashMessageApiObjects?.map(flashMessageApiObjectToDto),
+
+      menuDefinition: menuDefinitionApiObjectToDto(menuDefinitionApiObject),
     },
     {
       headers: {

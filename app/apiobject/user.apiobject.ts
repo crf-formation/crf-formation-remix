@@ -12,6 +12,22 @@ export interface UserApiObject {
   readonly updatedAt: Date;
 }
 
+export interface UserMeApiObject {
+  readonly id: string;
+  readonly role: UserRoleApiEnum;
+  readonly email: string;
+  readonly firstName: string;
+  readonly lastName: string;
+  readonly createdAt: Date;
+  readonly updatedAt: Date;
+
+  readonly isAdmin: boolean;
+  readonly isSuperAdmin: boolean;
+
+  // isAdmin or isSuperAdmin
+  readonly hasAdminPermission: boolean;
+}
+
 export interface UserPostApiObject {
   readonly firstName: string;
   readonly lastName: string;

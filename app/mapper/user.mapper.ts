@@ -1,6 +1,6 @@
 import type { User as UserEntity } from "@prisma/client";
 import type {
-  UserApiObject,
+  UserApiObject, UserMeApiObject,
   UserPostApiObject,
   UserPutApiObject,
   UserRoleApiEnum,
@@ -46,12 +46,28 @@ export function userEntityToApiObject(userEntity: UserEntity): UserApiObject {
   };
 }
 
-export function userApiObjectToUserMeDto(
-  userApiObject: UserApiObject
+export function userEntityToMeApiObject(userEntity: UserEntity): UserMeApiObject {
+  return {
+    id: userEntity.id,
+    role: userRoleStringToApiEnum(userEntity.role),
+    email: userEntity.email,
+    firstName: userEntity.firstName,
+    lastName: userEntity.lastName,
+    createdAt: userEntity.createdAt,
+    updatedAt: userEntity.updatedAt,
+    isAdmin: userEntity.role === "ADMIN",
+    isSuperAdmin: userEntity.role === "SUPER_ADMIN",
+    hasAdminPermission:
+      userEntity.role === "ADMIN" || userEntity.role === "SUPER_ADMIN"
+
+  };
+}
+
+export function userMeApiObjectToUserMeDto(
+  userApiObject: UserMeApiObject
 ): UserMeDto {
   return {
     id: userApiObject.id,
-    state: userStateStringToDtoEnum(userApiObject.state),
     role: userRoleStringToDtoEnum(userApiObject.role),
     email: userApiObject.email,
     firstName: userApiObject.firstName,
@@ -62,10 +78,9 @@ export function userApiObjectToUserMeDto(
     createdAt: userApiObject.createdAt.toISOString(),
     updatedAt: userApiObject.updatedAt.toISOString(),
 
-    isAdmin: userApiObject.role === "ADMIN",
-    isSuperAdmin: userApiObject.role === "SUPER_ADMIN",
-    hasAdminPermission:
-      userApiObject.role === "ADMIN" || userApiObject.role === "SUPER_ADMIN"
+    isAdmin: userApiObject.isAdmin,
+    isSuperAdmin: userApiObject.isSuperAdmin,
+    hasAdminPermission: userApiObject.hasAdminPermission,
   };
 }
 

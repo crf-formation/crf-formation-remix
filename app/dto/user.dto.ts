@@ -42,7 +42,6 @@ export interface UserPasswordPutDto {
 export interface UserMeDto {
   readonly id: string;
   readonly email: string;
-  readonly state: UserStateDtoEnum;
   readonly role: UserRoleDtoEnum;
   readonly firstName: string;
   readonly lastName: string;
