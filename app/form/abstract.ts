@@ -1,6 +1,7 @@
 import type { TypedResponse } from "@remix-run/server-runtime";
 import type { ValidationErrorResponseData, Validator, ValidatorError } from "remix-validated-form";
 import { validationError } from "remix-validated-form";
+import { z } from "zod";
 
 export type ValidatedFormData<T> = {
   data: T
@@ -38,3 +39,11 @@ export async function validateForm<T>(request: Request, validator: Validator<any
 
   return validatedForm;
 }
+
+// Coerces a string to true if it's "true"
+// https://github.com/colinhacks/zod/issues/1630
+export const coerceBoolean = z
+  .string()
+  .optional()
+  .default("false")
+  .transform((value: string) => value === "true");

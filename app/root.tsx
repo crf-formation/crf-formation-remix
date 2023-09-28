@@ -7,8 +7,9 @@ import Typography from "@mui/material/Typography";
 import { ThemeProvider } from "@mui/material/styles";
 import { LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
-import type { LinksFunction, LoaderArgs } from "@remix-run/node";
-import { redirect, V2_MetaFunction } from "@remix-run/node";
+import type { LinksFunction, LoaderArgs , V2_MetaFunction } from "@remix-run/node";
+import { redirect } from "@remix-run/node";
+import DevToolbar from "./component/dev/DevToolbar";
 import {
   isRouteErrorResponse,
   Link as RmxLink,
@@ -32,13 +33,11 @@ import Layout from "~/component/layout/Layout";
 import { LoadingBar } from "~/component/layout/LoadingBar";
 import useIsLoading from "~/hook/useIsLoading";
 import { getPublicProperties } from "~/service/publicproperties.server";
-import DebugMatches from "./component/dev/DebugMatches";
 import ErrorPageContainer from "./component/layout/ErrorPageContainer";
 import FlashMessages from "./component/layout/FlashMessages";
 import type { ThemeNames } from "./constant";
 import { DEFAULT_THEME } from "./constant";
 import { CSRF_SESSION_KEY } from "./constant/index.server";
-import type { Env } from "./constant/types";
 import type { FlashMessage } from "./dto/flash.dto";
 import type { PseFormationDto } from "./dto/pseformation.dto";
 import type { PublicPropertiesDto } from "./dto/publicproperties.dto";
@@ -54,13 +53,17 @@ import { getClientLocales, isDesktop } from "./service/request.server";
 import { commitSession, getMe, getSession } from "./service/session.server";
 import { getTheme } from "./theme";
 import { getUserTheme, themeCookie } from "./util/theme.server";
+import type { BrowserEnvDto } from "~/dto/env.dto";
+import { browserEnvApiObjectToDto } from "./mapper/environment.mapper";
+import { publicPropertiesApiObjectToDto } from "~/mapper/publicproperties.mapper";
+import { flashMessageApiObjectToDto } from "./mapper/flashmessage.mapper";
 
 export interface RootLoaderData {
-  user: Optional<UserMeDto>;
+  user: UserMeDto | null;
   themeName: ThemeNames;
   csrf: string;
   locales: Locales;
-  env: Env;
+  browserEnv: BrowserEnvDto;
   isDesktop: boolean;
   flashMessages: FlashMessage[];
   publicProperties: Optional<PublicPropertiesDto>;
@@ -75,11 +78,14 @@ export async function loader({ request }: LoaderArgs) {
 
   const csrf = session.get(CSRF_SESSION_KEY);
 
-  const flashMessages = await getFlashMessages(session);
-
   const user = await getMe(request);
 
   const currentPseFormationApiObject = user ? await getCurrentPseFormationForUser(user.id) : null;
+
+  const browserEnvApiObject = getBrowserEnv();
+  const publicPropertiesApiObject = await getPublicProperties()
+
+  const flashMessageApiObjects = await getFlashMessages(session);
 
   return json(
     {
@@ -89,14 +95,14 @@ export async function loader({ request }: LoaderArgs) {
       themeName: await getUserTheme(request),
       locales: getClientLocales(request),
       // env properties to share with the browser side.
-      env: getBrowserEnv(),
+      browserEnv: browserEnvApiObjectToDto(browserEnvApiObject),
       isDesktop: isDesktop(request),
 
-      publicProperties: await getPublicProperties(),
+      publicProperties: publicPropertiesApiObjectToDto(publicPropertiesApiObject),
 
       currentPseFormation: currentPseFormationApiObject ? pseFormationApiObjectToDto(currentPseFormationApiObject) : null,
 
-      flashMessages
+      flashMessages: flashMessageApiObjects?.map(flashMessageApiObjectToDto),
     },
     {
       headers: {
@@ -233,8 +239,8 @@ const Document = withEmotionCache(
       <ScrollRestoration />
       <Scripts />
 
-      {process.env.NODE_ENV === "development" && <DebugMatches />}
       {process.env.NODE_ENV === "development" && <LiveReload />}
+      {process.env.NODE_ENV === "development" && <DevToolbar />}
       </body>
       </html>
     );
@@ -244,7 +250,7 @@ const Document = withEmotionCache(
 // https://remix.run/api/conventions#default-export
 // https://remix.run/api/conventions#route-filenames
 export default function App() {
-  const { csrf, user, themeName, env } = useLoaderData<typeof loader>();
+  const { csrf, user, themeName, browserEnv } = useLoaderData<typeof loader>();
 
   return (
     <AuthenticityTokenProvider token={csrf}>
@@ -256,7 +262,7 @@ export default function App() {
         {/* Make env data availaible on window directly */}
         <script
           dangerouslySetInnerHTML={{
-            __html: `window.env = ${JSON.stringify(env)}`
+            __html: `window.browserEnv = ${JSON.stringify(browserEnv)}`
           }}
         />
       </Document>
