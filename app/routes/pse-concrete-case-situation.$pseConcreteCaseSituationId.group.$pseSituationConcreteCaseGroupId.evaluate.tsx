@@ -1,5 +1,5 @@
-import type { ActionArgs, LoaderArgs } from "@remix-run/node";
-import { json, V2_MetaFunction } from "@remix-run/node";
+import type { ActionArgs, LoaderArgs , V2_MetaFunction } from "@remix-run/node";
+import { json } from "@remix-run/node";
 import type { Params } from "@remix-run/react";
 import { useLoaderData } from "@remix-run/react";
 import { z } from "zod";
@@ -29,6 +29,7 @@ import {
   pseUserConcreteCaseGroupEvaluationApiObjectToDto,
   pseUserConcreteCaseGroupEvaluationPostDtoToApiObject
 } from "~/mapper/pseuserconcretecase.mapper";
+import { addFlashMessage } from "~/service/flash.server";
 import { getPseCompetences } from "~/service/psecompetence.server";
 import { getPseConcreteCaseGroup } from "~/service/pseconcretecasegroup.server";
 import { getPseConcreteCaseSessionById } from "~/service/pseconcretecasesession.server";
@@ -39,7 +40,7 @@ import {
   updatePseUserConcreteCaseGroupEvaluation
 } from "~/service/pseuserconcretecase.server";
 import { assertUserHasAccessToFormationAsTeacher } from "~/service/security.server";
-import { requireUser } from "~/service/session.server";
+import { commitSession, requireUser } from "~/service/session.server";
 
 const ParamsSchema = z.object({
   pseConcreteCaseSituationId: z.string(),
@@ -102,7 +103,7 @@ export async function loader({ request, params }: LoaderArgs) {
     pseCompetences: pseCompetenceApiObjects.map(pseCompetenceApiObjectToDto),
     pseUserConcreteCaseGroupEvaluation: pseUserConcreteCaseGroupEvaluationApiObjectToDto(pseUserConcreteCaseGroupEvaluationApiObject)
   });
-};
+}
 
 export async function action({ request, params }: ActionArgs) {
   const {
@@ -141,7 +142,17 @@ export async function action({ request, params }: ActionArgs) {
     pseUserConcreteCaseGroupEvaluationPostDtoToApiObject(pseUserConcreteCaseGroupEvaluationPostDto)
   );
 
-  return redirectActionToCurrentPage(request);
+  const session = await addFlashMessage(
+    request,
+    "success",
+    `L'évaluation a été mise à jour`
+  );
+
+  return redirectActionToCurrentPage(request, {
+    headers: {
+      "Set-Cookie": await commitSession(session),
+    },
+  });
 }
 
 export const meta: V2_MetaFunction<typeof loader> = ({ data }) => {
