@@ -5,6 +5,7 @@ import { useState } from "react";
 import useIsDesktop from "~/hook/useIsDesktop";
 import useRootData from "~/hook/useRootData";
 import SidebarMenu from "./SidebarMenu";
+import { CLOSED_DRAWER_WIDTH, DRAWER_WIDTH } from "~/constant";
 
 export default function Layout({ isLoggedIn, children }: { isLoggedIn: boolean, children: ReactNode }) {
   const isDesktop = useIsDesktop();
@@ -49,13 +50,33 @@ export default function Layout({ isLoggedIn, children }: { isLoggedIn: boolean, 
         It is easier to use than modifying the theme.
        */}
       <GlobalStyles
-        styles={{
+        styles={theme => ({
           ":root": {
             "--header-height": "48px",
             "--main-background-color": backgroundColor,
             "--card-background-color": themeName === "light" ? "#FBF7FF" : "rgba(255, 255, 255, 0.08)",
+
+            // spacing
+            "--page-spacing-x": theme.spacing(4),
+            "--page-spacing-y": theme.spacing(2),
+
+            // sidebar width
+            "--current-sidebar-width": sidebarIsOpen
+              ? DRAWER_WIDTH
+              : CLOSED_DRAWER_WIDTH,
+            "--sidebar-width": DRAWER_WIDTH,
+            "--sidebar-closed-width": CLOSED_DRAWER_WIDTH,
+
+            "--nprogress-spinner-left": sidebarIsOpen ? "220px" : "24px",
+
+            "--content-max-width": "1200px",
+            "--small-content-max-width": "720px",
+
+            // forms
+            "--form-max-width": "720px",
+            "--submit-btn-min-width": "240px",
           }
-        }}
+        })}
       />
 
       {/* Sidebar menu */}

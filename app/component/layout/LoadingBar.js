@@ -45,7 +45,14 @@ export function LoadingBar({ isLoading, startDelay = 500 }) {
           right: 0,
           transform: "rotate(3deg) translate(0, -4px)",
           width: "100px"
-        }
+        },
+        "#nprogress .spinner": {
+          left: "var(--nprogress-spinner-left)",
+        },
+        "#nprogress .spinner .spinner-icon": {
+          borderTopColor: theme.palette.primary.light,
+          borderLeftColor: theme.palette.primary.light,
+        },
       })}
     />
   );

@@ -1,4 +1,5 @@
 import type { SxProps } from "@mui/material";
+import GlobalStyles from "@mui/material/GlobalStyles";
 import type { ReactNode } from "react";
 import Main from "./Main";
 
@@ -12,15 +13,27 @@ interface Props {
  */
 export default function PageFullContent({ sx, children }: Props) {
   return (
-    <Main
-      sx={{
-        flexDirection: "row",
-        height: `100vh`,
-        backgroundColor: "#051e34",
-        ...sx
-      }}
-    >
-      {children}
-    </Main>
+    <>
+      {/* override global style: */}
+      <GlobalStyles
+        styles={{
+          ":root": {
+            // modify spinner position for all the full content pages.
+            "--nprogress-spinner-left": "24px",
+          },
+        }}
+      />
+      <Main
+        sx={{
+          flexDirection: "row",
+          height: `100vh`,
+          backgroundColor: "#051e34",
+          ...sx
+        }}
+      >
+        {children}
+      </Main>
+
+    </>
   );
 }

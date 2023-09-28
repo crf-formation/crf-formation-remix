@@ -10,7 +10,7 @@ export default function DevToolbar() {
       sx={{
         position: "fixed",
         bottom: 0,
-        left: 0,
+        left: "var(--current-sidebar-width)",
         right: 0,
         height: 28,
         zIndex: 2,
