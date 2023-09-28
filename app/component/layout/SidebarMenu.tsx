@@ -14,7 +14,6 @@ import Toolbar from "@mui/material/Toolbar";
 import { styled } from "@mui/material/styles";
 import { useState } from "react";
 import LogoIcon from "~/component/icons/LogoHorizontal";
-import useCurrentPseFormation from "~/hook/useCurrentPseFormation";
 import useMenuMatches from "~/hook/useMenuMatches";
 import useOptionalUser from "~/hook/useOptionalUser";
 import useUser from "~/hook/useUser";
@@ -35,7 +34,6 @@ type MenuProps = {
 export type MenuName = "menuDevTools" | "menuAdmin" | "menuCurrentPseFormation" | undefined
 
 const MainListItems = ({ openedMenu, handleToggle, dense, menuDefinition }: MenuProps) => {
-  const currentPseFormation = useCurrentPseFormation();
   return (
     <>
       <MenuItem
@@ -52,16 +50,14 @@ const MainListItems = ({ openedMenu, handleToggle, dense, menuDefinition }: Menu
         dense={dense}
       />
 
-      {currentPseFormation && (
-        <SubMenu
-          handleToggle={() => handleToggle("menuCurrentPseFormation")}
-          open={openedMenu === "menuCurrentPseFormation"}
-          name="Mon PSE"
-          icon={<AssignmentIcon />}
-          dense={dense}
-          items={menuDefinition.menuCurrentPseFormation}
-        />
-      )}
+      <SubMenu
+        handleToggle={() => handleToggle("menuCurrentPseFormation")}
+        open={openedMenu === "menuCurrentPseFormation"}
+        name="Mon PSE"
+        icon={<AssignmentIcon />}
+        dense={dense}
+        items={menuDefinition.menuCurrentPseFormation}
+      />
     </>
   );
 };

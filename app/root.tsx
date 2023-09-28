@@ -39,11 +39,9 @@ import type { ThemeNames } from "./constant";
 import { DEFAULT_THEME } from "./constant";
 import { CSRF_SESSION_KEY } from "./constant/index.server";
 import type { FlashMessage } from "./dto/flash.dto";
-import type { PseFormationDto } from "./dto/pseformation.dto";
 import type { PublicPropertiesDto } from "./dto/publicproperties.dto";
 import type { UserMeDto } from "./dto/user.dto";
 import useEnhancedEffect from "./hook/useEnhancedEffect";
-import { pseFormationApiObjectToDto } from "./mapper/pseformation.mapper";
 import { userMeApiObjectToUserMeDto } from "./mapper/user.mapper";
 import { getBrowserEnv } from "./service/env.server";
 import { getFlashMessages } from "./service/flash.server";
@@ -70,7 +68,6 @@ export interface RootLoaderData {
   isDesktop: boolean;
   flashMessages: FlashMessage[];
   publicProperties: Optional<PublicPropertiesDto>;
-  currentPseFormation: Optional<PseFormationDto>;
   menuDefinition: MenuDefinitionDto;
 }
 
@@ -105,8 +102,6 @@ export async function loader({ request }: LoaderArgs) {
       isDesktop: isDesktop(request),
 
       publicProperties: publicPropertiesApiObjectToDto(publicPropertiesApiObject),
-
-      currentPseFormation: currentPseFormationApiObject ? pseFormationApiObjectToDto(currentPseFormationApiObject) : null,
 
       flashMessages: flashMessageApiObjects?.map(flashMessageApiObjectToDto),
 
