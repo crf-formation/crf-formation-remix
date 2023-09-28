@@ -85,7 +85,7 @@ export default function ErrorPage({ error }: { error: ErrorResponse }) {
 
     case 400:
       if (error?.data?.erno === "ECONNREFUSED") {
-        title = "Could not connect to ZDP API";
+        title = "Could not connect to the API";
         defaultMessage = "";
       } else {
         title = "Error 400";
