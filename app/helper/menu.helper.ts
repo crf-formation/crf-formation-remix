@@ -2,9 +2,11 @@ import type { MenuDefinitionApiObject, MenuItemDefinitionApiObject } from "~/api
 import type { UserMeApiObject } from "~/apiobject/user.apiobject";
 import type { PseFormationApiObject } from "~/apiobject/pseformation.apiobject";
 import { isDevelopmentEnvironment } from "~/service/env.server";
+import { Permission } from "~/constant/permission";
+import { hasAuthority } from "~/helper/permission.helper";
 
 export function getMenuDefinition(
-  proUserMeApiObject: Optional<UserMeApiObject>,
+  userMeApiObject: Optional<UserMeApiObject>,
   currentPseFormation: Optional<PseFormationApiObject>,
 ): MenuDefinitionApiObject {
   // filter items that do not have the authority, to avoid sending those data to the front.
@@ -15,12 +17,18 @@ export function getMenuDefinition(
       {
         name: "Users",
         href: "/admin/user",
-        hasAuthority: proUserMeApiObject?.hasAdminPermission ?? false,
+        hasAuthority: hasAuthority(
+          userMeApiObject?.permissions,
+          Permission.RESOURCE_MANAGER_USER_LIST
+        ),
       },
       {
         name: "Formations - PSE",
         href: "/admin/pse",
-        hasAuthority: proUserMeApiObject?.hasAdminPermission ?? false,
+        hasAuthority: hasAuthority(
+          userMeApiObject?.permissions,
+          Permission.RESOURCE_MANAGER_FORMATION_LIST
+        ),
       }
     ].filter(filterHasNoAuthority),
 

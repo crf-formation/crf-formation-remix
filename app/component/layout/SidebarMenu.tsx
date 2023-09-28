@@ -70,21 +70,14 @@ const SecondaryListItems = ({ openedMenu, handleToggle, dense, menuDefinition }:
   const user = useUser();
   return (
     <>
-      {user.hasAdminPermission && (
-        <>
-          <Category name="Admin" />
-
-          <SubMenu
-            handleToggle={() => handleToggle("menuAdmin")}
-            open={openedMenu === "menuAdmin"}
-            name="Admin"
-            icon={<ShieldIcon />}
-            dense={dense}
-            items={menuDefinition.menuAdmin}
-          />
-        </>
-      )}
-
+      <SubMenu
+        handleToggle={() => handleToggle("menuAdmin")}
+        open={openedMenu === "menuAdmin"}
+        name="Admin"
+        icon={<ShieldIcon />}
+        dense={dense}
+        items={menuDefinition.menuAdmin}
+      />
     </>
   );
 };

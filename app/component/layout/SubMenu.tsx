@@ -9,6 +9,7 @@ import type { ReactElement, ReactEventHandler, ReactNode } from "react";
 import ChevronToggleIcon from "../icons/ChevronToggle";
 import MenuItem from "./MenuItem";
 import type { MenuName } from "./SidebarMenu";
+import useLocationMatchPath from "~/hook/useLocationMatchPath";
 
 export type MenuItemDefinition = {
   name: string;
@@ -61,11 +62,12 @@ interface HeaderProps {
   icon: ReactNode;
   name: string;
   open: boolean;
+  matchPath: boolean;
   dense: boolean;
   onClick?: ReactEventHandler;
 };
 
-function Header({ icon, name, open, dense, onClick }: HeaderProps) {
+function Header({ icon, name, open, matchPath, dense, onClick }: HeaderProps) {
   return (
     <ListItem disablePadding component="div">
       <ListItemButton
@@ -74,6 +76,8 @@ function Header({ icon, name, open, dense, onClick }: HeaderProps) {
         sx={{
           bgcolor: open ? "rgba(71, 98, 130, 0.2)" : null,
           color: "var(--sidebar-color-title)",
+
+          borderLeft: matchPath ? "2px solid white" : "",
 
           paddingLeft: 1,
           paddingRight: 0.5,
@@ -120,7 +124,13 @@ interface Props {
 
 function SubMenu(props: Props) {
   const { items, handleToggle, open, name, icon, dense } = props;
+  const locationMatchPath = useLocationMatchPath();
 
+  if (items?.length === 0) {
+    return null;
+  }
+
+  const matchPath = items.some((item) => locationMatchPath(item.href));
 
   return (
     <Box
@@ -138,6 +148,7 @@ function SubMenu(props: Props) {
     >
       <Header
         open={open}
+        matchPath={matchPath}
         icon={icon}
         name={name}
         dense={dense}

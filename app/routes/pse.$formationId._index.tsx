@@ -27,7 +27,7 @@ import type { UserDto } from "~/dto/user.dto";
 import type { SecurityFunction } from "~/helper/remix.helper";
 import { getParamsOrFail } from "~/helper/remix.params.helper";
 import useI18n from "~/hook/useI18n";
-import useUser from "~/hook/useUser";
+import useSecurity from "~/hook/useSecurity";
 import { pseFormationApiObjectToDto } from "~/mapper/pseformation.mapper";
 import { findPseFormationById } from "~/service/pseformation.server";
 import { assertUserHasAccessToFormationAsTeacher } from "~/service/security.server";
@@ -184,7 +184,9 @@ function Formation({ formation, hasAdminPermission }: { formation: PseFormationD
 
 export default function FromationPseRoute() {
   const { formation } = useLoaderData<typeof loader>();
-  const user = useUser();
+  const { hasAuthority } = useSecurity();
+
+  const hasAdminPermission = hasAuthority('admin');
 
   return (
     <Page
@@ -202,12 +204,12 @@ export default function FromationPseRoute() {
           <Stack spacing={2}>
             <Formation
               formation={formation}
-              hasAdminPermission={user.hasAdminPermission}
+              hasAdminPermission={hasAdminPermission}
             />
             <StudentList
               formationId={formation.id}
               students={formation.students}
-              hasAdminPermission={user.hasAdminPermission}
+              hasAdminPermission={hasAdminPermission}
             />
           </Stack>
         </Grid>
@@ -217,7 +219,7 @@ export default function FromationPseRoute() {
             <TeacherList
               formationId={formation.id}
               teachers={formation.teachers}
-              hasAdminPermission={user.hasAdminPermission}
+              hasAdminPermission={hasAdminPermission}
             />
           </Stack>
         </Grid>

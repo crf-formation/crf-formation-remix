@@ -1,3 +1,5 @@
+import { AuthorityApiEnum } from "~/apiobject/permission.apiobject";
+
 export type UserStateApiEnum = "CREATED" | "DISABLED" | "ENABLED" | "ARCHIVED"
 export type UserRoleApiEnum = "USER" | "ADMIN" | "SUPER_ADMIN"
 
@@ -20,12 +22,14 @@ export interface UserMeApiObject {
   readonly lastName: string;
   readonly createdAt: Date;
   readonly updatedAt: Date;
+  readonly permissions: Array<PermissionApiObject>;
+}
 
-  readonly isAdmin: boolean;
-  readonly isSuperAdmin: boolean;
-
-  // isAdmin or isSuperAdmin
-  readonly hasAdminPermission: boolean;
+export interface PermissionApiObject {
+  id: string;
+  identifier: AuthorityApiEnum;
+  technicalName: string;
+  technicalDescription: string;
 }
 
 export interface UserPostApiObject {

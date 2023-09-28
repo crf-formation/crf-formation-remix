@@ -1,3 +1,5 @@
+import { AuthorityDtoEnum } from "./permission.dto";
+
 export type UserStateDtoEnum = "CREATED" | "DISABLED" | "ENABLED" | "ARCHIVED"
 export type UserRoleDtoEnum = "USER" | "ADMIN" | "SUPER_ADMIN"
 
@@ -11,12 +13,6 @@ export interface UserDto {
   readonly fullName: string;
   readonly createdAt: DateISOString;
   readonly updatedAt: DateISOString;
-
-  readonly isAdmin: boolean;
-  readonly isSuperAdmin: boolean;
-
-  // isAdmin or isSuperAdmin
-  readonly hasAdminPermission: boolean;
 }
 
 export interface UserPostDto {
@@ -48,12 +44,14 @@ export interface UserMeDto {
   readonly fullName: string;
   readonly createdAt: DateISOString;
   readonly updatedAt: DateISOString;
+  readonly permissions: Array<PermissionDto>;
+}
 
-  readonly isAdmin: boolean;
-  readonly isSuperAdmin: boolean;
-
-  // isAdmin or isSuperAdmin
-  readonly hasAdminPermission: boolean;
+export interface PermissionDto {
+  id: string;
+  identifier: AuthorityDtoEnum;
+  technicalName: string;
+  technicalDescription: string;
 }
 
 export interface PasswordCreateDto {
