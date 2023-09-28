@@ -22,7 +22,7 @@ import MenuItem from "./MenuItem";
 import SidebarDivider from "./SidebarDivider";
 import SubMenu from "./SubMenu";
 import UserMenu from "./UserMenu";
-import type { MenuDefinitionDto } from "~/dto/menu.dto";
+import type { MenuDefinitionDto, MenuNameDtoEnum } from "~/dto/menu.dto";
 import useOptionalRootData from "~/hook/useOptionalRootData";
 
 type MenuProps = {
@@ -211,17 +211,21 @@ export default function SidebarMenu({ open }: Props) {
   const { getMatchingMenuName } = useMenuMatches();
   const rootData = useOptionalRootData();
 
-  const { menuDefinition } = rootData;
-
-  const [openedSubMenu, setOpenedSubMenu] = useState<MenuName | undefined>(
-    getMatchingMenuName(menuDefinition)
-  );
+  const [openedSubMenu, setOpenedSubMenu] = useState<
+    MenuNameDtoEnum | undefined
+  >(rootData ? getMatchingMenuName(rootData.menuDefinition) : undefined);
 
   const dense = true;
 
   const handleToggle = (menu: MenuName) => {
     setOpenedSubMenu(openedMenu => openedMenu === menu ? undefined : menu);
   };
+
+  if (!rootData?.menuDefinition) {
+    return null;
+  }
+
+  const { menuDefinition } = rootData;
 
   return (
     <>
