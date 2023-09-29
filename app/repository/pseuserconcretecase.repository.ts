@@ -23,10 +23,8 @@ const includeForGroup = {
   }
 };
 
-
 export async function getPseUserConcreteCasesEntities(formationId: string, userId: string): Promise<PseUserConcreteCaseEntity[]> {
-
-  return await prisma.pseUserConcreteCase.findMany({
+  return prisma.pseUserConcreteCase.findMany({
     where: {
       userId,
       pseSituationConcreteCaseGroup: {
@@ -43,8 +41,7 @@ export async function getPseUserConcreteCasesEntities(formationId: string, userI
 
 
 export async function getSelectedPseUserConcreteCaseEntities(formationId: string, userId: string): Promise<PseUserConcreteCaseEntity[]> {
-
-  return await prisma.pseUserConcreteCase.findMany({
+  return prisma.pseUserConcreteCase.findMany({
     where: {
       userId,
       selected: true,
@@ -65,7 +62,7 @@ export async function getPseUserConcreteCasesForGroupAndSituationEntities(
   pseConcreteCaseGroupId: string,
   pseConcreteCaseSituationId: string
 ): Promise<Array<PseUserConcreteCaseEntity>> {
-  return await prisma.pseUserConcreteCase.findMany({
+  return prisma.pseUserConcreteCase.findMany({
     where: {
       pseSituationConcreteCaseGroup: {
         pseConcreteCaseGroup: {
@@ -82,11 +79,11 @@ export async function getPseUserConcreteCasesForGroupAndSituationEntities(
 
 export async function createOrUpdatePseUserConcreteCases(
   userConcreteCases: Array<PseUserConcreteCasePostEntity>
-): Promise<PseUserConcreteCaseEntity> {
+): Promise<Array<PseUserConcreteCaseEntity>> {
+  return prisma.$transaction<Array<PseUserConcreteCaseEntity>>(async (tx)=> {
 
-  return await prisma.$transaction<PseUserConcreteCaseEntity>(async (tx) => {
-    return Promise.all(userConcreteCases.map(async userConcreteCase => {
-      const pseUserConcreteCaseData: PseUserConcreteCaseCompetenceEntity = {
+    return await Promise.all(userConcreteCases.map(async userConcreteCase => {
+      const pseUserConcreteCaseData = {
         role: userConcreteCase.role,
         selected: true,
 
@@ -106,14 +103,14 @@ export async function createOrUpdatePseUserConcreteCases(
       });
 
       // -- add competences
-      return Promise.all(userConcreteCase.grades.map(async gradeEvaluation => {
+      await Promise.all(userConcreteCase.grades.map(async gradeEvaluation => {
         const pseUserConcreteCaseCompetenceData = {
           pseUserConcreteCaseId: pseUserConcreteCaseEntity.id,
           pseCompetenceId: gradeEvaluation.pseCompetenceId,
           grade: gradeEvaluation.grade
         };
 
-        const pseUserConcreteCaseCompetenceEntity = await tx.pseUserConcreteCaseCompetence.upsert({
+        return tx.pseUserConcreteCaseCompetence.upsert({
           where: {
             pseUserConcreteCaseId_pseCompetenceId: {
               pseUserConcreteCaseId: pseUserConcreteCaseCompetenceData.pseUserConcreteCaseId,
@@ -123,10 +120,14 @@ export async function createOrUpdatePseUserConcreteCases(
           update: pseUserConcreteCaseCompetenceData,
           create: pseUserConcreteCaseCompetenceData
         });
-
-        return pseUserConcreteCaseCompetenceEntity;
       }));
 
+      return tx.pseUserConcreteCase.findFirstOrThrow({
+        where: {
+          id: pseUserConcreteCaseEntity.id
+        }
+      });
     }));
+
   });
 }
