@@ -1,15 +1,10 @@
 import type { Session } from "@remix-run/server-runtime";
 import { v4 as uuid } from "uuid";
+import type {
+  FlashMessageApiObject,
+  FlashMessageSeverityApiEnum,
+} from "~/apiobject/flashmessage.apiobject";
 import { getSession as getServerSession } from "./session.server";
-
-interface FlashMessage {
-  id: string;
-  message: string;
-  severity: FlashMessageType;
-}
-
-type FlashMessageType = "error" | "warning" | "info" | "success";
-
 
 async function getSession(
   requestOrSession: Request | Session
@@ -35,7 +30,7 @@ async function getSession(
  */
 export async function addFlashMessage(
   requestOrSession: Request | Session,
-  severity: FlashMessageType,
+  severity: FlashMessageSeverityApiEnum,
   message: string
 ): Promise<Session> {
   const session = await getSession(requestOrSession);
@@ -43,7 +38,7 @@ export async function addFlashMessage(
   const flashMessage = {
     id: uuid(),
     message,
-    severity
+    severity,
   };
 
   // TODO: will always be empty since we did not commit the session yet.
@@ -55,7 +50,9 @@ export async function addFlashMessage(
   return session;
 }
 
-export async function getFlashMessages(requestOrSession: Request | Session) {
+export async function getFlashMessages(
+  requestOrSession: Request | Session
+): Promise<Array<FlashMessageApiObject>> {
   const session = await getSession(requestOrSession);
 
   return session.get("flashMessages") || [];

@@ -1,4 +1,5 @@
-import { Box, Link } from "@mui/material";
+import Box from "@mui/material/Box";
+import Link from "@mui/material/Link";
 import type { ActionArgs, LoaderArgs } from "@remix-run/node";
 import { json, redirect, V2_MetaFunction } from "@remix-run/node";
 import { useActionData, useLoaderData, useSearchParams } from "@remix-run/react";

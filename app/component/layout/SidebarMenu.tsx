@@ -4,11 +4,16 @@ import BubbleChartIcon from "@mui/icons-material/BubbleChart";
 import ConstructionIcon from "@mui/icons-material/Construction";
 import DashboardIcon from "@mui/icons-material/Dashboard";
 import ShieldIcon from "@mui/icons-material/Shield";
-import { Box, Drawer as MuiDrawer, GlobalStyles, List, ListItem, ListItemText, Toolbar } from "@mui/material";
+import Box from "@mui/material/Box";
+import MuiDrawer from "@mui/material/Drawer";
+import GlobalStyles from "@mui/material/GlobalStyles";
+import List from "@mui/material/List";
+import ListItem from "@mui/material/ListItem";
+import ListItemText from "@mui/material/ListItemText";
+import Toolbar from "@mui/material/Toolbar";
 import { styled } from "@mui/material/styles";
 import { useState } from "react";
 import LogoIcon from "~/component/icons/LogoHorizontal";
-import useCurrentPseFormation from "~/hook/useCurrentPseFormation";
 import useMenuMatches from "~/hook/useMenuMatches";
 import useOptionalUser from "~/hook/useOptionalUser";
 import useUser from "~/hook/useUser";
@@ -16,18 +21,19 @@ import MenuItem from "./MenuItem";
 import SidebarDivider from "./SidebarDivider";
 import SubMenu from "./SubMenu";
 import UserMenu from "./UserMenu";
+import type { MenuDefinitionDto, MenuNameDtoEnum } from "~/dto/menu.dto";
+import useOptionalRootData from "~/hook/useOptionalRootData";
 
 type MenuProps = {
   openedMenu: MenuName;
   dense: boolean;
   handleToggle: Function;
-  menuItems: Array<Map<String, any[]>>;
+  menuDefinition: MenuDefinitionDto;
 }
 
 export type MenuName = "menuDevTools" | "menuAdmin" | "menuCurrentPseFormation" | undefined
 
-const MainListItems = ({ openedMenu, handleToggle, dense, menuItems }: MenuProps) => {
-  const currentPseFormation = useCurrentPseFormation();
+const MainListItems = ({ openedMenu, handleToggle, dense, menuDefinition }: MenuProps) => {
   return (
     <>
       <MenuItem
@@ -44,39 +50,30 @@ const MainListItems = ({ openedMenu, handleToggle, dense, menuItems }: MenuProps
         dense={dense}
       />
 
-      {currentPseFormation && (
-        <SubMenu
-          handleToggle={() => handleToggle("menuCurrentPseFormation")}
-          open={openedMenu === "menuCurrentPseFormation"}
-          name="Mon PSE"
-          icon={<AssignmentIcon />}
-          dense={dense}
-          items={menuItems.menuCurrentPseFormation}
-        />
-      )}
+      <SubMenu
+        handleToggle={() => handleToggle("menuCurrentPseFormation")}
+        open={openedMenu === "menuCurrentPseFormation"}
+        name="Mon PSE"
+        icon={<AssignmentIcon />}
+        dense={dense}
+        items={menuDefinition.menuCurrentPseFormation}
+      />
     </>
   );
 };
 
-const SecondaryListItems = ({ openedMenu, handleToggle, dense, menuItems }: MenuProps) => {
+const SecondaryListItems = ({ openedMenu, handleToggle, dense, menuDefinition }: MenuProps) => {
   const user = useUser();
   return (
     <>
-      {user.hasAdminPermission && (
-        <>
-          <Category name="Admin" />
-
-          <SubMenu
-            handleToggle={() => handleToggle("menuAdmin")}
-            open={openedMenu === "menuAdmin"}
-            name="Admin"
-            icon={<ShieldIcon />}
-            dense={dense}
-            items={menuItems.menuAdmin}
-          />
-        </>
-      )}
-
+      <SubMenu
+        handleToggle={() => handleToggle("menuAdmin")}
+        open={openedMenu === "menuAdmin"}
+        name="Admin"
+        icon={<ShieldIcon />}
+        dense={dense}
+        items={menuDefinition.menuAdmin}
+      />
     </>
   );
 };
@@ -86,7 +83,7 @@ const BottomListItems = (
     openedMenu,
     handleToggle,
     dense,
-    menuItems
+    menuDefinition
   }: MenuProps) => {
   const user = useOptionalUser();
 
@@ -105,7 +102,7 @@ const BottomListItems = (
         name="Dev tools"
         icon={<ConstructionIcon />}
         dense={dense}
-        items={menuItems.menuDevTools}
+        items={menuDefinition.menuDevTools}
       />
 
       <List>
@@ -157,7 +154,7 @@ const Drawer = styled(MuiDrawer, {
     position: "relative",
     whiteSpace: "nowrap",
 
-    width: theme.sidebar.width,
+    width: "var(--sidebar-width)",
     [theme.breakpoints.down("sm")]: {
       width: `100vw`
     },
@@ -177,7 +174,7 @@ const Drawer = styled(MuiDrawer, {
       width: 0,
 
       [theme.breakpoints.up("sm")]: {
-        width: theme.sidebar.closedWidth
+        width: "var(--sidebar-closed-width)",
       }
     })
   }
@@ -201,57 +198,23 @@ interface Props {
 
 export default function SidebarMenu({ open }: Props) {
   const { getMatchingMenuName } = useMenuMatches();
-  const currentPseFormation = useCurrentPseFormation();
+  const rootData = useOptionalRootData();
 
-  const menuItems = {
-    menuAdmin: [
-      {
-        name: "Users",
-        href: "/admin/user"
-      },
-      {
-        name: "Formations - PSE",
-        href: "/admin/pse"
-      }
-    ],
-
-    menuDevTools: [
-      {
-        name: "Theme",
-        href: "/dev/theme"
-      },
-
-      {
-        name: "Test Page",
-        href: "/dev/test"
-      }
-    ],
-
-    menuCurrentPseFormation: !currentPseFormation ? [] : [
-      {
-        name: "Dashboard",
-        href: `/pse/${currentPseFormation.id}`
-      },
-      {
-        name: "Cas concrets",
-        href: `/pse/${currentPseFormation.id}/concrete-case/session`
-      },
-      {
-        name: "Suivi",
-        href: `/pse/${currentPseFormation.id}/summary`
-      }
-    ].filter(Boolean)
-  };
-
-  const [openedSubMenu, setOpenedSubMenu] = useState<MenuName | undefined>(
-    getMatchingMenuName(menuItems)
-  );
+  const [openedSubMenu, setOpenedSubMenu] = useState<
+    MenuNameDtoEnum | undefined
+  >(rootData ? getMatchingMenuName(rootData.menuDefinition) : undefined);
 
   const dense = true;
 
   const handleToggle = (menu: MenuName) => {
     setOpenedSubMenu(openedMenu => openedMenu === menu ? undefined : menu);
   };
+
+  if (!rootData?.menuDefinition) {
+    return null;
+  }
+
+  const { menuDefinition } = rootData;
 
   return (
     <>
@@ -297,14 +260,14 @@ export default function SidebarMenu({ open }: Props) {
             dense={dense}
             openedMenu={openedSubMenu}
             handleToggle={handleToggle}
-            menuItems={menuItems}
+            menuDefinition={menuDefinition}
           />
           <SidebarDivider sx={{ my: 1 }} />
           <SecondaryListItems
             dense={dense}
             openedMenu={openedSubMenu}
             handleToggle={handleToggle}
-            menuItems={menuItems}
+            menuDefinition={menuDefinition}
           />
         </List>
 
@@ -323,7 +286,7 @@ export default function SidebarMenu({ open }: Props) {
             dense={dense}
             openedMenu={openedSubMenu}
             handleToggle={handleToggle}
-            menuItems={menuItems}
+            menuDefinition={menuDefinition}
           />
         </List>
       </Drawer>

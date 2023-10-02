@@ -1,5 +1,7 @@
-import { Add } from "@mui/icons-material";
-import { Box, Button, Typography } from "@mui/material";
+import Add from "@mui/icons-material/Add";
+import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
+import Typography from "@mui/material/Typography";
 import { ArrayField, ArrayInput, BooleanField, Datagrid, SimpleFormIterator, TextField } from "react-admin";
 import { UserReferenceInput } from "../UserReference";
 

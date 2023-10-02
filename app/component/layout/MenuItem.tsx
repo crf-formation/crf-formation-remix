@@ -1,6 +1,8 @@
 import type { SxProps } from "@mui/material";
-import { ListItemButton, ListItemIcon, ListItemText } from "@mui/material";
-import type { ReactEventHandler, ReactNode } from "react";
+import ListItemButton from "@mui/material/ListItemButton";
+import ListItemIcon from "@mui/material/ListItemIcon";
+import ListItemText from "@mui/material/ListItemText";
+import type { ReactNode } from "react";
 import { forwardRef } from "react";
 import useLocationMatchPath from "~/hook/useLocationMatchPath";
 
@@ -9,7 +11,7 @@ type PropsType = {
   href?: string | undefined;
   name: string;
   icon?: ReactNode;
-  onClick?: ReactEventHandler;
+  onClick?: React.MouseEventHandler<HTMLDivElement>;
   sx?: SxProps;
 }
 

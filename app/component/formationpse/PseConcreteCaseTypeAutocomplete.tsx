@@ -1,5 +1,5 @@
-import { TextField } from "@mui/material";
-import type { AutocompleteProps } from "@mui/material/Autocomplete";
+import TextField from "@mui/material/TextField";
+import type { AutocompleteProps } from "@mui/material";
 import Autocomplete from "@mui/material/Autocomplete";
 import { useState } from "react";
 import type { PseConcreteCaseTypeDto } from "~/dto/pseconcretecasetype.dto";

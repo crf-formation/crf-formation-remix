@@ -1,12 +1,13 @@
 import type {
   UserApiObject,
   UserAuthTokenApiObject,
+  UserMeApiObject,
   UserPostApiObject,
   UserPutApiObject
 } from "~/apiobject/user.apiobject";
 import type { OrderByDirection, PaginateObject } from "~/constant/types";
 import { paginateEntityToApiObject } from "~/mapper/abstract.mapper";
-import { userEntityToApiObject } from "~/mapper/user.mapper";
+import { userEntityToApiObject, userEntityToMeApiObject } from "~/mapper/user.mapper";
 import {
   createUserEntity,
   findUserEntities,
@@ -144,10 +145,10 @@ export async function searchFormationTeachers(
 // user me
 //
 
-export async function getUserMe(userId: string): Promise<UserApiObject> {
-  const userEntity = await findUserById(userId);
+export async function getUserMe(userId: string): Promise<UserMeApiObject> {
+  const userEntity = await findUserEntityById(userId);
   if (!userEntity) {
     throw new Error(`User ${userId} could not be found`);
   }
-  return userEntityToApiObject(userEntity);
+  return userEntityToMeApiObject(userEntity);
 }

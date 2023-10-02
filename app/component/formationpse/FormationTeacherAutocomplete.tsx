@@ -1,7 +1,7 @@
-import { TextField } from "@mui/material";
+import TextField from "@mui/material/TextField";
 import { useState } from "react";
 import UserAutocompleteResource from "~/routes/resource/formation-teacher-autocomplete";
-import type { AutocompleteProps } from "@mui/material/Autocomplete";
+import type { AutocompleteProps } from "@mui/material";
 import Autocomplete from "@mui/material/Autocomplete";
 import type { UserDto } from "~/dto/user.dto";
 

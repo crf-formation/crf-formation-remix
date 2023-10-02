@@ -1,4 +1,5 @@
-import { Grid, Link } from "@mui/material";
+import Grid from "@mui/material/Grid";
+import Link from "@mui/material/Link";
 import type { LoaderArgs, V2_MetaFunction } from "@remix-run/node";
 import { json } from "@remix-run/node";
 import type { Params } from "@remix-run/react";
@@ -20,6 +21,7 @@ import { getPseFormationById } from "~/service/pseformation.server";
 import { assertUserHasAccessToFormationAsTeacher } from "~/service/security.server";
 import { requireUser } from "~/service/session.server";
 import { getUserOnPseFormationEntityById } from "~/service/useronpseformation.server";
+import useSecurity from "~/hook/useSecurity";
 
 // Note: not named index.tsx ont $studentId directory, because of the <Outlet />
 
@@ -67,6 +69,7 @@ export const meta: V2_MetaFunction<typeof loader> = ({ data }) => {
 export default function UserPseFormationSummaryRoute() {
   const { pseFormation, student } = useLoaderData<typeof loader>();
   const user = useUser();
+  const { hasAuthority } = useSecurity();
 
   const tabs = [
     {
@@ -118,7 +121,7 @@ export default function UserPseFormationSummaryRoute() {
           <Grid item xs={3}>
             <Section title="">
               <ButtonStack>
-                {user.hasAdminPermission && (
+                {hasAuthority('resourcemanager.prouser.update') && (
                   <Link href={`/admin/user/${student.id}`}>
                     Éditer l'utilisateur
                   </Link>

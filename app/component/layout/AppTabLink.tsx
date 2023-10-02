@@ -1,5 +1,6 @@
 import type { TabProps } from "@mui/material";
-import { Link, Tab } from "@mui/material";
+import Link from "@mui/material/Link";
+import Tab from "@mui/material/Tab";
 import { useMatch, useResolvedPath } from "react-router";
 
 interface Props extends TabProps {

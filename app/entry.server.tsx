@@ -9,9 +9,24 @@ import { RemixServer } from "@remix-run/react";
 import { renderToString } from "react-dom/server";
 import { getTheme } from "~/theme";
 import { getUserTheme, themeCookie } from "~/util/theme.server";
+import { validateEnv } from "./service/env.server";
 import createEmotionCache from "./util/createEmotionCache";
+import { getEnv } from "~/service/env.server";
+import { startMockServer } from "../mocks/msw";
+import { handlers } from "../mocks";
 
 // const ABORT_DELAY = 5000;
+
+// validate env configuration on start
+validateEnv();
+
+const withMocks = getEnv("MOCKS");
+if (
+  withMocks &&
+  (process.env.NODE_ENV === "development" || process.env.NODE_ENV === "test")
+) {
+  startMockServer(handlers);
+}
 
 export default async function handleRequest(
   request: Request,

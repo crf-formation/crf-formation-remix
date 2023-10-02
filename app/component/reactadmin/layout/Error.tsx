@@ -1,7 +1,7 @@
 /// https://marmelab.com/react-admin/Layout.html
 import History from "@mui/icons-material/History";
 import ErrorIcon from "@mui/icons-material/Report";
-import { Paper } from "@mui/material";
+import Paper from "@mui/material/Paper";
 import Button from "@mui/material/Button";
 import { useLocation } from "@remix-run/react";
 import { useEffect, useRef } from "react";

@@ -1,24 +1,22 @@
 import AddIcon from "@mui/icons-material/Add";
 import ModeEditIcon from "@mui/icons-material/ModeEdit";
 import PersonAddIcon from "@mui/icons-material/PersonAdd";
-import {
-  Box,
-  Button,
-  Chip,
-  Divider,
-  Grid,
-  Link,
-  List,
-  ListItem,
-  ListItemText,
-  Stack,
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableRow,
-  Typography
-} from "@mui/material";
+import Box from "@mui/material/Box"
+import Button from "@mui/material/Button"
+import Chip from "@mui/material/Chip"
+import Divider from "@mui/material/Divider"
+import Grid from "@mui/material/Grid"
+import Link from "@mui/material/Link"
+import List from "@mui/material/List"
+import ListItem from "@mui/material/ListItem"
+import ListItemText from "@mui/material/ListItemText"
+import Stack from "@mui/material/Stack"
+import Table from "@mui/material/Table"
+import TableBody from "@mui/material/TableBody"
+import TableCell from "@mui/material/TableCell"
+import TableHead from "@mui/material/TableHead"
+import TableRow from "@mui/material/TableRow"
+import Typography from "@mui/material/Typography"
 import type { LoaderFunction, V2_MetaFunction } from "@remix-run/node";
 import { json } from "@remix-run/node";
 import type { Params } from "@remix-run/react";

@@ -1,5 +1,5 @@
 import type { ButtonProps } from "@mui/material";
-import { Button } from "@mui/material";
+import Button from "@mui/material/Button";
 import { useIsSubmitting } from "remix-validated-form";
 
 export default function SubmitButton({ children, ...props }: ButtonProps) {

@@ -1,4 +1,5 @@
-import { alpha, Box, styled } from "@mui/material";
+import { alpha, styled } from "@mui/material/styles";
+import Box from "@mui/material/Box";
 import WarningAmberIcon from "@mui/icons-material/WarningAmber";
 import ErrorOutlineIcon from "@mui/icons-material/ErrorOutline";
 import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";

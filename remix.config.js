@@ -22,7 +22,7 @@ module.exports = {
     // https://remix.run/docs/en/1.15.0/pages/v2#catchboundary-and-errorboundary
     v2_errorBoundary: true,
   },
-  // fix the "Error [ERR_REQUIRE_ESM]: require() of ES Module" errror
+  // fix the "Error [ERR_REQUIRE_ESM]: require() of ES Module" error
   // https://remix.run/docs/en/v1/pages/gotchas#importing-esm-packages
   serverDependenciesToBundle: [
      // begin: markdown libraries

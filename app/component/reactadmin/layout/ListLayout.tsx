@@ -1,4 +1,5 @@
-import { Box, Card } from "@mui/material";
+import Box from "@mui/material/Box";
+import Card from "@mui/material/Card";
 import type { ReactElement, ReactNode } from "react";
 import { ListBase, ListToolbar, Pagination, Title } from "react-admin";
 import Main from "~/component/layout/Main";

@@ -1,4 +1,4 @@
-import { Stack } from "@mui/material";
+import Stack from "@mui/material/Stack";
 import type { LoaderArgs } from "@remix-run/node";
 import { json, V2_MetaFunction } from "@remix-run/node";
 import type { Params } from "@remix-run/react";

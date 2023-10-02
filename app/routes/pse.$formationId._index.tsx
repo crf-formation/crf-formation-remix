@@ -1,7 +1,15 @@
 import EditIcon from "@mui/icons-material/Edit";
 import ImageIcon from "@mui/icons-material/Image";
 import PersonAddIcon from "@mui/icons-material/PersonAdd";
-import { Avatar, Button, Grid, Link, List, ListItem, ListItemAvatar, ListItemText, Stack } from "@mui/material";
+import Avatar from "@mui/material/Avatar";
+import Button from "@mui/material/Button";
+import Grid from "@mui/material/Grid";
+import Link from "@mui/material/Link";
+import List from "@mui/material/List";
+import ListItem from "@mui/material/ListItem";
+import ListItemAvatar from "@mui/material/ListItemAvatar";
+import ListItemText from "@mui/material/ListItemText";
+import Stack from "@mui/material/Stack";
 import type { LoaderArgs } from "@remix-run/node";
 import { json, V2_MetaFunction } from "@remix-run/node";
 import type { Params } from "@remix-run/react";
@@ -19,7 +27,7 @@ import type { UserDto } from "~/dto/user.dto";
 import type { SecurityFunction } from "~/helper/remix.helper";
 import { getParamsOrFail } from "~/helper/remix.params.helper";
 import useI18n from "~/hook/useI18n";
-import useUser from "~/hook/useUser";
+import useSecurity from "~/hook/useSecurity";
 import { pseFormationApiObjectToDto } from "~/mapper/pseformation.mapper";
 import { findPseFormationById } from "~/service/pseformation.server";
 import { assertUserHasAccessToFormationAsTeacher } from "~/service/security.server";
@@ -176,7 +184,9 @@ function Formation({ formation, hasAdminPermission }: { formation: PseFormationD
 
 export default function FromationPseRoute() {
   const { formation } = useLoaderData<typeof loader>();
-  const user = useUser();
+  const { hasAuthority } = useSecurity();
+
+  const hasAdminPermission = hasAuthority('admin');
 
   return (
     <Page
@@ -194,12 +204,12 @@ export default function FromationPseRoute() {
           <Stack spacing={2}>
             <Formation
               formation={formation}
-              hasAdminPermission={user.hasAdminPermission}
+              hasAdminPermission={hasAdminPermission}
             />
             <StudentList
               formationId={formation.id}
               students={formation.students}
-              hasAdminPermission={user.hasAdminPermission}
+              hasAdminPermission={hasAdminPermission}
             />
           </Stack>
         </Grid>
@@ -209,7 +219,7 @@ export default function FromationPseRoute() {
             <TeacherList
               formationId={formation.id}
               teachers={formation.teachers}
-              hasAdminPermission={user.hasAdminPermission}
+              hasAdminPermission={hasAdminPermission}
             />
           </Stack>
         </Grid>

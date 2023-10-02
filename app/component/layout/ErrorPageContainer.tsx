@@ -1,4 +1,6 @@
-import { Box, Paper, Typography } from "@mui/material";
+import Box from "@mui/material/Box";
+import Paper from "@mui/material/Paper";
+import Typography from "@mui/material/Typography";
 import { ErrorResponse } from "@remix-run/router";
 import { ReactNode } from "react";
 
@@ -83,7 +85,7 @@ export default function ErrorPage({ error }: { error: ErrorResponse }) {
 
     case 400:
       if (error?.data?.erno === "ECONNREFUSED") {
-        title = "Could not connect to ZDP API";
+        title = "Could not connect to the API";
         defaultMessage = "";
       } else {
         title = "Error 400";

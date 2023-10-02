@@ -1,4 +1,5 @@
-import { Box, Paper } from "@mui/material";
+import Box from "@mui/material/Box";
+import Paper from "@mui/material/Paper";
 import type { ReactNode } from "react";
 
 interface Props {

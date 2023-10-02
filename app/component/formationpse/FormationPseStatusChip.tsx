@@ -1,6 +1,5 @@
-import { Chip } from "@mui/material";
+import Chip from "@mui/material/Chip";
 import type { PseFormationStateDtoEnum } from "~/dto/pseformation.dto";
-
 
 interface Props {
   state: PseFormationStateDtoEnum;

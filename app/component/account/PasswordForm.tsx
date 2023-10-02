@@ -1,4 +1,4 @@
-import { TextField } from "@mui/material";
+import TextField from "@mui/material/TextField";
 import { useRef, useState } from "react";
 import type { FormResult } from "~/constant/types";
 import { passwordModificationValidator } from "~/form/user.form";

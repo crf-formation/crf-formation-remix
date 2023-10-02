@@ -1,4 +1,4 @@
-import { Box } from "@mui/material";
+import Box from "@mui/material/Box";
 import type { CreateProps } from "react-admin";
 import { Create } from "react-admin";
 import Main from "~/component/layout/Main";

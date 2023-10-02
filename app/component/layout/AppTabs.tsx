@@ -1,4 +1,6 @@
-import { AppBar, Box, Tabs } from "@mui/material";
+import AppBar from "@mui/material/AppBar";
+import Box from "@mui/material/Box";
+import Tabs from "@mui/material/Tabs";
 import type { ReactNode } from "react";
 
 interface AppTabsProps {

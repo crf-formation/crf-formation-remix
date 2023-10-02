@@ -1,6 +1,11 @@
 import TipsAndUpdatesIcon from "@mui/icons-material/TipsAndUpdates";
-import { Box, Dialog, DialogContent, DialogTitle, IconButton, Typography } from "@mui/material";
-import { amber } from "@mui/material/colors";
+import Box from "@mui/material/Box";
+import Dialog from "@mui/material/Dialog";
+import DialogContent from "@mui/material/DialogContent";
+import DialogTitle from "@mui/material/DialogTitle;
+import IconButton from "@mui/material/IconButton";
+import Typography from "@mui/material/Typography";
+import amber from "@mui/material/colors/amber";
 import type { MouseEventHandler, ReactNode } from "react";
 import { useState } from "react";
 import CloseIcon from "@mui/icons-material/Close";

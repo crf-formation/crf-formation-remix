@@ -1,5 +1,5 @@
 import { useNavigate, useSearchParams } from "@remix-run/react";
-import type { PaginateObject } from "../types";
+import type { PaginateObject } from "../constant/types";
 
 interface usePaginationData {
   currentPage: number;

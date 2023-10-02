@@ -2,7 +2,7 @@ import AddIcon from "@mui/icons-material/Add";
 import EditIcon from "@mui/icons-material/Edit";
 import ListIcon from "@mui/icons-material/List";
 import VisibilityIcon from "@mui/icons-material/Visibility";
-import { Tab } from "@mui/material";
+import Tab from "@mui/material/Tab";
 import { useRecordContext, useRedirect, useResourceContext } from "react-admin";
 import AppTabs, { AppTabLabel } from "~/component/layout/AppTabs";
 

@@ -1,11 +1,15 @@
 // based on https://github.com/mui/material-ui/blob/master/examples/remix-with-typescript/app/root.tsx
 import { withEmotionCache } from "@emotion/react";
-import { Box, CssBaseline, Link as MuiLink, Typography } from "@mui/material";
+import Box from "@mui/material/Box";
+import CssBaseline from "@mui/material/CssBaseline";
+import MuiLink from "@mui/material/Link";
+import Typography from "@mui/material/Typography";
 import { ThemeProvider } from "@mui/material/styles";
 import { LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
-import type { LinksFunction, LoaderArgs } from "@remix-run/node";
-import { redirect, V2_MetaFunction } from "@remix-run/node";
+import type { LinksFunction, LoaderArgs , V2_MetaFunction } from "@remix-run/node";
+import { redirect } from "@remix-run/node";
+import DevToolbar from "./component/dev/DevToolbar";
 import {
   isRouteErrorResponse,
   Link as RmxLink,
@@ -29,20 +33,16 @@ import Layout from "~/component/layout/Layout";
 import { LoadingBar } from "~/component/layout/LoadingBar";
 import useIsLoading from "~/hook/useIsLoading";
 import { getPublicProperties } from "~/service/publicproperties.server";
-import DebugMatches from "./component/dev/DebugMatches";
 import ErrorPageContainer from "./component/layout/ErrorPageContainer";
 import FlashMessages from "./component/layout/FlashMessages";
 import type { ThemeNames } from "./constant";
 import { DEFAULT_THEME } from "./constant";
 import { CSRF_SESSION_KEY } from "./constant/index.server";
-import type { Env } from "./constant/types";
 import type { FlashMessage } from "./dto/flash.dto";
-import type { PseFormationDto } from "./dto/pseformation.dto";
 import type { PublicPropertiesDto } from "./dto/publicproperties.dto";
 import type { UserMeDto } from "./dto/user.dto";
 import useEnhancedEffect from "./hook/useEnhancedEffect";
-import { pseFormationApiObjectToDto } from "./mapper/pseformation.mapper";
-import { userApiObjectToUserMeDto } from "./mapper/user.mapper";
+import { userMeApiObjectToUserMeDto } from "./mapper/user.mapper";
 import { getBrowserEnv } from "./service/env.server";
 import { getFlashMessages } from "./service/flash.server";
 import { getCurrentPseFormationForUser } from "./service/pseformation.server";
@@ -51,17 +51,24 @@ import { getClientLocales, isDesktop } from "./service/request.server";
 import { commitSession, getMe, getSession } from "./service/session.server";
 import { getTheme } from "./theme";
 import { getUserTheme, themeCookie } from "./util/theme.server";
+import type { BrowserEnvDto } from "~/dto/env.dto";
+import { browserEnvApiObjectToDto } from "./mapper/environment.mapper";
+import { publicPropertiesApiObjectToDto } from "~/mapper/publicproperties.mapper";
+import { flashMessageApiObjectToDto } from "./mapper/flashmessage.mapper";
+import type { MenuDefinitionDto } from "~/dto/menu.dto";
+import { getMenuDefinition } from "~/helper/menu.helper";
+import { menuDefinitionApiObjectToDto } from "~/mapper/menu.mapper";
 
 export interface RootLoaderData {
-  user: Optional<UserMeDto>;
+  user: UserMeDto | null;
   themeName: ThemeNames;
   csrf: string;
   locales: Locales;
-  env: Env;
+  browserEnv: BrowserEnvDto;
   isDesktop: boolean;
   flashMessages: FlashMessage[];
   publicProperties: Optional<PublicPropertiesDto>;
-  currentPseFormation: Optional<PseFormationDto>;
+  menuDefinition: MenuDefinitionDto;
 }
 
 export async function loader({ request }: LoaderArgs) {
@@ -72,28 +79,33 @@ export async function loader({ request }: LoaderArgs) {
 
   const csrf = session.get(CSRF_SESSION_KEY);
 
-  const flashMessages = await getFlashMessages(session);
+  const userApiObject = await getMe(request);
 
-  const user = await getMe(request);
+  const currentPseFormationApiObject = userApiObject ? await getCurrentPseFormationForUser(userApiObject.id) : null;
 
-  const currentPseFormationApiObject = user ? await getCurrentPseFormationForUser(user.id) : null;
+  const browserEnvApiObject = getBrowserEnv();
+  const publicPropertiesApiObject = await getPublicProperties()
+
+  const flashMessageApiObjects = await getFlashMessages(session);
+
+  const menuDefinitionApiObject = getMenuDefinition(userApiObject, currentPseFormationApiObject);
 
   return json(
     {
       // https://github.com/sergiodxa/remix-utils
       csrf, // csrf: pass token to browser
-      user: !user ? null : userApiObjectToUserMeDto(user),
+      user: !userApiObject ? null : userMeApiObjectToUserMeDto(userApiObject),
       themeName: await getUserTheme(request),
       locales: getClientLocales(request),
       // env properties to share with the browser side.
-      env: getBrowserEnv(),
+      browserEnv: browserEnvApiObjectToDto(browserEnvApiObject),
       isDesktop: isDesktop(request),
 
-      publicProperties: await getPublicProperties(),
+      publicProperties: publicPropertiesApiObjectToDto(publicPropertiesApiObject),
 
-      currentPseFormation: currentPseFormationApiObject ? pseFormationApiObjectToDto(currentPseFormationApiObject) : null,
+      flashMessages: flashMessageApiObjects?.map(flashMessageApiObjectToDto),
 
-      flashMessages
+      menuDefinition: menuDefinitionApiObjectToDto(menuDefinitionApiObject),
     },
     {
       headers: {
@@ -230,8 +242,8 @@ const Document = withEmotionCache(
       <ScrollRestoration />
       <Scripts />
 
-      {process.env.NODE_ENV === "development" && <DebugMatches />}
       {process.env.NODE_ENV === "development" && <LiveReload />}
+      {process.env.NODE_ENV === "development" && <DevToolbar />}
       </body>
       </html>
     );
@@ -241,7 +253,7 @@ const Document = withEmotionCache(
 // https://remix.run/api/conventions#default-export
 // https://remix.run/api/conventions#route-filenames
 export default function App() {
-  const { csrf, user, themeName, env } = useLoaderData<typeof loader>();
+  const { csrf, user, themeName, browserEnv } = useLoaderData<typeof loader>();
 
   return (
     <AuthenticityTokenProvider token={csrf}>
@@ -253,7 +265,7 @@ export default function App() {
         {/* Make env data availaible on window directly */}
         <script
           dangerouslySetInnerHTML={{
-            __html: `window.env = ${JSON.stringify(env)}`
+            __html: `window.browserEnv = ${JSON.stringify(browserEnv)}`
           }}
         />
       </Document>

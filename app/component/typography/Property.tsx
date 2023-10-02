@@ -1,5 +1,6 @@
 import type { SxProps } from "@mui/material";
-import { Box, Divider } from "@mui/material";
+import Box from "@mui/material/Box";
+import Divider from "@mui/material/Divider";
 import type { ReactNode } from "react";
 
 interface PropertyProps {

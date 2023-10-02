@@ -1,5 +1,9 @@
 // https://github.com/mui/material-ui/blob/master/docs/src/layouts/Section.tsx
-import { Box, Container, Divider, Paper, Typography } from "@mui/material";
+import Box from "@mui/material/Box";
+import Container from "@mui/material/Container";
+import Divider from "@mui/material/Divider";
+import Paper from "@mui/material/Paper";
+import Typography from "@mui/material/Typography";
 import type { PaperProps } from "@mui/material/Paper";
 import type { ReactNode } from "react";
 

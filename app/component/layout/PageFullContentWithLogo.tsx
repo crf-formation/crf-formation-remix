@@ -1,4 +1,6 @@
-import { Box, Container, Paper } from "@mui/material";
+import Box from "@mui/material/Box";
+import Container from "@mui/material/Container";
+import Paper from "@mui/material/Paper";
 import type { ReactNode } from "react";
 import LogoVerticalImage from "../image/LogoVertical";
 import PageFullContent from "./PageFullContent";

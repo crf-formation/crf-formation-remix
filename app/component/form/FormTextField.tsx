@@ -1,5 +1,5 @@
 import type { TextFieldProps } from "@mui/material";
-import { TextField } from "@mui/material";
+import TextField from "@mui/material/TextField";
 import { useActionData } from "@remix-run/react";
 import { useField } from "remix-validated-form";
 import { generateAria2 } from "~/util/form";
