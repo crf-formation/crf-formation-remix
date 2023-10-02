@@ -12,7 +12,7 @@ export interface UserOnPseFormationApiObject {
 }
 
 export interface UserOnPseFormationPutApiObject {
-  readonly id: Optional<string>;
+  readonly id: Optional<string>; // TODO: remove id and add ID on mapping if object already exists on existing formation
   readonly userId: string;
   readonly formationId: string;
   readonly role: UserOnPseFormationRoleApiEnum;

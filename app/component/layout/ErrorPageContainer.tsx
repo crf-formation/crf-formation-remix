@@ -1,8 +1,8 @@
 import Box from "@mui/material/Box";
 import Paper from "@mui/material/Paper";
 import Typography from "@mui/material/Typography";
-import { ErrorResponse } from "@remix-run/router";
-import { ReactNode } from "react";
+import type { ErrorResponse } from "@remix-run/router";
+import type { ReactNode } from "react";
 
 
 interface DefaultErrorViewProps {

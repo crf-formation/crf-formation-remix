@@ -7,7 +7,12 @@ export default function SubmitButton({ children, ...props }: ButtonProps) {
 
   // TODO: loading button
   return (
-    <Button type="submit" variant="contained" color="primary">
+    <Button
+      type="submit"
+      variant="contained"
+      color="primary"
+      aria-label="submit"
+    >
       {isSubmitting ? "Chargement" : children}
     </Button>
   );
