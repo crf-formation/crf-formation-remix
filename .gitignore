@@ -13,3 +13,5 @@ node_modules
 /prisma/data.db-journal
 
 .idea/
+
+test-results/

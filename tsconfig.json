@@ -1,5 +1,7 @@
 {
-  "exclude": ["./cypress", "./cypress.config.ts"],
+  "exclude": ["./cypress",
+    "./playwright.config.ts"
+  ],
   "include": ["remix.env.d.ts", "**/*.ts", "**/*.tsx"],
   "compilerOptions": {
     "lib": ["DOM", "DOM.Iterable", "ES2019"],
@@ -16,7 +18,8 @@
     "forceConsistentCasingInFileNames": true,
     "baseUrl": ".",
     "paths": {
-      "~/*": ["./app/*"]
+      "~/*": ["./app/*"],
+      "~/tests/*": ["./tests/*"]
     },
     "skipLibCheck": true,
 
