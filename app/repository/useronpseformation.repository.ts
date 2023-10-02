@@ -11,8 +11,8 @@ const includeForMultipleItem = {
   user: true
 };
 
-export async function findUserOnPseFormationEntityById(userId: string, formationId: string): Promise<Optional<UserOnPseFormationEntity>> {
-  const userOnPpseFormationEntity = await prisma.userOnPseFormation.findUnique({
+export async function findUserOnPseFormationEntityById(userId: string, formationId: string) {
+  const userOnPseFormationEntity = await prisma.userOnPseFormation.findUnique({
     where: {
       formationId_userId: {
         formationId,
@@ -21,10 +21,10 @@ export async function findUserOnPseFormationEntityById(userId: string, formation
     },
     include: includeForSingleItem
   });
-  if (!userOnPpseFormationEntity) {
+  if (!userOnPseFormationEntity) {
     return null;
   }
-  return userOnPpseFormationEntity;
+  return userOnPseFormationEntity;
 }
 
 export async function findUserOnPseFormations(

@@ -5,9 +5,9 @@ import { redirect, V2_MetaFunction } from "@remix-run/node";
 import type { Params } from "@remix-run/react";
 import { z } from "zod";
 import type { PseFormationApiObject } from "~/apiobject/pseformation.apiobject";
-import type { UserApiObject } from "~/apiobject/user.apiobject";
+import type { UserMeApiObject } from "~/apiobject/user.apiobject";
 import DailyNoteForm from "~/component/daily/DailyNoteForm";
-import type { DailyPostDto as DailyNotePostDto } from "~/dto/daily.dto";
+import type { DailyNotePostDto } from "~/dto/daily.dto";
 import { validateForm } from "~/form/abstract";
 import { dailyValidator } from "~/form/daily.form";
 import type { SecurityFunction } from "~/helper/remix.helper";
@@ -16,8 +16,8 @@ import { dailyNotePostDtoToApiObject } from "~/mapper/daily.mapper";
 import { createDailyNote } from "~/service/daily.server";
 import { getPseFormationById } from "~/service/pseformation.server";
 import { assertUserHasAccessToFormationAsTeacher } from "~/service/security.server";
-import { requireUser } from "~/service/session.server";
-import { loader } from "~/routes/pse.$formationId.students.$studentId.concrete-case-evaluations";
+import type { loader } from "~/routes/pse.$formationId.students.$studentId.concrete-case-evaluations";
+import { requireLoggedInRequestContext } from "~/service/session.server";
 
 const ParamsSchema = z.object({
   formationId: z.string(),
@@ -27,25 +27,23 @@ const ParamsSchema = z.object({
 const security: SecurityFunction<{
   pseFormationApiObject: PseFormationApiObject;
   studentId: string;
-  userApiObject: UserApiObject;
 }> = async (request: Request, params: Params) => {
-  const { formationId, studentId } = getParamsOrFail(params, ParamsSchema);
+  const { userMeApiObject } = await requireLoggedInRequestContext(request);
 
-  const userApiObject = await requireUser(request);
+  const { formationId, studentId } = getParamsOrFail(params, ParamsSchema);
 
   const pseFormationApiObject = await getPseFormationById(formationId);
 
-  await assertUserHasAccessToFormationAsTeacher(userApiObject.id, pseFormationApiObject.id);
+  await assertUserHasAccessToFormationAsTeacher(userMeApiObject.id, pseFormationApiObject.id);
 
   return {
     pseFormationApiObject,
-    userApiObject,
     studentId
   };
 };
 
 export const action = async ({ request, params }: ActionArgs) => {
-  const { pseFormationApiObject, userApiObject, studentId } = await security(request, params);
+  const { pseFormationApiObject, studentId } = await security(request, params);
 
   const result = await validateForm<DailyNotePostDto>(request, dailyValidator);
   if (result.errorResponse) {

@@ -10,7 +10,6 @@ import type { Params } from "@remix-run/react";
 import { Form, useActionData, useLoaderData, useLocation } from "@remix-run/react";
 import type { ActionArgs, LoaderArgs } from "@remix-run/server-runtime";
 import { json, redirect } from "@remix-run/server-runtime";
-import type { UserApiObject } from "~/apiobject/user.apiobject";
 import PasswordForm from "~/component/account/PasswordForm";
 import ProfileForm from "~/component/account/ProfileForm";
 import Section from "~/component/layout/Section";
@@ -20,21 +19,22 @@ import type { SecurityFunction } from "~/helper/remix.helper";
 import { badRequest } from "~/helper/responses.helper";
 import useRootData from "~/hook/useRootData";
 import { addFlashMessage } from "~/service/flash.server";
-import { commitSession, getSession, requireUser } from "~/service/session.server";
+import { commitSession, getSession, requireLoggedInRequestContext } from "~/service/session.server";
 import { updatePassword, updateUser, verifyLogin } from "~/service/user.server";
 import { verifyAuthenticityToken } from "~/util/csrf.server";
 import { namedActionWithFormType } from "~/util/named-actions";
 import Page from "../component/layout/Page";
-import { passwordModificationValidator, profileValidator } from "../form/user.form";
-import { userApiObjectToDto, userPutDtoToApiObject } from "../mapper/user.mapper";
-import { V2_MetaFunction } from "@remix-run/node";
+import { passwordModificationValidator, profileValidator } from "~/form/user.form";
+import { userMeApiObjectToUserMeDto, userPutDtoToApiObject } from "~/mapper/user.mapper";
+import type { V2_MetaFunction } from "@remix-run/node";
+import type { UserMeApiObject } from "~/apiobject/user.apiobject";
 
 const security: SecurityFunction<{
-  userApiObject: UserApiObject;
+  userApiObject: UserMeApiObject;
 }> = async (request: Request, params: Params) => {
-  const userApiObject = await requireUser(request);
+  const requestContext = await requireLoggedInRequestContext(request);
   return {
-    userApiObject
+    userApiObject: requestContext.userMeApiObject,
   };
 };
 
@@ -43,7 +43,7 @@ export async function loader({ request, params }: LoaderArgs) {
   const { userApiObject } = await security(request, params);
 
   return json({
-    user: userApiObjectToDto(userApiObject)
+    user: userMeApiObjectToUserMeDto(userApiObject)
   });
 }
 

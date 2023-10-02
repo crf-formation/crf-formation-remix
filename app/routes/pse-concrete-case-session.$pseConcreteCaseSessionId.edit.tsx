@@ -6,7 +6,6 @@ import { useRef } from "react";
 import { z } from "zod";
 import type { PseConcreteCaseSessionApiObject } from "~/apiobject/pseconcretecasesession.apiobject";
 import type { PseFormationApiObject } from "~/apiobject/pseformation.apiobject";
-import type { UserApiObject } from "~/apiobject/user.apiobject";
 import FormErrorHelperText from "~/component/form/FormErrorHelperText";
 import FormTextField from "~/component/form/FormTextField";
 import FormView from "~/component/form/FormView";
@@ -29,8 +28,8 @@ import { pseFormationApiObjectToDto } from "~/mapper/pseformation.mapper";
 import { getPseConcreteCaseSessionById, updatePseConcreteCaseSession } from "~/service/pseconcretecasesession.server";
 import { getPseFormationByPseConcreteCaseSessionId } from "~/service/pseformation.server";
 import { assertUserHasAccessToFormationAsTeacher } from "~/service/security.server";
-import { requireUser } from "~/service/session.server";
 import { generateAria } from "~/util/form";
+import { requireLoggedInRequestContext } from "~/service/session.server";
 
 // update PSE concrete case session
 
@@ -39,21 +38,19 @@ const ParamsSchema = z.object({
 });
 
 const security: SecurityFunction<{
-  userApiObject: UserApiObject;
   pseFormationApiObject: PseFormationApiObject;
   pseConcreteCaseSessionApiObject: PseConcreteCaseSessionApiObject;
 }> = async (request: Request, params: Params) => {
-  const { pseConcreteCaseSessionId } = getParamsOrFail(params, ParamsSchema);
+  const { userMeApiObject } = await requireLoggedInRequestContext(request);
 
-  const userApiObject = await requireUser(request);
+  const { pseConcreteCaseSessionId } = getParamsOrFail(params, ParamsSchema);
 
   const pseConcreteCaseSessionApiObject = await getPseConcreteCaseSessionById(pseConcreteCaseSessionId);
   const pseFormationApiObject = await getPseFormationByPseConcreteCaseSessionId(pseConcreteCaseSessionApiObject.id);
 
-  await assertUserHasAccessToFormationAsTeacher(userApiObject.id, pseFormationApiObject.id);
+  await assertUserHasAccessToFormationAsTeacher(userMeApiObject.id, pseFormationApiObject.id);
 
   return {
-    userApiObject,
     pseFormationApiObject,
     pseConcreteCaseSessionApiObject
   };

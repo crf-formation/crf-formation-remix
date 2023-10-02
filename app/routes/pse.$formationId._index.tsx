@@ -10,8 +10,8 @@ import ListItem from "@mui/material/ListItem";
 import ListItemAvatar from "@mui/material/ListItemAvatar";
 import ListItemText from "@mui/material/ListItemText";
 import Stack from "@mui/material/Stack";
-import type { LoaderArgs } from "@remix-run/node";
-import { json, V2_MetaFunction } from "@remix-run/node";
+import type { LoaderArgs , V2_MetaFunction } from "@remix-run/node";
+import { json } from "@remix-run/node";
 import type { Params } from "@remix-run/react";
 import { useLoaderData } from "@remix-run/react";
 import { z } from "zod";
@@ -31,7 +31,7 @@ import useSecurity from "~/hook/useSecurity";
 import { pseFormationApiObjectToDto } from "~/mapper/pseformation.mapper";
 import { findPseFormationById } from "~/service/pseformation.server";
 import { assertUserHasAccessToFormationAsTeacher } from "~/service/security.server";
-import { requireUser } from "~/service/session.server";
+import { requireLoggedInRequestContext } from "~/service/session.server";
 
 const ParamsSchema = z.object({
   formationId: z.string()
@@ -40,17 +40,16 @@ const ParamsSchema = z.object({
 const security: SecurityFunction<{
   pseFormationApiObject: PseFormationApiObject;
 }> = async (request: Request, params: Params) => {
+  const { userMeApiObject } = await requireLoggedInRequestContext(request);
+
   const { formationId } = getParamsOrFail(params, ParamsSchema);
-
-  const userApiObject = await requireUser(request);
-
   const pseFormationApiObject = await findPseFormationById(formationId);
 
   if (!pseFormationApiObject) {
     throw new Error(`Formation not found: ${formationId}`);
   }
 
-  await assertUserHasAccessToFormationAsTeacher(userApiObject.id, pseFormationApiObject.id);
+  await assertUserHasAccessToFormationAsTeacher(userMeApiObject.id, pseFormationApiObject.id);
 
   return {
     pseFormationApiObject

@@ -1,5 +1,29 @@
 import type { BrowserEnvDto } from "~/dto/env.dto";
 
+export interface FormResult {
+  errors?: { [key: string]: any }
+}
+
+export interface Page {
+  page: number;
+  pageSize: number;
+  totalPages: number;
+  totalElements: number;
+}
+
+export type OrderByDirection = 'asc' | 'desc'
+
+export interface Sort {
+  direction: OrderByDirection
+  orderBy: string;
+}
+
+export interface PaginateObject<T> {
+  data: T[];
+  page: Page;
+  sort: Sort
+}
+
 // we must export at least one thing so our declare global work.
 // But we do not want to export any real type here.
 export type __fixBug = "trick";
@@ -29,3 +53,4 @@ declare global {
   type NonEmptyArray<T> = [T, ...Array<T>]
 
 }
+

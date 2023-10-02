@@ -8,7 +8,7 @@ import type { PseConcreteCaseGroupApiObject } from "~/apiobject/pseconcretecaseg
 import type { PseConcreteCaseSessionApiObject } from "~/apiobject/pseconcretecasesession.apiobject";
 import type { PseConcreteCaseSituationApiObject } from "~/apiobject/pseconcretecasesituation.apiobject";
 import type { PseFormationApiObject } from "~/apiobject/pseformation.apiobject";
-import type { UserApiObject } from "~/apiobject/user.apiobject";
+import type { UserMeApiObject } from "~/apiobject/user.apiobject";
 import { Ariane, ArianeItem } from "~/component/layout/Ariane";
 import Page from "~/component/layout/Page";
 import Section from "~/component/layout/Section";
@@ -40,7 +40,7 @@ import {
   updatePseUserConcreteCaseGroupEvaluation
 } from "~/service/pseuserconcretecase.server";
 import { assertUserHasAccessToFormationAsTeacher } from "~/service/security.server";
-import { commitSession, requireUser } from "~/service/session.server";
+import { commitSession, requireLoggedInRequestContext, requireUser } from "~/service/session.server";
 
 const ParamsSchema = z.object({
   pseConcreteCaseSituationId: z.string(),
@@ -48,27 +48,25 @@ const ParamsSchema = z.object({
 });
 
 const security: SecurityFunction<{
-  userApiObject: UserApiObject;
   pseFormationApiObject: PseFormationApiObject;
   pseConcreteCaseSessionApiObject: PseConcreteCaseSessionApiObject;
   pseConcreteCaseSituationApiObject: PseConcreteCaseSituationApiObject;
   pseConcreteCaseGroupApiObject: PseConcreteCaseGroupApiObject;
 }> = async (request: Request, params: Params) => {
-  const { pseConcreteCaseSituationId, pseSituationConcreteCaseGroupId } = getParamsOrFail(params, ParamsSchema);
+  const { userMeApiObject } = await requireLoggedInRequestContext(request);
 
-  const userApiObject = await requireUser(request);
+  const { pseConcreteCaseSituationId, pseSituationConcreteCaseGroupId } = getParamsOrFail(params, ParamsSchema);
 
   const pseConcreteCaseSituationApiObject = await getPseConcreteCaseSituation(pseConcreteCaseSituationId);
 
   const pseConcreteCaseSessionApiObject = await getPseConcreteCaseSessionById(pseConcreteCaseSituationApiObject.pseConcreteCaseSessionId);
 
   const pseFormationApiObject = await getPseFormationByPseConcreteCaseSessionId(pseConcreteCaseSessionApiObject.id);
-  await assertUserHasAccessToFormationAsTeacher(userApiObject.id, pseFormationApiObject.id);
+  await assertUserHasAccessToFormationAsTeacher(userMeApiObject.id, pseFormationApiObject.id);
 
   const pseConcreteCaseGroupApiObject = await getPseConcreteCaseGroup(pseSituationConcreteCaseGroupId);
 
   return {
-    userApiObject,
     pseFormationApiObject,
     pseConcreteCaseSessionApiObject,
     pseConcreteCaseSituationApiObject,

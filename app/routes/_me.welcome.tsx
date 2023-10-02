@@ -1,16 +1,15 @@
-import type { LoaderArgs } from "@remix-run/node";
-import { json, V2_MetaFunction } from "@remix-run/node";
-
+import type { LoaderArgs , V2_MetaFunction } from "@remix-run/node";
+import { json } from "@remix-run/node";
 import Paper from "@mui/material/Paper";
 import Typography from "@mui/material/Typography";
 import Page from "~/component/layout/Page";
 import useUser from "~/hook/useUser";
-import { requireUser } from "~/service/session.server";
+import { requireLoggedInRequestContext } from "~/service/session.server";
 
 export async function loader({ request }: LoaderArgs) {
-  const user = await requireUser(request);
+  const requestContext = await requireLoggedInRequestContext(request);
   return json({
-    user
+    user: requestContext.userMeApiObject
   });
 }
 

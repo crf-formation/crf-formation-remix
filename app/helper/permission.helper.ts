@@ -1,14 +1,14 @@
 import type { AuthorityApiEnum } from "~/apiobject/permission.apiobject";
-import type { ProPermissionApiObject } from "~/apiobject/prouser.apiobject";
+import type { PermissionApiObject } from "~/apiobject/user.apiobject";
 
 export function hasAuthority(
-  permissions: Optional<Array<ProPermissionApiObject>>,
+  permissions: Optional<Array<PermissionApiObject>>,
   authority: AuthorityApiEnum
 ): boolean {
   if (!permissions) {
     return false;
   }
   return permissions.some(
-    (permission: ProPermissionApiObject) => permission.identifier === authority
+    (permission: PermissionApiObject) => permission.identifier === authority
   );
 }

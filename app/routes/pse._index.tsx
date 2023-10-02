@@ -4,12 +4,12 @@ import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
-import type { LoaderArgs } from "@remix-run/node";
-import { json, V2_MetaFunction } from "@remix-run/node";
+import type { LoaderArgs , V2_MetaFunction } from "@remix-run/node";
+import { json } from "@remix-run/node";
 import type { Params } from "@remix-run/react";
 import { useLoaderData } from "@remix-run/react";
 import { z } from "zod";
-import type { UserApiObject } from "~/apiobject/user.apiobject";
+import type { UserMeApiObject } from "~/apiobject/user.apiobject";
 import Page from "~/component/layout/Page";
 import Section from "~/component/layout/Section";
 import type { SecurityFunction } from "~/helper/remix.helper";
@@ -17,7 +17,7 @@ import { getSearchParamsOrFail } from "~/helper/remix.params.helper";
 import { paginateApiObjectToDto } from "~/mapper/abstract.mapper";
 import { pseFormationApiObjectToDto } from "~/mapper/pseformation.mapper";
 import { getUserPseFormations } from "~/service/pseformation.server";
-import { requireUser } from "~/service/session.server";
+import { requireLoggedInRequestContext } from "~/service/session.server";
 
 const URLSearchParamsSchema = z.object({
   page: z.number().default(0),
@@ -27,23 +27,20 @@ const URLSearchParamsSchema = z.object({
 });
 
 const security: SecurityFunction<{
-  userApiObject: UserApiObject;
+  userMeApiObject: UserMeApiObject;
 }> = async (request: Request, params: Params) => {
-  const userApiObject = await requireUser(request);
+  const { userMeApiObject } = await requireLoggedInRequestContext(request);
 
   return {
-    userApiObject
+    userMeApiObject
   };
 };
 
 export async function loader({ request, params }: LoaderArgs) {
-  const { userApiObject } = await security(request, params);
-
+  const { userMeApiObject } = await security(request, params);
 
   const { page, pageSize, orderBy, orderByDirection } = getSearchParamsOrFail(request, URLSearchParamsSchema);
-
-
-  const formationsPaginatedObjectApiObject = await getUserPseFormations(userApiObject.id, page, pageSize, orderBy, orderByDirection);
+  const formationsPaginatedObjectApiObject = await getUserPseFormations(userMeApiObject.id, page, pageSize, orderBy, orderByDirection);
 
   return json({
     formationsPaginateObject: paginateApiObjectToDto(formationsPaginatedObjectApiObject, pseFormationApiObjectToDto)

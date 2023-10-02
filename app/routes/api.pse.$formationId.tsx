@@ -12,8 +12,11 @@ import {
   pseFormationPutDtoToApiObject
 } from "~/mapper/pseformation.mapper";
 import { findPseFormationById, getPseFormationById, updatePseFormation } from "~/service/pseformation.server";
-import { requireAdmin } from "~/service/session.server";
+import { requireLoggedInRequestContext } from "~/service/session.server";
 import { namedAction } from "~/util/named-actions";
+import { preAuthorize } from "~/service/security.server";
+import { Permission } from "~/constant/permission";
+import type { LoaderArgs } from "@remix-run/server-runtime";
 
 const ParamsSchema = z.object({
   formationId: z.string()
@@ -22,10 +25,14 @@ const ParamsSchema = z.object({
 const security: SecurityFunction<{
   pseFormationApiObject: PseFormationApiObject;
 }> = async (request: Request, params: Params) => {
+  const requestContext = await requireLoggedInRequestContext(request);
+
+  preAuthorize(
+    requestContext.permissions,
+    Permission.ADMIN
+  );
+
   const { formationId } = getParamsOrFail(params, ParamsSchema);
-
-  await requireAdmin(request);
-
   const pseFormationApiObject = await getPseFormationById(formationId);
 
   return {

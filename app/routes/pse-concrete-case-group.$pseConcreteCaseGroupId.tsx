@@ -1,12 +1,11 @@
-import type { ActionArgs, LoaderFunction } from "@remix-run/node";
-import { json, redirect, V2_MetaFunction } from "@remix-run/node";
+import type { ActionArgs, LoaderFunction , V2_MetaFunction } from "@remix-run/node";
+import { json, redirect } from "@remix-run/node";
 import type { Params } from "@remix-run/react";
 import { useActionData, useLoaderData } from "@remix-run/react";
 import { z } from "zod";
 import type { PseConcreteCaseGroupApiObject } from "~/apiobject/pseconcretecasegroup.apiobject";
 import type { PseConcreteCaseSessionApiObject } from "~/apiobject/pseconcretecasesession.apiobject";
 import type { PseFormationApiObject } from "~/apiobject/pseformation.apiobject";
-import type { UserApiObject } from "~/apiobject/user.apiobject";
 import { Ariane, ArianeItem } from "~/component/layout/Ariane";
 import Page from "~/component/layout/Page";
 import Section from "~/component/layout/Section";
@@ -26,31 +25,28 @@ import { getPseConcreteCaseGroup, updatePseConcreteCaseGroup } from "~/service/p
 import { getPseConcreteCaseSessionById } from "~/service/pseconcretecasesession.server";
 import { getPseFormationByPseConcreteCaseSessionId } from "~/service/pseformation.server";
 import { assertUserHasAccessToFormationAsTeacher } from "~/service/security.server";
-import { requireUser } from "~/service/session.server";
+import { requireLoggedInRequestContext } from "~/service/session.server";
 
 const ParamsSchema = z.object({
   pseConcreteCaseGroupId: z.string()
 });
 
 const security: SecurityFunction<{
-  userApiObject: UserApiObject;
   pseFormationApiObject: PseFormationApiObject;
   pseConcreteCaseSessionApiObject: PseConcreteCaseSessionApiObject;
   pseConcreteCaseGroupApiObject: PseConcreteCaseGroupApiObject;
 }> = async (request: Request, params: Params) => {
+  const { userMeApiObject } = await requireLoggedInRequestContext(request);
+
   const { pseConcreteCaseGroupId } = getParamsOrFail(params, ParamsSchema);
-
-  const userApiObject = await requireUser(request);
-
   const pseConcreteCaseGroupApiObject = await getPseConcreteCaseGroup(pseConcreteCaseGroupId);
 
   const pseConcreteCaseSessionApiObject = await getPseConcreteCaseSessionById(pseConcreteCaseGroupApiObject.pseConcreteCaseSessionId);
 
   const pseFormationApiObject = await getPseFormationByPseConcreteCaseSessionId(pseConcreteCaseSessionApiObject.id);
-  await assertUserHasAccessToFormationAsTeacher(userApiObject.id, pseFormationApiObject.id);
+  await assertUserHasAccessToFormationAsTeacher(userMeApiObject.id, pseFormationApiObject.id);
 
   return {
-    userApiObject,
     pseFormationApiObject,
     pseConcreteCaseSessionApiObject,
     pseConcreteCaseGroupApiObject

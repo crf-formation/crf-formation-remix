@@ -14,11 +14,18 @@ import UserShow from "~/component/admin/user/UserShow";
 import Main from "~/component/layout/Main";
 import Layout from "~/component/reactadmin/layout/Layout";
 import useTheme from "~/hook/useTheme";
-import { requireAdmin } from "~/service/session.server";
+import { requireLoggedInRequestContext } from "~/service/session.server";
 import dataProvider from "~/util/dataProvider";
+import { preAuthorize } from "~/service/security.server";
+import { Permission } from "~/constant/permission";
 
 export async function loader({ request }: LoaderArgs) {
-  await requireAdmin(request);
+  const requestContext = await requireLoggedInRequestContext(request);
+
+  preAuthorize(
+    requestContext.permissions,
+    Permission.ADMIN
+  );
 
   return json({});
 }
