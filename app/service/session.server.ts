@@ -3,6 +3,11 @@ import type { CookieSerializeOptions, Session } from "@remix-run/server-runtime"
 import invariant from "tiny-invariant";
 import type { UserApiObject, UserMeApiObject } from "~/apiobject/user.apiobject";
 import { SESSION_KEY, SESSION_MAX_AGE } from "~/constant/index.server";
+import {
+  AnonymousRequestContext,
+  isLoggedInRequestContext,
+  LoggedInRequestContext
+} from "~/helper/requestcontext.helper";
 import { getUserMe } from "~/service/user.server";
 import { ApiErrorException } from "./api.error";
 
@@ -45,38 +50,44 @@ export async function getMe(request: Request): Promise<Optional<UserMeApiObject>
   return null;
 }
 
-export async function requireUserId(
-  request: Request,
-  redirectTo: string = new URL(request.url).pathname
-) {
-  const userId = await getUserId(request);
-  if (!userId) {
-    const searchParams = new URLSearchParams([["redirectTo", redirectTo]]);
-    throw redirect(`/login?${searchParams}`);
-  }
-  return userId;
-}
 
-export async function requireUser(request: Request): Promise<UserMeApiObject> {
-  const userMe = await getMe(request);
+export async function requireLoggedInRequestContext(
+  request: Request
+): Promise<LoggedInRequestContext> {
+  const requestContext = await getRequestContext(request);
 
-  if (userMe) return userMe;
+  if (isLoggedInRequestContext(requestContext)) return requestContext;
 
   throw await logout(request);
 }
 
-export async function requireAdmin(request: Request): Promise<UserMeApiObject> { // TODO: return UserMeApiObject?
-  const user = await requireUser(request);
+export async function requireAnonymousRequestContext(
+  request: Request
+): Promise<AnonymousRequestContext> {
+  const requestContext = await getRequestContext(request);
 
-  if (user.role === "ADMIN" || user.role == "SUPER_ADMIN") return user;
+  if (!isLoggedInRequestContext(requestContext)) return requestContext;
 
-  throw await redirect("/");
+  throw redirect("/");
 }
 
-export async function requireAuth(request: Request) {
-  return {
-    userId: await requireUserId(request)
+export async function getRequestContext(
+  request: Request
+): Promise<LoggedInRequestContext | AnonymousRequestContext> {
+  const userMeApiObject = await getMe(request);
+
+  if (!userMeApiObject) {
+    const requestContext: AnonymousRequestContext = {
+    };
+    return requestContext;
+  }
+
+  const requestContext: LoggedInRequestContext = {
+    token: "logged-in",
+    userMeApiObject,
+    permissions: userMeApiObject.permissions,
   };
+  return requestContext;
 }
 
 export async function createUserSession(

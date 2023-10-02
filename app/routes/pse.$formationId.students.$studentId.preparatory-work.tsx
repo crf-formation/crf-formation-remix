@@ -34,8 +34,8 @@ import {
   updatePseUserPreparatoryWorks
 } from "~/service/pseformationpreparatorywork.server";
 import { assertUserHasAccessToFormationAsTeacher } from "~/service/security.server";
-import { requireUser } from "~/service/session.server";
-import { V2_MetaFunction } from "@remix-run/node";
+import type { V2_MetaFunction } from "@remix-run/node";
+import { requireLoggedInRequestContext } from "~/service/session.server";
 
 const ParamsSchema = z.object({
   formationId: z.string(),
@@ -46,13 +46,13 @@ const security: SecurityFunction<{
   pseFormationApiObject: PseFormationApiObject;
   studentId: string;
 }> = async (request: Request, params: Params) => {
-  const { formationId, studentId } = getParamsOrFail(params, ParamsSchema);
+  const { userMeApiObject } = await requireLoggedInRequestContext(request);
 
-  const userApiObject = await requireUser(request);
+  const { formationId, studentId } = getParamsOrFail(params, ParamsSchema);
 
   const pseFormationApiObject = await getPseFormationById(formationId);
 
-  await assertUserHasAccessToFormationAsTeacher(userApiObject.id, pseFormationApiObject.id);
+  await assertUserHasAccessToFormationAsTeacher(userMeApiObject.id, pseFormationApiObject.id);
 
   return {
     pseFormationApiObject,

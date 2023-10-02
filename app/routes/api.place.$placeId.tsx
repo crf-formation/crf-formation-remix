@@ -4,7 +4,9 @@ import { z } from "zod";
 import { getParamsOrFail } from "~/helper/remix.params.helper";
 import { placeApiObjectToDto } from "~/mapper/place.mapper";
 import { findPlaceById } from "~/service/place.server";
-import { requireAdmin } from "~/service/session.server";
+import { requireLoggedInRequestContext } from "~/service/session.server";
+import { preAuthorize } from "~/service/security.server";
+import { Permission } from "~/constant/permission";
 
 const ParamsSchema = z.object({
   placeId: z.string()
@@ -12,10 +14,14 @@ const ParamsSchema = z.object({
 
 // GET a formation
 export async function loader({ request, params }: LoaderArgs) {
+  const requestContext = await requireLoggedInRequestContext(request);
+
+  preAuthorize(
+    requestContext.permissions,
+    Permission.ADMIN
+  );
+
   const { placeId } = getParamsOrFail(params, ParamsSchema);
-
-  await requireAdmin(request);
-
   const formationApiObject = await findPlaceById(placeId);
 
   if (!formationApiObject) {

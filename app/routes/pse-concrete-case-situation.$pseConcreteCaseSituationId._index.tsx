@@ -1,5 +1,5 @@
-import type { ActionArgs, LoaderArgs } from "@remix-run/node";
-import { json, redirect, V2_MetaFunction } from "@remix-run/node";
+import type { ActionArgs, LoaderArgs , V2_MetaFunction } from "@remix-run/node";
+import { json, redirect } from "@remix-run/node";
 import type { Params } from "@remix-run/react";
 import { useActionData, useLoaderData } from "@remix-run/react";
 import { validationError } from "remix-validated-form";
@@ -7,7 +7,6 @@ import { z } from "zod";
 import type { PseConcreteCaseSessionApiObject } from "~/apiobject/pseconcretecasesession.apiobject";
 import type { PseConcreteCaseSituationApiObject } from "~/apiobject/pseconcretecasesituation.apiobject";
 import type { PseFormationApiObject } from "~/apiobject/pseformation.apiobject";
-import type { UserApiObject } from "~/apiobject/user.apiobject";
 import { Ariane, ArianeItem } from "~/component/layout/Ariane";
 import Page from "~/component/layout/Page";
 import PseConcreteCaseSituationForm from "~/component/pse-concrete-case-situation/PseConcreteCaseSituationForm";
@@ -25,31 +24,28 @@ import { getPseConcreteCaseSessionById } from "~/service/pseconcretecasesession.
 import { getPseConcreteCaseSituation, updatePseConcreteCaseSituation } from "~/service/pseconcretecasesituation.server";
 import { getPseFormationByPseConcreteCaseSessionId } from "~/service/pseformation.server";
 import { assertUserHasAccessToFormationAsTeacher } from "~/service/security.server";
-import { requireUser } from "~/service/session.server";
+import { requireLoggedInRequestContext } from "~/service/session.server";
 
 const ParamsSchema = z.object({
   pseConcreteCaseSituationId: z.string()
 });
 
 const security: SecurityFunction<{
-  userApiObject: UserApiObject;
   pseFormationApiObject: PseFormationApiObject;
   pseConcreteCaseSessionApiObject: PseConcreteCaseSessionApiObject;
   pseConcreteCaseSituationApiObject: PseConcreteCaseSituationApiObject;
 }> = async (request: Request, params: Params) => {
+  const { userMeApiObject } = await requireLoggedInRequestContext(request);
+
   const { pseConcreteCaseSituationId } = getParamsOrFail(params, ParamsSchema);
-
-  const userApiObject = await requireUser(request);
-
   const pseConcreteCaseSituationApiObject = await getPseConcreteCaseSituation(pseConcreteCaseSituationId);
 
   const pseConcreteCaseSessionApiObject = await getPseConcreteCaseSessionById(pseConcreteCaseSituationApiObject.pseConcreteCaseSessionId);
 
   const pseFormationApiObject = await getPseFormationByPseConcreteCaseSessionId(pseConcreteCaseSessionApiObject.id);
-  await assertUserHasAccessToFormationAsTeacher(userApiObject.id, pseFormationApiObject.id);
+  await assertUserHasAccessToFormationAsTeacher(userMeApiObject.id, pseFormationApiObject.id);
 
   return {
-    userApiObject,
     pseFormationApiObject,
     pseConcreteCaseSessionApiObject,
     pseConcreteCaseSituationApiObject

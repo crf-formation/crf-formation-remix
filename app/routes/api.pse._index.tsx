@@ -12,8 +12,10 @@ import {
   pseFormationPostDtoToApiObject
 } from "~/mapper/pseformation.mapper";
 import { createPseFormation, getPseFormations } from "~/service/pseformation.server";
-import { requireAdmin } from "~/service/session.server";
+import { requireLoggedInRequestContext } from "~/service/session.server";
 import { namedAction } from "~/util/named-actions";
+import { preAuthorize } from "~/service/security.server";
+import { Permission } from "~/constant/permission";
 
 const URLSearchParamsSchema = z.object({
   page: z.number().default(0),
@@ -23,7 +25,12 @@ const URLSearchParamsSchema = z.object({
 });
 
 const security: SecurityFunction<void> = async (request: Request, params: Params) => {
-  await requireAdmin(request);
+  const requestContext = await requireLoggedInRequestContext(request);
+
+  preAuthorize(
+    requestContext.permissions,
+    Permission.ADMIN
+  );
 };
 
 // GET list of formations

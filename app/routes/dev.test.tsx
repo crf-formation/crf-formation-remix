@@ -1,20 +1,20 @@
 import Brightness2Icon from "@mui/icons-material/Brightness2";
 import Brightness7Icon from "@mui/icons-material/Brightness7";
 import Box from "@mui/material/Box";
-import Link from "@mui/material/MuiLink";
 import IconButton from "@mui/material/IconButton";
 import Tooltip from "@mui/material/Tooltip";
 import Typography from "@mui/material/Typography";
-import { json, V2_MetaFunction } from "@remix-run/node";
+import type { V2_MetaFunction } from "@remix-run/node";
+import { json } from "@remix-run/node";
 import { Form, Link as RmxLink, useLocation } from "@remix-run/react";
 import type { LoaderArgs } from "@remix-run/server-runtime";
 import Main from "~/component/layout/Main";
 import useRootData from "~/hook/useRootData";
 import { addFlashMessage } from "~/service/flash.server";
-import { commitSession, requireUser } from "~/service/session.server";
+import { commitSession, requireLoggedInRequestContext } from "~/service/session.server";
 
 export async function loader({ request }: LoaderArgs) {
-  const user = await requireUser(request);
+  const requestContext = await requireLoggedInRequestContext(request);
 
   const session = await addFlashMessage(
     request,
@@ -24,7 +24,8 @@ export async function loader({ request }: LoaderArgs) {
 
   return json(
     {
-      user
+      // TODO: dto
+      user: requestContext.userMeApiObject,
     },
     {
       headers: {

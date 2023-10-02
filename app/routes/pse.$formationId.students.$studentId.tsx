@@ -19,9 +19,9 @@ import { pseFormationApiObjectToDto } from "~/mapper/pseformation.mapper";
 import { userOnPseFormationApiObjectToDto } from "~/mapper/useronpseformation.mapper";
 import { getPseFormationById } from "~/service/pseformation.server";
 import { assertUserHasAccessToFormationAsTeacher } from "~/service/security.server";
-import { requireUser } from "~/service/session.server";
 import { getUserOnPseFormationEntityById } from "~/service/useronpseformation.server";
 import useSecurity from "~/hook/useSecurity";
+import { requireLoggedInRequestContext } from "~/service/session.server";
 
 // Note: not named index.tsx ont $studentId directory, because of the <Outlet />
 
@@ -33,13 +33,13 @@ const ParamsSchema = z.object({
 const security: SecurityFunction<{
   pseFormationApiObject: PseFormationApiObject;
 }> = async (request: Request, params: Params) => {
-  const { formationId } = getParamsOrFail(params, ParamsSchema);
+  const { userMeApiObject } = await requireLoggedInRequestContext(request);
 
-  const userApiObject = await requireUser(request);
+  const { formationId } = getParamsOrFail(params, ParamsSchema);
 
   const pseFormationApiObject = await getPseFormationById(formationId);
 
-  await assertUserHasAccessToFormationAsTeacher(userApiObject.id, pseFormationApiObject.id);
+  await assertUserHasAccessToFormationAsTeacher(userMeApiObject.id, pseFormationApiObject.id);
 
   return {
     pseFormationApiObject

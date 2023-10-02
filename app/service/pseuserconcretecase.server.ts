@@ -19,11 +19,11 @@ import { getPseCompetences } from "~/service/psecompetence.server";
 import type {
   PseUserConcreteCaseApiObject,
   PseUserConcreteCaseGroupEvaluationPostApiObject
-} from "../apiobject/pseuserconcretecase.apiobject";
+} from "~/apiobject/pseuserconcretecase.apiobject";
 import {
   pseUserConcreteCaseEntityToApiObject,
   pseUserConcreteCaseGroupEvaluationPostApiObjectToPseUserConcreteCasePostEntities
-} from "../mapper/pseuserconcretecase.mapper";
+} from "~/mapper/pseuserconcretecase.mapper";
 
 export async function getSelectedPseUserConcreteCases(formationId: string, userId: string): Promise<Array<PseUserConcreteCaseApiObject>> {
   const entities = await getSelectedPseUserConcreteCaseEntities(formationId, userId);

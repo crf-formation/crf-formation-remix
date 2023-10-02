@@ -4,7 +4,7 @@ import { json } from "@remix-run/server-runtime";
 import { useEffect } from "react";
 import type { PseConcreteCaseTypeDto } from "~/dto/pseconcretecasetype.dto";
 import { getPseConcreteCaseTypes } from "~/service/pseconcretecasetypes.server";
-import { requireUser } from "~/service/session.server";
+
 import { pseConcreteCaseTypeApiObjectToDto } from "~/mapper/pseconcretecasetype.mapper";
 
 export async function loader({ request }: LoaderArgs) {

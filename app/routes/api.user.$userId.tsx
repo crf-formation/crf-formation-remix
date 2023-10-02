@@ -7,9 +7,11 @@ import type { UserPutDto } from "~/dto/user.dto";
 import type { SecurityFunction } from "~/helper/remix.helper";
 import { getParamsOrFail } from "~/helper/remix.params.helper";
 import { dataToUserPutDto, userApiObjectToDto, userPutDtoToApiObject } from "~/mapper/user.mapper";
-import { requireAdmin } from "~/service/session.server";
+import { preAuthorize } from "~/service/security.server";
 import { findUserById, updateUser } from "~/service/user.server";
 import { namedAction } from "~/util/named-actions";
+import { Permission } from "~/constant/permission";
+import { requireLoggedInRequestContext } from "~/service/session.server";
 
 const ParamsSchema = z.object({
   userId: z.string()
@@ -18,7 +20,12 @@ const ParamsSchema = z.object({
 const security: SecurityFunction<{
   userApiObject: UserApiObject;
 }> = async (request: Request, params: Params) => {
-  await requireAdmin(request);
+  const requestContext = await requireLoggedInRequestContext(request);
+
+  preAuthorize(
+    requestContext.permissions,
+    Permission.ADMIN
+  );
 
   const { userId } = getParamsOrFail(params, ParamsSchema);
 

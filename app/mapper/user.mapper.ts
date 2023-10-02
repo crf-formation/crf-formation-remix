@@ -17,7 +17,7 @@ import type {
   UserStateDtoEnum
 } from "~/dto/user.dto";
 import { assertEnum } from "~/mapper/abstract.mapper";
-import { AuthorityApiEnum } from "~/apiobject/permission.apiobject";
+import type { AuthorityApiEnum } from "~/apiobject/permission.apiobject";
 
 export function userPostDtoToApiObject(
   dto: UserPostDto
@@ -97,6 +97,7 @@ export function userEntityToMeApiObject(userEntity: UserEntity): UserMeApiObject
   return {
     id: userEntity.id,
     role: userRoleStringToApiEnum(userEntity.role),
+    state: userStateStringToApiEnum(userEntity.state),
     email: userEntity.email,
     firstName: userEntity.firstName,
     lastName: userEntity.lastName,

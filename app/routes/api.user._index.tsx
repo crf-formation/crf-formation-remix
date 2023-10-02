@@ -5,8 +5,11 @@ import type { SecurityFunction } from "~/helper/remix.helper";
 import { getSearchParamsOrFail } from "~/helper/remix.params.helper";
 import { paginateEntityToApiObject } from "~/mapper/abstract.mapper";
 import { userApiObjectToDto } from "~/mapper/user.mapper";
-import { requireAdmin } from "~/service/session.server";
+import { requireLoggedInRequestContext } from "~/service/session.server";
 import { getUsers } from "~/service/user.server";
+import { preAuthorize } from "~/service/security.server";
+import { Permission } from "~/constant/permission";
+import type { Params } from "@remix-run/react";
 
 const URLSearchParamsSchema = z.object({
   page: z.number().default(0),
@@ -16,7 +19,12 @@ const URLSearchParamsSchema = z.object({
 });
 
 const security: SecurityFunction<void> = async (request: Request, params: Params) => {
-  await requireAdmin(request);
+  const requestContext = await requireLoggedInRequestContext(request);
+
+  preAuthorize(
+    requestContext.permissions,
+    Permission.ADMIN
+  );
 };
 
 // GET list of users

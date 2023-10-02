@@ -24,7 +24,6 @@ import { useLoaderData } from "@remix-run/react";
 import { z } from "zod";
 import type { PseConcreteCaseSessionApiObject } from "~/apiobject/pseconcretecasesession.apiobject";
 import type { PseFormationApiObject } from "~/apiobject/pseformation.apiobject";
-import type { UserApiObject } from "~/apiobject/user.apiobject";
 import { Ariane, ArianeItem } from "~/component/layout/Ariane";
 import Page from "~/component/layout/Page";
 import PageActions from "~/component/layout/PageActions";
@@ -48,7 +47,7 @@ import {
 import { getPseConcreteCaseSituationsForPseConcreteCaseSessionId } from "~/service/pseconcretecasesituation.server";
 import { getPseFormationByPseConcreteCaseSessionId } from "~/service/pseformation.server";
 import { assertUserHasAccessToFormationAsTeacher } from "~/service/security.server";
-import { requireUser } from "~/service/session.server";
+import { requireLoggedInRequestContext } from "~/service/session.server";
 
 
 // GET PSE concrete case sessions
@@ -58,21 +57,19 @@ const ParamsSchema = z.object({
 });
 
 const security: SecurityFunction<{
-  userApiObject: UserApiObject;
   pseFormationApiObject: PseFormationApiObject;
   pseConcreteCaseSessionApiObject: PseConcreteCaseSessionApiObject;
 }> = async (request: Request, params: Params) => {
-  const { pseConcreteCaseSessionId } = getParamsOrFail(params, ParamsSchema);
+  const { userMeApiObject } = await requireLoggedInRequestContext(request);
 
-  const userApiObject = await requireUser(request);
+  const { pseConcreteCaseSessionId } = getParamsOrFail(params, ParamsSchema);
 
   const pseConcreteCaseSessionApiObject = await getPseConcreteCaseSessionById(pseConcreteCaseSessionId);
   const pseFormationApiObject = await getPseFormationByPseConcreteCaseSessionId(pseConcreteCaseSessionApiObject.id);
 
-  await assertUserHasAccessToFormationAsTeacher(userApiObject.id, pseFormationApiObject.id);
+  await assertUserHasAccessToFormationAsTeacher(userMeApiObject.id, pseFormationApiObject.id);
 
   return {
-    userApiObject,
     pseFormationApiObject,
     pseConcreteCaseSessionApiObject
   };
@@ -98,6 +95,7 @@ export const loader: LoaderFunction = async ({ request, params }) => {
     pseConcreteCaseSessionGroupOrders: pseConcreteCaseSessionGroupOrderApiObjects.map(pseConcreteCaseSessionGroupOrderApiObjectToDto)
   });
 };
+
 export const meta: V2_MetaFunction<typeof loader> = ({ data }) => {
   return [
     { title: `Session - ${data?.pseConcreteCaseSession?.name}` }

@@ -22,7 +22,7 @@ import { pseFormationApiObjectToDto } from "~/mapper/pseformation.mapper";
 import { createPseConcreteCaseSession } from "~/service/pseconcretecasesession.server";
 import { findPseFormationById } from "~/service/pseformation.server";
 import { assertUserHasAccessToFormationAsTeacher } from "~/service/security.server";
-import { requireUser } from "~/service/session.server";
+import { requireLoggedInRequestContext } from "~/service/session.server";
 
 const ParamsSchema = z.object({
   formationId: z.string()
@@ -31,9 +31,9 @@ const ParamsSchema = z.object({
 const security: SecurityFunction<{
   pseFormationApiObject: PseFormationApiObject;
 }> = async (request: Request, params: Params) => {
-  const { formationId } = getParamsOrFail(params, ParamsSchema);
+  const { userMeApiObject } = await requireLoggedInRequestContext(request);
 
-  const userApiObject = await requireUser(request);
+  const { formationId } = getParamsOrFail(params, ParamsSchema);
 
   const pseFormationApiObject = await findPseFormationById(formationId);
 
@@ -41,7 +41,7 @@ const security: SecurityFunction<{
     throw new Error(`Formation not found: ${formationId}`);
   }
 
-  await assertUserHasAccessToFormationAsTeacher(userApiObject.id, pseFormationApiObject.id);
+  await assertUserHasAccessToFormationAsTeacher(userMeApiObject.id, pseFormationApiObject.id);
 
   return {
     pseFormationApiObject

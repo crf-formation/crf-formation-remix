@@ -1,9 +1,8 @@
 import type { Params } from "@remix-run/react";
 import type { LoaderArgs } from "@remix-run/server-runtime";
 import { json } from "@remix-run/server-runtime";
-import type { UserApiObject } from "~/apiobject/user.apiobject";
 import type { SecurityFunction } from "~/helper/remix.helper";
-import { requireUser } from "~/service/session.server";
+import { requireLoggedInRequestContext } from "~/service/session.server";
 import type { V2_MetaFunction } from "@remix-run/node";
 import Box from "@mui/material/Box";
 import Paper from "@mui/material/Paper";
@@ -12,13 +11,14 @@ import Typography from "@mui/material/Typography";
 import useUser from "~/hook/useUser";
 import Callout from "~/component/typography/Callout";
 import Page from "~/component/layout/Page";
+import type { UserMeApiObject } from "~/apiobject/user.apiobject";
 
 const security: SecurityFunction<{
-  userApiObject: UserApiObject;
+  userApiObject: UserMeApiObject;
 }> = async (request: Request, params: Params) => {
-  const userApiObject = await requireUser(request);
+  const requestContext = await requireLoggedInRequestContext(request);
   return {
-    userApiObject
+    userApiObject: requestContext.userMeApiObject
   };
 };
 

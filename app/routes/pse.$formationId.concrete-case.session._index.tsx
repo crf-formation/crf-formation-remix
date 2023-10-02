@@ -23,8 +23,8 @@ import { pseFormationApiObjectToDto } from "~/mapper/pseformation.mapper";
 import { getPseFormationConcreteCaseSessions } from "~/service/pseconcretecasesession.server";
 import { findPseFormationById } from "~/service/pseformation.server";
 import { assertUserHasAccessToFormationAsTeacher } from "~/service/security.server";
-import { requireUser } from "~/service/session.server";
 import type { V2_MetaFunction } from "@remix-run/node";
+import { requireLoggedInRequestContext } from "~/service/session.server";
 
 const ParamsSchema = z.object({
   formationId: z.string()
@@ -40,17 +40,16 @@ const URLSearchParamsSchema = z.object({
 const security: SecurityFunction<{
   pseFormationApiObject: PseFormationApiObject;
 }> = async (request: Request, params: Params) => {
+  const { userMeApiObject } = await requireLoggedInRequestContext(request);
+
   const { formationId } = getParamsOrFail(params, ParamsSchema);
-
-  const userApiObject = await requireUser(request);
-
   const pseFormationApiObject = await findPseFormationById(formationId);
 
   if (!pseFormationApiObject) {
     throw new Error(`Formation not found: ${formationId}`);
   }
 
-  await assertUserHasAccessToFormationAsTeacher(userApiObject.id, pseFormationApiObject.id);
+  await assertUserHasAccessToFormationAsTeacher(userMeApiObject.id, pseFormationApiObject.id);
 
   return {
     pseFormationApiObject
@@ -123,8 +122,7 @@ export default function ConcreteCaseSessionsRoute() {
               </TableRow>
             </TableHead>
             <TableBody>
-              {concreteCaseSessionsPaginateObject.data.map(
-                (concreteCaseSession) => (
+              {concreteCaseSessionsPaginateObject.data.map(concreteCaseSession => (
                   <TableRow key={concreteCaseSession.id}>
                     <TableCell>
                       <Link

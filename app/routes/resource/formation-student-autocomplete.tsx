@@ -7,7 +7,7 @@ import type { UserDto } from "~/dto/user.dto";
 import { getSearchParamsOrFail } from "~/helper/remix.params.helper";
 import { paginateEntityToApiObject } from "~/mapper/abstract.mapper";
 import { userApiObjectToDto } from "~/mapper/user.mapper";
-import { requireUser } from "~/service/session.server";
+
 import { getFormationStudents, searchFormationStudents } from "~/service/user.server";
 
 const URLSearchParamsSchema = z.object({
